@@ -1,0 +1,137 @@
+﻿@{ 
+    string moduleKey = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Context.Request.RequestContext, "area");
+    List<KeyValuePair<string, string>> languages = new List<KeyValuePair<string, string>>();
+    string overrideFromUrl = SFSdotNet.Framework.Web.Utils.GetOverrideOrAppFromReturnUrl(Request.QueryString["ReturnUrl"]);
+
+    if (!string.IsNullOrEmpty(overrideFromUrl))
+    {
+        moduleKey = overrideFromUrl;
+    }
+    else
+    {
+        string overrideApp = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "overrideModule");
+        if (!string.IsNullOrEmpty(overrideApp))
+        {
+            moduleKey = overrideApp;
+        }
+    }
+
+    if (!string.IsNullOrEmpty(moduleKey))
+    {
+        var module = SFSdotNet.Framework.Cache.Caching.SystemObjects.GetModuleByKey(moduleKey);
+        if (module != null)
+        {
+            if (!string.IsNullOrEmpty(module.Langs))
+            {
+                foreach (var lang in module.Langs.Split(char.Parse(",")))
+                {
+                    var culture = System.Globalization.CultureInfo.GetCultureInfo(lang);
+                    languages.Add(new KeyValuePair<string, string>(lang, culture.NativeName));
+                }
+            }
+            else
+            {
+
+            }
+        }
+
+    }
+
+    if (languages.Count == 0)
+    {
+        languages.Add(new KeyValuePair<string, string>("es", "Español"));
+        languages.Add(new KeyValuePair<string, string>("en", "English"));
+
+    }
+    List<KeyValuePair<string, string>> langNames = new List<KeyValuePair<string, string>>();
+    foreach (var lang in languages)
+    {
+        switch (lang.Key)
+        {
+            case "es":
+                langNames.Add(new KeyValuePair<string, string>("es-mx", lang.Value));
+                break;
+            case "ru":
+                langNames.Add(new KeyValuePair<string, string>("ru-ru", lang.Value));
+                break;
+            case "en":
+                langNames.Add(new KeyValuePair<string, string>("en-us", lang.Value));
+                break;
+            default:
+                break;
+        }
+    }
+
+    string icon = "";
+    UIModel uiModel = (UIModel)ViewData["UIModel"];
+    if (ViewData["uiv"] != null && ViewData["uiv"].ToString() == "2")
+    {
+        icon = "fa fa-globe";
+    }
+    if (uiModel !=null && uiModel.UIVersion == 2)
+    {
+        icon = "fa fa-globe";
+    }
+
+
+}
+
+    <li class="dropdown" id="fat-menu">
+    <a class="dropdown-toggle bgtrasparent" id="dropLag" role="button" href="#" data-toggle="dropdown"><i class="@(icon) icon-white"></i> <span class="label label-default">@(System.Threading.Thread.CurrentThread.CurrentCulture)</span> <b class="caret white-caret"></b></a>
+           <ul class="dropdown-menu" role="menu" aria-labelledby="dropLang">
+                        @*<li role="presentation"><a role="menuitem" id="lagEn" class="langlink" lang="en-us" tabindex="-1" href="#">English</a></li>
+                        <li role="presentation"><a role="menuitem" id="lagEs" class="langlink" lang="es-mx" tabindex="-1" href="#">Español</a></li>*@
+@foreach (var lang in langNames)
+{
+    <li role="presentation"><a role="menuitem" id="lang@(lang.Key)" class="langlink" lang="@(lang.Key)" tabindex="-1" href="#">@(lang.Value)</a></li>
+}
+                      </ul>
+    </li>
+
+<script>
+    @{
+        string appPath = "/";
+        if (HttpContext.Current.Request.ApplicationPath.Length > 1){
+            appPath = HttpContext.Current.Request.ApplicationPath.Remove(0,1).ToString() + "/";
+        }
+    }
+    $(document).ready(function () {
+@if (ViewContext.RouteData.Values["culture"] != null && ViewContext.RouteData.Values["culture"].ToString() != "xx-xx" && ViewContext.RouteData.Values["culture"].ToString() != "")
+{
+    <text>
+        $(".langlink").click(function (e) {
+            e.preventDefault();
+            $.removeCookie('lang_sfs');
+            $.cookie('lang_sfs', $(this).attr("lang"),
+                {
+                    expires: 30, path: "/", //Whole website
+
+                });
+            //alert(window.location);
+            
+            window.location = window.location.href.replace("@( Request.Url.Host + VirtualPathUtility.ToAbsolute("~/") + System.Threading.Thread.CurrentThread.CurrentCulture.Name.ToLower())", "@( Request.Url.Host + VirtualPathUtility.ToAbsolute("~/"))" + $(this).attr("lang") + "");
+            return false;
+
+        });
+        </text>
+}else{
+    <text>
+        $(".langlink").click(function (e) {
+            e.preventDefault();
+            $.removeCookie('lang_sfs');
+            $.cookie('lang_sfs', $(this).attr("lang"),
+                {
+                    expires: 30, path: "/", //Whole website
+
+                });
+            window.location.reload();
+            return false;
+
+        });
+        </text>
+
+}    
+
+       
+    });
+</script>

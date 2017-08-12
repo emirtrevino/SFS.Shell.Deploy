@@ -1,0 +1,171 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel
+
+@{ //bool isSubFilter = false;
+    string subfilterFrom = "";
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    if (ViewData["subfilterFrom"] != null){
+        subfilterFrom = ViewData["subfilterFrom"].ToString();
+    }
+   //if (ViewData["subfilter"] != null)
+   //    isSubFilter = (bool)ViewData["subfilter"];
+    string modelTypeName = Request.QueryString["type"].ToString();
+   if (ViewData["ModelTypeName"] != null){
+       modelTypeName = ViewData["ModelTypeName"].ToString();
+   }
+   string idTab = "";
+   if (ViewData["idTab"] != null)
+   {
+       idTab = (string)ViewData["idTab"];
+   }
+   else {
+       if (!string.IsNullOrEmpty(Request.QueryString["idTab"])) {
+           idTab = Request.QueryString["idTab"];
+       }
+   }    
+    
+   string area= SFSdotNet.Framework.Web.Utils.GetRouteDataOrQueryParam( Request.RequestContext, "area");
+   string controller= SFSdotNet.Framework.Web.Utils.GetRouteDataOrQueryParam(Request.RequestContext,"controller");
+   string inputClass = "";
+   string iconRemove = "icon-remove";
+   string btnClass = "btn-mini";
+
+   if (uiModel.UIVersion == 2)
+   {
+       btnClass = "btn-xs";
+       iconRemove = "fa fa-times";
+       inputClass = "form-control input-sm";
+   }
+   
+   }
+<tr id="div-@( Model.Id )">
+@if ((bool)ViewData["withConcat"] == true)
+   { 
+    <td style="vertical-align: middle;">@Html.DropDownListFor(m => m.ConcatOption, Model.ConcatOptions, new { sff = subfilterFrom, @id = "concat-" + Model.Id, @name = "concat-" + Model.Id, @class = "filter contact input-mini " + inputClass + " " + Model.classId + " " + Model.Id }) </td>
+   }
+else
+{
+    <td style="vertical-align: middle;">
+        @Html.DropDownListFor(m => m.ConcatOption, Model.ConcatOptions, new { sff = subfilterFrom, @id = "concat-" + Model.Id, @name = "concat-" + Model.Id, disabled = "disabled", @class = "filter " + inputClass + " input-mini contact " + Model.classId + " " + Model.Id })
+    </td>
+}
+    <td nowrap="nowrap" style="vertical-align: middle;">
+        <table style="border:none;padding:0px;margin:0px; width:100%;">
+            <tr>
+                <td style="border-top-style:none">
+                    @Html.DropDownListFor(m => m.Field, Model.Fields, "--" + GlobalMessages.SELECT + "--", new { sff = subfilterFrom, @id = "field" + Model.Id, @class = "filter fieldFilter " + inputClass + " " + Model.classId + " " + Model.Id })
+                    @Html.DropDownListFor(m => m.CompareOption, Model.CompareOptions, new { sff = subfilterFrom, @id = "compare-" + Model.Id, name = "compare-" + Model.Id, @class = "filter compare " + inputClass + " input-medium " + Model.classId + " " + Model.Id })
+
+
+                <div id="fp@(Model.Id)" style=" width:250px;display:inline;border-top-style:none"> </div>
+
+                </td>
+            </tr>
+        </table>
+   
+    
+
+
+</td><td style="vertical-align: middle;">&nbsp;<a href="javascript: removeFQ('div-@(Model.Id )');  " class="btn delete btn-danger @(btnClass)"> <i class="@(iconRemove) icon-white "></i> </a></td>
+</tr>
+<script>
+    $("#" + "compare-@(Model.Id )").change(function () {
+        onChangeCompareFieldChange($(this), "@(Model.Id)");
+    });
+    function compareLoaded@(Model.Id.Replace("-","") )() {
+
+
+        $("#" + "compare-@(Model.Id )").val("=");
+        if ($("#" + "compare-@(Model.Id )").size() <= 1) {
+        } else {
+
+        }
+    }
+    function AddQueryFieldDone@(Model.Id.Replace("-","") )(data) {
+        //alert(data.toString());
+        $("#fp@(Model.Id )").replaceWith("<div id='fp@(Model.Id )' style='display:inline;width:250px;border-top-style:none'> " + data + "</div>");
+
+        refreshForm();
+    }
+    var idPrevProp@(Model.Id.Replace("-","") ) = "";
+    function GetPropertyDone@(Model.Id.Replace("-","") )(data) {
+        if (data.IsNavigationPropertyMany == true) {
+            // se trata de una navegación de muchos
+            // que puede permitir sub filtros
+            $("#" + "field@(Model.Id )").after("<table border='0' style='margin-bottom:0px;margin-top:0px;' id='subf@( Model.Id )'> </table><a class=' btn  btn-mini subf@(Model.Id )' href='javascript: AddSubQueryLine@(Model.Id.Replace("-","") )(\"@( Model.Id )\", \"" + data.ModelPartialType + "\",\"" + data.PropertyName + "\");'><i class='icon-plus'></i>@(GlobalMessages.ADD_FILTER)</a><span class='subf@( Model.Id )'><br /> los resultados sean: </span>");
+            idPrevProp@(Model.Id.Replace("-","") ) = "subf@( Model.Id )";
+            // se agrega un primer inicio de filtro
+            var setRelObj = $.grep(data.CustomProperties, function(e){ return e.Name == "BusinessObjectSetName"; });
+            var setRelName = null;
+            if(setRelObj.length > 0){
+                setRelName = setRelObj[0].Value;
+            }
+            AddSubQueryLine@(Model.Id.Replace("-","") )("@( Model.Id )", data.ModelPartialType, data.PropertyName, setRelName);
+        } else {
+            // no nav muchos
+            //alert(idPrevProp@(Model.Id.Replace("-","") ));
+            if (idPrevProp@(Model.Id.Replace("-","") ) != "") {
+                if ($("#" + idPrevProp@(Model.Id.Replace("-","") )).length > 0) {
+                    $("#" + idPrevProp@(Model.Id.Replace("-","") )).replaceWith("");
+                    $("." + idPrevProp@(Model.Id.Replace("-","") )).replaceWith("");
+                }
+            }
+        }
+    }
+    var nFilters@(Model.Id.Replace("-","")) = 0;
+    function AddSubQueryLine@(Model.Id.Replace("-","") )(id, modelType, propertyName, relSetName) {
+        //alert("sdfsdf");
+        var withConcat = "";
+        if (nFilters@(Model.Id.Replace("-","") ) == 0) {
+            withConcat = "&withConcat=false";
+        } else {
+            withConcat = "&withConcat=true";
+        }
+        var idFilter = "&idFilter=@(Model.classId)";
+        callServerGetHtml("@( VirtualPathUtility.ToAbsolute("~/")  )@(area)/" + relSetName + "/AddQueryItem?moduleNS=@( ViewData["moduleNS"] )&subfilterFrom=" + propertyName + "&type=" + modelType + withConcat + idFilter, AddSubQueryLineDone@(Model.Id.Replace("-","") ));
+
+    }
+    function AddSubQueryLineDone@(Model.Id.Replace("-","") )(data) {
+        $("#subf@( Model.Id )").append(data);
+        nFilters@(Model.Id.Replace("-","")) = nFilters@(Model.Id.Replace("-","") ) + 1;
+    }
+
+    // CascadingLoaded("#" + "compare-@( Model.Id )", "#" + "field@( Model.Id)", "@(VirtualPathUtility.ToAbsolute("~/") )FilterQuery/GetCompareOptions?moduleNS=@( ViewData["moduleNS"] )&type=@( modelTypeName )", "--@( GlobalMessages.SELECT  )--", 'compareLoaded@(Model.Id.Replace("-","") )');
+
+    $("#" + "field@( Model.Id )").change(function () {
+
+
+        $("#" + "fp@( Model.Id )").html( loadingInline("@(GlobalMessages.PROCESSING_PLEASE_WAIT)...") );
+
+        var field = $("#" + "field@( Model.Id )").val();
+
+        var urlGetCompareOps = "@(VirtualPathUtility.ToAbsolute("~/") )@(area)/@(controller)/GetCompareOptions?moduleNS=@( ViewData["moduleNS"] )&type=@( modelTypeName )&Field=" + $(this).val();
+        callServerGet(urlGetCompareOps, function (data) {
+            $("#" + "compare-@( Model.Id )").html("");
+            for (var i = 0; i < data.length; i++) {
+                $("#" + "compare-@( Model.Id )").append("<option value='" + data[i].Value + "'>" + data[i].Text + "</option>");
+            }
+
+            $("#" + "compare-@( Model.Id )").val("=");
+        });
+
+        if (field.length == 0) {
+            if ($("#" + "subf@( Model.Id )").length > 0) {
+                $("#" + "subf@( Model.Id )").replaceWith("");
+            }
+        } else {
+            //alert(field);
+            @{
+             string subfilterField = "";
+            if (!string.IsNullOrEmpty(subfilterFrom)){
+                subfilterField = "&subfilterFrom=" + subfilterFrom;
+                }
+                }
+            callServerGetHtml("@(VirtualPathUtility.ToAbsolute("~/") )@(area)/@(controller)/AddQueryField?moduleNS=@(ViewData["moduleNS"] )&type=@( modelTypeName )&field=" + field + "&idFilter=@( Model.classId )@( subfilterField )", AddQueryFieldDone@(Model.Id.Replace("-","") ));
+            // evaluar si es navegacion muchos
+            callServerGet("@(VirtualPathUtility.ToAbsolute("~/") )FilterQuery/GetProperty?&moduleNS=@(ViewData["moduleNS"] )&type=@( modelTypeName )&field=" + field + "&idFilter=@( Model.classId )", GetPropertyDone@(Model.Id.Replace("-","") ));
+        }
+    });
+
+
+
+</script>

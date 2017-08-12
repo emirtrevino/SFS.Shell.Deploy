@@ -1,0 +1,27 @@
+﻿@model SFSdotNet.Framework.Security.BusinessObjects.secUser
+@{
+    
+    string imageUrl = Model.UrlImage;
+    
+}
+
+<div class="span4">
+    <div class="row-fluid">
+        <div class="span12">
+            <a href=""><img src="@(imageUrl)" style="height:240px;width:240px" width="240" height="240" /></a>
+        </div>
+
+    </div>
+</div>
+
+<div class="span8">
+    <div class="row-fluid">
+        <div class="span12">
+            <h1>@(Model.FirstName ) @(Model.LastName)</h1>
+            <p class="bio">
+                @(Model.Bio)
+            </p>
+
+        </div>
+    </div>
+</div>

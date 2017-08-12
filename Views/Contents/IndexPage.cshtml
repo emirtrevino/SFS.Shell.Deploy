@@ -1,0 +1,577 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.VisualContentPage 
+
+@{
+    
+    bool viewEdit = false;
+    bool canEdit = false;
+    bool showItem = true;
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null)
+    {
+        canEdit = (new SFSdotNet.Framework.Security.Permissions()).IsAllowed(SFSdotNet.Framework.My.Context.CurrentContext.User, "SFSdotNetFrameworkSecurity", "secContent", "u");
+
+    }
+    if (Request.QueryString["viewEdit"] == "true" && canEdit)
+    {
+        viewEdit = true;
+    }
+
+
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+    var contents = Model.Contents;
+    string createoredit = GlobalMessages.MODIFY_CONTENT;
+    string actionCreateOrEdit = "Edit";
+    string extraparams = "";
+}
+<style type="text/css">
+    .bigbuttons {
+       padding-top:20px;
+       padding-bottom:20px;
+    }
+    .bigbuttons a {
+       
+            
+
+    }
+    .visual-page .bigbuttons a, .visual-page .bigbuttons a:hover, .visual-page .bigbuttons a:focus, .visual-page .bigbuttons a:active, .visual-page .bigbuttons  a:visited 
+ {
+    line-height:none;
+ }
+    .posts ul li {
+     list-style:none;
+     line-height: 40px;
+       overflow:hidden; 
+  white-space:nowrap; 
+  text-overflow:ellipsis; 
+  width:100%; 
+    }
+    .posts ul li a{
+        font-size:19px;
+    }
+        .posts ul li span {
+         font-size:85%;
+         color:grey;
+        }
+    #bodyconten{
+        padding-top:0px;
+    }
+    div.new_html_code {
+      width:100%;
+      height:400px;
+      min-width:150px;
+      min-height:100px;
+      /*max-width:200px;
+      max-height:100px;*/
+      overflow:hidden;
+      display:block;
+      /*border:1px solid red;*/
+    }
+   
+  </style>
+<div class="visual-page">
+    <div class="bg-wfull" style="background-image:url(Content/images/bg3.jpg); background-size:cover; background-position-y:bottom; height:500px;">
+    <div class="container" style="background:rgba(255, 255, 255, 0.5)">
+
+      <div id="myCarousel" class="carousel slide" >
+                      <ol class="carousel-indicators">
+
+@{
+   
+    int index = 1;
+    foreach (var content in contents.Where(p => p.TitleKey != null && p.TitleKey.Contains("slide")).OrderBy(p => p.Order))
+    {
+    <text>
+                        <li data-target="#myCarousel@(content.Order)" data-slide-to="@(index - 1)" class="@(index < 2 ? "active" : "")"></li>
+    </text>       
+        index++;
+    }
+}
+                      </ol>
+                      <!-- Carousel items -->
+
+                      <div class="carousel-inner">
+@{
+    index = 1;
+    foreach (var content in contents.Where(p => p.TitleKey != null && p.TitleKey.Contains("slide")).OrderBy(p => p.Order))
+    {
+
+        if (content.GuidContent != Guid.Empty)
+        {
+            createoredit = GlobalMessages.MODIFY_CONTENT;
+            extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&index=";
+            actionCreateOrEdit = "Edit";
+            showItem = true;
+        }
+        else
+        {
+            actionCreateOrEdit = "Create";
+            extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&index=";
+            createoredit = GlobalMessages.CREATE_CONTENT;
+            showItem = false;
+        }
+        if (content.ImageUrl == null)
+        {
+            content.ImageUrl = "";
+        }
+    <text>
+@if (showItem || viewEdit)
+{
+                        <div class="@(index < 2 ? "active" : "") item " style="padding:40px;">
+                        
+                        @*<div class="image-div span6"><img src="@(content.ImageUrl.Replace("h=", "h=350"))" /></div>*@
+                        <div class="caption-r span12">
+                       <h2 class="title-section">@content.Title</h2>
+                        <p style="font-size:130%; margin-top:50px;">@content.Description </p>
+                        
+@{
+    if (viewEdit)
+    {      
+            <div class="text-center"><a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content.GuidContent)&contentType=home&titlekey=@(content.TitleKey)&index=@(index)&ReturnAfter=@(Request.Url.ToString())"> <i class="icon-pencil "></i> @createoredit </a></div>
+   
+    }
+ }
+                            
+@if (content.GuidContent != Guid.Empty)
+{
+                        <p class="text-center">
+                             <a class="btn btn-primary btn-large " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content.Slug)">@(GlobalMessages.VIEW_MORE)...</a>
+                        </p>
+}
+                        </div>
+                          
+                        </div>
+}
+  </text>       
+index++;
+    }
+}
+          
+                      </div>
+                      <!-- Carousel nav -->
+                      <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                      <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    
+
+
+
+    </div>
+</div>
+        </div>
+     <div class="row-fluid">
+        <div class="span12 ">
+
+
+        </div>
+    </div>
+
+<script>
+    @{
+        Random random = new Random();
+        int randomNumber = random.Next(1, 4);
+     }
+    $(document).ready(function () {
+
+        @*$("#myCarousel").carousel({
+            interval: 6000
+        });*@
+        //$("#myCarousel").carousel(@(randomNumber));
+
+    });
+</script>
+    @{
+        string news_updates_html = "";
+
+        string news_features_html = "";
+        string features_html = "";
+        string apps_html = "";
+        if (ViewData["apps"] != null)
+        {
+            apps_html = "<span class='label label'>" + ViewData["apps"].ToString() + "</span>";
+
+        }
+        string news_users_html = "";
+        int news_updates_int = 0;
+        int news_features_int = 0;
+        int features_int = 0;
+        if (ViewData["features"] != null)
+        {
+            features_html = "<span class='label'>" + ViewData["features"].ToString() + "</span>";
+        }
+        if (ViewData["features-news"] != null)
+        {
+            news_features_html = "<span class='label label-success'>" + ViewData["features-news"].ToString() + "</span>";
+        }
+        int news_users_int = 0;
+        if (ViewData["updates-news"] != null)
+        {
+            news_updates_int = (int)ViewData["updates-news"];
+            if (news_updates_int > 0)
+            {
+                news_updates_html = "<span class='label label-success'>" + news_updates_int.ToString() + "</span>";
+
+            }
+        }
+
+        if (ViewData["users-news"] != null)
+        {
+            news_users_int = (int)ViewData["users-news"];
+            if (news_users_int > 0)
+            {
+                news_users_html = "<span class='label label-success'>" + news_users_int.ToString() + "</span>";
+
+            }
+        }
+
+        string errors_news_html = "";
+        string errors_closed_news_html = "";
+        int errors_news_int = 0;
+        int errors_closed_news_int = 0;
+
+        if (ViewData["errors-news"] != null)
+        {
+            errors_news_int = (int)ViewData["errors-news"];
+            if (errors_news_int > 0)
+            {
+                errors_news_html = "<span class='label label-warning'>" + errors_news_int.ToString() + "</span>";
+
+            }
+        }
+        if (ViewData["errors-closed-news"] != null)
+        {
+            errors_closed_news_int = (int)ViewData["errors-closed-news"];
+            if (errors_closed_news_int > 0)
+            {
+                errors_closed_news_html = "<span class='label label-success'>" + errors_closed_news_int.ToString() + "</span>";
+
+            }
+        }
+
+
+    }
+
+
+
+    <div class="container">
+<div class="row-fluid bigbuttons">
+    <div class="span4 text-center faq">
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/app-ecosystem" class="faq"> @ContentMessages.ECOSYSTEM</a>
+    </div>
+    <div class="span4 text-center feature">
+       <a href="@(VirtualPathUtility.ToAbsolute("~/"))Features" class="feature">@GlobalMessages.FEATURES</a> @Html.Raw(features_html) @Html.Raw(news_features_html)
+    </div>
+    <div class="span4 text-center advantages">
+       <a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/AllApps" class="advantages" >  @ContentMessages.APPLICATIONS</a> @Html.Raw(apps_html)
+    </div>
+
+</div>
+        <div class="row-fluid">
+            <div class="span12 space-contents">
+                <hr class="fancy-line"></hr>
+
+            </div>
+        </div>
+
+
+        <div class="row-fluid" style="font-size:23px;">
+            <div class="span6 text-left">
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Users" class=""> Usuarios</a> <span class="label label-default">@(ViewData["users"].ToString())+</span> @Html.Raw(news_users_html)
+                &nbsp;&nbsp;&nbsp; @*</div>
+
+            <div class="span3 text-center ">*@
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Companies" class=""> Empresas</a> <span class="label label-default">@(ViewData["comp"].ToString())+</span>
+            </div>
+
+            <div class="span6 text-right">
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues/?type=error-user" class="">Errores</a> <span class="label label-default">@(ViewData["errors"].ToString())+</span>&nbsp;@Html.Raw(errors_news_html) &nbsp;@Html.Raw(errors_closed_news_html)
+                &nbsp;&nbsp;&nbsp;  @*</div>
+
+            <div class="span3 text-center ">*@
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Updates" class=""> Actualizaciones</a> <span class="label label-default">@(ViewData["updates"].ToString())+</span>&nbsp;@Html.Raw(news_updates_html)
+            </div>
+
+        </div>
+        <div class="row-fluid">
+            <div class="span12 space-contents" style="padding:20px;"></div>
+        </div>
+        <div class="row-fluid" style="font-size:23px;">
+            <div class="span6 text-center">
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues/?type=error-system" class=""> Errores autoadministrados</a>
+            </div>
+
+            <div class="span6 text-center ">
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues" class=""> Cambios o mejoras</a>
+            </div>
+
+
+        </div>
+         <div class="row-fluid" style="font-size:15px;">
+            <div class="span12 text-center">
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/why-public-use-data-ecosys" class=""> @(GlobalMessages.WHY_DO_I_SEE_THIS)</a>
+            </div>
+             </div>
+     </div> 
+    
+        <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line"></hr>
+
+        </div>
+         </div>
+    @{
+        SFSdotNet.Framework.Security.BR.secContentsBR brContents = new SFSdotNet.Framework.Security.BR.secContentsBR(true);
+        var posts = brContents.GetBy(@"Published == true && PublishDate != null AND it.secContentType.ContentTypeKey == ""blog"" ", 4, 1, SFSdotNet.Framework.Security.BusinessObjects.secContent.PropertyNames.PublishDate, "desc");
+        
+        }
+
+    <div class="grey-light-min">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="visual-content-section  centerdiv text-center">
+                        <h2 class="title-section"> Blog </h2>
+
+
+                        <div class="span2 ">
+                            <img src="@(VirtualPathUtility.ToAbsolute("~/"))Content/images/news-140.png" />
+                        </div>
+                        <div class="span9 posts text-left ">
+
+                            <ul>
+                                @foreach (var post in posts)
+                                {
+
+                                    <li>@*@Html.Raw(post.secTagsComputed.Count(p => p.TagKey == "technical") == 1 ? "<div class=' label label-default tag-post-type'>Técnico</div>" : "")*@<span class="date">@(post.PublishDate != null ? post.PublishDate.Value.ToShortDateString() : "")</span> <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(post.Slug)_@(post.IdContent)">@post.Title</a></li>
+
+                                }
+
+
+                            </ul>
+
+                            <p class="text-right">
+                                <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Blog">Ir al Blog y ver más...</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line" />
+
+        </div>
+         </div>
+
+ <!--Section 2, content 5-->  
+@{
+    var content2 = contents.Where(p => p.TitleKey == null || !p.TitleKey.Contains("slide")).OrderBy(p => p.Order).Take(1).FirstOrDefault();
+    if (content2.GuidContent != Guid.Empty)
+    {
+        createoredit = GlobalMessages.MODIFY_CONTENT;
+        actionCreateOrEdit = "Edit";
+        showItem = true;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&index=";
+
+    }
+    else
+    {
+        actionCreateOrEdit = "Create";
+        showItem = false;
+        createoredit = GlobalMessages.CREATE_CONTENT;
+        content2.Title = GlobalMessages.NOT_DEFINED;
+        content2.Description = GlobalMessages.NOT_DEFINED;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&index=";
+
+    }      
+}    
+@if (showItem || viewEdit)
+{
+    <div class="container">
+<div class="row-fluid">
+   <div class="span12" style="text-align:center;">
+       <div class="visual-content-section">
+       <div class="centerdiv" >
+           <h2 class="title-section"> @content2.Title</h2>
+        <img src="@content2.ImageUrl.Replace("h=", "h=240")" style="float:left; padding-right:30px;" />
+        <div class="grey-light-min text" style="display:table;text-align:left; padding:20px;margin-bottom:20px;">
+            <p>@content2.Description  @*Hemos creado un concepto tecnológico en la construcción de software, aplicando principios de negocio y técnicos que permiten que las aplicaciones requieran de mucho menos trabajo manual de programación para construirse, corregirse y crecer. Incluso para que entre ellas mismas exista interacción mutua para compartir funcionalidad.*@
+
+@{
+    if (viewEdit)
+    {
+            <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content2.GuidContent)&@(extraparams)2"> <i class="icon-pencil "></i> @createoredit </a>
+
+    }
+ }
+            </p>
+@if (content2.GuidContent != Guid.Empty)
+{
+
+        <p class="text-right grey-light-min text">
+                 <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content2.Slug)">@(GlobalMessages.VIEW_MORE)... </a>
+        </p>
+}
+            </div>
+       </div>
+   </div>
+       </div>
+
+</div>
+        </div>
+}
+
+
+        <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line"></hr>
+
+        </div>
+    </div>
+
+
+ <!--Section 3  content 5-->
+@{
+     
+    var content3 = contents.Where(p => p.TitleKey == null || !p.TitleKey.Contains("slide")).OrderBy(p => p.Order).Skip(1).Take(1).FirstOrDefault();
+    if (content3.GuidContent != Guid.Empty)
+    {
+        createoredit = GlobalMessages.MODIFY_CONTENT;
+        actionCreateOrEdit = "Edit";
+        showItem = true;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&index=";
+
+    }
+    else
+    {
+        actionCreateOrEdit = "Create";
+        showItem = false;
+        createoredit = GlobalMessages.CREATE_CONTENT;
+        content3.Title = GlobalMessages.NOT_DEFINED;
+        content3.Description = GlobalMessages.NOT_DEFINED;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&index=";
+
+    }
+}
+@if (showItem || viewEdit)
+{
+    <div class="grey-light-min">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="visual-content-section grey-light-min text-center">
+                        <h2 class="title-section">@content3.Title </h2>
+                        <img src="@content3.ImageUrl.Replace("w=", "w=400")" />
+                        <p>
+                            @content3.Description  @*Si usted tiene necesidades específicas en su negocio y no cuenta con un sistema que integre toda su operación, o bien sus aplicaciones actuales no cumplen con una integración efectiva que le permita crecer al ritmo de la actualidad… nosotros podemos analizar su caso y generar una solución integral.*@
+                            @{
+    if (viewEdit)
+    {
+        <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content3.GuidContent)&@(extraparams)3"> <i class="icon-pencil "></i> @createoredit </a>
+
+    }
+                            }
+                        </p>
+                        @if (content3.GuidContent != Guid.Empty)
+                        {
+
+                            <p class="">
+                                <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content3.Slug)">@(GlobalMessages.VIEW_MORE)... </a>
+                            </p>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+        <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line"></hr>
+
+        </div>
+    </div>
+
+
+<!--Section 3  content 5-->
+@{
+    var content4 = contents.Where(p => p.TitleKey == null || !p.TitleKey.Contains("slide")).OrderBy(p => p.Order).Skip(2).Take(1).FirstOrDefault();
+    if (content4.GuidContent != Guid.Empty)
+    {
+        createoredit = GlobalMessages.MODIFY_CONTENT;
+        actionCreateOrEdit = "Edit";
+        showItem = true;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&index=";
+
+    }
+    else
+    {
+        actionCreateOrEdit = "Create";
+        showItem = false;
+        createoredit = GlobalMessages.CREATE_CONTENT;
+        content4.Title = GlobalMessages.NOT_DEFINED;
+        content4.Description = GlobalMessages.NOT_DEFINED;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&index=";
+
+    }
+}
+@if (showItem || viewEdit)
+{
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12" style="text-align:center;">
+                <div class="visual-content-section">
+                    <div class="centerdiv">
+                        <h2 class="title-section">@content4.Title</h2>
+                        <img src="@content4.ImageUrl.Replace("w=", "w=300")" style="float:left; padding-right:30px;" />
+                        <div class="grey-light-min text" style="display:table;text-align:left; padding:20px;margin-bottom:20px;">
+                            <p>
+                                @content4.Description @*Use aplicaciones modernas que realmente aprovechen la tecnología del servicio sobre demanda, lo que se reflejará en ahorro y mejor funcionalidad. Nuestros productos o desarrollos a la medida pueden ser usados desde la nube o en su propia instalación.            *@
+                                @{
+    if (viewEdit)
+    {
+        <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content4.GuidContent)&@(extraparams)3"> <i class="icon-pencil "></i> @createoredit </a>
+
+    }
+                                }
+                            </p>
+                            @if (content4.GuidContent != Guid.Empty)
+                            {
+
+                                <p class="text-right">
+                                    <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content4.Slug)">@(GlobalMessages.VIEW_MORE)... </a>
+                                </p>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+        @if (canEdit)
+{
+            <div class="row-fluid">
+                <div class="span12 text-center">
+                    @if (Request.QueryString["viewEdit"] == "true")
+{
+                        <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))"> <i class="icon-pencil "></i> Salir de modo edición </a>
+
+}
+else
+{
+                        <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))?viewEdit=true"> <i class="icon-pencil "></i> Ver modo edición</a>
+
+}
+                </div>
+            </div>
+       
+}
+    </div>
+    

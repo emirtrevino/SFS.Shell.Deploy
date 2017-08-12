@@ -1,0 +1,28 @@
+﻿@{
+    if (Request.Url.Host.Contains("softi"))
+    {
+        Layout = "~/Views/Shared/_LayoutVisualContentsV2.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+
+    }
+}
+
+@Html.Raw(ViewBag.Time)
+
+@{
+    
+    //Html.RenderAction("GetIndexContents", "Contents");
+    }
+@section Title{
+    @if (Request.Url.Host.ToLower().Contains("softi"))
+    {
+        <text>Softi | Desarrollo de software, aplicaciones de negocio modernas para la nube</text>
+    }
+    else
+    {
+        	@GlobalMessages.PLATFORM_NAME 
+        }
+    }

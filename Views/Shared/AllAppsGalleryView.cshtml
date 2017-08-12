@@ -1,0 +1,26 @@
+﻿@{
+    List<SFSdotNet.Framework.Security.BusinessObjects.secModule> modules = new List<SFSdotNet.Framework.Security.BusinessObjects.secModule>();
+
+    if (SFSdotNet.Framework.Cache.Caching.ExistInGlobal(SFSdotNet.Framework.Cache.GlobalObjectKeys.AllModulesAllowed) == false)
+    {
+        modules = SFSdotNet.Framework.Security.BR.secModulesBR.Instance.GetBy(p => p.IsAllowed == true);
+    }
+    else
+    {
+        modules = (List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)SFSdotNet.Framework.Cache.Caching.GetFromGlobal(SFSdotNet.Framework.Cache.GlobalObjectKeys.AllModulesAllowed);
+    }
+    modules.Remove(modules.Find(p => p.ModuleKey == "SFSdotNetFrameworkSecurity"));
+
+    modules = modules.OrderBy(arg => Guid.NewGuid()).Take(4).ToList();
+
+    }
+@foreach (var module in modules)
+{
+    <div class="text-center">
+        <a href="@VirtualPathUtility.ToAbsolute("~/")Home/MmbershipOptions/@(module.ModuleKey)"><img border="0" style="width:120px;height:120px;"  src="@Html.Action("LogoUrl", "Home", new { area = module.ModuleKey })"  /></a>
+        <p>
+            <a href="@VirtualPathUtility.ToAbsolute("~/")Home/MmbershipOptions/@(module.ModuleKey)"><h2>@module.Name</h2></a>
+        </p>
+    </div>
+    
+}

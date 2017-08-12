@@ -1,0 +1,201 @@
+﻿@{ 
+
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    List<PropertyDefinition> propertiesForRender = (List<PropertyDefinition>)ViewData["propertiesForRender"];
+
+    string fromFK = "";
+    if (ViewData["fk"] != null)
+    {
+        fromFK = ViewData["fk"].ToString();
+    }
+
+    string fkValue = "";
+    if (ViewData["fkValue"] != null)
+    {
+        fkValue = ViewData["fkValue"].ToString();
+    }
+
+
+    string prefix_col = "span";
+    string classRow = "row-fluid";
+    if (uiModel.UIVersion == 2)
+    {
+        classRow = "row";
+        prefix_col = "col-sm-";
+    }
+    bool isPopup = false;
+    if (!string.IsNullOrEmpty(Request.QueryString["popup"]))
+    {
+        isPopup = true;
+    }
+
+    string classNoMulticolumn = "form-horizontal";
+    string classMulticolumn = "form-vertical";
+    string hTitle = "h2";
+    if (uiModel.UIVersion == 2)
+    {
+        hTitle = "h4";
+        classMulticolumn = "form-vertical";
+        classNoMulticolumn = "form-horizontal";
+    }
+
+    ViewData["classContainerField"] = "editor-field";
+    if (uiModel.ContextType == SFSdotNet.Framework.Web.Mvc.Models.UIModelContextTypes.DisplayForm)
+    {
+        ViewData["classContainerField"] = "display-field";
+    }
+    int rowN = 0;
+    string startRow = "<div class='" + classRow + " row" + rowN + "'>";
+
+
+
+    string endRow = "</div><!--end row multicol-->";
+    if (uiModel.UIVersion == 2)
+    {
+        //endRow = endRow + "<div class=\"hr-line-dashed\"></div>";
+    }
+    //string hsize = "";
+    int totalSize = 12;
+    int rowSize = 0;
+    string hsize = "";
+
+    bool rowIsOpen = false;
+    bool openFielset = false;
+    string focusclassinput = "focushl";
+    SFSdotNet.Framework.Globals.Security.Permission permission = new SFSdotNet.Framework.Globals.Security.Permission();
+
+}
+
+@{
+    foreach (var property in propertiesForRender)
+    {
+
+        string entityKeyWithUseMode = null;
+        if ((!string.IsNullOrEmpty(uiModel.UseMode) && property.PropagateUseMode) || property.UseMode != null)
+        {
+            if (property.UseMode != null)
+            {
+                entityKeyWithUseMode = property.BusinessObjectKey + "_" + property.UseMode;
+            }
+            else
+            {
+                entityKeyWithUseMode = property.BusinessObjectKey + "_" + uiModel.UseMode;
+            }
+
+        }
+        else
+        {
+            entityKeyWithUseMode = property.BusinessObjectKey;
+
+        }
+        bool renderProperty = true;
+
+        if (property.IsNavigationPropertyMany == true && property.SkipSecurity == false)
+        {
+
+            renderProperty = permission.IsAllowed("r", entityKeyWithUseMode, uiModel.ModuleKey);
+
+        }
+        if (renderProperty)
+        {
+            rowN++;
+            startRow = "<div  class='" + classRow + " rowform row" + rowN + "'><!--container 321-->";
+            if (uiModel.IsMultiColumn)
+            {
+                if (property.HorizontalSize == null)
+                {
+                    property.HorizontalSize = 12;
+                }
+            }
+            int propSize = 12;
+            if (property.HorizontalSize != null)
+            {
+                propSize = property.HorizontalSize.Value;
+            }
+            bool hideLayout = false;
+
+
+            ViewData["hsize"] = "";
+            string _safename = property.PropertyName;
+            if (property.IsNavigationProperty && !property.IsNavigationPropertyMany)
+            {
+                _safename = "Fk" + property.PropertyName;
+
+            }
+            if (property.HorizontalSize != null)
+            {
+                ViewData["hsize"] = prefix_col + propSize.ToString();
+            }
+            if (property.HorizontalSize != null)
+            {
+                hsize = prefix_col + propSize.ToString();
+            }
+            ViewData["currentProperty"] = property;
+            if (uiModel.IsMultiColumn && property.IsHidden == false)
+            {
+                rowSize += propSize;
+            }
+            if (!string.IsNullOrEmpty(property.StartGroupTitle))
+            {
+                openFielset = true;
+                focusclassinput = "";
+                @Html.Raw("<fieldset class='focushl '><legend>" + property.StartGroupTitle + "</legend>");
+            }
+            if ((property.IsHidden || property.SystemProperty == SystemProperties.Identifier) && property.TypeName.ToLower() != "include")
+            { // es una propiedad que debe ser hidden
+                object __valueHidden = null;
+                if (fromFK == property.PropertyName && !string.IsNullOrEmpty(fkValue))
+                {
+                    __valueHidden = fkValue;
+                }
+                else
+                {
+                    if (Model.GetType().GetProperty(_safename) != null)
+                    {
+                        __valueHidden = Model.GetType().GetProperty(_safename).GetValue(Model, null);
+                    }
+                }
+
+                @Html.Raw("<input type=\"hidden\" value=\"" + (__valueHidden != null ? __valueHidden.ToString() : "") + "\" id=\"" + _safename + "\" name=\"" + _safename + "\" />");
+
+            }
+            else
+            {
+
+
+                if (uiModel.IsMultiColumn)
+                {
+                    if (rowSize > 0 && !rowIsOpen)
+                    {
+                        @Html.Raw(startRow)
+                        rowIsOpen = true;
+                    }
+                }
+
+
+                Html.RenderPartial("GenericField");
+
+
+                if (uiModel.IsMultiColumn)
+                {
+                    if (rowSize >= totalSize)
+                    {
+                        @Html.Raw(endRow)
+                        rowIsOpen = false;
+                        rowSize = 0;
+                    }
+                }
+
+                if (property.EndGroup)
+                {
+                    openFielset = false;
+                    @Html.Raw("</fieldset><div class='closefieldset'></div>");
+                    focusclassinput = "focushl";
+                }
+
+            }
+        }
+
+    } //End foreach properties
+
+}

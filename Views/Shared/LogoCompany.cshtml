@@ -1,0 +1,134 @@
+﻿@{
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = null;
+    string urlimage = VirtualPathUtility.ToAbsolute("~/") + "Content/images/logo-company-default.png";
+    string urlMoudleimage = VirtualPathUtility.ToAbsolute("~/") + "Content/images/logo-company-default.png";
+    string overrideArea =  (new SFSdotNet.Framework.Web.Mvc.ControllerBase()).GetOverrideApp(this.Request.RequestContext.HttpContext);
+
+    //if (!string.IsNullOrEmpty(Request.QueryString["overrideModule"]))
+    //{
+    //    overrideArea = Request.QueryString["overrideModule"];
+
+    //}
+
+
+    bool customLogo = false;
+    bool isArea = false;
+    string moduleKey = null;
+    string area = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(Request.RequestContext, "area");
+
+    if (area == "SFSdotNetFrameworkSecurity" && !string.IsNullOrEmpty(Request.QueryString["ReturnUrl"]))
+    {
+        area = SFSdotNet.Framework.Web.Utils.GetOverrideOrAppFromReturnUrl(Request.QueryString["ReturnUrl"]);
+    }
+    //if (ViewContext.RouteData.DataTokens["area"] != null && ViewContext.RouteData.DataTokens["area"] != "SFSdotNetFrameworkSecurity")
+    if (!string.IsNullOrEmpty(area) || !string.IsNullOrEmpty(overrideArea))
+    {
+        isArea = true;
+        if (area != null ){
+            moduleKey = area;
+        }else{
+            moduleKey = overrideArea;
+        }
+        if (overrideArea != null){
+            moduleKey = overrideArea;
+        }
+        List<SFSdotNet.Framework.Security.BusinessObjects.secModule> modules = null;
+        if (SFSdotNet.Framework.Cache.Caching.ExistInGlobal(SFSdotNet.Framework.Cache.GlobalObjectKeys.AllModulesAllowed) == false){
+            modules = SFSdotNet.Framework.Security.BR.secModulesBR.Instance.GetBy(p => p.IsAllowed == true);
+        }else {
+            modules = (List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)SFSdotNet.Framework.Cache.Caching.GetFromGlobal(SFSdotNet.Framework.Cache.GlobalObjectKeys.AllModulesAllowed);
+        }
+        module = modules.FirstOrDefault(p => p.ModuleKey == moduleKey);
+        if (module != null ){
+            urlimage = Html.Action("LogoUrl", "Home", new { area = moduleKey }).ToString();
+            urlMoudleimage = Html.Action("LogoUrl", "Home", new { area = moduleKey }).ToString();
+        }
+
+    }
+    // = null;
+    SFSdotNet.Framework.Security.BusinessObjects.secCompany company = null;
+    string domain = System.Web.HttpContext.Current.Request.Url.Host;
+    SFSdotNet.Framework.Security.BusinessObjects.secCompanyModule companyModule = SFSdotNet.Framework.Web.Utils.GetDomainCompany(this.ViewContext.HttpContext);
+    SFSdotNet.Framework.Security.BusinessObjects.secCompany companyDomain = null;
+    if (companyModule != null && companyModule.secCompany != null)
+    {
+        companyDomain = companyModule.secCompany;
+    }
+
+    //if (SFSdotNet.Framework.My.Context.CurrentContext != null) { 
+    if (companyDomain != null)
+    {
+        if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null)
+        {
+            if (SFSdotNet.Framework.My.Context.CurrentContext.Company == null || (SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany != companyDomain.GuidCompany))
+            {
+                SFSdotNet.Framework.My.Context.CurrentContext.ChangeCurrentCompany(companyDomain.GuidCompany);
+            }
+        }
+        company = companyDomain;
+    }
+    if (company == null && SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null )
+    {
+        company = SFSdotNet.Framework.My.Context.CurrentContext.Company;
+    }
+    if ((company != null ) && (area != null || string.IsNullOrEmpty(overrideArea)))
+    {
+
+
+        if (!SFSdotNet.Framework.Cache.Caching.ExistInCompany("logo-finded", company.GuidCompany )){
+            SFSdotNet.Framework.Security.BR.secCompaniesBR brCompanies = new SFSdotNet.Framework.Security.BR.secCompaniesBR(true);
+            var compFinded = brCompanies.GetBy("GuidCompany = Guid(\"" + company.GuidCompany.ToString() +"\")", 1,1, "CreatedDate", "desc", "myaccount").FirstOrDefault();
+            SFSdotNet.Framework.Cache.Caching.SetToCompany(true, "logo-finded", company.GuidCompany);
+            if (compFinded != null ){
+                if (compFinded.ExistImage ){
+                    SFSdotNet.Framework.Cache.Caching.SetToCompany(compFinded.secFile, "logo", company.GuidCompany);
+                }
+            }
+        }
+
+        var fileLogo = SFSdotNet.Framework.Cache.Caching.GetFromCompany("logo", company.GuidCompany);
+        if (fileLogo != null && moduleKey != "SFSdotNetFrameworkSecurity" && isArea)
+        {
+            customLogo = true;
+            urlimage = VirtualPathUtility.ToAbsolute("~/") + "image.ashx?controller=secFiles&ns=SFSdotNet.Framework.Security&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=&id=" + ((SFSdotNet.Framework.Security.BusinessObjects.secFile)fileLogo).GuidFile + "&model=secFiles.secFileModel&type=undefined&w=&h=55";
+        }
+
+
+
+    }
+
+    string width = "55";
+    string height = "55";
+    if (ViewData["hsize"] != null)
+    {
+        width = ViewData["wsize"].ToString();
+        height = ViewData["hsize"].ToString();
+    }
+}
+<div style="" class="logo">   
+@{
+
+    if (isArea){
+    <img style=" height:@(height)px" width="@(customLogo? "": width)" height="@(customLogo? "": height)" src="@urlimage"  />
+    }else{
+    <img   style=" height:@(height)px;" width="" height="@(height)" src="@urlimage"  />
+    }
+}
+@{
+    bool hideBrand = false;
+    if (company != null && company.HidePlatformBrand != null)
+    {
+        hideBrand = company.HidePlatformBrand.Value;
+    }
+
+    if (!customLogo && module != null ){
+        <span style="font-size:25px; color:grey;">@(module != null ? module.Name : "")</span>
+    }
+    else if (module != null && hideBrand == false )
+    {
+        <span style="font-size:15px; vertical-align:bottom; color:grey;"><a class="" id="app-by-lnk" href="@VirtualPathUtility.ToAbsolute("~/")Home/App/@module.ModuleKey">@Html.Raw(module != null ? "&nbsp;&nbsp; by <img width=\"25\" height=\"25\" style=\"width:25px; height:25px\"  src=\"" +  urlMoudleimage  + "\" />" + module.Name : "") </a></span>
+    
+    }
+  
+}
+    </div>  

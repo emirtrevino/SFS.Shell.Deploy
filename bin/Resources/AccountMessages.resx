@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BASIC" xml:space="preserve">
+    <value>Básico</value>
+  </data>
+  <data name="CAN_NOT_AUTHENTICATE_EXTERNAL_PROVIDER" xml:space="preserve">
+    <value>No fue posible autentificarte con el proveedor externo. Intenta con otro proveedor o registrate.</value>
+  </data>
+  <data name="CHANGE_PASSWORD" xml:space="preserve">
+    <value>Cambiar contraseña</value>
+  </data>
+  <data name="CHANGING_PASSWORD" xml:space="preserve">
+    <value>Cambiando contraseña</value>
+  </data>
+  <data name="COMPANIES_WHERE_I_WORK" xml:space="preserve">
+    <value>Comapnies where I work</value>
+  </data>
+  <data name="COMPANY_DATA" xml:space="preserve">
+    <value>Datos de la empresa</value>
+  </data>
+  <data name="COMPANY_ID" xml:space="preserve">
+    <value>Company ID</value>
+  </data>
+  <data name="EMAIL" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="EMAIL_ALREADY_USE" xml:space="preserve">
+    <value>Este correo ya ha sido ocupado</value>
+  </data>
+  <data name="EMAIL_FOR_VERIFICATION_SENDED" xml:space="preserve">
+    <value>Ha sido enviado un correo para verificar la dirección de Email que has proporcionado. Por favor verifícala para poder hacer uso de estas credenciales.</value>
+  </data>
+  <data name="EMAIL_NOT_FOUND_REG" xml:space="preserve">
+    <value>La dirección de correo no se encuentra &lt;a href="/Account/Register"&gt; Registrate&lt;/a&gt;</value>
+  </data>
+  <data name="EMAIL_NOT_VALID" xml:space="preserve">
+    <value>El email no es válido</value>
+  </data>
+  <data name="EMAIL_VERIFICATION_ERROR" xml:space="preserve">
+    <value>El correo electrónico no ha podido ser verificado</value>
+  </data>
+  <data name="EMAIL_VERIFICATION_SUCCESS" xml:space="preserve">
+    <value>El correo electrónico ha sido verificado exitosamente</value>
+  </data>
+  <data name="EMAIL_WAS_NOT_FOUND" xml:space="preserve">
+    <value>Email was not found</value>
+  </data>
+  <data name="FILL_INITIAL_USER_DATA" xml:space="preserve">
+    <value>Fill initial user data</value>
+  </data>
+  <data name="FIRSTNAME" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="INFO_PAYMENT" xml:space="preserve">
+    <value>Información de pagos</value>
+  </data>
+  <data name="INVITING_USER_TO_COMPANY" xml:space="preserve">
+    <value>Invitando usuario para participar en la empresa</value>
+  </data>
+  <data name="LASTNAME" xml:space="preserve">
+    <value>Apellidos</value>
+  </data>
+  <data name="LOGIN_PROVIDER" xml:space="preserve">
+    <value>Proveedor de autentificación</value>
+  </data>
+  <data name="LOGIN_STATUS_PROVIDER" xml:space="preserve">
+    <value>Estás autentificado por</value>
+  </data>
+  <data name="LOGON" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="LOGON_BUTTON" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="LOGON_DESCRIPTION" xml:space="preserve">
+    <value>Ingresa tus datos de identificación o utiliza otro servicio para iniciar sesión</value>
+  </data>
+  <data name="LOGON_ERROR_CREDENTIALS" xml:space="preserve">
+    <value>Los datos son incorrectos, intenta una vez más.</value>
+  </data>
+  <data name="LOGON_LOCAL_TITLE" xml:space="preserve">
+    <value>Datos locales</value>
+  </data>
+  <data name="LOGON_PROVIDERS_TITLE" xml:space="preserve">
+    <value>Otros servicios externos</value>
+  </data>
+  <data name="LOGON_TITLE2" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="LOGON_USERNAME_OR_EMAIL" xml:space="preserve">
+    <value>Email o usuario</value>
+  </data>
+  <data name="LOGOUT" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="MANAGE_COMPANY" xml:space="preserve">
+    <value>Administrar empresa</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="MY_DATA_USER_ACCOUNT" xml:space="preserve">
+    <value>Mis datos de cuenta de usuario</value>
+  </data>
+  <data name="OR_USE_OTHER_PROVIDER" xml:space="preserve">
+    <value>Or use other provider for register and login</value>
+  </data>
+  <data name="OTHER_PROVIDERS_AUTHENTICATION" xml:space="preserve">
+    <value>Otros servicios de identifiación</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="PASSWORD2" xml:space="preserve">
+    <value>Repite tu contraseña</value>
+  </data>
+  <data name="PASSWORD_ERROR" xml:space="preserve">
+    <value>La contraseña es incorrecta</value>
+  </data>
+  <data name="PASSWORD_FORGET" xml:space="preserve">
+    <value>He olvidado mi contraseña</value>
+  </data>
+  <data name="PASSWORD_FORGET_DESCRIPTION" xml:space="preserve">
+    <value>Proporcionanos tu dirección de email para hacerte llegar tu contraseña</value>
+  </data>
+  <data name="PASSWORD_FORGET_EMAIL_NOT_FOUND" xml:space="preserve">
+    <value>El email no se encuentra o no fue posible enviar la información</value>
+  </data>
+  <data name="PASSWORD_FORGET_GET" xml:space="preserve">
+    <value>Obtener contraseña</value>
+  </data>
+  <data name="PASSWORD_FORGET_RESULT" xml:space="preserve">
+    <value>La contraseña ha sido enviada a la dirección de correo {0}</value>
+  </data>
+  <data name="PASSWORD_FORGET_TITLE" xml:space="preserve">
+    <value>Recuperación de contraseña</value>
+  </data>
+  <data name="PASSWORD_FORGET_TITLE2" xml:space="preserve">
+    <value>Recuperar contraseña</value>
+  </data>
+  <data name="PASSWORD_HAS_BEEN_SEND" xml:space="preserve">
+    <value>La contraseña (o las instrucciones para reestablecerla) ha sido enviada, revisa tu buzón de correo y verifica también tu carpeta de spam</value>
+  </data>
+  <data name="PROVIDERS" xml:space="preserve">
+    <value>Proveedores</value>
+  </data>
+  <data name="READ_HERE" xml:space="preserve">
+    <value>Read here</value>
+  </data>
+  <data name="REGISTER" xml:space="preserve">
+    <value>Registrarse</value>
+  </data>
+  <data name="REGISTER_ANY_PASSWORD" xml:space="preserve">
+    <value>Puedes escribir CUALQUIER cosa</value>
+  </data>
+  <data name="REGISTER_BASIC_LOGIN" xml:space="preserve">
+    <value>Información básica de registro</value>
+  </data>
+  <data name="REGISTER_CAPTCHA_LABEL" xml:space="preserve">
+    <value>Escribe el texto que ves en la imagen</value>
+  </data>
+  <data name="REGISTER_COMPLETE_EMAIL_MESSAGE" xml:space="preserve">
+    <value>Un pequeño paso antes. Necesitamos tu dirección de email para registrarte</value>
+  </data>
+  <data name="REGISTER_EMAIL_DESCRIPTION" xml:space="preserve">
+    <value>Debe ser único en nuestro sistema, es lo que te identifica</value>
+  </data>
+  <data name="REGISTER_EMAIL_ERRORFORMAT" xml:space="preserve">
+    <value>La dirección de correo tiene un formato inválido</value>
+  </data>
+  <data name="REGISTER_ERRORS" xml:space="preserve">
+    <value>No se ha podido crear el registro, por favor revisa los errores e intenta de nuevo</value>
+  </data>
+  <data name="REGISTER_ERROR_CAPTCHA" xml:space="preserve">
+    <value>El texto que ingresaste no es igual al de la imagen, intenta de nuevo</value>
+  </data>
+  <data name="REGISTER_FIRST_NAME_DESCRIPTION" xml:space="preserve">
+    <value>Es importante saber tu nombre</value>
+  </data>
+  <data name="REGISTER_LASTNAME_DESCRIPTION" xml:space="preserve">
+    <value>Con esto, sabemos como dirigirnos a ti</value>
+  </data>
+  <data name="REGISTER_LOGINPROVIDER_NOT_SUPPORTED" xml:space="preserve">
+    <value>El proveedor de identificación no esta soportado</value>
+  </data>
+  <data name="REGISTER_MESSAGE" xml:space="preserve">
+    <value>Tomate 20 segundos para registrarte o aprovecha otra de tus credenciales</value>
+  </data>
+  <data name="REGISTER_OTHER_PROVIDERS_MESSAGE" xml:space="preserve">
+    <value>¿Prefieres usar tu misma identificación de otros servicios que ya tienes? ¡Ya no mas contraseñas diferentes!</value>
+  </data>
+  <data name="REGISTER_OTHER_PROVIDERS_TITLE" xml:space="preserve">
+    <value>Usar otro sistema para registrarse</value>
+  </data>
+  <data name="REGISTER_PASSWORD2_DESCRIPTION" xml:space="preserve">
+    <value>Repite la contraseña que elegiste</value>
+  </data>
+  <data name="REGISTER_TITLE" xml:space="preserve">
+    <value>Registro de nuevo usuario</value>
+  </data>
+  <data name="REGISTER_TITLE2" xml:space="preserve">
+    <value>Crea una cuenta</value>
+  </data>
+  <data name="REGISTER_USERNAME_DESCRIPTION" xml:space="preserve">
+    <value>Es opcional, puedes usar la dirección de email para identificarte</value>
+  </data>
+  <data name="RELATION_USER_COMPANY" xml:space="preserve">
+    <value>User and company relationship</value>
+  </data>
+  <data name="REMEMBERME" xml:space="preserve">
+    <value>Guardar credenciales</value>
+  </data>
+  <data name="ROLE" xml:space="preserve">
+    <value>Rol</value>
+  </data>
+  <data name="ROLES" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="SIGN_OUT" xml:space="preserve">
+    <value>Salir</value>
+  </data>
+  <data name="THANK_YOU_YOUR_EMAIL_HAS_BEEN_VALIDATED" xml:space="preserve">
+    <value>Gracias, tu dirección de correo electrónico ha sido verificada.</value>
+  </data>
+  <data name="THE_PASSWORD_HAS_BEEN_CHANGED" xml:space="preserve">
+    <value>The password has been changed</value>
+  </data>
+  <data name="UPDATE_MEMBERSHIP_FOR_MODULE" xml:space="preserve">
+    <value>Update membership for application {0}</value>
+  </data>
+  <data name="UPDATE_MEMBERSHIP_OF" xml:space="preserve">
+    <value>Update membership of {0}</value>
+  </data>
+  <data name="UPGRADE_MEMBERSHIP" xml:space="preserve">
+    <value>Update membership of {0}</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>Nombre de usuario</value>
+  </data>
+  <data name="USERNAME_ALREADY_USE" xml:space="preserve">
+    <value>El nombre de usuario ya esta ocupado</value>
+  </data>
+  <data name="USER_COMPANY" xml:space="preserve">
+    <value>Empresa de usuario</value>
+  </data>
+  <data name="VAL_EMAIL_REQUIRED" xml:space="preserve">
+    <value>El email es requerido</value>
+  </data>
+  <data name="VAL_FIRSTNAME_REQUIRED" xml:space="preserve">
+    <value>El nombre es requerido</value>
+  </data>
+  <data name="VAL_LASTNAME_REQUIRED" xml:space="preserve">
+    <value>El apellido es requerido</value>
+  </data>
+  <data name="VAL_LOGIN_PROVIDER_REQUIRED" xml:space="preserve">
+    <value>El provedor de autentificación es requerido</value>
+  </data>
+  <data name="VAL_PASSWORD2_REQUIRED" xml:space="preserve">
+    <value>Es necesario repetir la contraseña</value>
+  </data>
+  <data name="VAL_PASSWORD_NOT_MATCH" xml:space="preserve">
+    <value>Las contraseñas no coinciden</value>
+  </data>
+  <data name="VAL_PASSWORD_REQUIRED" xml:space="preserve">
+    <value>La contraseña es requerida</value>
+  </data>
+  <data name="VAL_USERNAME_REQUIRED" xml:space="preserve">
+    <value>Texto no disponible</value>
+  </data>
+  <data name="WELCOME_TEXT" xml:space="preserve">
+    <value>Hola {0} </value>
+  </data>
+</root>

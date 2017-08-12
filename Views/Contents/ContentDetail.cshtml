@@ -1,0 +1,237 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.ContentBaseModel
+
+@{
+    
+    
+    Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+    bool viewEdit = false;
+    bool canEdit = false;
+
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null)
+    {
+        canEdit = (new SFSdotNet.Framework.Security.Permissions()).IsAllowed(SFSdotNet.Framework.My.Context.CurrentContext.User, "SFSdotNetFrameworkSecurity", "secContent", "u");
+
+    }
+    if (Request.QueryString["viewEdit"] == "true" && canEdit)
+    {
+        viewEdit = true;
+    }
+    
+    System.Text.StringBuilder sbReturnAfterDelete = new System.Text.StringBuilder();
+    sbReturnAfterDelete.Append(VirtualPathUtility.ToAbsolute("~/"));
+        
+    if (ViewData["module"] != null ){
+        SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+        sbReturnAfterDelete.Append("Contents/App/" + module.ModuleKey);
+        if (!string.IsNullOrEmpty(Model.ContentTypeKey))
+        {
+            sbReturnAfterDelete.Append("?type=" + Model.ContentTypeKey);
+        }
+    }
+
+    var draftText = "";
+    if (viewEdit)
+    {
+        if (!Model.Published)
+        {
+            draftText = "<span class='label'>(Borrador)</span>";
+        }
+    }
+
+    string styleDefaulImage = "";
+    string styleDefaultContainerImage = "";
+
+    }
+@section CustomScript{
+	@Html.Raw(Model.HeaderScript)
+
+<link href='@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/syntaxhighlighter/styles/shCore.css"))' rel='stylesheet' type='text/css'>
+<link href='@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/syntaxhighlighter/styles/shThemeDefault.css"))' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/syntaxhighlighter/scripts/shCore.js"))"></script>
+@*<script src='@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/syntaxhighlighter/scripts/shAutoloader.js"))' type='text/javascript'></script>*@
+
+<script type="text/javascript" src="@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/syntaxhighlighter/scripts/shBrushJScript.js"))"></script>
+<script src='@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/syntaxhighlighter/scripts/shBrushXml.js"))' type='text/javascript'></script>
+<script src='@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/syntaxhighlighter/scripts/shBrushCSharp.js"))' type='text/javascript'></script>
+
+
+<script type="text/javascript">
+
+    SyntaxHighlighter.highlight();
+    
+</script>
+
+}
+
+@section Title{
+        @ViewBag.Title
+    }
+@if (!string.IsNullOrEmpty(Model.ImageUrl) && Model.ImagePosition == "TopMaxWidth")
+{
+    <img style="width:100%; height:auto" src="@Model.ImageUrl" />
+}
+<div class="blog">
+<div class="page-header" style="@(Model.ContentTypeKey == "blog" ?"margin:20px 0 10px;":"")" >
+<h1>@Html.Raw(draftText) @Model.Title</h1>
+</div>
+
+    @if (Model.ContentTypeKey == "feature" && Model.ParentContent != null )
+    {
+        <div class=" text-right">Depende de <a style="text-decoration:underline" href="@(VirtualPathUtility.ToAbsolute("~/Features/Id/") + Model.ParentContent.Slug)_@(Model.ParentContent.IdContent)">@(Model.ParentContent.Title)</a></div>
+    }
+
+
+@if (Model.ContentTypeKey == "blog"){
+        <div class="publish-data text-right">@GlobalMessages.PUBLISHED @(Model.PublishedDate != null ? Model.PublishedDate.Value.ToLongDateString() :"") - @GlobalMessages.BY @*<a href="@(VirtualPathUtility.ToAbsolute("~/"))Get/User/@(content.GuidUser)">*@@Model.UserDisplayName@*</a>*@</div>
+}
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53aec9a97c32caa8"></script>
+
+<div class="content-detail">
+    @if (Model.FeatureTypeKey != null)
+    {
+    <span class="badge  @(Model.FeatureTypeKey == "biz" ? "badge-success" : "badge-warning")">@(Model.FeatureTypeTitle)</span>
+    }
+@{
+    if (!string.IsNullOrEmpty(Model.ImageUrl) && !string.IsNullOrEmpty(Model.ImagePosition) && Model.ImagePosition.Contains("Start") && Model.ImagePosition != "none")
+    {
+
+        switch (Model.ImagePosition)
+        {
+            case "StartMaxWidth":
+                styleDefaultContainerImage = "margin-top:0px;margin-bottom:0px;padding:0px;width:100%; height:auto";
+                styleDefaulImage = "width:100%; height:auto";
+                break;
+            case "StartCenter":
+                styleDefaulImage = "";
+                styleDefaultContainerImage = "text-align:center;";
+                break;
+            case "StartLeft":
+                styleDefaulImage = "float:left;";
+                break;
+            case "StartRight":
+                styleDefaulImage = "float:right;";
+                break;
+                
+            default:
+                break;
+        }    
+
+            
+    <text>    
+    <p style="@styleDefaultContainerImage">
+    <img style="@styleDefaulImage" src="@Model.ImageUrl" />
+        </p>
+    </text>
+    
+    }
+}
+ <p> @Html.Raw(Model.LargeContent)</p>
+   
+
+@if (!string.IsNullOrEmpty(Model.ImageUrl) && !string.IsNullOrEmpty(Model.ImagePosition) && Model.ImagePosition.Contains("End"))
+{
+    if (Model.ImagePosition == "EndCenter"){
+        styleDefaulImage = "";
+        styleDefaultContainerImage = "text-align:center;";
+       <p style="@styleDefaultContainerImage"><img style=""  src="@Model.ImageUrl" /></p> 
+    }else{
+        styleDefaultContainerImage = "height:auto;width:100%;text-align:center;";
+        styleDefaulImage = "";
+
+        <p style="@styleDefaultContainerImage"><img style="width:100%; height:auto" src="@Model.ImageUrl" /></p>
+    
+    }
+}
+
+@{
+    if (viewEdit){  
+        <p class="text-center">    
+            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Edit/?id=@(Model.GuidContent)&ReturnAfter=@( HttpUtility.UrlEncode( Request.Url.ToString() ))"  id="editContentLink" class=" "   ><i class=" icon-edit"></i>@GlobalMessages.MODIFY </a>
+
+            <a href="#"  id="deleteContentLink" class=" " messageConfirm="@(string.Format(GlobalMessages.CONFIRM_DELETE_QUESTION, Model.Title))" actionType="delete" controllerName="secContents"  areaName="SFSdotNetFrameworkSecurity" defaultPropertyValue="@Model.Title" ><i class=" icon-trash"></i>@GlobalMessages.DELETE </a>
+           
+            <script>
+                $(document).ready(function () {
+                    $("#deleteContentLink").click(function (e) {
+                        e.preventDefault();
+                        deleteAction(null, $(this)[0], false, "", "@Model.GuidContent", onDeleteContentDone); 
+                    });
+                });
+                function onDeleteContentDone(data) {
+                    window.location.href = "@(sbReturnAfterDelete.ToString())";
+                }
+            </script>
+        </p>
+     }
+ }
+
+</div>
+
+@if (Model.ContentTypeKey == "feature")
+{
+    if (!string.IsNullOrEmpty(Model.TagsText))
+    {
+    <div class="tags">
+        @foreach (var tag in Model.TagsText.Split(char.Parse(" ")))
+        {
+            if (tag != String.Empty)
+            {
+                <a class="tag label" href="@(VirtualPathUtility.ToAbsolute("~/Features/Tag/") + tag)">@tag</a>
+            }
+        }
+    </div>
+    }
+<div id="relatedContents">
+
+</div>
+    <script>
+        $(document).ready(function () {
+            var url = "@(VirtualPathUtility.ToAbsolute("~/"))Features/GetRelatedContent?guidContent=@(Model.GuidContent)&tags=@(Model.TagsText)&type=@(Model.ContentTypeKey)";
+            callServerGetHtml(url, function (data) {
+                $("#relatedContents").html(data);
+            }, null);
+
+        });
+    </script>
+}
+
+    <br /><br />
+    <p style="text-align:center">
+        <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: es_ES</script>
+        <script type="IN/Share" data-counter="right">
+        </script>
+    </p>
+
+@if (canEdit ){
+    <div class="row-fluid">
+        <div class="span12 text-center">
+@if (Request.QueryString["viewEdit"] == "true") { 
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(Model.Slug)_@(Model.IdContent.ToString())"> <i class="icon-pencil "></i> Salir de modo edición </a>
+
+}else{
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(Model.Slug)_@(Model.IdContent.ToString())?viewEdit=true"> <i class="icon-pencil "></i> Ver modo edición</a>
+
+}
+            </div>
+        </div>
+}
+
+<div class="comments-detail">
+      <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'appecosys'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+</div>
+    </div>

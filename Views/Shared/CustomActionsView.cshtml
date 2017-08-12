@@ -1,0 +1,180 @@
+﻿@model dynamic
+@{ string idTab = "";
+    string classButtons = "onlysel";
+    string key = "";
+    bool popupProxyShowed = false;
+    bool visibleFoot = false;
+
+    if (ViewData["FootActionsVisible"] != null ){
+        visibleFoot = (bool)ViewData["FootActionsVisible"];
+    }
+
+    string onCloseFunction = "onUpdateListData";
+    if (ViewData["idTab"] != null){
+        idTab = ViewData["idTab"].ToString();
+    }
+    string selectedN = "<span id='cusact" + idTab+ "'></span>";
+    UIModel uiModel = (UIModel)ViewData["UIModel"];
+    }    
+   @if (ViewData["UIModel"] != null)
+   {
+       if (((UIModel)ViewData["UIModel"]).ContextType == UIModelContextTypes.DisplayForm) {
+           classButtons = "";
+           selectedN = "";
+           if (ViewData["onCloseActionWindow"] != null){
+               onCloseFunction = (string)ViewData["onCloseActionWindow"];
+           }
+           if (ViewData["ObjectKey"] != null ){
+                key = (string)ViewData["ObjectKey"];
+           }
+       }
+       List<ActionModel> actionButtons = new List<ActionModel>();
+       if (!visibleFoot){
+           // oculto en mas
+           actionButtons = uiModel.ActionButtons.Where(p => p.VisibleOrder < 0 && (p.Position == ButtonPosition.Foot || p.Position == null )).ToList();
+       }else{
+           // visible
+           actionButtons = uiModel.ActionButtons.Where(p => (p.ActionKey != "export-list" && p.ActionKey != "d") && p.VisibleOrder > 0 && ((p.Position == ButtonPosition.Foot || p.Position == null) || uiModel.ContextType == UIModelContextTypes.DisplayForm)).ToList();
+       
+       }
+       foreach (var action in actionButtons)
+       {
+           if (uiModel.Actions.Count(p => p.ActionKey == action.ActionKey) == 0)
+           {
+               uiModel.Actions.Add(action);
+           }
+       }
+       if (
+           (uiModel.Actions.Count > 0 && ((UIModel)ViewData["UIModel"]).ContextType == UIModelContextTypes.DisplayForm) ||
+           (actionButtons.Where(p => string.IsNullOrEmpty(p.Condition)).Count() > 0 && ((UIModel)ViewData["UIModel"]).ContextType == UIModelContextTypes.ListForm) 
+           )
+       {
+           
+           if (!visibleFoot) {            
+@Html.Raw("<div class=\"btn-group dropup\" style=\"\"> ");
+if (uiModel.PropertyForActions == null)
+{
+    @Html.Raw(@"<a href=""#"" class=""" + classButtons + @" btn dropdown-toggle " + (uiModel.IsMiniContainer ? "btn-mini" : "") + @"""  data-toggle=""dropdown"">" + GlobalMessages.MORE + selectedN + @"<b class=""caret""></b></a>");
+}
+
+@Html.Raw(@" <ul id=""customActions""" + idTab + "\" class=\"dropdown-menu text-left dropdown-menu-right\" role=\"menu\" aria-labelledby=\"customAction\"" + idTab + @""">");
+      }
+
+
+           string usemode = SFSdotNet.Framework.Web.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "usemode");
+        
+    
+    string controllerName = ((UIModel)ViewData["UIModel"]).ControllerName;
+    foreach (var action in uiModel.Actions.Where(p=> p.VisibleOrder <= 0))
+   {
+       string url = VirtualPathUtility.ToAbsolute("~/") + "Messages/Confirm";
+       if (!string.IsNullOrEmpty(action.Url)) {
+           if (action.Url.StartsWith("~/"))
+           {
+               url = VirtualPathUtility.ToAbsolute("~/") + action.Url.Replace("~/", "");
+           }
+           else {
+               url = action.Url ;
+           }
+           if (!url.Contains("?"))
+           {
+               url = url + "?";
+           }
+           if (!url.Contains("popup")) {
+               url = url + "&popup=true";
+           }
+           //  if (!string.IsNullOrEmpty(usemode))
+           //{
+           //    url = url + "&usemode=" + usemode;
+           //}
+           if (!url.Contains("actionId")) { 
+               url = url + "&actionId=" + action.ActionKey + idTab;
+           }
+           //string lastActionExecutedJsVar = action.ActionKey + idTab + "IsExecuted";
+
+           //url = url + "&lastActionExecuted=" + lastActionExecutedJsVar;
+       }
+        
+       System.Text.StringBuilder sbParams = new System.Text.StringBuilder();
+       foreach (var qParam in action.QueryStringParams)
+       {
+           if (sbParams.Length > 0){
+               sbParams.Append(" ");   
+           }
+           sbParams.Append("data-param-" + qParam + "=" + Request.QueryString[qParam]);
+       }
+       
+            if (!visibleFoot)
+            {
+                @Html.Raw("<li class=\"icon\" id=\"li" + idTab + action.ActionKey+"\">");
+               }
+
+               string simpleLink = "";
+               if (action.IsPopUp == false && action.PreventAjax == true)
+               {
+                   simpleLink = " withConfirm=\"false\"  ajax=\"false\" ";
+               }
+    <text>
+
+    
+                        <a  @Html.Raw(simpleLink) @(sbParams.ToString()) href="javascript: void(0);"  confirmmessage="" id="action@(action.ActionKey)@(idTab)" onclick="CustomAction(this, '@url','@idTab','@key');" class="@(classButtons) @(visibleFoot?"btn":"") @(uiModel.IsMiniContainer? "btn-mini":"") item-custom-action @(action.ActionKey)" controllername="@controllerName" clientFuntionOnFinish="@(action.ClientFunctionOnFinish)" isbackground="@(action.IsBackground.ToString().ToLower())" usemode="@(usemode)" actionkey="@(action.ActionKey)"><i class="@(action.IconType)"></i> @action.Title</a>
+</text>
+            if (!visibleFoot)
+            {
+                @Html.Raw("</li>");
+            }
+            
+            } 
+   
+           if (!visibleFoot)
+           {
+@Html.Raw("</ul>")
+    @Html.Raw("</div>");
+           }
+<script>
+    function proxyRefreshAfterAction@( idTab )(actionKey) {
+        if (isActionComplete(actionKey + "@( idTab )")){
+            //la acción se ejecutó
+            // limpiar lo seleccionado
+            
+            if (typeof(@( onCloseFunction + idTab )) == "function")
+                @( onCloseFunction + idTab )();
+            if (typeof(onCustomAction@( idTab )Done) == "function")
+                onCustomAction@( idTab )Done(actionKey);
+        }
+    }
+</script>
+
+           popupProxyShowed = true;
+
+           @Html.Partial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "actionConfirm" + idTab, OnCloseFunction = "proxyRefreshAfterAction" + idTab, TargetClassName = "list-delete", ProxyId = "customAction" + idTab, Message = GlobalMessages.CONFIRM_QUESTION_ACTION_MESSAGE_MANY })
+
+       }
+       else
+       {
+
+       }
+   }
+   
+@if (Request.QueryString["deleted"] == "1" && popupProxyShowed == false && (Boolean)ViewData["FootActionsVisible"] == false)
+           {
+@Html.Partial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "actionConfirm" + idTab, OnCloseFunction = "proxyRefreshAfterAction" + idTab, TargetClassName = "list-delete", ProxyId = "customAction" + idTab, Message = GlobalMessages.CONFIRM_QUESTION_ACTION_MESSAGE_MANY })
+
+<script>
+    function proxyRefreshAfterAction@( idTab )(actionKey) {
+        if (isActionComplete(actionKey + "@( idTab )")){
+            //la acción se ejecutó
+            // limpiar lo seleccionado
+
+            if (typeof(@( onCloseFunction + idTab )) == "function")
+                @( onCloseFunction + idTab )();
+            if (typeof(onCustomAction@( idTab )Done) == "function")
+                onCustomAction@( idTab )Done(actionKey);
+        }
+    }
+</script>
+           }
+
+  
+ 
+

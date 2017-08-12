@@ -1,0 +1,39 @@
+﻿@{
+    List<SFSdotNet.Framework.Security.BusinessObjects.secUser> users = (List<SFSdotNet.Framework.Security.BusinessObjects.secUser>)ViewData["users"];
+    
+}
+
+
+<div class="row-fluid">
+    <div class="page-header">
+        <h1>Usuarios de plataforma</h1>
+    </div>
+</div>
+
+@foreach (var user in users)
+{
+
+
+    string nameDisplay = user.DisplayName;
+    if (string.IsNullOrEmpty(nameDisplay))
+    {
+       nameDisplay = user.FirstName + " " + user.LastName;        
+    }
+    if (nameDisplay.Length < 2)
+    {
+        nameDisplay = user.UserName;
+        if (nameDisplay.Contains("@"))
+        {
+            nameDisplay = nameDisplay.Split(char.Parse("@"))[0]; 
+        }
+    }
+    <div class="row-fluid">
+        <div class="span2">
+            <img src="@(user.UrlImage)" />
+        </div>
+        <div class="span10">
+            <h2>@(nameDisplay)</h2>
+        </div>
+    </div>
+    
+}

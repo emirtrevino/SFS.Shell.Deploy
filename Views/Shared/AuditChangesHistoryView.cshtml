@@ -1,0 +1,120 @@
+﻿@model List<HistoryHeaderModel>
+
+@{
+    string area = SFSdotNet.Framework.Web.Utils.GetRouteDataOrQueryParam(Request.RequestContext, "area");
+
+    string controller = SFSdotNet.Framework.Web.Utils.GetRouteDataOrQueryParam(Request.RequestContext, "controller");
+}
+<div id="divAuditChanges@(ViewData["entityName"].ToString() )" style="width:100%;display:inline-block;">
+<table align="center" class="history simple-list " style=" width:95% " >
+    <thead>
+    <tr class="header-history" >
+        <td></td>
+        <td>Fecha y hora</td>
+        <td>Acción</td>
+        <td>Usuario</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var change in Model)
+   {
+       
+    <tr id="change-@( change.GuidChange.ToString().Substring(0,8) )">
+        @{
+            string iconfile = "";
+            string title = "";
+            switch (change.TypeChange)
+            {
+                case "s":
+                    iconfile = "rel_prop.png";
+                    title = GlobalMessages.PROPERTIES;
+                    break;
+                case "f":
+                    iconfile = "rel_fk.png";
+                    title = GlobalMessages.PROPERTY_IN_OTHER_OBJECT;
+                    break;
+                case "m":
+                    iconfile = "rel_many.png";
+                    title = GlobalMessages.RELATION_MANY_TO_MANY;
+                    break;
+                default:
+                    break;
+            }
+            string usemode = "";
+            if (ViewData["usemode"] != null)
+            {
+                usemode = ViewData["usemode"].ToString();
+            }
+            string entityName = "";
+            if (!string.IsNullOrEmpty(change.EntityDisplayName))
+            {
+                entityName = "( " + change.EntityDisplayName + " )";
+            }
+        }
+        <td><img title="@Html.Raw(title )"  src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/@(iconfile)" /></td>
+        <td>@( change.ActionDate.ToString() )</td>
+        <td><span class="@(change.Action.ActionKey )">@Html.Raw(change.Action.Title )</span> @(entityName)</td>
+        <td>@Html.Raw(change.User.DisplayName )</td>
+        <td align="right">    
+            <a id="showLink@(change.GuidChange.ToString().Substring(0, 8))" href="@(VirtualPathUtility.ToAbsolute("~/") + area + "/" + controller + "/ShowColumnChanges?entitySet=" + ViewData["entitySet"].ToString() + "&entityName=" + ViewData["entityName"].ToString() + "&moduleNS=" + change.ModuleNamespace + "&type=" + change.SetName + "." + change.Type + "&guidChange=" + change.GuidChange.ToString() + "&usemode=" + usemode )"><i id="icon-showLink@(change.GuidChange.ToString().Substring(0, 8))" class="icon-chevron-up icon-black rotate-less-90 fa fa-chevron-circle-down"></i></a>
+       <script>
+    var change_@(change.GuidChange.ToString().Substring(0,8) )_isVisible = false;
+    $("#showLink@(change.GuidChange.ToString().Substring(0, 8))").click(function (e) {
+        e.preventDefault();
+        if (change_@(change.GuidChange.ToString().Substring(0,8) )_isVisible == false){
+
+            $("#change-@(change.GuidChange.ToString().Substring(0,8) )-columns td").show();
+            $("#change-@(change.GuidChange.ToString().Substring(0,8) )-columns td").addClass("text-center");
+            $("#change-@(change.GuidChange.ToString().Substring(0,8) )-columns td").html(loadingInline("@(GlobalMessages.PROCESSING_PLEASE_WAIT)..."));
+            callServerGetHtml($(this).attr("href"), function (data) {
+                $("#change-@(change.GuidChange.ToString().Substring(0,8) )-columns td").removeClass("text-center");
+                $("#change-@(change.GuidChange.ToString().Substring(0,8) )-columns").replaceWith(data);
+            });
+
+            $("#icon-showLink@(change.GuidChange.ToString().Substring(0, 8))").removeClass("icon-chevron-up").removeClass("rotate-less-90").addClass("icon-chevron-down");
+            change_@( change.GuidChange.ToString().Substring(0,8) )_isVisible = true;
+        }else{
+
+            $("#icon-showLink@(change.GuidChange.ToString().Substring(0, 8))").removeClass("icon-chevron-down").addClass("icon-chevron-up rotate-less-90");
+        change_@( change.GuidChange.ToString().Substring(0,8) )_isVisible = false;
+        $("#change-@(change.GuidChange.ToString().Substring(0,8) )-columns td").hide();
+        //$("#showLink" + partialId).show();
+    }
+    });
+</script>
+      @*@{
+         Html.RenderPartial("ButtonLink", 
+                                     new ButtonLinkModel() {
+                                         Icon = "icon-chevron-up icon-black rotate-less-90",
+                                        
+                                        Priority= 3,
+                                         Link = VirtualPathUtility.ToAbsolute("~/") + area + "/" + controller + "/ShowColumnChanges?entitySet=" + ViewData["entitySet"].ToString() + "&entityName=" + ViewData["entityName"].ToString() + "&moduleNS=" + change.ModuleNamespace + "&type=" + change.SetName + "." + change.Type + "&guidChange=" + change.GuidChange.ToString(), 
+                                        UpdateTarget =  "change-" + change.GuidChange.ToString().Substring(0, 8) + "-columns", 
+                                        SuccessUpdateMethod = "onShow" + change.GuidChange.ToString().Substring(0, 8), 
+                                      Id ="showLink" + change.GuidChange.ToString().Substring(0, 8),
+                                       AjaxReplaceParentContainer = true 
+                                     }); 
+                                     }*@
+        
+        </td>
+    </tr>
+    <tr id="change-@(change.GuidChange.ToString().Substring(0,8) )-columns"  >
+        <td style="display:none"> </td>
+    </tr>
+   
+  } 
+
+    </tbody>
+
+</table></div>
+
+<script>
+    function closeColumnChanges(partialId) {
+       
+    }
+    $(document).ready(function () {
+        SimpleList();
+    });
+
+</script>

@@ -1,0 +1,142 @@
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<SFSdotNet.Framework.Web.Mvc.PropertyDefinition>" %>
+<%  
+    
+    PropertyDefinition propertyDef = (PropertyDefinition)this.ViewContext.ViewData["property"];
+    //string usemode = "";
+    
+    string propertyName = propertyDef.PropertyName;
+    object model = this.ViewContext.ViewData["model"];
+    Type modelType = model.GetType();
+    var property = modelType.GetProperty("Fk" + propertyName);
+    string idElement = "Fk" + propertyName;
+    if (property == null)
+    {
+        property = modelType.GetProperty( propertyName);
+        idElement = propertyName;
+    }
+   
+    
+    //var attribute = SFSdotNet.Framework.Metadata.MetadataAttributes.GetMyAttribute<SFSdotNet.Framework.Web.Mvc.Extensions.RelationFilterableAttribute>(property);
+    //string displayText = propertyDef.GetMethodDisplayText;
+    //string displayValue = propertyDef.GetMethodDisplayValue;
+    
+    string paramfilter = "";
+    string queryParams = "";
+    if (propertyDef.GetMethodParameters.Contains("=") || propertyDef.GetMethodParameters.Contains(">") || propertyDef.GetMethodParameters.Contains("<"))
+    {
+        paramfilter = propertyDef.GetMethodParameters;
+    }
+    else {
+        queryParams = propertyDef.GetMethodParameters;
+    }
+        
+    string usemode = "";
+    string overrideModule = "";
+    if (!string.IsNullOrEmpty(Request.QueryString["overrideModule"])) {
+        overrideModule = "&overrideModule=" + Request.QueryString["overrideModule"];
+    }
+    if (!string.IsNullOrEmpty(propertyDef.UseMode))
+        usemode = "&usemode=" + propertyDef.UseMode;
+    string urlCreate = ResolveUrl("~/") + propertyDef.PathName + "/CreateViewGen?popup=true" + usemode + overrideModule;
+    string urlToCatalog = ResolveUrl("~/") + propertyDef.PathName + "/?" + usemode + overrideModule;
+    
+    if (propertyDef.CanAdd || propertyDef.CanGoToCatalog)
+    { %>
+
+<%--<a href="#" id="lnkAct<%: idElement %>" class="btn  dropdown-toggle p" data-toggle="dropdown"><span class="caret"></span></a>--%>
+<div class="dropdown fkactions" style="display:inline;">
+    <a href="#" class="dropdown-toggle" role="button" id="fkA-<%=idElement %>" data-toggle="dropdown"><b class="caret"></b> </a>
+<ul class="dropdown-menu" role="menu" aria-labelledby="fkA-<%=idElement %>">   
+
+
+<%--<ul id="sub_act<%: idElement %>" class="dropdown-menu">--%>
+<% if (propertyDef.CanAdd)
+   { %>
+    <%--<li ><a href="<%=urlCreate%>" id="add<%=idElement %>"><i class="icon-pencil"></i> Agregar</a></li>--%>
+     <li role="presentation"><a href="<%=urlCreate%>" class="" id="add<%=idElement %>"><i class="icon-plus gray-icon "></i> <%=GlobalMessages.ADD_NEW %></a></li>
+<% } %>
+<% if (propertyDef.CanGoToCatalog)
+   { %>
+    <%--<li class="icon"><a href="<%=urlToCatalog%>" target="_blank" ><i class="icon-pencil"></i> Ir a catálogo </a></li>--%>
+<li role="presentation">    <a href="<%=urlToCatalog%>" class="" target="_blank" id="goto<%=idElement %>"><i class="icon-share-alt gray-icon "></i> <%=GlobalMessages.GO_TO_CATALOG %></a></li>
+<%} %>
+<%--    <li><a href="<%=urlToCatalog%>">Ir a catálogo (Esta ventana)</a></li>
+--%><%--</ul>--%>
+
+
+ <script>
+    var is<%=idElement %>Added = false;
+     $(document).ready(function () {
+         $("#<%=idElement %>").append($("<option></option>")
+         .attr("value","+")
+         .text("+ Agregar nuevo")); 
+         $("#<%=idElement %>").change(function () {
+             if ($(this).val() == "+"){
+                 $("#add<%=idElement %>").click();
+             }
+         });
+         $("#add<%=idElement %>").on("click", function(e){
+             e.preventDefault();
+             $('body').modalmanager('loading');
+             var url = $(this).attr('href');
+             if ($("#modal<%=idElement%>").length == 0){
+                 $("body").append('<div id="modal<%=idElement %>" class="modal hide fade tex-left" ><div class="modal-body text-left"><div class="preloader-big"></div></div></div>');
+             }else{
+                 $("#modal<%=idElement%>").html('<div class="modal-body text-left"><div class="preloader-big"></div></div>');
+             }
+             
+             $("#modal<%=idElement%>").on('hidden', function () {
+                 onCloseAdd<%=idElement %>();
+             });
+             //$("#modal<%=idElement%>").modal("show");
+             $.ajax({
+                 url: url + "&actionName=is<%=idElement %>Added",
+                 dataType: "html",
+                 cache:false,
+                 success: function (data) {
+                     //is<%=idElement %>Added = false;
+                     $("#modal<%=idElement%>").html(data );
+                     $("#modal<%=idElement%>").modal("show");
+                     repositionModal($("#modal<%=idElement%>"));
+                    }
+                });
+                
+               
+
+         });
+       
+
+
+        }); 
+    function onCloseAdd<%=idElement %>() {
+        if (is<%=idElement %>Added){
+        $("#<%=idElement %>").attr("disabled", true);
+            callServerGet('<%=ResolveUrl("~/") %><%=propertyDef.PathName  %>/GetJsonContent?overrideModule=<%=Request.QueryString["overrideModule"]%>&usemode=<%=Request.QueryString["usemode"]%>&methodName=<%=propertyDef.GetMethodName%>&queryParams=<%=queryParams%>&filter=<%=HttpUtility.UrlEncode(paramfilter)%>', onCloseAddEnd<%=idElement %>);
+
+        }        
+    }
+    function onCloseAddEnd<%=idElement %>(data) {
+        // limpiar cmbo
+        $("#<%=idElement %>").empty();
+        for (var i = 0; i < data.length; i++) {
+            $("#<%=idElement %>").append("<option value='" + data[i].<%=propertyDef.GetMethodDisplayValue %> + "'>" + data[i].<%=propertyDef.GetMethodDisplayText %> + "</option>");
+        }
+        $("#<%=idElement %>").append($("<option></option>")
+        .attr("value","+")
+        .text("+ Agregar nuevo")); 
+        $("#<%=idElement %>").change(function () {
+            if ($(this).val() == "+"){
+                $("#add<%=idElement %>").click();
+             }
+         });
+
+        $("#<%=idElement %>").removeAttr("disabled");
+       // $("#<%=idElement %>").
+    }
+
+
+ </script>
+ 
+    </ul>
+    </div>
+<% } %>

@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="thumbnail" Codebehind="thumbnail.aspx.cs" %>

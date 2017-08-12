@@ -1,0 +1,53 @@
+﻿<style>
+    .history .propertyname{
+        color:rgba(153, 153, 153, 1);
+    }
+</style>
+@{
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    string idTab = "";
+    if (!string.IsNullOrEmpty(Request.QueryString["idTab"]))
+    {
+        idTab = Request.QueryString["idTab"];
+    }
+}
+@if (ViewData["moduleNS"] != null && ViewData["entityName"] != null && ViewData["entityKey"] != null && ViewData["keys"] != null && (this.ViewContext.RequestContext.RouteData.Values["id"] != null || !string.IsNullOrEmpty(this.ViewContext.RequestContext.HttpContext.Request.QueryString["id"])))
+    {
+        string id = "";
+        if (this.ViewContext.RequestContext.RouteData.Values["id"] == null)
+        {
+            id = this.ViewContext.RequestContext.HttpContext.Request.QueryString["id"];
+        }
+        else {
+            id = this.ViewContext.RequestContext.RouteData.Values["id"].ToString();
+        }
+   
+    
+//    var button = ButtonLinkModel.GetCustom("Ver historial de cambios", 3, "show", VirtualPathUtility.ToAbsolute("~/") + "Features/ShowHistoryChanges?moduleNS=" + ViewData["moduleNS"] + "&entityName=" + ViewData["entityName"] + "&entityPartialModel=" + ViewData["entityKey"] + "&boKey=" + id + "&compositeKeyProperties=" + ViewData["keys"].ToString(), "divAuditChanges" + ViewData["entityName"].ToString());
+//    button.Id = "historyButton";
+    
+//Html.RenderPartial("ButtonLink", button );
+    
+    //"divAuditChanges" + ViewData["entityName"].ToString()
+    <div class="text-center" style="width:95%;margin-bottom:10px;">
+        <a class="" id="viewHistoryLink@(idTab)" href="@(VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + "/" + uiModel.ControllerName + "/ShowHistoryChanges?entitySet=" + ViewData["entitySet"] + "&moduleNS=" + ViewData["moduleNS"] + "&usemode=" + ViewData["usemode"] + "&entityName=" + ViewData["entityName"] + "&entityPartialModel=" + ViewData["entityKey"] + "&boKey=" + id + "&compositeKeyProperties=" + ViewData["keys"].ToString())">@(GlobalMessages.SHOW_HISTORY_CHANGES)</a>
+    </div>
+
+<div id="divAuditChanges@(ViewData["entityName"].ToString() )" style="margin-bottom:20px;"></div>
+
+}
+
+<script>
+    $(document).ready(function () {
+        $("#viewHistoryLink@(idTab)").click(function (e) {
+            e.preventDefault();
+            $("#divAuditChanges@(ViewData["entityName"].ToString() )").html(loadingInline("@(GlobalMessages.PROCESSING_PLEASE_WAIT)..."));
+            callServerGetHtml($(this).attr("href"), showHistoryDone@(idTab), $(this));
+        });
+
+    });
+    function showHistoryDone@(idTab)(data) {
+        $("#divAuditChanges@(ViewData["entityName"].ToString() )").html(data);
+    }
+</script> 
+

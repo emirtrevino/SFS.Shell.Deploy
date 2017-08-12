@@ -1,0 +1,19 @@
+﻿@{
+    PropertyDefinition property = (PropertyDefinition)ViewData["currentProperty"];
+
+    string urlpic = VirtualPathUtility.ToAbsolute("~/") + "Content/images/no_image.jpg";
+    //if (propertyValue != null)
+    //{
+    string model = property.TypeName;
+    if (!model.EndsWith("Model")){
+        model = model + "Model";
+    }
+    urlpic = VirtualPathUtility.ToAbsolute("~/") + "image.ashx?controller=" + ViewData["ControllerName"] + "&safeKey=" + ViewData["SafeKey"] + "&ns=" + ViewData["Namespace"].ToString() + "&idc=" + ViewData["PropertyId"].ToString() + "&datac=" + ViewData["PropertyData"].ToString() + "&typec=" + ViewData["PropertyType"].ToString() + "&sizec=" + ViewData["PropertySize"].ToString() + "&filenamec=&id=&model=" + model + "&type=undefined&w=100&h=";
+    //}
+    string size = Decimal.Round(((Convert.ToDecimal(this.ViewData["FileSize"]) / 1024.00m) / 1024.00m), 2).ToString();
+}
+
+<a href="@(VirtualPathUtility.ToAbsolute("~/"))Features/GetBinary?c=@(ViewData["ControllerName"])&t=@( ViewData["TypeName"])&ns=@( ViewData["Namespace"])&k=@(ViewData["SafeKey"] )&ptype=@( ViewData["PropertyType"] )&pname=@(ViewData["PropertyName"] )&psize=@(ViewData["PropertySize"] )&pdata=@(ViewData["PropertyData"] )&save=" target="_blank">
+    <img border="0"  src="@(urlpic )" />
+</a> (@(size ) Mb)
+

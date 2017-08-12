@@ -1,0 +1,23 @@
+﻿
+@{
+
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+}
+<div class="btn-group btn-group-sm " style="@(uiModel.UIVersion ==2 ? "margin-top:5px;":"")">
+    @*  <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> User</a>*@
+    <a class="btn btn-white dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a href="#" class="switchdatetype relative @Model"> Fecha relativa</a></li>
+        <li><a href="#" class="switchdatetype absolute @Model"> Fecha absoluta</a></li>
+        @*  <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>*@
+        @* <li class="divider"></li>
+            <li><a href="#"><i class="i"></i> Make admin</a></li>*@
+    </ul>
+</div>
+<script>
+    $(".switchdatetype.@Model").click(function (e) {
+        e.preventDefault();
+        switchDateTypeInput($(this));
+    });
+</script>

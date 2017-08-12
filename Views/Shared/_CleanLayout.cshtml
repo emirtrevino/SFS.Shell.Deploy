@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title> @RenderSection("Title", false)</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+@{    
+    if (!SFSdotNet.Framework.My.Context.OverrideApplication.UseOwnStylesAndScripts ){
+        @Html.Raw(SFSdotNet.Framework.My.Context.SystemApplication.GetAllScriptsAndCss())
+    }else{
+        @Html.Raw(SFSdotNet.Framework.My.Context.OverrideApplication.ScriptsAndCssOverrided)
+    
+    }
+}
+
+
+<script>
+    $(document).ready(function () {
+        if (window.location !== window.parent.location) {
+            $("body, html").css("overflow", "hidden");
+        }
+    });
+    //lang_sfs();
+  @if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Language == "es"){
+   <text>
+    jQuery.timeago.settings.strings = {
+        prefixAgo: "hace",
+        prefixFromNow: "dentro de",
+        suffixAgo: "",
+        suffixFromNow: "",
+        seconds: "segundos",
+        minute: "un minuto",
+        minutes: " %d min",
+        hour: "una hora",
+        hours: "%d horas",
+        day: "un día",
+        days: "%d días",
+        month: "un mes",
+        months: "%d meses",
+        year: "un año",
+        years: "%d años"
+
+    };
+    </text>
+ }
+
+    @if (!Request.Url.ToString().Contains("Public/Login")) { 
+    <text>
+
+        
+
+    </text>
+}
+    var rootSfsAppUrl = '@VirtualPathUtility.ToAbsolute("~/")';
+
+</script>
+
+   @RenderSection("CustomScript", false)
+  
+
+</head>
+<body class="clean">
+
+
+@*    <div class="navbar  navbar-inverse top" style="display:none">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar " data-toggle="collapse" data-target=".nav-collapse"><span class="icon-th-list"></span></a>
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))" class="brand"> <img  src="@SFSdotNet.Framework.My.Context.SystemApplication.SystemDefaultThemePath/img/top-webapps.png" /></a>
+                    <ul class="nav">
+                     @Html.Partial("MenuLogoTop")
+                        </ul>
+
+                
+                <div class="nav-collapse collapse">
+                    <ul class="nav pull-right">
+                        @Html.Partial("TopMessages")
+                   @Html.Partial("MenuLanguage")
+                     @Html.Partial("MenuSystem")
+                        </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+     <div id="headnav" class="colorlitemedbg">
+         <div class="container">
+             <div class="row-fluid">
+             <div class="span6">
+            @Html.Partial("LogoCompany")
+             </div>
+             <div class="span6">
+          @Html.Partial("LoginStatus")
+                 </div>
+                 </div>
+             </div>
+     </div>
+
+    <div id="menunav" class="colorlitemedbg">
+ <div class="container">
+        <div class="row-fluid">
+        <div class="span10">
+
+ @Html.Partial("MenuTopModule")
+
+        </div>
+        <div class="span2"></div>
+</div></div>
+
+
+     </div>
+     <div id="breadcumb" class="smalltext">
+<div class="container">
+<div class="row-fluid">
+    <div class="span10"> @Html.MvcSiteMap().SiteMapPath()</div>
+
+</div>
+
+</div>
+
+
+     </div>*@
+     <div id="bodyconten" class="colorbg">
+         <div class="container">
+ <div class="container-fluid">
+        <div class="row-fluid">
+        <div class="span12">
+@RenderBody()
+            </div>
+</div>
+</div></div>
+     </div>
+    @* <div id="footer" class="colorlitemedbg">
+
+
+     </div>
+  
+    <div class="text-center">
+    Culture: @System.Threading.Thread.CurrentThread.CurrentCulture UICulture: @System.Threading.Thread.CurrentThread.CurrentCulture cookieserver: @SFSdotNet.Framework.My.Context.CurrentContext.ReadCookie("lang_sfs") company: @(SFSdotNet.Framework.My.Context.CurrentContext !=null? SFSdotNet.Framework.My.Context.CurrentContext.Company != null ? SFSdotNet.Framework.My.Context.CurrentContext.Company.Name: "" : "")  user: @(SFSdotNet.Framework.My.Context.CurrentContext.User != null ? SFSdotNet.Framework.My.Context.CurrentContext.User.UserName: "")
+        </div>*@
+
+
+</body>
+</html>

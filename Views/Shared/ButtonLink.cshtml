@@ -1,0 +1,441 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel
+@{
+    string _idTarget = Model.UpdateTarget;
+    if (Model.RouteValues != null ){
+
+    }
+    //Model.IsForOpenPopup = false;
+    //Model.IsForClosePopup = false;
+
+    if (!string.IsNullOrEmpty(Request.QueryString["popup"]))
+    {
+        Model.IsPopUp = true;
+    }
+    string oncloseFunc = "null";
+    if (!string.IsNullOrEmpty(Model.SuccessUpdateMethod)){
+        oncloseFunc = Model.SuccessUpdateMethod;
+    }
+    string classNames = "";
+    if (Model.AjaxReplaceParentContainer) {
+        classNames = " ajax-same ";
+    }
+    if (Model.Type == "cancel")
+    {
+        classNames = " " + Model.Type + " ";
+    }
+
+    string tabIndexAttr = "";
+    if (Model.TabIndex != null)
+    {
+        tabIndexAttr = "tabIndex = \"" + Model.TabIndex.ToString() + "\"";
+    }
+
+    classNames = classNames + " " + Model.Type + " " + Model.ExtraClass;
+    string attributes = "";
+    string priorityName = "";
+    string blockui = "";
+    bool processingWait = false;
+    string iconcolor = "icon-white";
+    if (Model.Priority == 1)
+    {
+        processingWait = true;
+        priorityName = "button principal btn btn-primary";
+        blockui = "blockui";
+    }
+    else if (Model.Priority == 2){
+        iconcolor = "";
+        priorityName = "button secondary btn btn-default";
+    }
+    else
+    {
+        iconcolor = "";
+        priorityName = "btn-link";
+    }
+
+    string buttonMessage = GlobalMessages.SAVE;
+    if (!string.IsNullOrEmpty(Model.Text)){
+        buttonMessage = Model.Text;
+    }
+    string img = "tick.png";
+    if (!string.IsNullOrEmpty(Model.Img))
+    {
+        switch (Model.Img)
+        {
+            case "ok":
+                Model.Img = "tick.png";
+
+                break;
+
+            case "save":
+                Model.Img = "tick.png";
+                break;
+            case "delete":
+                Model.Img = "tick.png";
+
+                break;
+            default:
+                img = Model.Img;
+
+                break;
+        }
+    }
+    string cancelTitle = SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.CANCEL;
+    if (!string.IsNullOrEmpty(Model.Text))
+    {
+        cancelTitle = Model.Text;
+    }
+    string imgUrl = "";
+    string icon = "";
+    string posneg = "";
+    if (string.IsNullOrEmpty(Model.Icon)) {
+        if (Model.Type == "delete")
+        {
+            icon = "<i class='icon-trash'></i> ";
+            priorityName = "btn btn-warning";
+            posneg = "negative";
+        }
+        else if (Model.Type == "save")
+        {
+            icon = "<i class='icon-ok "  + iconcolor + "'></i>";
+        }
+        else if (Model.Type == "add") {
+            icon = "<i class='icon-plus " + iconcolor + "'></i>";
+        }
+        else if (Model.Type == "ok")
+        {
+            icon = "<i class='icon-ok icon-white'></i>";
+            priorityName = "btn btn-success";
+        }
+        else if (Model.Type == "cancel")
+        {
+            if (Model.IsPopUp) {
+                Model.ClosePopup = true;
+                attributes = @" data-dismiss=""modal"" aria-hidden=""true"" ";
+            }
+            icon = "<i class='icon-remove'></i>";
+        }
+        else
+        {
+            if (Model.Priority == 1)
+            {
+                posneg = "positive";
+                imgUrl = "<img alt='' src='" + VirtualPathUtility.ToAbsolute("~/") + "Content/" + img + "' border='0' />";
+            }
+        }
+    }
+    else
+    {
+        icon = "<i class='" + Model.Icon + "'></i>";
+
+    }
+    string id = "";
+    if (Model.Id != null){
+        id = Model.Id;
+    }
+    else{
+        id = "a" + Guid.NewGuid().ToString();
+    }
+    //if (Model.Priority == 1)
+    //{
+    string onclick = "";
+    if (!string.IsNullOrEmpty(Model.Link)) {
+
+
+    }
+
+    if (!string.IsNullOrEmpty(Model.ScriptFunction) && string.IsNullOrEmpty(Model.Link)) {
+        onclick = @" onclick=""" + Model.ScriptFunction + @""" ";
+        Model.Link = "javascript:void(0);";
+    }
+    if ((!string.IsNullOrEmpty(Model.UpdateTarget) && !Model.IsCustomMessage && !Model.ClosePopup) || (!Model.IsPopUp && !Model.IsCustomMessage && !Model.ClosePopup))
+    {
+
+
+        if (Model.AjaxOptions  != null ){
+
+
+            if (Model.AjaxOptions.UpdateTargetId.StartsWith("."))
+            {
+
+
+            }
+
+
+            if (!string.IsNullOrEmpty(Model.Link) && string.IsNullOrEmpty(Model.ActionName) && string.IsNullOrEmpty(Model.ControllerName))
+            {
+            <a href="@Model.Link" @Html.Raw(tabIndexAttr) class="@priorityName @posneg @classNames" > @Html.Raw(icon) @Html.Raw(Model.Text)</a>
+          }
+            else
+            { 
+          @Ajax.ActionLink(Model.Text, Model.ActionName, Model.ControllerName, Model.RouteValues, Model.AjaxOptions, new { @class = "button secondary" })
+          } 
+}
+        else
+        {
+            if (!string.IsNullOrEmpty(Model.Link) && !string.IsNullOrEmpty(_idTarget))
+            {
+                string replaceOrAppend = "replaceWith";
+                if (!Model.AjaxReplaceParentContainer){
+                   replaceOrAppend = "html";
+                }
+  <a class="@priorityName @posneg @classNames" @Html.Raw(tabIndexAttr) id="@id" data-loading-text="@GlobalMessages.LOADING..." href="javascript:void(0);" onclick="javascript: callServerGetHtml('@Model.Link', onLoadedClick@(id.Replace("-","")));"> @Html.Raw(icon) @Model.Text</a>
+    <script>
+        function onLoadedClick@(id.Replace("-","")  )(data) {
+
+            $("#@( _idTarget )").@(replaceOrAppend )(data);
+
+                @if (!string.IsNullOrEmpty(oncloseFunc ) && oncloseFunc != "null"){
+                  @(oncloseFunc)@("()");
+ 
+              }             
+        }
+    </script>
+}else{
+                if (!string.IsNullOrEmpty(Model.Link))
+                {
+                    
+                <a class="@priorityName @posneg @classNames"  @Html.Raw(tabIndexAttr) id="@id" href="@Html.Raw(Model.Link)" @Html.Raw(onclick) > @Html.Raw(icon) @Html.Raw(Model.Text)</a>
+
+              }
+                else
+                { 
+            <button class="@priorityName @posneg @classNames" @Html.Raw(tabIndexAttr) data-loading-text="@GlobalMessages.LOADING..." type="submit" id="@id" >@Html.Raw(icon) @buttonMessage</button>
+
+            <script>
+      $("#@(id)").click(function (e) {
+          var form = $(this).closest("form");
+          setCompleteValidations(form);
+          form.validate();
+          if (form.valid()){
+
+              //form.submit();
+              $(this).button('loading');
+          }else{
+              e.preventDefault();
+
+          }
+      });
+            </script>
+
+                }
+
+            }
+        }
+        // }
+        if (Model.Priority == 1)
+        {
+
+
+        }
+    }
+    else if (Model.IsCustomMessage)
+    {
+
+        if (Model.IsDelete)
+        {
+
+        <a class="@priorityName" @Html.Raw(tabIndexAttr) href="@Url.Content("~/")Messages/Delete?controllerName=@Model.ControllerName&actionName=@Model.ActionName&objectKey=@Model.ObjectKey&desc=@HttpUtility.UrlEncode(Model.Description)" id="@id.ToString()" title="@GlobalMessages.CONFIRM_DELETE"> @Html.Raw(icon) @Html.Raw(Model.Text)</a>
+  }
+    else
+    { 
+        <a class="@priorityName" @Html.Raw(tabIndexAttr) href="@Url.Content("~/")Messages/Confirm?controllerName=@Model.ControllerName&actionName=@Model.ActionName&objectKey=@Model.ObjectKey&title=@GlobalMessages.CONFIRM&desc=@Model.Description" id="@id.ToString()" title="@GlobalMessages.CONFIRM"> @Html.Raw(icon) @Html.Raw(Model.Text)</a>
+
+  } 
+       
+  
+  
+}else if (Model.IsBBQ ){ 
+    <a href="@Model.Link">dasada</a>
+
+
+    }
+    else if (Model.ClosePopup)
+    {
+        if (!string.IsNullOrEmpty(Model.Link))
+        {
+            <a href="@Model.Link" @Html.Raw(tabIndexAttr) class="@priorityName btn @posneg @classNames">@Html.Raw(icon) @cancelTitle</a>
+
+        }
+        else
+        {
+            <a href="javascript: void(0);" @Html.Raw(tabIndexAttr) data-dismiss="modal" aria-hidden="true" class="@priorityName btn @posneg @classNames" onclick="closeCurrentDialog(this); return false;">@Html.Raw(icon) @cancelTitle</a>
+
+        }
+
+
+    }
+    else
+    {
+        // is a popup
+        string typeAction = "";
+        if (Model.Type == "edit")
+        {
+            typeAction = GlobalMessages.EDITING;
+        }
+        else if (Model.Type == "create")
+        {
+            typeAction = GlobalMessages.CREATING;
+        }
+        else if (Model.Type == "add")
+        {
+            typeAction = GlobalMessages.ADDING;
+        }
+        else
+        {
+            typeAction = Model.Type;
+        }
+        if (string.IsNullOrEmpty(Model.Link))
+        {
+            if (Model.Type == "save")
+            {
+  <button class="@priorityName @posneg @classNames" @Html.Raw(tabIndexAttr) data-loading-text="@GlobalMessages.PROCESSING_PLEASE_WAIT..." type="submit" id="@(id)submitbtn" >@Html.Raw(icon) @buttonMessage</button>      
+  <script>
+      $("#@(id)submitbtn").click(function (e) {
+          var form = $(this).closest("form");
+          form.validate();
+          if (form.valid()){
+
+              //form.submit();
+              $(this).button('loading');
+          }else{
+              e.preventDefault();
+
+          }
+      });
+  </script>
+
+
+            }
+            else
+            { //Model.Type != "save"
+
+                if (!string.IsNullOrEmpty(Model.Text))
+                {
+                    @Html.ActionLink(Model.Text, Model.ActionName, Model.ControllerName, Model.RouteValues, new { id = id })
+
+                }
+            }
+        }
+        else if (!string.IsNullOrEmpty(Model.Link) && oncloseFunc == "null" && !Model.IsForClosePopup && !Model.IsForOpenPopup)
+        {
+
+       <a href="@Model.Link"  @attributes id="@id" @Html.Raw(tabIndexAttr)  class="@priorityName @classNames" >@Html.Raw(icon)@Html.Raw(Model.Text)</a> 
+     
+            
+        }else{
+
+            string idModal = "modal" + id; //+ id;
+            if (!string.IsNullOrEmpty(Model.ModalId))
+            {
+                idModal = Model.ModalId;
+            }
+            
+   
+ <a href="@Model.Link" popupId="@(idModal)"  @Html.Raw(tabIndexAttr) @attributes id="@id" @Html.Raw(onclick)  class="popup @priorityName @classNames" >@Html.Raw(icon) @Html.Raw(Model.Text)</a> <!--axd4-->
+    
+         
+     
+
+<script type="text/javascript">
+
+    var @(oncloseFunc)Executed = false;
+    $(document).ready(function () {
+        $('#@(id)').on("click", function(e){
+            log("oncloseFunc = " + typeof(@(oncloseFunc)));
+            e.preventDefault();
+
+            @if (!string.IsNullOrEmpty(oncloseFunc)) {
+                    <text>
+            //alert("sadsad");
+            @(oncloseFunc)Executed = false;
+            var url  ="";
+            if ($(this).attr('href').contains("?")){
+                url = $(this).attr('href') + "&actionName=@(oncloseFunc)Executed";
+            }else{
+                url = $(this).attr('href') + "?actionName=@(oncloseFunc)Executed";
+            }
+            </text>
+                }else {
+                    <text>
+            var url = $(this).attr('href');
+            </text>
+                }
+            url = url + "&uiv=" + getUIVersion() ;
+            if ($("#@(idModal)").length > 0){
+                $("#@(idModal)").remove();
+
+            }
+
+            if ($("#@(idModal)").length == 0){
+                if (getUIVersion() == 2) {
+                    $("body").append('<div id="@(idModal )" class="modal inmodal fade tex-left" data-width="800"><div class="modal-dialog modal-lg"> <div class="modal-content">  <div class="modal-body text-left"><div class="preloader-big"></div></div></div></div></div>');
+                    }else{
+                        $("body").append('<div id="@(idModal )" class="modal hide fade tex-left" ><div class="modal-body text-left"><div class="preloader-big"></div></div></div>');
+
+                    }
+
+                }
+                $("#@(idModal)").modal("show");
+            @if (!string.IsNullOrEmpty(oncloseFunc)) {
+                   <text>
+            $("#@(idModal)").on('hidden',function(e){
+                </text>
+                    if ( oncloseFunc != "null" ) {
+                        <text>
+                if (@(oncloseFunc)Executed){
+                    @(oncloseFunc)();
+                    log("@(oncloseFunc)Executed = " + @(oncloseFunc)Executed);
+                }
+                </text>
+                    }
+                    <text>
+                setTimeout(function () {
+
+                    $("#@(idModal)").remove();
+
+                }, 1000);
+
+            });
+            </text>
+                }else{
+                    <text>
+            setTimeout(function () {
+
+                $("#@(idModal)").remove();
+
+            }, 1000);
+            </text>
+               }
+
+            //alert("asdasdasd");
+            //var modal_id = $(this).attr('data-target');
+            $.ajax({
+
+                url: url,
+                dataType: "html",
+                cache:false,
+                success: function (data) {
+
+
+                    $("#@(idModal)").html(data);
+                    repositionModal($("#@(idModal)"));
+
+                }
+            });
+
+
+
+        });
+        //$('#modal<%=idModal %>').data('modal').options = { cache:false };
+    });
+
+
+
+
+</script>
+      }
+
+}
+ 
+
+}

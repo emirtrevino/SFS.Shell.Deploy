@@ -1,0 +1,156 @@
+﻿@{
+    
+   string classId = ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).classId;
+
+   string id = "a" +((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id.Replace("-","").Substring(0,10);
+    string subfilterFrom = "";
+    string area = ViewData["moduleNS"].ToString().Replace(".","");// SFSdotNet.Framework.Web.Utils.GetRouteDataOrQueryParam(Request.RequestContext, "area");
+    string controller = ViewData["entitySet"].ToString();
+
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    
+    string btnInputGroupClass = "input-prepend";
+    string btnLessPlusDays = "<button class=\"btn ndaysdir\" type=\"button\"> - </button>";
+    string inputMiniClass = "input-mini";
+    if (uiModel.UIVersion == 2)
+    {
+        inputMiniClass = "input-sm";
+        btnInputGroupClass = "input-group input-group-sm";
+        btnLessPlusDays = "<span class=\"input-group-btn \"><button class=\"btn btn-white ndaysdir\" type=\"button\"> - </button></span>";
+    }
+    if (ViewData["subfilterFrom"] != null){
+        subfilterFrom = ViewData["subfilterFrom"].ToString();
+    }
+    
+    ViewData["cusprop"] = "value-" + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id;
+    if (ViewData["Data"] != null && ViewData["Value"] != null && ViewData["Text"] != null)
+   {
+       Html.RenderAction("ShowField", controller, new { area = area, idField = id, fieldName = ViewData["prop"].ToString() });
+
+        @*@Html.DropDownList(ViewData["prop"].ToString(), new SelectList((IEnumerable<dynamic>)ViewData["Data"], ViewData["Value"].ToString(), ViewData["Text"].ToString()), new { dataTypeValue = ViewData["dataTypeValue"], sff = subfilterFrom, @id = "value-" + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id, @name = "value-" + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id, @class = "filter input-large value " + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).classId + " " + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id });*@
+   }
+    else if ((bool)ViewData["isNavMany"])
+    {
+        ViewData["propid"] = "value-" + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id;
+        //@Html.Editor(ViewData["propid"].ToString(), "Integer", new { dataTypeValue = ViewData["dataTypeValue"], sff = subfilterFrom, @id = "value-" + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id, @name = "value-" + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id, @class = "filter input-large value " + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).classId + " " + ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id });
+        <input type="text" datatypevalue=@(ViewData["dataTypeValue"]) id="value-@(((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id)" name="value-@(((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id)" sff="@(subfilterFrom)" class="filter value @(((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).classId ) @(((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id)" />
+    }
+    else
+    {
+        
+
+@*<div style="display:inline;">*@
+   
+    string classNameField = ""; 
+    if (ViewData["dataType"] != null &&  ViewData["dataType"].ToString().Contains("DateTime")) {
+        classNameField = "datetimeinput";
+        
+    <div class="ndays " style="display:none;" >
+        @{ Html.RenderPartial("RelativeDayMenuOptions", ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id); } 
+
+        <div class="@(btnInputGroupClass)" style="@(uiModel.UIVersion ==2 ? "margin-top:5px;":"")">
+             @Html.Raw(btnLessPlusDays)
+            <input type="text" value="0" style="@(uiModel.UIVersion == 2? "width:80px;":"")" name="ndays@(id)" id="ndays@(id)" class="ndays field text @(inputMiniClass) form-control  @(classId )" /> 
+           
+       </div>
+        <script>
+            $("button.ndaysdir").click(function () {
+                switchNdaysDirection($(this));
+            });
+            //$("input.ndays").change(function () {
+            //    showTextOfRelativeDate($(this));
+            //});
+        </script>
+@if (uiModel.UIVersion == 2)
+{
+    <text>
+
+        <div class="input-group input-group-sm clockpicker" id="div-con-hr@(id)">
+            <input type="text" style="width:80px" id="hr@(id)" name="hr@(id)" class="form-control @(inputMiniClass) timevalue @(classId )" value="00:00">
+            <span class="input-group-addon">
+                <span class="fa fa-clock-o"></span>
+            </span>
+        </div>
+    <script type="text/javascript">
+        $(function() {
+
+            if (jQuery().clockpicker == undefined) {
+                $.ajax({
+                    url: "@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/clockpicker/bootstrap-clockpicker.min.js"))",
+                    dataType: "script",
+                    async: false/*,
+                  success: function () {
+                      setDate($("#<%: controlId %>"), new Date(<%: ModelValue.Value.Year %>,<%: (ModelValue.Value.Month -1 ) %>,<%: (ModelValue.Value.Day) %>), "<%=methodName%>");
+                  }*/
+                });
+            }
+            });
+            $('#div-con-hr@(id)').clockpicker();
+    </script>
+
+        </text>
+            }
+            else
+            {
+            <div id="div-con-hr@(id)" class="input-append bootstrap-timepicker">
+                <input value="" type="text" showtime="true" showdate="false" sff="" id="_hr@(id)" name="_hr@(id)" class="field text input-mini " style="text-align: left;" />
+                <input type="hidden" value="" class="timevalue @(classId )" id="hr@(id)" name="hr@(id)" value="" />
+                <span class="add-on">
+                    <i class="icon-time"></i>
+                </span>
+            </div>
+
+
+            <script>
+                function setTimeFunctions() {
+                    @{
+                string timeValue = "00:00";
+                }
+                    $('#_hr@(id)').timepicker({ showMeridian: false, minuteStep: 1,
+                        template: 'modal',
+                        appendWidgetTo: 'body'});
+                    $('#_hr@(ViewData["prop"].ToString())').timepicker('setTime', '@(timeValue)');
+                    $('#hr@(id)').val("@(timeValue)");
+                    $('#_hr@(id)').on('changeTime.timepicker', function (e) {
+                        var timeString = e.time.hours.toString() + ":" + e.time.minutes.toString();
+                        if (e.time.minutes.toString().length == 1) {
+                            timeString = timeString + "0";
+                        }
+                        timeString = timeString + ":00";
+                        $('#hr@(id)').val(timeString);
+                    });
+
+                }
+            </script>
+            }
+</div>
+       
+} 
+      <div style="display:inline;" class="@(classNameField ) datetimefield">
+ @{ ViewData["fromfilter"] = true;
+    ViewData["currentProperty"] = ViewData["propDef"];
+    
+     }
+@if (ViewData["dataType"] != null && ViewData["dataType"].ToString().Contains("String")){
+
+    Html.RenderAction("ShowField", controller, new { area = area, idField = id, fieldName = ViewData["prop"].ToString(), currentProperty = ViewData["currentProperty"] });
+
+    
+}else{
+    Html.RenderAction("ShowField", controller, new { area = area, idField = id, fieldName = ViewData["prop"].ToString(), currentProperty = ViewData["currentProperty"] });
+     
+
+} 
+          </div>
+if (ViewData["dataType"] != null &&  ViewData["dataType"].ToString().Contains("DateTime")) {    
+ 
+ <span class="daterelativetext"></span>   
+        Html.RenderPartial("ValueFilterMenuOptions", ((SFSdotNet.Framework.Web.Mvc.Models.FilterQueryItemModel)ViewData["extramodel"]).Id); 
+} 
+@*</div>*@
+} 
+
+}
+
+
+

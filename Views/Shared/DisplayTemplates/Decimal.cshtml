@@ -1,0 +1,39 @@
+﻿@{  
+    object ModelValue = null;
+
+    if (ViewData.TemplateInfo.FormattedModelValue == ViewData.ModelMetadata.Model) {
+        ModelValue= String.Format(System.Globalization.CultureInfo.InvariantCulture,
+                             "{0:0.00}", ViewData.ModelMetadata.Model);
+    }
+    else {
+
+        ModelValue = ViewData.TemplateInfo.FormattedModelValue;
+    }
+
+
+    PropertyDefinition property = null ;
+    var uiModel = (UIModel)ViewData["uiModel"];
+    var idPrevFullWindow = uiModel.Id;
+
+    if (ViewData["currentProperty"] != null)
+    {
+        property = (PropertyDefinition)ViewData["currentProperty"];
+
+    }
+    string text = "";
+    if (ModelValue != null)
+    {
+        text = ModelValue.ToString();
+    }
+    if (Model != null)
+    {
+        var propText = Model.GetType().GetProperty(property.PropertyName + "Text");
+        if (propText != null)
+        {
+            text = propText.GetValue(Model);
+        }
+    }
+    //Html.ValidationMessageFor(model =>model );
+
+}
+  @Html.Raw(text)

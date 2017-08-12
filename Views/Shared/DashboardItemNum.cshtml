@@ -1,0 +1,38 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.DashboardItemNum
+@{ 
+    string text = "";
+    if (Model.Amount != null)
+    {
+        text = Model.Amount.ToString();
+    }
+    else {
+        text = Model.AmountText;
+    }
+
+
+}
+@if (Model.ItemNumType == ItemNumTypes.SmallBox)
+{
+    <div class="small-box  @(Model.CssClass)">
+        <div class="inner">
+            <h3>@(Model.Amount)<sup style="font-size: 20px">@(Model.Symbol)</sup></h3>
+            <p>@(Model.Title)</p>
+        </div>
+        <div class="icon">
+            <i class="@(Model.IconClass)"></i>
+        </div>
+        <a class="small-box-footer" href="#">
+            @(Model.LinkText) <i class="icon-share-alt"></i> @(Model.LinkText)
+        </a>
+    </div>
+
+}else{
+
+<div class="info-box @(Model.CssClass)">
+    <span class="info-box-icon @(Model.IconClassContainer)"><i class="@(Model.IconClass)"></i></span>
+    <div class="info-box-content">
+        <span class="info-box-text">@(Model.Title)</span>
+        <span class="info-box-number">@(text)</span>
+    </div><!-- /.info-box-content -->
+</div>
+}

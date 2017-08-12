@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=301880
+  -->
+<configuration>
+  <configSections>
+
+
+
+
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    <section name="oracle.manageddataaccess.client" type="OracleInternal.Common.ODPMSectionHandler, Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342" />
+
+    <!--<section name="instrumentationConfiguration" type="Microsoft.Practices.EnterpriseLibrary.Common.Instrumentation.Configuration.InstrumentationConfigurationSection, Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" requirePermission="true"/>
+    <section name="loggingConfiguration" type="Microsoft.Practices.EnterpriseLibrary.Logging.Configuration.LoggingSettings, Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" requirePermission="true"/>-->
+    <sectionGroup name="applicationSettings" type="System.Configuration.ApplicationSettingsGroup, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <section name="SFSdotNet.Framework.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    </sectionGroup>
+    <section name="payPal" type="System.Configuration.NameValueSectionHandler" />
+    <!--<section name="nlog" type="NLog.Config.ConfigSectionHandler, NLog"/>
+    <sectionGroup name="mef">
+      <section name="composition" type="MefMvcFramework.Configuration.CompositionConfigurationSection, MefMvcFramework"/>
+    </sectionGroup>-->
+
+
+  </configSections>
+
+
+  <appSettings>
+
+
+    <add key="UseRedisCache" value="false" />
+    <add key="CacheType" value="InMemory" />
+    <add key="RedisConnectionString" value="ecosys.redis.cache.windows.net,ssl=true,password=LRt/ATdyKS7S9VE404KcgwfgcV4TOc6JbTVrf3oH09A=" />
+
+
+    <add key="webpages:Version" value="3.0.0.0" />
+    <add key="webpages:Enabled" value="false" />
+    <add key="PreserveLoginUrl" value="true" />
+    <add key="AutoInjectPermissionsOnStartup" value="false" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+    <add key="ReCaptchaPrivateKey" value="6Lc-3MgSAAAAAKxt39om284-Syh3pA0WfB_8ycT6" />
+    <add key="ReCaptchaPublicKey" value="6Lc-3MgSAAAAAJ_bSq7dX8YzzgFdhxxRveky6Pml" />
+    <add key="PayPalUsername" value="mika_1254623454_biz@mailinator.com" />
+    <add key="PDTToken" value="eLIuLWgJVs544UHSLLm4uPRwsF7S4ApFPcg3w1TR1DHZZ31aFNYnF2mh_Li" />
+    <add key="PayPalSubmitUrl" value="https://www.sandbox.paypal.com/cgi-bin/webscr" />
+    <!--//URL para PayPal a nivel Live-->
+    <add key="headertype" value="withlogo" />
+    <add key="EncryptionKey" value="ZeroCool" />
+    <add key="DefaultGlobalization" value="es-mx" />
+    <add key="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=appecosys;AccountKey=zU5NhvtkOwjhXHMAHj+QullvazeEBAHSEKMOkWDw1bhXglTanKmd7ZhMgG8YI/XZxcKAGe2xBonueI+Banddhw==" />
+    <add key="StorageStaticType" value="AzureBlob" />
+    <add key="StorageStaticDomainPath" value="appecosys.blob.core.windows.net" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+    <!--<add key="MicrosoftClientId" value="0000000040123F12" />
+    <add key="MicrosoftClientSecret" value="9TSzdpn5GxgqIN2nKxgAArNDCcUWT-HZ" />-->
+    <add key="GoogleClientId" value="741723137815-cges5aq7bjl5rrk4b2f6n92230jpma8o.apps.googleusercontent.com" />
+    <add key="GoogleClientSecret" value="uXTundHkViR_HagKx39SPY2C" />
+    <add key="MicrosoftClientId" value="000000004C0ED4B8" />
+    <add key="MicrosoftClientSecret" value="ObW2oUu6QAvPb20t0m-WrfcSwdV6Jtde" />
+    <add key="TwitterConsumerKey" value="w30ouaeAwa7nU9yLuMHrLg" />
+    <add key="TwitterConsumerSecret" value="jzWgfhDF7wmVq8HaMWu1RduTcZMAVdkTlEuKK2KzrPU" />
+    <add key="FacebookAppId" value="103434409865269" />
+    <add key="FacebookAppSecret" value="c91aee56af9853da04b75342a5544e59" />
+
+    <add key="MvcSiteMapProvider_IncludeAssembliesForScan" value="" />
+    <add key="MvcSiteMapProvider_UseExternalDIContainer" value="false" />
+    <add key="MvcSiteMapProvider_EnableLocalization" value="true" />
+    <add key="MvcSiteMapProvider_ScanAssembliesForSiteMapNodes" value="true" />
+    <add key="MvcSiteMapProvider_DefaultSiteMapNodeVisibiltyProvider" value="MvcSiteMapProvider.FilteredSiteMapNodeVisibilityProvider, MvcSiteMapProvider" />
+    <add key="MvcSiteMapProvider_SecurityTrimmingEnabled" value="false" />
+    <add key="MvcSiteMapProvider_EnableSiteMapFile" value="true" />
+
+    <!--<add key="MvcSiteMapProvider_EnableResolvedUrlCaching" value="false"/>-->
+
+    <!--<add key="EncryptionKey" value="EwseTapj" />-->
+    <!--<add key="MvcSiteMapProvider_UseExternalDIContainer" value="false"/>
+    <add key="MvcSiteMapProvider_SiteMapFileName" value="~/Mvc.sitemap"/>
+    <add key="MvcSiteMapProvider_ScanAssembliesForSiteMapNodes" value="false"/>
+    <add key="MvcSiteMapProvider_ExcludeAssembliesForScan" value=""/>
+    <add key="MvcSiteMapProvider_IncludeAssembliesForScan" value=""/>
+    <add key="MvcSiteMapProvider_AttributesToIgnore" value=""/>
+    <add key="MvcSiteMapProvider_CacheDuration" value="5"/>
+    <add key="MvcSiteMapProvider_ControllerTypeResolverAreaNamespacesToIgnore" value=""/>
+    <add key="MvcSiteMapProvider_DefaultSiteMapNodeVisibiltyProvider" value=""/>
+    <add key="MvcSiteMapProvider_VisibilityAffectsDescendants" value="true"/>
+    <add key="MvcSiteMapProvider_SecurityTrimmingEnabled" value="false"/>
+    <add key="MvcSiteMapProvider_EnableLocalization" value="true"/>
+    <add key="MvcSiteMapProvider_EnableSitemapsXml" value="true"/>
+    <add key="MvcSiteMapProvider_EnableResolvedUrlCaching" value="true"/>
+    <add key="MvcSiteMapProvider_EnableSiteMapFile" value="true"/>
+    <add key="MvcSiteMapProvider_IncludeRootNodeFromSiteMapFile" value="true"/>
+    <add key="MvcSiteMapProvider_EnableSiteMapFileNestedDynamicNodeRecursion" value="false"/>
+    <add key="MvcSiteMapProvider_UseTitleIfDescriptionNotProvided" value="true"/>-->
+  </appSettings>
+
+
+
+  <applicationSettings>
+    <SFSdotNet.Framework.Properties.Settings>
+      <setting name="SmtpServer" serializeAs="String">
+        <value>smtp.sendgrid.net</value>
+      </setting>
+      <setting name="SmtpUser" serializeAs="String">
+        <value>azure_ab93a29056c9cadc2670ca8c8791205b@azure.com</value>
+      </setting>
+      <setting name="SmtpPassword" serializeAs="String">
+        <value>pass.word1313</value>
+      </setting>
+      <setting name="SmtpDefaultFrom" serializeAs="String">
+        <value>contactsys@appecosys.com</value>
+      </setting>
+      <setting name="SmtpPort" serializeAs="String">
+        <value>587</value>
+      </setting>
+      <setting name="SmtpEnableSSL" serializeAs="String">
+        <value>true</value>
+      </setting>
+      <setting name="SmptFromName" serializeAs="String">
+        <value>App Ecosystem</value>
+      </setting>
+      <setting name="EFCaching" serializeAs="String">
+        <value>False</value>
+      </setting>
+      <setting name="EFCachingLimit" serializeAs="String">
+        <value>0</value>
+      </setting>
+    </SFSdotNet.Framework.Properties.Settings>
+  </applicationSettings>
+  <!--
+    For a description of web.config changes see http://go.microsoft.com/fwlink/?LinkId=235367.
+
+    The following attributes can be set on the <httpRuntime> tag.
+      <system.Web>
+        <httpRuntime targetFramework="4.5.1" />
+      </system.Web>
+  -->
+  <system.web>
+    <httpRuntime maxRequestLength="350000000" requestValidationMode="2.0" targetFramework="4.5" maxUrlLength="1000" relaxedUrlToFileSystemMapping="true" />
+    <httpModules>
+      <add name="LocalizationModule" type="SFSdotNet.Framework.Web.Mvc.LocalizationModule, SFSdotNet.Framework.Web.Mvc" />
+    </httpModules>
+    <httpHandlers>
+      <!--<add verb="POST,GET,HEAD" path="elmah.axd" type="Elmah.ErrorLogPageFactory, Elmah" />-->
+    </httpHandlers>
+    <sessionState mode="InProc" cookieless="false" timeout="60" />
+    <compilation debug="true" targetFramework="4.5">
+      <assemblies>
+        <!--<add assembly="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"/>
+        <add assembly="System.Web.Abstractions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
+        <add assembly="System.Web.Routing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
+        <add assembly="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"/>-->
+        <!--<add assembly="System.Web.Abstractions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
+        <add assembly="System.Web.Routing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
+        <add assembly="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
+        -->
+        <!--<add assembly="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
+        <add assembly="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>-->
+        <!--
+        <add assembly="System.Data.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>-->
+        <!--<add assembly="Microsoft.Build.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A"/>
+        <add assembly="System.Management, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A"/>-->
+      </assemblies>
+      <!--<buildProviders>
+        <add extension=".rdlc" type="Microsoft.Reporting.RdlBuildProvider, Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+      </buildProviders>-->
+    </compilation>
+    <trust level="Full" />
+    <authentication mode="None">
+      <forms loginUrl="~/SFSdotNetFrameworkSecurity/Public/Login" timeout="60" />
+    </authentication>
+    <membership>
+      <providers>
+        <clear />
+      </providers>
+    </membership>
+    <profile>
+      <providers>
+        <clear />
+        <add name="AspNetSqlProfileProvider" type="System.Web.Profile.SqlProfileProvider" connectionStringName="ApplicationServices" applicationName="/" />
+      </providers>
+
+
+
+    </profile>
+    <!--<roleManager enabled="false">
+      <providers>
+        <clear/>
+        -->
+    <!--<add name="AspNetSqlRoleProvider" type="System.Web.Security.SqlRoleProvider" connectionStringName="ApplicationServices" applicationName="/"/>
+        <add name="AspNetWindowsTokenRoleProvider" type="System.Web.Security.WindowsTokenRoleProvider" applicationName="/"/>-->
+    <!--
+      </providers>
+    </roleManager>-->
+    <pages validateRequest="false" enableSessionState="true" enableEventValidation="false">
+      <namespaces>
+        <add namespace="System.Web.Optimization" />
+        <add namespace="MvcContrib.FluentHtml.Behaviors" />
+        <add namespace="MvcContrib.FluentHtml.Expressions" />
+        <add namespace="MvcContrib.FluentHtml.Html" />
+        <add namespace="MvcContrib.FluentHtml" />
+        <add namespace="System.Web.Mvc" />
+        <add namespace="System.Web.Mvc.Ajax" />
+        <add namespace="System.Web.Mvc.Html" />
+        <add namespace="System.Web.WebPages" />
+        <add namespace="System.Web.Helpers" />
+        <add namespace="System.Web.Routing" />
+        <add namespace="Rpx4Mvc" />
+        <add namespace="MvcReCaptcha.Helpers" />
+        <add namespace="SFSdotNet.Framework.Web.Mvc" />
+        <add namespace="SFSdotNet.Framework.Web.Mvc.Helpers" />
+        <add namespace="SFSdotNet.Framework.Web.Mvc.Models" />
+        <add namespace="SFSdotNet.Framework.Web.Mvc.Resources" />
+        <add namespace="MvcSiteMapProvider.Web.Html" />
+        <add namespace="MvcSiteMapProvider.Web.Html.Models" />
+      </namespaces>
+    </pages>
+
+
+    <!--<globalization culture="es-MX" enableClientBasedCulture="true" fileEncoding="iso-8859-1" requestEncoding="utf-8" responseEncoding="utf-8" responseHeaderEncoding="utf-8" uiCulture="es-MX" />-->
+    <globalization culture="en-us" enableClientBasedCulture="false" fileEncoding="iso-8859-1" requestEncoding="utf-8" responseEncoding="utf-8" responseHeaderEncoding="utf-8" uiCulture="en-us" resourceProviderFactoryType="SFSdotNet.Framework.Globalization.Provider.DBResourceProviderFactory, SFSdotNet.Framework" />
+    <customErrors mode="Off" />
+    <!--<siteMap defaultProvider="MvcSiteMapProvider" enabled="true">
+      <providers>
+        <clear/>
+        <add name="MvcSiteMapProvider" type="MvcSiteMapProvider.DefaultSiteMapProvider, MvcSiteMapProvider" siteMapFile="~/Mvc.Sitemap" 
+             enableLocalization="true" 
+             securityTrimmingEnabled="false" 
+        cacheDuration="5" 
+      scanAssembliesForSiteMapNodes="true" 
+      excludeAssembliesForScan="" 
+      includeAssembliesForScan="" 
+      attributesToIgnore="bling,visibility" 
+      nodeKeyGenerator="MvcSiteMapProvider.DefaultNodeKeyGenerator, MvcSiteMapProvider" 
+      controllerTypeResolver="MvcSiteMapProvider.DefaultControllerTypeResolver, MvcSiteMapProvider" 
+      actionMethodParameterResolver="MvcSiteMapProvider.DefaultActionMethodParameterResolver, MvcSiteMapProvider" 
+      aclModule="MvcSiteMapProvider.DefaultAclModule, MvcSiteMapProvider" 
+      siteMapNodeUrlResolver="MvcSiteMapProvider.DefaultSiteMapNodeUrlResolver, MvcSiteMapProvider" 
+      siteMapNodeVisibilityProvider="SFSdotNet.Framework.Security.NodeMapVisibilityProvider, SFSdotNet.Framework.Web.Mvc" 
+      siteMapProviderEventHandler="MvcSiteMapProvider.DefaultSiteMapProviderEventHandler, MvcSiteMapProvider"/>
+      </providers>
+    </siteMap>-->
+  </system.web>
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true">
+      <remove name="Session" />
+      <add name="Session" type="System.Web.SessionState.SessionStateModule" />
+      <add name="LocalizationModule" type="SFSdotNet.Framework.Web.Mvc.LocalizationModule, SFSdotNet.Framework.Web.Mvc" />
+      <remove name="FormsAuthentication" />
+      <remove name="FormsAuthenticationModule" />
+    </modules>
+    <rewrite>
+      <rules>
+        <rule name="fingerprint">
+          <match url="([\S]+)(/v-[0-9]+/)([\S]+)" />
+          <action type="Rewrite" url="{R:1}/{R:3}" />
+        </rule>
+
+        <rule name="RedirectRule" stopProcessing="true">
+          <match url="(.*)" ignoreCase="true" />
+          <action type="Redirect" url="http://appecosys.com/{R:1}" redirectType="Permanent" />
+          <conditions logicalGrouping="MatchAll">
+            <add input="{HTTP_HOST}" pattern="(shellsfs1.azurewebsites.net|applicationecosystem.com|appecosys.azurewebsites.net)" />
+
+          </conditions>
+        </rule>
+
+
+
+      </rules>
+    </rewrite>
+    <security>
+      <requestFiltering allowDoubleEscaping="true">
+        <requestLimits maxUrl="10999" maxQueryString="9999" maxAllowedContentLength="350000000"/>
+      </requestFiltering>
+    </security>
+
+    <handlers>
+      <remove name="ExtensionlessUrlHandler-Integrated-4.0" />
+      <remove name="OPTIONSVerbHandler" />
+      <remove name="TRACEVerbHandler" />
+      <add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="*" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers>
+    <validation validateIntegratedModeConfiguration="false" />
+  </system.webServer>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+
+    <dependentAssembly>
+        <assemblyIdentity name="Antlr3.Runtime" publicKeyToken="eb42632606e9261f" />
+        <bindingRedirect oldVersion="3.4.1.9004" newVersion="3.5.0.2" />
+      </dependentAssembly>
+         <dependentAssembly>
+        <assemblyIdentity name="System.Linq.Dynamic" publicKeyToken="b72be0322d1b32a8" />
+        <bindingRedirect oldVersion="1.1.15.40642" newVersion="1.1.15.42672" />
+
+      </dependentAssembly>
+        <dependentAssembly>
+        <assemblyIdentity name="System.Linq.Dynamic" publicKeyToken="b72be0322d1b32a8" />
+        <bindingRedirect oldVersion="1.1.14.16455" newVersion="1.1.15.42672" />
+
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Linq.Dynamic" publicKeyToken="b72be0322d1b32a8" />
+        <bindingRedirect oldVersion="1.1.14.15527" newVersion="1.1.14.16455" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Linq.Dynamic" publicKeyToken="b72be0322d1b32a8" />
+        <bindingRedirect oldVersion="1.1.13.22252" newVersion="1.1.14.16455" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security.OAuth" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security.Cookies" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" culture="neutral" publicKeyToken="30ad4fe6b2a6aeed" />
+        <bindingRedirect oldVersion="0.0.0.0-6.0.0.0" newVersion="6.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.2.0" newVersion="5.2.2.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Optimization" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-1.1.0.0" newVersion="1.1.0.0" />
+      </dependentAssembly>
+      <!--<dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages.Razor" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.0.0" newVersion="3.0.0.0"/>
+      </dependentAssembly>-->
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="WebGrease" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-1.5.2.14234" newVersion="1.5.2.14234" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="itextsharp" publicKeyToken="8354ae6d2174ddca" culture="neutral" />
+        <bindingRedirect oldVersion="5.5.3.0" newVersion="5.5.7.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="DocumentFormat.OpenXml" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.0.5022.0" newVersion="2.0.5022.0" />
+      </dependentAssembly>
+      <!--<dependentAssembly>
+        <assemblyIdentity name="System.Spatial" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.6.0.0" newVersion="5.6.0.0" />
+      </dependentAssembly>-->
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages.Razor" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Routing" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Abstractions" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.WindowsAzure.Storage" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.3.0.0" newVersion="4.3.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.Services.Client" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.7.0.0" newVersion="5.7.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.OData" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.7.0.0" newVersion="5.7.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.Edm" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.7.0.0" newVersion="5.7.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <publisherPolicy apply="no" />
+        <assemblyIdentity name="Oracle.ManagedDataAccess" publicKeyToken="89b483f429c47342" culture="neutral" />
+        <bindingRedirect oldVersion="4.121.0.0 - 4.65535.65535.65535" newVersion="4.121.2.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+  <entityFramework>
+
+    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework">
+      <parameters>
+        <parameter value="mssqllocaldb" />
+      </parameters>
+    </defaultConnectionFactory>
+    <providers>
+      <provider invariantName="System.Data.SqlClient" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer" />
+      <provider invariantName="Oracle.ManagedDataAccess.Client" type="Oracle.ManagedDataAccess.EntityFramework.EFOracleProviderServices, Oracle.ManagedDataAccess.EntityFramework, Version=6.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342" />
+
+    </providers>
+  </entityFramework>
+  <system.data>
+    <DbProviderFactories>
+      <remove invariant="Oracle.ManagedDataAccess.Client" />
+      <add name="ODP.NET, Managed Driver" invariant="Oracle.ManagedDataAccess.Client" description="Oracle Data Provider for .NET, Managed Driver" type="Oracle.ManagedDataAccess.Client.OracleClientFactory, Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342" />
+    </DbProviderFactories>
+  </system.data>
+  <oracle.manageddataaccess.client>
+    <version number="*">
+      <dataSources>
+        <dataSource alias="SampleDataSource" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCL))) " />
+      </dataSources>
+    </version>
+  </oracle.manageddataaccess.client>
+</configuration>

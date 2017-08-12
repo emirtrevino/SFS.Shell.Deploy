@@ -1,0 +1,87 @@
+﻿@{
+
+    TimeSpan?  ModelValue = null;
+    if (ViewData.ModelMetadata.Model != null ){
+        ModelValue = (TimeSpan)ViewData.ModelMetadata.Model;
+    }else{
+        ModelValue = null;
+    }
+
+    PropertyDefinition propDef = null;
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+    if (ViewData["currentProperty"] != null)
+    {
+        propDef = (PropertyDefinition)ViewData["currentProperty"];
+
+
+    }
+    string urlScript = VirtualPathUtility.ToAbsolute("~/") + "Scripts/datetime/bootstrap-timepicker.js";
+    string groupControlsDiv = "input-append bootstrap-timepicker";
+
+    if (uiModel.UIVersion == 2)
+    {
+        groupControlsDiv = "input-group bootstrap-timepicker timepicker";
+        urlScript = VirtualPathUtility.ToAbsolute("~/") + "Static/v2/bootstrap-timepicker/js/bootstrap-timepicker.js";
+    }
+    string classExtra = "";
+    if (  ViewData["class"] != null){
+        classExtra = ViewData["class"].ToString();
+    }
+    string sffAttr = "";
+    if (ViewData["sff"] != null){
+        sffAttr = ViewData["sff"].ToString();
+
+    }
+    } 
+<div id="div-con-@(this.ViewData.ModelMetadata.PropertyName )" class="@(groupControlsDiv)">
+     <input value="" type="text" showtime="true" showdate="false"  sff="@(sffAttr )" id="_@(this.ViewData.ModelMetadata.PropertyName )" name="_@(this.ViewData.ModelMetadata.PropertyName )" class="form-control field text small @(classExtra )" style = "text-align: left;" />
+    <input type="hidden" value="@(ModelValue )" id="@(this.ViewData.ModelMetadata.PropertyName )" name="@(this.ViewData.ModelMetadata.PropertyName )" class="time"/>
+      <span class="add-on input-group-addon">
+      <i class="icon-time glyphicon glyphicon-time"></i>
+    </span>
+  </div>
+
+
+@Html.ValidationMessageFor(model => model)
+    <script>
+       $(function () {
+          
+           if (jQuery().timepicker == undefined) {
+               $.ajax({
+                   url: "@(urlScript)",
+                   dataType: "script",
+                   async: false
+               });
+           }
+        @if (ModelValue!= null ) {
+                  string timeValueString = "";
+                  timeValueString = ModelValue.Value.ToString(); // +":" + ModelValue.Value.Minutes.ToString();// +" AM";
+            <text>
+           $('#_@(this.ViewData.ModelMetadata.PropertyName )').timepicker({ showMeridian: false, defaultTime: false /*, template: 'modal'*/ });
+           $('#_@( this.ViewData.ModelMetadata.PropertyName )').timepicker('setTime', '@(timeValueString)');
+           </text>
+          }else{ 
+            <text>
+           $('#_@( this.ViewData.ModelMetadata.PropertyName )').timepicker({ showMeridian: false, defaultTime: false, /*, template: 'modal'*/ });
+            </text>
+           } 
+
+           //}
+           $('#_@( this.ViewData.ModelMetadata.PropertyName )').on('changeTime.timepicker', function (e) {
+             
+
+               var timeString = (e.time.hours).pad() + ":" + (e.time.minutes).pad();
+               //if (e.time.minutes.toString().length == 1) {
+               //    timeString = timeString + "0";
+               //}
+               timeString = timeString + ":00";
+               $('#@( this.ViewData.ModelMetadata.PropertyName )').val(timeString);
+           });
+
+           
+       
+
+         });
+ 
+   </script>

@@ -1,0 +1,75 @@
+﻿@{
+    string returnAppend = "ReturnUrl="  + HttpUtility.UrlEncode(Request.Url.ToString());
+    if (!string.IsNullOrEmpty(Request.QueryString["ReturnUrl"]))
+    {
+        returnAppend = "ReturnUrl=" + HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
+
+    }
+
+    string overrideAppend = "";
+    string overrideModule = (new SFSdotNet.Framework.Web.Mvc.ControllerBase()).GetOverrideApp(this.Request.RequestContext.HttpContext);
+    
+    //string appModule = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(Request.RequestContext, "area");
+      
+    if (!string.IsNullOrEmpty(overrideModule) )
+    {
+        overrideAppend = "overrideModule=" + overrideModule;
+    }
+    string currentArea = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(Request.RequestContext, "area");
+    if (string.IsNullOrEmpty(overrideAppend) && !string.IsNullOrEmpty(currentArea))
+    {
+        overrideAppend = "overrideModule=" + currentArea;
+        
+    }
+    }
+
+    <li class="dropdown" id="fat-menu-system">
+    <a class="dropdown-toggle bgtrasparent" id="drop3" role="button" href="#" data-toggle="dropdown"><i class="icon-cog icon-white"></i><b class="caret white-caret"></b></a>
+           <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+@if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null ){
+    <text>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class=" icon-briefcase"></i> @GlobalMessages.BUSINESS_MODULE</a></li>
+                        <li role="presentation"  class="dropdown-submenu" ><a role="menuitem" tabindex="-1" href="#"><i class=" icon-home"></i> @GlobalMessages.MY_COMPANY</a>
+                             <ul class="dropdown-menu" >
+                                <li style="white-space:nowrap;" role="presentation" ><a tabindex="-1" role="menuitem"  href="@VirtualPathUtility.ToAbsolute("~/")SFSdotNetFrameworkSecurity/MyAccount/CurrentCompany?usemode=myaccount&@(overrideAppend)"><i class="icon-home"></i> @(SFSdotNet.Framework.My.Context.CurrentContext.Company != null ? SFSdotNet.Framework.My.Context.CurrentContext.Company.Name : GlobalMessages.NOT_DEFINED)</a></li>
+
+                                <li style="white-space:nowrap;" role="presentation" ><a id="changecompanyLink" tabindex="-1" role="menuitem"  href="@VirtualPathUtility.ToAbsolute("~/")SFSdotNetFrameworkSecurity/MyCompanyChange/ChangeView?popup=true&ReturnUrl=@(Request.Url.ToString())"><i class="icon-retweet"></i> @GlobalMessages.CHANGE_COMPANY</a></li>
+                                </ul>   
+
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem"  tabindex="-1" href="#"><i class=" icon-lock"></i> @GlobalMessages.SECURITY</a></li>
+               <li role="presentation" class="divider"></li>
+               @*<li role="presentation"><a role="menuitem" tabindex="-1" id="changeLayout" href="@VirtualPathUtility.ToAbsolute("~/")SFSdotNetFrameworkSecurity/Settings/ChangeLayoutTheme?returnUrl=@HttpContext.Current.Request.RawUrl"><i class=" icon-eye-open "></i> Cambiar plantilla UI</a></li>*@
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@VirtualPathUtility.ToAbsolute("~/")SFSdotNetFrameworkSecurity/MyAccount?@(overrideAppend)"><i class="icon-user"></i>  @GlobalMessages.MY_ACCOUNT</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@VirtualPathUtility.ToAbsolute("~/")SFSdotNetFrameworkSecurity/Account/LogOff?returnUrl=@HttpContext.Current.Request.RawUrl"><i class=" icon-off"></i> @GlobalMessages.SIGN_OUT</a></li>
+               </text>
+}else
+{
+    <text>
+    
+                             <li role="presentation"><a role="menuitem" id="sysloginLink" tabindex="-1" href="@VirtualPathUtility.ToAbsolute("~/")SFSdotNetFrameworkSecurity/Public/Login?@returnAppend"><i class="icon-user"></i> @GlobalMessages.LOG_IN</a></li>
+                             <li role="presentation"><a role="menuitem" id="sysregisterLink" tabindex="-1" href="@VirtualPathUtility.ToAbsolute("~/")SFSdotNetFrameworkSecurity/Public/Register?@returnAppend"><i class="icon-plus-sign"></i> @GlobalMessages.SIGN_UP</a></li>
+     </text>                   
+}
+                      </ul>
+    </li>
+
+<script>
+    $(document).ready(function () {
+        //$("#sysloginLink").click(function (e) {
+        //    e.preventDefault();
+        //    $("#loginLink")[0].click();
+        //});
+        //$("#sysregisterLink").click(function (e) {
+        //    e.preventDefault();
+        //    $("#registerLink")[0].click();
+        //});
+        $("#changecompanyLink, #changecompanyLink2, #changeLayout").click(function (e) {
+            e.preventDefault();
+            openModal($(this));
+        });
+    });
+
+</script>

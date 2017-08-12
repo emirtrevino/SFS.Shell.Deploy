@@ -1,0 +1,68 @@
+﻿@using SFSdotNet.Framework.Security.Web.Mvc.Resources
+@using SFSdotNet.Framework.Web.Mvc.Helpers
+
+@{
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+    if (!string.IsNullOrEmpty(uiModel.ModuleKey) && !string.IsNullOrEmpty(uiModel.EntityKey) && uiModel.ContextRequest != null)
+    {
+        SFSdotNet.Framework.My.Audit.AuditTrailFactory(uiModel.EntityKey, null, SFSdotNet.Framework.My.Audit.AuditActions.R, uiModel.ModuleKey, uiModel.ContextRequest);
+    }
+}
+
+@section Title{
+	@uiModel.TitleForm
+}
+
+
+
+
+    @Html.Partial("GenericListView")
+
+
+
+@section CustomScript{
+    @if (uiModel.UIVersion == 2)
+    {
+
+    }
+    else
+    {
+        @Html.Raw(Html.HeaderResources("datepicker"))
+        @Html.Raw(Html.HeaderResources("timepicker"))
+
+    }
+	@{
+		bool relFile =  false;
+
+		if (uiModel.Properties.Count(p=>p.IsImage == true) > 0) { 
+			relFile = true;	
+		}
+		if (relFile == false ){
+			relFile = true;
+		}
+		if (relFile){
+			
+
+		} 
+	}
+@{
+    if (uiModel.UIHeaderInclude)
+    {
+        Html.RenderPartialIfExist(uiModel.HeaderPartialView);
+    }
+}
+    @Html.Raw(uiModel.HeaderScript)
+<script>
+        @{
+if (SFSdotNet.Framework.My.Context.CurrentContext.Language == "es"){
+            <text>
+            //jQuery.timeago.settings.strings = { prefixAgo: "hace", prefixFromNow: "dentro de", suffixAgo: "", suffixFromNow: "", seconds: "menos de un minuto",  minute: "un minuto", minutes: "unos %d minutos", hour: "una hora", hours: "%d horas", day: "un día", days: "%d días", month: "un mes", months: "%d meses",  year: "un año", years: "%d años" };
+            </text>
+        }
+}
+</script>
+
+}
+
+

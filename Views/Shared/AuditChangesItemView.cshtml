@@ -1,0 +1,41 @@
+﻿@model List<SFSdotNet.Framework.My.HistoryPropertyChange>
+@{
+    string idChange = Request.QueryString["guidChange"].ToString().Substring(0, 8);
+}
+<tr id="change-@(idChange)-columns" class="columns-changed" >
+    <td colspan="5" class="bgTopDeg">
+        <table width="100%">
+        @*<thead>
+            <tr>
+            <td align="right" width="30%"> Campo </td>
+            <td width="35%"> Valor anterior</td>
+            <td width="35%"> Valor nuevo</td>
+
+            </tr>
+         </thead>*@
+         <tbody>
+@{
+    
+    int n = 1;
+}
+@foreach (var item in Model.Where(p => !string.IsNullOrEmpty(p.PropertyDislpayName)))
+{
+        if (item.PropertyName != "Key" && item.PropertyName != "SafeKey" && item.PropertyName != "ChangeTracker")
+        {
+            <tr clas="history-@(item.PropertyName)">
+                <td class="propertyname">@( item.PropertyDislpayName)</td>
+                <td class="oldvalue text-error"><div style=" word-wrap: break-word; max-width:400px;">@Html.Raw(item.OldValue)</div></td>
+                <td class="newvalue text-success"><div style=" word-wrap: break-word; max-width:400px;">@Html.Raw( item.NewValue)</div></td>
+            </tr>          
+    }
+    n++;
+} 
+         </tbody>
+        </table>
+    
+    </td>
+</tr>
+@*<tr id="change-@( ViewData["id"] )-columns-close">
+  <td colspan="5"  align="right"> @{ Html.RenderPartial("ButtonLink", ButtonLinkModel.GetCustomScript("Ocular cambios", 3, "hide-up", "closeColumnChanges('" + ViewData["id"] + "');")); } </td>
+  
+</tr>*@

@@ -1,0 +1,480 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.UIModel
+@using System.Linq;
+@using System.Collections.Generic;
+
+@{
+    string rowClass = "row-fluid";
+
+    string divButtons = "span10";
+
+    var uiModel = Model;
+    string colName = "span";
+    if (uiModel.UIVersion == 2)
+    {
+        colName = "col-md-";
+        rowClass = "form-group";
+    }
+    bool isWizard = false;
+    if (uiModel.WizardSteps.Count > 0)
+    {
+        isWizard = true;
+    }
+
+    string buttonsAlign = "";
+    string buttonsCol = "10";
+    if (isWizard == true)
+    {
+        buttonsAlign = "text-right";
+        buttonsCol = "12";
+    }
+
+}
+<div class="@(rowClass)">
+
+    @if (isWizard == false)
+    {
+        <div class="@(uiModel.IsMultiColumn ? colName + "1" : "")"></div>
+    }
+    
+    <div class="@(uiModel.IsMultiColumn ? colName + buttonsCol : (uiModel.UIVersion == 2 ? "col-md-6 col-md-offset-3" : "")) @(buttonsAlign)">
+@{
+    string fromFK = "";
+    if (ViewData["fk"] != null){
+        fromFK = ViewData["fk"].ToString();
+    }
+    bool isNew = false;
+    if (uiModel.IsNew != null)
+    {
+        isNew = uiModel.IsNew.Value;
+
+    }
+
+    string fkValue = "";
+    if (ViewData["fkValue"] != null){
+        fkValue = ViewData["fkValue"].ToString();
+    }
+    string safeKey = "";
+    if (ViewData["safeKey"] != null ){
+        safeKey = ViewData["safeKey"].ToString();
+    }
+    string idWindow  = "";
+    if (ViewData["idWindow"] != null)
+    {
+        idWindow = ViewData["idWindow"].ToString();
+    }
+
+    bool isPopUp = false;
+    if (ViewData["ispopup"] != null || !string.IsNullOrEmpty(Request.QueryString["popup"]))
+    {
+        isPopUp = true;
+    }
+    string idTab = "";
+    if (ViewData["idTab"] != null)
+    {
+        idTab = ViewData["idTab"].ToString();
+    }
+    SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel buttonModel = null;
+    SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel buttonReturn = null;
+
+    PropertyDefinition lastField = uiModel.Properties.Where(p => p.Order != null && p.ContextType == UIModelContextTypes.EditForm && p.IsHidden == false && p.IsNavigationPropertyMany == false).OrderByDescending(p => p.Order).FirstOrDefault();
+    int? indexBtn = null;
+    if (lastField != null && lastField.Order != null )
+    {
+        indexBtn = lastField.Order;
+    }
+    System.Text.StringBuilder extraParams = new System.Text.StringBuilder();
+
+    if (uiModel.Actions.Count > 0 && uiModel.ContextType == SFSdotNet.Framework.Web.Mvc.Models.UIModelContextTypes.DisplayForm)
+    {
+        string idString = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "id");
+
+        if (Request.QueryString["dec"] != "true")
+        {
+            ViewData["ObjectKey"] = SFSdotNet.Framework.Entities.Utils.GetPropertyKey(idString.Replace("-", "/"), null);
+
+        }
+        else
+        {
+            ViewData["ObjectKey"] = idString;
+
+        }
+
+        //ViewData["FootActionsVisible"] = true;
+        if(uiModel.Actions.Where(p=>p.VisibleOrder > 0).Count() > 0)
+        {
+            uiModel.ActionButtons.AddRange(uiModel.Actions);
+            //ViewData["FootActionsVisible"] = true;
+        }
+
+        uiModel.Actions.Where(p=> p.VisibleOrder == null ).ToList().ForEach(p=> p.VisibleOrder = -1 );
+       @Html.Partial("CustomActionsView");
+    }
+    string key = "";
+    string classButtons = "onlysel";
+
+    bool popupProxyShowed = false;
+    bool visibleFoot = false;
+
+
+
+    string onCloseFunction = "onUpdateListData";
+    if (ViewData["idTab"] != null)
+    {
+        idTab = ViewData["idTab"].ToString();
+    }
+
+    if (((UIModel)ViewData["UIModel"]).ContextType == UIModelContextTypes.DisplayForm)
+    {
+
+        classButtons = "";
+
+        if (ViewData["onCloseActionWindow"] != null)
+        {
+            onCloseFunction = (string)ViewData["onCloseActionWindow"];
+        }
+        if (ViewData["ObjectKey"] != null)
+        {
+            key = (string)ViewData["ObjectKey"];
+        }
+    }
+    foreach (var action in uiModel.ActionButtons.Where(p => p.VisibleOrder > 0 && (p.ActionKey != "return" && p.ActionKey != "c" && p.ActionKey != "cancel" && p.ActionKey != "d" && p.ActionKey != "u")))
+    {
+        if (action.Priority == 1)
+        {
+            classButtons = "btn btn-primary ";
+        }else if(action.Priority == 2)
+        {
+            classButtons = "btn btn-default ";
+
+        }
+        string url = VirtualPathUtility.ToAbsolute("~/") + "Messages/Confirm";
+        if (!string.IsNullOrEmpty(action.Url))
+        {
+            if (action.Url.StartsWith("~/"))
+            {
+                url = VirtualPathUtility.ToAbsolute("~/") + action.Url.Replace("~/", "");
+            }
+            else
+            {
+                url = action.Url;
+            }
+            if (!url.Contains("?"))
+            {
+                url = url + "?";
+            }
+            if (!url.Contains("popup"))
+            {
+                url = url + "&popup=true";
+            }
+            //  if (!string.IsNullOrEmpty(usemode))
+            //{
+            //    url = url + "&usemode=" + usemode;
+            //}
+            if (!url.Contains("actionId"))
+            {
+                url = url + "&actionId=" + action.ActionKey + idTab;
+            }
+            //string lastActionExecutedJsVar = action.ActionKey + idTab + "IsExecuted";
+
+            //url = url + "&lastActionExecuted=" + lastActionExecutedJsVar;
+        }
+
+        System.Text.StringBuilder sbParams = new System.Text.StringBuilder();
+        foreach (var qParam in action.QueryStringParams)
+        {
+            if (sbParams.Length > 0)
+            {
+                sbParams.Append(" ");
+            }
+            sbParams.Append("data-param-" + qParam + "=" + Request.QueryString[qParam]);
+        }
+
+
+
+        string simpleLink = "";
+        if (action.IsPopUp == false && action.PreventAjax == true)
+        {
+            simpleLink = " withConfirm=\"false\"  ajax=\"false\" ";
+        }
+
+        <a @Html.Raw(simpleLink) @(sbParams.ToString()) href="javascript: void(0);" confirmmessage="" id="action@(action.ActionKey)@(idTab)" onclick="CustomAction(this, '@url','@idTab','@key');" class="@(classButtons)  @(uiModel.IsMiniContainer? "btn-mini":"") item-custom-action @(action.ActionKey)" controllername="@uiModel.ControllerName" clientFuntionOnFinish="@(action.ClientFunctionOnFinish)" isbackground="@(action.IsBackground.ToString().ToLower())" usemode="@(uiModel.UseMode)" actionkey="@(action.ActionKey)"><i class="@(action.IconType)"></i> @action.Title </a>
+    }
+    SFSdotNet.Framework.Web.Mvc.Models.ActionModel updateAction = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "u");
+    if (updateAction != null)
+    {
+        updateAction.Url = updateAction.Url + "&" + extraParams.ToString();
+    }
+    if (Model.ContextType == SFSdotNet.Framework.Web.Mvc.Models.UIModelContextTypes.DisplayForm)
+    {
+        if (ViewData["ispopup"] != null || uiModel.IsPartialView == true)
+        { //Es popup
+            if (updateAction != null)
+            {
+                if (uiModel.CanAction("u"))
+                {
+
+                    //buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(uiModel.ActionButtons.First(p=>p.ActionKey =="u").Title, 1, "edit", VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secUsers/EditViewGen/" + safeKey + "?popup=1&usemode=" + Request.QueryString["usemode"] + "&fk=" + fromFK + "&fkValue=" + fkValue + "", idWindow);
+                    buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(updateAction.Title, 1, "edit", updateAction.Url, idWindow);
+                    buttonModel.Id = idWindow + "_EditButton";
+                    buttonModel.TabIndex = indexBtn;
+                    Html.RenderPartial("ButtonLink", buttonModel);
+                }
+            }
+            Html.Raw("&nbsp;&nbsp;");
+            var closeButton = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp();
+            var actionReturn = uiModel.ActionButtons.FirstOrDefault(p=> p.ActionKey == "return");
+            if (actionReturn != null && !string.IsNullOrEmpty(actionReturn.Title ))
+            {
+                closeButton.Text = actionReturn.Title;
+            }
+            closeButton.Id = "returnLink" + idWindow;
+            Html.RenderPartial("ButtonLink", closeButton);
+        }
+        else
+        { // no es popup
+            if (updateAction != null)
+            {
+                if (uiModel.CanAction("u"))
+                {
+                    //buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(updateAction.Title, 1, "edit", VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secUsers/EditGen/" + safeKey + "?" + extraParams.ToString());
+                    buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(updateAction.Title, 1, "edit", updateAction.Url);
+                    buttonModel.Id = idWindow + "_EditButton";
+                    buttonModel.TabIndex = indexBtn;
+
+                    Html.RenderPartial("ButtonLink", buttonModel);
+                }
+            }
+            Html.Raw("&nbsp;&nbsp;");
+
+            if (uiModel.CanAction("return"))
+            {
+                var actionReturn = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "return");
+                if (actionReturn != null)
+                {
+                    buttonReturn = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(actionReturn.Title, 3, "return", actionReturn.Url);
+                    buttonReturn.Id = "returnLink" + idWindow;
+                    Html.RenderPartial("ButtonLink", buttonReturn);
+
+                }
+            }
+
+        }
+    }
+    else if (Model.ContextType == SFSdotNet.Framework.Web.Mvc.Models.UIModelContextTypes.EditForm)
+    {
+
+        if (isWizard == true)
+        {
+            <text>
+                <a href="" class="btn btn-default" id="wizardBackBtn">Atrás</a>
+                <a href="" class="btn btn-primary" id="wizardNextBtn">Siguiente</a>
+        
+                <script>
+
+                    $("#wizardNextBtn").click(function (e) {
+                        e.preventDefault();
+                        
+                    });
+
+                </script>  
+          </text>
+        }
+
+        buttonModel = null;
+        if (ViewData["ispopup"] != null)
+        {
+            if ((uiModel.CanAction("u") && !isNew) || (uiModel.CanAction("c") && isNew))
+            {
+                string text = isNew ? uiModel.ActionButtons.First(p => p.ActionKey == "c").Title : uiModel.ActionButtons.First(p => p.ActionKey == "u").Title;
+
+                buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetSave();
+                buttonModel.Text = text;
+                buttonModel.TabIndex = indexBtn;
+
+                Html.RenderPartial("ButtonLink", buttonModel);
+
+            }
+
+            if (uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "return").IsButtonReplaced)
+            {
+                Html.RenderPartial("ButtonLink", uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "return").GetButton());
+            }
+            else
+            {
+
+                if (isNew)
+                {
+                    Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
+
+                }
+                else
+                {
+                    Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
+
+                    // Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(GlobalMessages.CANCEL, 2, "cancel", VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secUsers/DetailsViewGen/" + safeKey + "?popup=1&fk=" + fromFK + "&fkValue=" + fkValue + "", idWindow));
+
+                }
+            }
+        }
+        else
+        {
+            buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetSave();
+            var actionButtonCreate = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "c");
+            var actionButtonUpdate = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "u");
+            if (isNew && actionButtonCreate != null)
+            {
+                buttonModel.Text = actionButtonCreate.Title;
+            }
+            if (isNew == false && actionButtonUpdate != null)
+            {
+
+                buttonModel.Text = actionButtonUpdate.Title;
+            }
+            buttonModel.TabIndex = indexBtn;
+            Html.RenderPartial("ButtonLink", buttonModel);
+
+            var returnBtn = uiModel.ActionButtons.Find(p => p.ActionKey == "return");
+            if (returnBtn != null && returnBtn.Enabled == true)
+            {
+                if (isPopUp == true)
+                {
+                    Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
+
+                }
+                else
+                {
+                    Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(GlobalMessages.CANCEL, 2, "cancel", returnBtn.Url, true));
+
+                }
+            }
+        }
+
+
+        if (uiModel.ShowAutoSave)
+        {
+            string _checked = "";
+            if (ViewData["__continue"] != null)
+            {
+                if ((bool)ViewData["__continue"] == true)
+                {
+                    _checked = "checked='checked'";
+                }
+
+            }
+
+
+<div style="display:inline" id="autosaveoption">    <input type="checkbox"  id="Checkbox1" @(_checked) name="__continue" value="true" /> @(GlobalMessages.SAVE_AND_CONTINUE_EDITING)</div>
+<div id="autosaveresult">
+<span id="iconresult"></span><span id="messageresult" ></span>
+</div>
+
+            if (!isNew)
+            {
+            <text>
+            @*<script>
+            $(document).ready(function () {
+                /* This section is CKEditor specific.
+                It just updates the HTML fields to whatever
+                content is in the CKEditor field.*/
+
+                $("#autosaveresult").hide();
+		        if (typeof(CKEDITOR) != 'undefined'){
+                    for (var name in CKEDITOR.instances) {
+                        CKEDITOR.instances[name].on("instanceReady", function () {
+                            // Set keyup event
+                            this.document.on("keyup", updateValue);
+                            // Set paste event
+                            this.document.on("paste", updateValue);
+                        });
+
+                        function updateValue() {
+                            CKEDITOR.instances[name].updateElement();
+                            $(".form textarea").trigger("keyup");
+                        }
+                    }
+		        }
+                /* This is the complete jQuery code for autosave.
+                setTimeout() is called every 5 minutes while
+                the inner function checks that the last save
+                was at least 5 minutes ago before deciding
+                to save.
+                */
+                var lastSaveTime = 0;
+                var currentTime = 0;
+                // Edit chapter
+                $("#@(idWindow)").keyup(function () {
+                    $(".autosaved_msg").hide();
+                    window.setTimeout(
+                        function () {
+                            currentTime = new Date().getTime();
+                            if ((currentTime - lastSaveTime) > 60000 || lastSaveTime == 0) {
+                                $.post("@VirtualPathUtility.ToAbsolute("~")SFSdotNetFrameworkSecurity/@(this.Request.RequestContext.RouteData.Values["controller"])/@(Model.ActionName)?autosave=1", $("#@(idWindow)").serialize(),
+                                    function (response, status) {
+                                        /* "1" is the response value I chose to return
+                                        upon a successful save.
+                                        */
+                                        var currentdate = new Date();
+                                        if (response == "ok" && status == "success") {
+                                            $("#autosaveresult").show();
+                                            $("#@(idWindow) #autosaveresult #iconresult, #@(idWindow) #autosaveresult #messageresult").removeClass("error");
+                                            $("#@(idWindow) #autosaveresult #iconresult, #@(idWindow) #autosaveresult #messageresult").addClass("ok");
+                                            $("#@(idWindow) #autosaveresult #messageresult").text("Se han guardado los cambios a las " + currentdate.getHours().toString() + ":" + currentdate.getMinutes().toString() + ":" + currentdate.getSeconds().toString());
+                                        } else {
+                                            $("#autosaveresult").show();
+                                            $("#@(idWindow) #autosaveresult #iconresult, #@(idWindow) #autosaveresult #messageresult").removeClass("ok");
+                                            $("#@(idWindow) #autosaveresult #iconresult, #@(idWindow) #autosaveresult #messageresult").addClass("error");
+                                            $("#@(idWindow) #autosaveresult #messageresult").text("NO se han guardado los cambios a las " + currentdate.getHours().toString() + ":" + currentdate.getMinutes().toString() + ":" + currentdate.getSeconds().toString());
+
+                                        }
+                                    }
+                                );
+                                lastSaveTime = new Date().getTime();
+                            }
+                        },
+                        60000
+                     );
+                 });
+            });
+</script>*@
+    </text>
+            }
+        }
+
+    }
+
+    @*foreach (var actionBtn in uiModel.ActionButtons.Where(p => p.ActionKey != "c" && p.ActionKey != "d" && p.ActionKey != "u" && p.ActionKey != "return" && p.ActionKey != "export-list"))
+    {
+        if (!string.IsNullOrEmpty(actionBtn.Url)) { 
+            @Html.Raw("&nbsp;");
+    
+            SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel btnX = new ButtonLinkModel();
+            btnX.Text = actionBtn.Title;
+            btnX.Link = actionBtn.Url;
+        
+            btnX.Priority = actionBtn.Priority;
+        
+            Html.RenderPartial("ButtonLink", btnX);
+        }
+    }*@
+
+}
+@if (!uiModel.IsMultiColumn && isPopUp && Model.ContextType == SFSdotNet.Framework.Web.Mvc.Models.UIModelContextTypes.DisplayForm)
+{
+
+    <a style="position: relative;top: 8px;float: right;" href="@Request.Url.ToString().Replace("DetailsViewGen", "DetailsGen").Replace("popup=true", "")" target="_blank"><i class="icon-share-alt"></i></a>
+
+}
+        </div>
+    @if (uiModel.IsMultiColumn) { 
+    <div class="@(uiModel.IsMultiColumn ? "span1" : "")">
+        @if (Model.ContextType == SFSdotNet.Framework.Web.Mvc.Models.UIModelContextTypes.DisplayForm)
+        {
+
+            if (isPopUp)
+            {
+                <a href="@Request.Url.ToString().Replace("DetailsViewGen", "DetailsGen").Replace("popup=true", "")" target="_blank"><i class="icon-share-alt"></i></a>
+            }
+        }
+    </div>
+    }
+</div>

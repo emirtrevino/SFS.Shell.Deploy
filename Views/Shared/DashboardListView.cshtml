@@ -1,0 +1,116 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.DashboardItem
+@{
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+
+    string tabOnShowEvent = "shown";
+    if (uiModel != null && uiModel.UIVersion == 2)
+    {
+        tabOnShowEvent = "shown.bs.tab";
+    }
+
+    if (!string.IsNullOrEmpty(Model.UrlContent )){
+    <text>
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+
+            url: "@Html.Raw(Model.UrlContent)",
+            dataType: "html",
+            cache: false,
+            success: function (data) {
+                $("#@Model.Id").html(data);
+            }
+        });
+
+    });
+   
+</script>
+
+<div id="@Model.Id"></div>
+ </text>
+    }
+    else if (Model.Lists.Count() > 0)
+    {
+        <ul class="nav nav-tabs" id="tabs@(Model.Id)">
+        @foreach (var list in Model.Lists)
+        {
+            
+            <li><a href="#menuAuto_@(list.Id)" id="listTab@(list.Id)" url="@(list.UrlView)@((list.UrlView.Contains("?") ? "": "?"))&dashboard=1&defPopup=1&es=true&pag=7&idTab=@(list.Id)" data-toggle="tab">@Html.Raw(list.Title)</a></li>
+        }
+        @if (Model.Lists.Count(p => p.UrlCatalog != null) > 0)
+        {
+                <li class=" pull-right"><a href="#" class="btn" id="btnAdd@(Model.Id)"><i class=" icon-plus "></i></a></li>
+        }
+
+
+       </ul>
+        <div id="tabs@(Model.Id)" class="tab-content">
+        @foreach (var list in Model.Lists)
+        {
+            
+              <div class="tab-pane fade" id="menuAuto_@(list.Id)">
+                <div class="preloader-big"></div>
+              </div>
+        }
+        </div>
+    
+    
+        <text>
+<script>
+    function setButtonAdd@(Model.Id)(jqElement) {
+        $("#btnAdd@(Model.Id)").unbind("click");
+        $("#btnAdd@(Model.Id)").bind("click", function (e) {
+            e.preventDefault();
+            if (jqElement.length > 0) {
+                //alert(jqElement.attr("id"));
+                jqElement[0].click();
+            }
+        });
+    }
+    var tabsOpened@(Model.Id) = new Array();
+    $(document).ready(function () {
+        @if (Model.Lists.Count > 0){
+            <text>
+        setTimeout(function myfunction() {
+            $("#listTab@(Model.Lists[0].Id)")[0].click();
+
+        }, 2000);
+            </text>
+        }
+        $('#tabs@(Model.Id)').bind('@(tabOnShowEvent)', function (e) {
+            var now_tab = e.target;
+
+            if ($(now_tab).attr('url') != null) {
+
+                var link = $(now_tab).attr('url');
+                var div = $(now_tab).attr('href').substr(1);
+                setButtonAdd@(Model.Id)($("#" + div).find(".buttons .add"));
+                if (tabsOpened@(Model.Id)[div] != true) {
+                    tabsOpened@(Model.Id)[div] = true;
+                    $.ajax({
+
+                        url: link,
+                        dataType: "html",
+                        cache: false,
+                        success: function (data) {
+                            $("#" + div).html(data);
+                            //setTimeout(function () {
+
+                            setButtonAdd@(Model.Id)($("#" + div).find(".buttons .add"));
+
+                            //}, 2000);
+                           
+                        }
+                    });
+                }
+            }else{
+				
+			}
+        });
+    });
+    </script>
+        </text>
+    }
+}

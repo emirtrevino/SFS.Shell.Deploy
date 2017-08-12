@@ -1,0 +1,94 @@
+﻿@{
+    List<SFSdotNet.Framework.Security.BusinessObjects.secUser> users = (List<SFSdotNet.Framework.Security.BusinessObjects.secUser>)ViewData["users"];
+    int currentPage = 1;
+    if (!string.IsNullOrEmpty(Request.QueryString["page"]))
+    {
+        currentPage = int.Parse(Request.QueryString["page"]);
+    }
+}
+
+
+<div class="row-fluid">
+    <div class="page-header">
+        <h1>Usuarios de plataforma</h1>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12 text-right">
+        @if (currentPage > 1)
+        {
+
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Users?"))&q=@(Request.QueryString["q"])&page=@(currentPage - 1)">< Anterior </a>
+        }
+        |
+        @if (ViewBag.MorePages == true)
+        {
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Users?"))&q=@(Request.QueryString["q"])&page=@(currentPage + 1)">Siguiente ></a>
+
+        }
+
+    </div>
+</div>
+@foreach (var user in users)
+{
+    bool split = false;
+    string urlUser = VirtualPathUtility.ToAbsolute("~/") + "User/" + user.UserName;
+    if (user.UserName != null && user.UserName.Contains("@"))
+    {
+        urlUser = VirtualPathUtility.ToAbsolute("~/") + "User/" + user.UserId.ToString();
+    }
+
+    string nameDisplay = user.DisplayName;
+    if (string.IsNullOrEmpty(nameDisplay))
+    {
+       nameDisplay = user.FirstName + " " + user.LastName;
+       split = true;     
+    }
+    if (nameDisplay.Length < 2)
+    {
+        nameDisplay = user.UserName;
+        if (nameDisplay.Contains("@"))
+        {
+            nameDisplay = nameDisplay.Split(char.Parse("@"))[0]; 
+        }
+        
+    }
+    if (split == true)
+    {
+        nameDisplay = nameDisplay.Substring(0, nameDisplay.Length / 2) + "...";
+    }
+    <div class="row-fluid">
+        <div class="span2">
+            <a href="@(urlUser)"></a>
+        </div>
+        <div class="span10">
+            <h2><a href="@(urlUser)"></a></h2>
+        </div>
+    </div>
+    
+}
+
+
+<div class="row-fluid">
+    <div class="span12 text-right">
+        @if (currentPage > 1)
+        {
+
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Users?"))&q=@(Request.QueryString["q"])&page=@(currentPage - 1)">< Anterior </a>
+        }
+        |
+        @if (ViewBag.MorePages == true)
+        {
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Users?"))&q=@(Request.QueryString["q"])&page=@(currentPage + 1)">Siguiente ></a>
+
+        }
+
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12 space-contents" style=""></div>
+</div>
+
+

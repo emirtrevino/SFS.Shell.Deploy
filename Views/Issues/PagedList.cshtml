@@ -1,0 +1,323 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.VisualContentPage
+@{
+    Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+    int currentPage = 1;
+    if (!string.IsNullOrEmpty(Request.QueryString["page"]))
+    {
+        currentPage = int.Parse(Request.QueryString["page"]);
+    }
+    
+    bool viewEdit = false;
+    bool canEdit = (bool)ViewData["canEdit"];
+    bool showItem = true;
+    if (Request.QueryString["viewEdit"] == "true" && canEdit)
+    {
+        viewEdit = true;
+    }
+    string createoredit = GlobalMessages.MODIFY_CONTENT;
+    string actionCreateOrEdit = "Edit";
+    string extraparams = "";
+}
+@{
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+}
+@section Title{
+	@Model.Title 
+}
+
+<div class="row-fluid">
+<div class="page-header">
+<h1> @Html.Raw(ViewBag.ComposedTitle)</h1>
+</div>
+    </div>
+
+@{
+    int from = 0;
+
+    int to = 0;
+
+    int page = (int)ViewData["page"];
+    int pageSize = (int)ViewData["pageSize"];
+    int nResults = (int)ViewData["nResults"];
+    //to = (page * (nResults / pageSize));
+    int totalPages = (nResults / pageSize);
+
+    int lastResultsAfterLastPage = (nResults - (totalPages * pageSize));
+    if (lastResultsAfterLastPage > 0)
+    {
+        totalPages += 1;
+    }
+    to = page * pageSize;
+    if (to > nResults)
+    {
+        to = nResults;
+    }
+    if (page > 1){
+        from = (pageSize * page) - (pageSize - 1);
+    }else{
+        from = 1;
+        to = 1 + (pageSize - 1);
+    }
+    
+    int? prev = null;
+    int? next = null;
+    
+    if (page == 1){
+        prev = null ;
+    }else{
+        prev = page -1;
+    }
+
+    if (ViewBag.MorePages == false)
+    {
+        next = null ;
+    }else{
+        next = page + 1;
+    }
+   
+    string type = (string)ViewData["type"];
+    
+    
+    }
+
+<div class="row-fluid">
+    <div class="span4">
+@if (type !=  "error-system"){
+        <div style="margin-bottom:20px;">
+        <a class="btn btn-small btn-primary" href="@(VirtualPathUtility.ToAbsolute("~/"))Issues/Create?ReturnAfter=@(HttpUtility.UrlEncode(Request.Url.ToString()))&moduleKey=@(module!=null?module.ModuleKey:"")&type=@(type)">Publicar nuevo </a>
+    </div>
+} 
+        </div>
+
+    <div class="span8 text-right type-issues-nav">
+        @{
+            string tagFeature = "a";
+            string tagErrorUser = "a";
+            string tagErrorSystem = "a";
+            if (type== "feature"){
+                tagFeature = "span";
+            }
+            if (type == "error-user")
+            {
+                tagErrorUser = "span";
+            }
+            if (type == "error-system")
+            {
+                tagErrorSystem = "span";
+            }
+            
+            }
+        <@tagFeature href="@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/Issues/"))"  class="feature">Mejoras y cambios</@tagFeature> <@tagErrorUser href="@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/Issues/?type=error-user"))" class="error-user"> Defectos por usuario</@tagErrorUser>   <@tagErrorSystem href="@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/Issues/?type=error-system"))" class="error-system"> Errores del sistema</@tagErrorSystem> 
+        </div>
+</div>
+        
+<div class="row-fluid"  style="margin-bottom:20px;">
+    <div class=" span6">
+        <div class="btn-group">
+            <a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
+                @if (Request.QueryString["status"] == "closed")
+                {
+                    <span>Cerrados</span>
+                }
+                else if (Request.QueryString["status"] == "rejected")
+                {
+                    <span>Rechazados</span>
+                }
+                else if (Request.QueryString["status"] == "pending")
+                {
+                    <span>Pendientes</span>
+                }
+                else
+                {
+                    <span>Todos</span>
+                }
+
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues?app=@(Request.QueryString["app"])&status=closed&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&orderBy=@(Request.QueryString["orderBy"])">Solo resueltos</a></li>
+                <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues?app=@(Request.QueryString["app"])&status=rejected&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&orderBy=@(Request.QueryString["orderBy"])">Cerrados no aceptados</a></li>
+                <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues?app=@(Request.QueryString["app"])&status=pending&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&orderBy=@(Request.QueryString["orderBy"])">Pendientes</a></li>
+
+            </ul>
+        </div>
+         <div class="btn-group">
+            <a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
+@if (Request.QueryString["orderBy"] == "CreatedDate")
+{
+                <span>Por fecha</span>
+}
+else
+{
+    <span>Por importancia</span>
+
+}
+                <span class="caret"></span>
+            </a>
+              <ul class="dropdown-menu">
+                  <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues?app=@(Request.QueryString["app"])&status=@(Request.QueryString["status"])&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&orderBy=CreatedDate">Ordenar por fecha</a></li>
+                  <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues?app=@(Request.QueryString["app"])&status=@(Request.QueryString["status"])&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&orderBy=Priority">Ordenar por importancia</a></li>
+</ul>
+             </div>
+    </div>
+    <div class="span6 text-right">
+       
+        @if (currentPage > 1)
+        {
+
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Issues?"))app=@(Request.QueryString["app"])&status=@(Request.QueryString["status"])&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&page=@(currentPage - 1)">< Anterior </a>
+        }
+        |
+        @if (ViewBag.MorePages == true)
+        {
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Issues?"))&app=@(Request.QueryString["app"])&status=@(Request.QueryString["status"])&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&page=@(currentPage + 1)">Siguiente ></a>
+
+        }
+
+    </div>
+</div>
+
+<div class="row-fluid">
+
+    <div class="span12 issues">
+@foreach (var content in Model.Contents)
+{
+    string titleVotes = "";
+    string typeIssue = "feature";
+    if (content.ContentTypeKey == "error-system") {
+        typeIssue = "error-system";
+        titleVotes = "";
+         
+    }
+    
+    string pl = "less";
+    if (content.Priority > 0) {
+        pl = "plus";
+    }
+      
+      
+    
+<table style="width:100%" class="item @(content.Closed ? "": "error-user")">
+    <tr><td style="width:80px; vertical-align:top;padding-right:20px;">
+
+    <table class="issue-weight @typeIssue">    
+       @* <tr>
+            <td class="issue-weight-num">@(content.IdContent)</td>
+        </tr>*@
+       
+        <tr>
+            @if (content.Closed == true)
+            {
+                <td class="issue-weight-value  @pl" style="border-bottom-width:0px;border-bottom-style:none">&#10004;</td>
+
+            }
+            else
+            {
+                string class1 = "";
+                if (content.Priority > 0)
+                {
+                    pl = "";
+                    class1 = "amount";
+                }
+                <td class="issue-weight-value @class1 @pl"  >@content.Priority</td>
+
+            }
+        </tr>
+         <tr>
+            <td class="issue-weight-title"> @titleVotes</td>
+        </tr>
+    </table>
+
+</td>
+<td>
+      
+   
+   
+  
+    <div class="title"><h2><span style="display:inline;font-size:large" class="label">#@(content.IdContent.ToString())</span> <a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues/Id/@(content.IdContent)?type=@type"> @content.Title</a></h2></div>
+        <div class="publish-data issue-labels">
+@{
+    string moduleKey = "SFSdotNetFrameworkSecurity";
+    var moduleKeyPar = content.NameValues.FirstOrDefault(p=>p.Name == "ModuleKey");
+    if (moduleKeyPar != null && moduleKeyPar.Value != null)
+    {
+        moduleKey = moduleKeyPar.Value.ToString();
+    }
+    
+    if (string.IsNullOrEmpty(content.ModuleName))
+    {
+        content.ModuleName = "";
+    }
+
+    if (content.UserDisplayName == null)
+    {
+        content.UserDisplayName = "";
+    }
+}
+
+@if (content.ContentTypeKey != "error-system"){
+    <text>
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Issues?"))&app=@(moduleKey)&type=@(Request.QueryString["type"])"><img src="@(VirtualPathUtility.ToAbsolute("~/") + moduleKey)/Content/img/logo-32.png" /></a> <a href="@(VirtualPathUtility.ToAbsolute("~/Issues?"))&app=@(moduleKey)&type=@(Request.QueryString["type"])"> @(content.ModuleName) </a> @GlobalMessages.BY <strong>@content.UserDisplayName</strong>, &nbsp;&nbsp; <time class='timeago' title='@(content.PublishedDate != null ? content.PublishedDate.Value.ToString("s"): "")Z' datetime='@(content.PublishedDate != null ? content.PublishedDate.Value.ToString("s"):"")'></time> 
+    </text>
+}else{
+    <text>
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Issues?"))&app=@(moduleKey)&type=@(Request.QueryString["type"])"><img src="@(VirtualPathUtility.ToAbsolute("~/") + moduleKey)/Content/img/logo-32.png" /></a> Generado automáticamente &nbsp;&nbsp; <time class='timeago' title='@(content.PublishedDate.Value.ToString("s"))Z' datetime='@(content.PublishedDate.Value.ToString("s"))'></time> @GlobalMessages.LAST_TIME &nbsp;&nbsp; <strong><time class='timeago' title='@(content.LastChange.ToString("s"))Z' datetime='@(content.LastChange.ToString("s"))'></time></strong> 
+    </text>
+}
+        </div>
+
+   
+
+       
+       
+   </td></tr>
+    </table>@*
+    
+    
+      <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line"></hr>
+
+        </div>
+         </div>*@
+    
+    
+}
+</div>
+    </div>
+
+<div class="row-fluid">
+    <div class="span12 text-right">
+        @if (currentPage > 1)
+        {
+
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Issues?"))&app=@(Request.QueryString["app"])&status=@(Request.QueryString["status"])&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&page=@(currentPage - 1)">< Anterior </a>
+        }
+        |
+        @if (ViewBag.MorePages == true)
+        {
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Issues?"))&app=@(Request.QueryString["app"])&status=@(Request.QueryString["status"])&type=@(Request.QueryString["type"])&q=@(Request.QueryString["q"])&page=@(currentPage + 1)">Siguiente ></a>
+
+        }
+
+    </div>
+</div>
+@if (canEdit ){
+    <div class="row-fluid">
+        <div class="span12 text-center">
+@if (Request.QueryString["viewEdit"] == "true") {
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Updates/@(module != null? module.ModuleKey:"")?type=@(type)"> <i class="icon-pencil "></i> Salir de modo edición </a>
+
+}else{
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Updates/@(module != null? module.ModuleKey:"")?type=@(type)&viewEdit=true"> <i class="icon-pencil "></i> Ver modo edición</a>
+
+}
+            </div>
+        </div>
+}    
+
+<script>
+    $(document).ready(function () {
+        $('.timeago').timeago();
+    });
+</script>

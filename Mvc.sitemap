@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 ../MvcSiteMapProvider/Xml/MvcSiteMapSchema.xsd">
+
+  <!-- NOTE: If you copy this into your project, be sure to update the schema location to point to your 
+    local MvcSiteMapProvider.xsd file, as shown here.
+  <mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+  -->
+
+  <mvcSiteMapNode title="$resources:SiteMapLocalizations,HOME" key="_Home"  controller="Home" action="Index" >
+    <!--Root-->
+    <mvcSiteMapNode title="$resources:SiteMapLocalizations,ALL_APPS" key="allapps"  controller="Home" action="AllApps" >
+      <mvcSiteMapNode title="$resources:SiteMapLocalizations,MY_APPS" key="myapps" controller="Home" action="MyApps" />
+
+    </mvcSiteMapNode>
+      <mvcSiteMapNode title="$resources:SiteMapLocalizations,LOGIN" controller="Public" area="SFSdotNetFrameworkSecurity" action="Login" />
+      <mvcSiteMapNode title="$resources:SiteMapLocalizations,REGISTER" controller="Public" area="SFSdotNetFrameworkSecurity" action="Register" />
+
+    <mvcSiteMapNode title="$resources:SiteMapLocalizations,MY_ACCOUNT" key="MyAccountRoot" id="MyAccountRoot"  controller="Navigation" action="Index" >
+
+    </mvcSiteMapNode>
+    
+
+    <mvcSiteMapNode title="$resources:SiteMapLocalizations,MY_SYSTEMS" key="mysystems" id="mysystems" controller="Navigation" action="Index" >
+      <mvcSiteMapNode title="afdsf"  key="DynamicMenuModules" dynamicNodeProvider="SFSdotNet.Framework.Web.Mvc.AreasNodes, SFSdotNet.Framework.Web.Mvc" />
+
+    </mvcSiteMapNode>
+    <!--<mvcSiteMapNode title="$resources:SiteMapLocalizations,MY_COMMUNITY" key="PublicArea4"  id="PublicArea4" controller="Navigation" >
+      <mvcSiteMapNode title="Test sdf" controller="Publicsfsdfsfsdgfs" />
+
+    </mvcSiteMapNode>-->
+      <!--root-->
+
+  </mvcSiteMapNode>
+  
+</mvcSiteMap>

@@ -1,0 +1,95 @@
+﻿@{
+    string value = "";
+
+    PropertyDefinition property = (PropertyDefinition)ViewData["currentProperty"];
+    SFSdotNet.Framework.Web.Mvc.Models.UIModel uiModel = (SFSdotNet.Framework.Web.Mvc.Models.UIModel)ViewData["uiModel"];
+<<<<<<< local
+
+    if (property.CustomProperties.Count > 0)
+    {
+        if (property.CustomProperties.FirstOrDefault(p => p.Name == "ReusableCatalogKey") != null || property.CustomProperties.FirstOrDefault(p => p.Name == "WithNameKey") != null)
+        {
+            if (Model != null)
+            {
+=======
+
+    if (property.CustomProperties.Count > 0){
+        if (property.CustomProperties.FirstOrDefault(p=>p.Name == "ReusableCatalogKey") != null || property.CustomProperties.FirstOrDefault(p => p.Name == "WithNameKey") != null )
+        {
+            if (Model != null ){
+>>>>>>> other
+                string safename = property.PropertyName;
+                if (property.IsNavigationProperty)
+                {
+                    safename = "Fk" + property.PropertyName;
+                }
+                var modelValue = Model.GetType().GetProperty(safename).GetValue(Model, null);
+                if (modelValue != null)
+                {
+                    value = modelValue.ToString();
+
+                }
+            }
+            <text>
+                <script>
+                    var value_@(property.PropertyName) = "@(value)";
+                    $("#Fk@(property.PropertyName) option").each(function () {
+                        if ($(this).attr("value").length > 0) {
+                            if ($(this).attr("value").contains("|")) {
+                                var id = $(this).attr("value").split("|")[0];
+                                var nameKey = $(this).attr("value").split("|")[1];
+                                $(this).attr("value", id);
+                                $(this).attr("nameKey", nameKey);
+
+
+                            }
+                        }
+
+                    });
+
+                    if (value_@(property.PropertyName) != "") {
+                        $("#Fk@(property.PropertyName)").val(value_@(property.PropertyName));
+                    }
+
+                </script>
+
+            </text>
+
+        }
+    }
+
+    string requiredAttributes = "";
+    string regExAttributes = "";
+    string remoteAttributes = "";
+
+    //System.Text.StringBuilder sbVal = new System.Text.StringBuilder();
+    var atts = Html.GetUnobtrusiveValidationAttributes(property.PropertyName, this.ViewData.ModelMetadata);
+    bool isRequiredAtt = false;
+    if (property != null)
+    {
+        foreach (var att in atts)
+        {
+            if (att.Key == "data-val-required=")
+            {
+                isRequiredAtt = true;
+            }
+            // sbVal.Append(att.Key + "=\"" + HttpUtility.HtmlEncode(att.Value) + "\"");
+        }
+
+
+        if (property.IsRequired == true && isRequiredAtt == false)
+        {
+            <text>
+                <script>
+    //$(document).ready(function () {
+                $("#Fk@(property.PropertyName)").attr("data-val", "true");
+        $("#Fk@(property.PropertyName)").attr("data-val-required", "@(string.Format(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.THE_FIELD_IS_REQUIRED, property.PropertyDisplayName))");
+
+           //     });
+                </script>
+            </text>
+        }
+    }
+
+}
+

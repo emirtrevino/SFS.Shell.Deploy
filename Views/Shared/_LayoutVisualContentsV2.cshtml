@@ -1,0 +1,969 @@
+﻿<!doctype html>
+<!--[if lt IE 7]><html lang="en" class="no-js ie6"><![endif]-->
+<!--[if IE 7]><html lang="en" class="no-js ie7"><![endif]-->
+<!--[if IE 8]><html lang="en" class="no-js ie8"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="google-translate-customization" content="9da77907336bb19b-1638141f26b3b78e-g98d68b5fcd02a875-d" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+ <!--testsss-->
+@if (Request.Url.PathAndQuery == "/es-mx")
+{
+< META HTTP - EQUIV = "Refresh" CONTENT = "0; URL=@(VirtualPathUtility.ToAbsolute("~/ "))SFSGEPPPedidos" >
+}
+
+@if(Request.QueryString["type"] == "error-system")
+    {
+        < meta name = "robots" content = "noindex" >
+
+
+           < meta name = "googlebot" content = "noindex" >
+    }
+    @*<title>@RenderSection("Title", false)</title>*@
+
+    <title>@RenderSection("Title", false)</title>
+    <!--WE543-->
+    @{
+        string area = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "area");
+        UIModel uiModel = (UIModel)ViewData["uiModel"];
+        bool isDetailsOrEdit = false;
+        bool hideBrand = false;
+        SFSdotNet.Framework.Security.BusinessObjects.secCompanyModule companyModule = SFSdotNet.Framework.Web.Utils.GetDomainCompany(this.Request.RequestContext.HttpContext);
+        SFSdotNet.Framework.Security.BusinessObjects.secCompany companyDomain = null;
+        if (companyModule != null && companyModule.secCompany != null)
+        {
+            companyDomain = companyModule.secCompany;
+        }
+
+        SFSdotNet.Framework.My.BusinessModuleApp moduleDef = null;
+        SFSdotNet.Framework.Security.BusinessObjects.secModule module = null;
+        if (ViewData["module"] != null)
+        {
+            if (ViewData["moduleKey"] == null)
+            {
+                ViewData["moduleKey"] = ((SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"]).ModuleKey;
+            }
+            moduleDef = SFSdotNet.Framework.My.Context.GetOverrideApplication(ViewData["moduleKey"].ToString());
+
+            module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+
+            if (!moduleDef.UseOwnStylesAndScripts)
+            {
+                @Html.Raw(SFSdotNet.Framework.My.Context.SystemApplication.GetAllScriptsAndCss())
+            }
+            else
+            {
+                @Html.Raw(moduleDef.ScriptsAndCssOverrided)
+            }
+
+        }
+        else
+        {
+            if (!SFSdotNet.Framework.My.Context.OverrideApplication.UseOwnStylesAndScripts)
+            {
+                @Html.Raw(SFSdotNet.Framework.My.Context.SystemApplication.GetAllScriptsAndCss("oleose"))
+               
+            }
+            else
+            {
+                @Html.Raw(SFSdotNet.Framework.My.Context.OverrideApplication.ScriptsAndCssOverrided)
+            }
+        }
+    }
+
+    @if (module != null)
+    {
+        <link rel="icon"
+              type="image/png"
+              href="@Html.Action("LogoUrl", "Home", new { area = module.ModuleKey })">
+
+    }
+    else
+    {
+        <link rel="shortcut icon"
+              href="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/favicon-120.png">
+    }
+    @*<meta name="viewport" content="width=device-width, initial-scale=1.0">*@
+
+    <script>
+        //lang_sfs();
+  @if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Language == "es")
+  {
+   <text>
+        jQuery.timeago.settings.strings = {
+            prefixAgo: "hace",
+            prefixFromNow: "dentro de",
+            suffixAgo: "",
+            suffixFromNow: "",
+            seconds: "segundos",
+            minute: "un minuto",
+            minutes: " %d min",
+            hour: "una hora",
+            hours: "%d horas",
+            day: "un día",
+            days: "%d días",
+            month: "un mes",
+            months: "%d meses",
+            year: "un año",
+            years: "%d años"
+
+        };
+        </text>
+  }
+
+        @if (!Request.Url.ToString().Contains("Public/Login"))
+        {
+    <text>
+
+
+
+        </text>
+        }
+        var rootSfsAppUrl = '@VirtualPathUtility.ToAbsolute("~/")';
+        var overrideApp = '@(SFSdotNet.Framework.Web.Utils.GetOverrideApp(this.Context))';
+
+    </script>
+
+    @RenderSection("CustomScript", false)
+    @if (ViewData["HeaderScript"] != null)
+    {
+        @Html.Raw(ViewData["HeaderScript"].ToString());
+    }
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+   
+    <div class="pre-loader">
+        <div class="load-con">
+            <img src="" class="animated fadeInDown" alt="">
+            <div class="spinner">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <header>
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="fa fa-bars fa-lg"></span>
+                    </button>
+                    <a class="navbar-brand" href="@(VirtualPathUtility.ToAbsolute("~/"))">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/logo-softi-invert-222.png" alt="" class="logo">
+                    </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                            <a href="#services">Servicios/Productos</a>
+                        </li>
+                        <li>
+                            <a href="#advantage">Ventaja</a>
+                        </li>
+                        <li>
+                            <a href="#features">Características</a>
+                        </li>
+                        <li>
+                            <a href="#screens">Aplicaciones</a>
+                        </li>
+                        <li>
+                            <a href="#about">Nosotros</a>
+                        </li>
+                        @*<li>
+                            <a class="getApp" href="#getApp">get app</a>
+                        </li>*@
+                        <li>
+                            <a href="#support">Contacto</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-->
+        </nav>
+
+        <!--RevSlider-->
+        <div class="tp-banner-container">
+            <div class="tp-banner">
+                <ul>
+                    @*<!-- SLIDE  -->
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
+                        <!-- MAIN IMAGE -->
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/transparent.png" alt="slidebg1" data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+                        <!-- LAYERS -->
+                        <!-- LAYER NR. 1 -->
+                        <div class="tp-caption lfl fadeout hidden-xs"
+                             data-x="left"
+                             data-y="bottom"
+                             data-hoffset="30"
+                             data-voffset="0"
+                             data-speed="500"
+                             data-start="700"
+                             data-easing="Power4.easeOut">
+                            <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/Slides/hand-freeze.png" alt="">
+                        </div>
+                        <div class="tp-caption lfl fadeout visible-xs"
+                             data-x="left"
+                             data-y="center"
+                             data-hoffset="700"
+                             data-voffset="0"
+                             data-speed="500"
+                             data-start="700"
+                             data-easing="Power4.easeOut">
+                            <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/iphone-freeze.png" alt="">
+                        </div>
+                        <div class="tp-caption large_white_bold sft" data-x="550" data-y="center" data-hoffset="0" data-voffset="-80" data-speed="500" data-start="1200" data-easing="Power4.easeOut">
+                            Oleose
+                        </div>
+                        <div class="tp-caption large_white_light sfr" data-x="770" data-y="center" data-hoffset="0" data-voffset="-80" data-speed="500" data-start="1400" data-easing="Power4.easeOut">
+                            App
+                        </div>
+                        <div class="tp-caption large_white_light sfb" data-x="550" data-y="center" data-hoffset="0" data-voffset="0" data-speed="1000" data-start="1500" data-easing="Power4.easeOut">
+                            Landing Theme
+                        </div>
+                        <div class="tp-caption sfb hidden-xs" data-x="550" data-y="center" data-hoffset="0" data-voffset="85" data-speed="1000" data-start="1700" data-easing="Power4.easeOut">
+                            <a href="#about" class="btn btn-primary inverse btn-lg">LEARN MORE</a>
+                        </div>
+                        <div class="tp-caption sfr hidden-xs" data-x="730" data-y="center" data-hoffset="0" data-voffset="85" data-speed="1500" data-start="1900" data-easing="Power4.easeOut">
+                            <a href="#getApp" class="btn btn-default btn-lg">GET APP</a>
+                        </div>
+                    </li>*@
+                    @*<!-- SLIDE 2 -->
+                    <li data-transition="zoomout" data-slotamount="7" data-masterspeed="1000">
+                        <!-- MAIN IMAGE -->
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/transparent.png" alt="slidebg1" data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+                        <!-- LAYERS -->
+                        <!-- LAYER NR. 1 -->
+                        <div class="tp-caption lfb fadeout hidden-xs"
+                             data-x="center"
+                             data-y="bottom"
+                             data-hoffset="0"
+                             data-voffset="0"
+                             data-speed="1000"
+                             data-start="700"
+                             data-easing="Power4.easeOut">
+                            <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/Slides/freeze-slide2.png" alt="">
+                        </div>
+
+                        <div class="tp-caption large_white_light sft" data-x="center" data-y="250" data-hoffset="0" data-voffset="0" data-speed="1000" data-start="1400" data-easing="Power4.easeOut">
+                            Every Pixel <i class="fa fa-heart"></i>
+                        </div>
+
+
+                    </li>*@
+                    <!-- SLIDE 3 -->
+                    <li data-transition="zoomout" data-slotamount="7" data-masterspeed="1000">
+                        <!-- MAIN IMAGE -->
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/transparent.png" alt="slidebg1" data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+                        <!-- LAYERS -->
+                        <!-- LAYER NR. 1 -->
+                        <div class="tp-caption customin customout hidden-xs"
+                             data-x="right"
+                             data-y="center"
+                             data-hoffset="0"
+                             data-customin="x:50;y:150;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.5;scaleY:0.5;skewX:0;skewY:0;opacity:0;transformPerspective:0;transformOrigin:50% 50%;"
+                             data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-voffset="50"
+                             data-speed="1000"
+                             data-start="700"
+                             data-easing="Power4.easeOut">
+                            <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/cross-platform.png" alt="">
+                        </div>
+                        <div class="tp-caption customin customout visible-xs"
+                             data-x="center"
+                             data-y="center"
+                             data-hoffset="0"
+                             data-customin="x:50;y:150;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.5;scaleY:0.5;skewX:0;skewY:0;opacity:0;transformPerspective:0;transformOrigin:50% 50%;"
+                             data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-voffset="0"
+                             data-speed="1000"
+                             data-start="700"
+                             data-easing="Power4.easeOut">
+                            <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/cross-platform.png" alt="">
+                        </div>
+                        
+                        <div class=" tp-caption small_light_white sfb hidden-xs" data-x="center" data-y="center" data-hoffset="0" data-voffset="400" data-speed="1000" data-start="1200" data-easing="Power4.easeOut">
+                            <p>Sistemas modernos, aprovechando las últimas tecnologías<br />  y usando nuestra plataforma.<br /> Aplicaciones accesibles y orientadas a la movilidad.</p>
+
+                        </div>
+
+                        <div class="tp-caption mediumlarge_light_white visible-xs section-heading "  data-x="center" data-y="center" data-hoffset="0" data-voffset="400" data-speed="1000" data-start="1200" data-easing="Power4.easeOut">
+                            <p style="  line-height:normal; color:white"><strong>Aplicaciones modernas</strong></p>
+                            <p style="line-height:normal; white-space:normal; margin-left:10px;margin-right:10px;    color:white">Usando nuestra plataforma.<br /> Aplicaciones accesibles y orientadas a la movilidad. </p>
+                        </div>
+
+                        <div class="tp-caption mediumlarge_light_white sfl hidden-xs" data-x="left" data-y="center" data-hoffset="0" data-voffset="-50" data-speed="1000" data-start="1000" data-easing="Power4.easeOut">
+                            Aplicaciones modernas
+                        </div>
+                        <div class="tp-caption small_light_white sfb hidden-xs" data-x="left" data-y="center" data-hoffset="0" data-voffset="80" data-speed="1000" data-start="1600" data-easing="Power4.easeOut">
+                            <p>Sistemas modernos, aprovechando las últimas tecnologías<br />  y usando nuestra plataforma.<br /> Aplicaciones accesibles y orientadas a la movilidad.</p>
+                        </div>
+                        @*<div class="tp-caption mediumlarge_light_white sft hidden-xs" data-x="left" data-y="center" data-hoffset="0" data-voffset="0" data-speed="1000" data-start="1200" data-easing="Power4.easeOut">
+                            App Landing Page
+                        </div>*@
+                        @*<div class="tp-caption small_light_white sfb hidden-xs" data-x="left" data-y="center" data-hoffset="0" data-voffset="80" data-speed="1000" data-start="1600" data-easing="Power4.easeOut">
+                            <p>Sistemas modernos, aprovechando las últimas tecnologías<br />  y usando nuestra plataforma.<br /> Aplicaciones accesibles y orientadas a la movilidad.</p>
+                        </div>*@
+                        @*<div class="tp-caption lfl hidden-xs" data-x="left" data-y="center" data-hoffset="0" data-voffset="160" data-speed="1000" data-start="1800" data-easing="Power4.easeOut">
+                            <a href="#" class="btn btn-primary inverse btn-lg">Purchase</a>
+                        </div>*@
+                       
+
+                    </li>
+
+
+                </ul>
+
+               
+            </div>
+
+            
+        </div>
+
+    </header>
+
+
+    @{
+        bool insertBreadInBody = false;
+        if (Request.RequestContext.RouteData.Values["controller"] != "Home" && Request.RequestContext.RouteData.Values["action"] != "Index" && module != null)
+        { //no es página inicial
+            insertBreadInBody = true;
+            <div id="" class="colorlitemedbg">
+
+                <div class="container">
+
+                    <style>
+                        .bigbuttons {
+                            padding-top: 20px;
+                            padding-bottom: 20px;
+                        }
+
+                        .page-header {
+                            margin-top: 0px;
+                        }
+
+                        .topmenu {
+                            vertical-align: central;
+                            height: 80px;
+                            padding: 20px;
+                            font-size: large;
+                        }
+
+                            .topmenu a {
+                                margin-left: 10px;
+                                /*margin-right: 10px;*/
+                                padding: 10px;
+                            }
+
+                        .listfeatures {
+                            color: #999999;
+                        }
+
+                            .topmenu a, .topmenu a:hover, .topmenu a:link, .topmenu a:visited, .listfeatures h3 a, .listfeatures h3 a:link, .listfeatures h3 a:visited {
+                                /*color: #808080;*/
+                            }
+                    </style>
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <a style="text-decoration:none" href="@(VirtualPathUtility.ToAbsolute("~/"))Home/App/@(module.ModuleKey)">
+                                <img border="0" style="border:none; width:70px; height:70px; " width="70" height="70" src="@Html.Action("LogoUrl", "Home", new { area = module.ModuleKey })" data-src="@Html.Action("LogoUrl", "Home", new { area = module.ModuleKey })" />
+
+                                <span style="text-decoration:none;font-size: x-large; color: gray; display: inline;">@(module.Name)</span>
+                            </a>
+                        </div>
+                        <div class="span8 topmenu text-right">
+                            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=faq">Faqs</a>
+                            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=feature">@GlobalMessages.FEATURES</a>
+                            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=advantage">@GlobalMessages.ADVANTAGES</a>
+                            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Prices/@(module.ModuleKey)">@GlobalMessages.PRICES</a>
+                            <a href="@VirtualPathUtility.ToAbsolute("~/")@(module.ModuleKey)">@GlobalMessages.USE_APP &#10140;</a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        }
+        else if (Request.RequestContext.RouteData.Values["controller"].ToString() == "Home" && Request.RequestContext.RouteData.Values["action"].ToString() == "Index")
+        {
+
+        }
+        else
+        {
+
+            // si es página inicial
+            <text>
+
+
+                @*<div id="headnav" class="colorlitemedbg">
+                        <div class="container">
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    @Html.Partial("LogoCompany")
+                                </div>
+                                <div class="span6">
+                                    @Html.Partial("LoginStatus")
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+
+                @*<div id="menunav" class="colorlitemedbg">
+                        <div class="container">
+                            <div class="row-fluid">
+                                <div class="span10">
+
+                                    @Html.Partial("MenuTopModule")
+
+                                </div>
+                                <div class="span2"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div id="breadcumb" class="smalltext">
+                        <div class="container">
+                            <div class="row-fluid">
+                                <div class="span10">
+                                    @if (ViewData["breadcrumb"] != null)
+                                    {
+                                        @Html.Raw(ViewData["breadcrumb"].ToString())
+                                    }
+                                    else
+                                    {
+                                        @Html.MvcSiteMap().SiteMapPath()
+
+                                    }
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>*@
+
+             
+
+            </text>
+
+        }
+    }
+    @{
+        bool maxh = false;
+        string controller = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "controller");
+        string action = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "action");
+
+
+        if ((action == "Index" && controller == "Home") || (action == "App" && controller == "Home"))
+        {
+            maxh = true;
+        }
+    }
+
+
+    @if (insertBreadInBody == true)
+    {
+        <div id="breadcumb" class="smalltext">
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="span8">
+                        @if (ViewData["breadcrumb"] != null)
+                        {
+                            @Html.Raw(ViewData["breadcrumb"].ToString())
+                        }
+                        else
+                        {
+                            @Html.MvcSiteMap().SiteMapPath()
+
+                        }
+                    </div>
+                    <div class="span4">
+
+                        <script>
+                            (function () {
+                                var cx = '013882211922101200135:p0yw1sgyu7c';
+                                var gcse = document.createElement('script');
+                                gcse.type = 'text/javascript';
+                                gcse.async = true;
+                                gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                    '//cse.google.com/cse.js?cx=' + cx;
+                                var s = document.getElementsByTagName('script')[0];
+                                s.parentNode.insertBefore(gcse, s);
+                            })();
+                        </script>
+                        <style>
+                            .cse .gsc-control-cse,
+                            .gsc-control-cse {
+                                padding: 0px !important;
+                                width: auto;
+                            }
+                        </style>
+                        <gcse:search></gcse:search>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+    <div class="wrapper">
+
+        <section id="services">
+            <div class="container">
+
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Servicios</h1>
+                    <div class="divider"></div>
+                    <p>Desarrollo de aplicaciones empresariales</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="about-item scrollpoint sp-effect2">
+                            <i class="fa fa-cogs fa-2x"></i>
+                            <h3>Desarrollo de software a la medida</h3>
+                            <p>Construcción de aplicaciones a la medida de las necesidades de negocio. Suele ser más fácil y menos costoso crear funcionalidad a la medida (<a href="#advantage">Con nuestra tecnología</a>) que tratar de adaptar sistemas existentes.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="about-item scrollpoint sp-effect5">
+                            <i class="fa fa-cloud fa-2x"></i>
+                            <h3>Aplicaciones en la nube como servicio</h3>
+                            <p>Pague sólo por lo que usa, sin invertir en infraestructura y con actualizaciones constantes de la aplicación.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="about-item scrollpoint sp-effect5">
+                            <i class="fa fa-lightbulb-o fa-2x"></i>
+                            <h3>Transferencia de <a href="#advantage">tecnología</a></h3>
+                            <p>Use nuestra plataforma y herramientas para acelerar su proceso de desarrollo, enfoque sus esfuerzos sólo en la construcción de la funcionalidad de negocio.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="about-item scrollpoint sp-effect1">
+                            <i class="fa fa-map fa-2x"></i>
+                            <h3>Servicio de arquitectura</h3>
+                            <p>Pague menos por un rol de experto que generalmente no suele usarse de tiempo completo, incluímos nuestra transferencia de <a href="#advantage">tecnología</a> sin costo adicional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="features">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Características</h1>
+                    <div class="divider"></div>
+                    <p>Con nuestra <a href="#advantage">tecnología</a> es posible lograr aplicaciones de negocio con más valor agregado y con menor esfuerzo. Muchas de estas características no implican un costo adicional de desarrollo.</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 scrollpoint sp-effect1">
+                        <div class="media text-right feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-building-o fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Multi-empresa</h3>
+                                Aplicaciones multiempresa, muchas compañías y en una sola infraestructura
+                            </div>
+                        </div>
+                        <div class="media text-right feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-globe fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Globalización</h3>
+                                Multi-moneda, Multi-idioma, Multi-zonas horarias
+                            </div>
+                        </div>
+                        <div class="media text-right feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-cloud fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Sobre demanda</h3>
+                                La verdadera ventaja de la nube
+                            </div>
+                        </div>
+                        <div class="media text-right feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-paint-brush fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Personalización</h3>
+                                Adaptación de cualquier estilo visual por medio de Bootstrap
+                            </div>
+                        </div>
+                        <div class="media text-right feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-hand-o-right fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Flujos de autorización</h3>
+                                Proceso de aprobaciones de forma dinámica
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/sfs-diagram-500.png" class="img-responsive scrollpoint sp-effect5" alt="">
+                    </div>
+                    <div class="col-md-4 col-sm-4 scrollpoint sp-effect2">
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-filter fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Explotación de la información</h3>
+                                Herramientas avanzadas de consulta y filtrado
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-users fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Usuarios roles y permisos</h3>
+                                Gestión completa de la seguridad con alto nivel de detalle
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-history fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Auditoría de cambios</h3>
+                                Control de cambios en todos los registros, historial de modificaciones
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-files-o fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Archivos y documentos</h3>
+                                Soporte para la gestión y control de archivos
+                            </div>
+                        </div>
+                        <div class="media active feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-plus fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Y muchas más!</h3>
+                                Más de 1000 características técnicas y de negocio
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="advantage">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Ventaja tecnológica</h1>
+                    <div class="divider"></div>
+                    <p>Innovar es hacer las cosas diferentes para ser más competitivos que los demás</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 scrollpoint sp-effect2">
+                        Hemos invertido 10 años en innovación real para ser más competitivos en la construcción de soluciones, lo que se traduce en menos tiempo de respuesta y mayor cantidad de beneficios con cero costo a nuestros clientes. Muchas empresas de construcción de software dicen ser innovadoras, pero pocas realmente han invertido y creado verdadera innovación en la forma de construir aplicaciones.
+
+                        Garantía de mejor relación calidad/precio. Mejoramos cualquier otra propuesta.
+                        <p>
+                            <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/ecosys-3-componentes-700.png" class="img-responsive text-center" />
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="screens">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Aplicaciones / Labs</h1>
+                    <div class="divider"></div>
+                    <p>Alguna aplicaciones y/o laboratorios demostrativos</p>
+                </div>
+                <div class="filter scrollpoint sp-effect3">
+                    <a href="javascript:void(0)" class="button js-filter-all active">Gastos </a>
+                    <a href="javascript:void(0)" class="button js-filter-one">Agro MX</a>
+                    <a href="javascript:void(0)" class="button js-filter-two">Travel</a>
+                    <a href="javascript:void(0)" class="button js-filter-three">Tienda</a>
+                    <a href="javascript:void(0)" class="button js-filter-four">Otros / Labs</a>
+
+                </div>
+                  <div class="slider filtering scrollpoint sp-effect5">
+@{ 
+    List<SFSdotNet.Framework.Security.BusinessObjects.secModule> allModules = null;
+    if (SFSdotNet.Framework.Cache.Caching.ExistInGlobal(SFSdotNet.Framework.Cache.GlobalObjectKeys.AllModulesAllowed) == false) { 
+        allModules = SFSdotNet.Framework.Security.BR.secModulesBR.Instance.GetBy(p => p.IsAllowed == true);
+    }else {
+        allModules = (List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)SFSdotNet.Framework.Cache.Caching.GetFromGlobal(SFSdotNet.Framework.Cache.GlobalObjectKeys.AllModulesAllowed);
+    }
+}
+@foreach (var item in allModules.Randomize())
+{
+    <div class="one">
+        <img src="@(VirtualPathUtility.ToAbsolute("~/"))@(item.ModuleKey)/Content/img/logo.png" alt="">
+        <h4>@(item.Name)</h4>
+    </div>
+}
+</div>
+                @*<div class="slider filtering scrollpoint sp-effect5">
+                    <div class="one">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/screens/profile.jpg" alt="">
+                        <h4></h4>
+                    </div>
+                    <div class="two">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/screens/menu.jpg" alt="">
+                        <h4></h4>
+                    </div>
+                    <div class="three">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/screens/weather.jpg" alt="">
+                        <h4></h4>
+                    </div>
+                    <div class="one">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/screens/signup.jpg" alt="">
+                        <h4></h4>
+                    </div>
+                    <div class="one">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/screens/calendar.jpg" alt="">
+                        <h4></h4>
+                    </div>
+                    <div class="two">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/screens/options.jpg" alt="">
+                        <h4></h4>
+                    </div>
+                    <div class="three">
+                        <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/screens/sales.jpg" alt="">
+                        <h4></h4>
+                    </div>
+                </div>*@
+            </div>
+        </section>
+        <section id="about">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Nosotros</h1>
+                    <div class="divider"></div>
+                    <p>¿Una empresa de software más?</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 scrollpoint sp-effect2">
+                        Somos un grupo de expertos con más de 13 años de experiencia en el desarrollo de aplicaciones empresariales. No nos hemos conformado con hacer las cosas de la misma manera que el promedio. Hemos buscado formas diferentes y el resultado es nuestra <a href="#advantage">
+    tecnología</a><br /><br />
+
+    Nos encontramos localizados principalmente en la Ciudad de México y ofrecemos nuestro servicio a todo el continente o el resto del mundo.
+
+    @*<div class="video-container">
+            <iframe src="http://player.vimeo.com/video/70984663"></iframe>
+        </div>*@
+</div>
+                </div>
+            </div>
+        </section>
+        @*<section id="getApp">
+            <div class="container-fluid">
+                <div class="section-heading inverse scrollpoint sp-effect3">
+                    <h1>Get App</h1>
+                    <div class="divider"></div>
+                    <p>Choose your native platform and get started!</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="hanging-phone scrollpoint sp-effect2 hidden-xs">
+                            <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/freeze/freeze-angled2.png" alt="">
+                        </div>
+                        <div class="platforms">
+                            <a href="#" class="btn btn-primary inverse scrollpoint sp-effect1">
+                                <i class="fa fa-android fa-3x pull-left"></i>
+                                <span>Download for</span><br>
+                                <b>Android</b>
+                            </a>
+
+                            <a href="#" class="btn btn-primary inverse scrollpoint sp-effect2">
+                                <i class="fa fa-apple fa-3x pull-left"></i>
+                                <span>Download for</span><br>
+                                <b>Apple IOS</b>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>*@
+        <section id="support" class="doublediagonal">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Contacto</h1>
+                    <div class="divider"></div>
+                    <p>Para más información, por favor contáctanos</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+                                <form role="form" method="post" action="@(VirtualPathUtility.ToAbsolute("~/"))SFSdotNetFrameworkSecurity/Public/Contact?Layout=clean&from=softi.mx">
+                                    <div class="form-group">
+                                        <input type="text" id="name" name="name" class="form-control" placeholder="Tu nombre">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="Tu email">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea cols="30" id="message" name="message" rows="10" class="form-control" placeholder="Tu mensaje"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-lg">Enviar</button>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+                                <div class="media">
+                                    <a class="pull-left" href="#">
+                                        <i class="fa fa-map-marker fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Ciudad de México</h4>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <a class="pull-left" href="#">
+                                        <i class="fa fa-envelope fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">
+                                            <a href="http://www.google.com/recaptcha/mailhide/d?k=01UsvkXJnhrL85xDXupv4ysg==&amp;c=cpVyt8d07YftDBfJu9hKNA==" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501UsvkXJnhrL85xDXupv4ysg\75\75\46c\75cpVyt8d07YftDBfJu9hKNA\75\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">i...</a>@Html.Raw("@")softi.mx
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <a class="pull-left" href="#">
+                                        <i class="fa fa-phone fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">+52 (55) 8421-2761</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                <a href="#" class="scrollpoint sp-effect3">
+                    <img src="@(VirtualPathUtility.ToAbsolute("~/"))Static/Templates/Oleose/img/logo-softi-invert-222.png" alt="" class="logo">
+                </a>
+                <div class="social">
+                    <a href="https://twitter.com/softimx" class="scrollpoint sp-effect3"><i class="fa fa-twitter fa-lg"></i></a>
+                    @*<a href="#" class="scrollpoint sp-effect3"><i class="fa fa-google-plus fa-lg"></i></a>*@
+                    <a href="http://www.facebook.com/softimx" class="scrollpoint sp-effect3"><i class="fa fa-facebook fa-lg"></i></a>
+                </div>
+                @*<div class="rights">
+                    <p>Copyright &copy; 2014</p>
+                    <p>Template by <a href="http://www.scoopthemes.com" target="_blank">ScoopThemes</a></p>
+                </div>*@
+            </div>
+        </footer>
+
+    </div>
+
+
+    <div class="container">
+
+
+        <div class="text-center">
+            <span style="font-size: 90%">Culture: @System.Threading.Thread.CurrentThread.CurrentCulture UICulture: @System.Threading.Thread.CurrentThread.CurrentCulture cookieserver: @SFSdotNet.Framework.My.Context.CurrentContext.ReadCookie("lang_sfs") company: @(SFSdotNet.Framework.My.Context.CurrentContext != null ? SFSdotNet.Framework.My.Context.CurrentContext.Company != null ? SFSdotNet.Framework.My.Context.CurrentContext.Company.Name : "" : "")  user: @(SFSdotNet.Framework.My.Context.CurrentContext.User != null ? SFSdotNet.Framework.My.Context.CurrentContext.User.UserName : "") </span>
+        </div>
+
+
+    </div>
+
+    @if (System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower() != "es")
+    {
+        <div id="google_translate_element" style="float:right; position:fixed; bottom:10px; right:10px;"></div>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'es'
+                }, 'google_translate_element');
+            }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script>
+            function fireEvent(element, event) {
+                console.log("in Fire Event");
+                if (document.createEventObject) {
+                    // dispatch for IE
+                    console.log("in IE FireEvent");
+                    var evt = document.createEventObject();
+                    return element.fireEvent('on' + event, evt)
+                }
+                else {
+                    // dispatch for firefox + others
+                    console.log("In HTML5 dispatchEvent");
+                    var evt = document.createEvent("HTMLEvents");
+                    evt.initEvent(event, true, true); // event type,bubbling,cancelable
+                    return !element.dispatchEvent(evt);
+                }
+            }
+
+
+            var google_translate_element_changed = false;
+            $(document).ready(function () {
+                $('#google_translate_element').bind('DOMSubtreeModified', function () {
+                    if (google_translate_element_changed == false) {
+                        google_translate_element_changed = true;
+                        setTimeout(function () {
+                            var jObj = $('select.goog-te-combo');
+                            var db = jObj.get(0);
+                            jObj.val("en");
+                            fireEvent(db, 'change');
+
+                        }, 1000);
+                    }
+                });
+
+            });
+        </script>
+    }
+    @*<div id='MicrosoftTranslatorWidget' class='Dark' style='color:white;background-color:#555555'></div>
+        <script type='text/javascript'>setTimeout(function () { { var s = document.createElement('script'); s.type = 'text/javascript'; s.charset = 'UTF-8'; s.src = ((location && location.href && location.href.indexOf('https') == 0) ? 'https://ssl.microsofttranslator.com' : 'http://www.microsofttranslator.com') + '/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&ctf=True&ui=true&settings=undefined&from='; var p = document.getElementsByTagName('head')[0] || document.documentElement; p.insertBefore(s, p.firstChild); } }, 0);</script>*@
+
+
+    @Html.Raw(SFSdotNet.Framework.My.Context.SystemApplication.GetAllScriptsAndCssEnd())
+
+
+        <script>
+                        $(document).ready(function () {
+                            appMaster.preLoader();
+                        });
+        </script>
+
+</body>
+</html>

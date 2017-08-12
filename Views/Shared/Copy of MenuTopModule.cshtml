@@ -1,0 +1,21 @@
+﻿@Html.MvcSiteMap().Menu("SiteMapCustomMenuModule", System.Web.SiteMap.RootNode, true, false, 2)
+  
+@{
+    
+    TempData["allMenus"] = new List<SiteMapNode>(); 
+    TempData["row3"] = null;
+    
+}
+ @Html.MvcSiteMap().Menu("SiteMapCustomMenuRow2", (SiteMapNode)TempData["currentSecondNode"], true, false, 2) 
+@{
+        TempData["row3"] = true;
+      foreach (var node in ((List<SiteMapNode>)TempData["allMenus"]).AsParallel())
+      {
+          <text>
+          <ul id="sm@(node.Key)">
+            @Html.MvcSiteMap().Menu("SiteMapCustomMenuModule",node,true,false,4) 
+    
+            </ul>
+        </text>
+    }
+}

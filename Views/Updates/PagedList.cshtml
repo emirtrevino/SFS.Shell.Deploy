@@ -1,0 +1,241 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.VisualContentPage
+@{
+    Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+
+    int currentPage = 1;
+    if (!string.IsNullOrEmpty(Request.QueryString["page"]))
+    {
+        currentPage = int.Parse(Request.QueryString["page"]);
+    }
+    
+    bool viewEdit = false;
+    bool canEdit = (bool)ViewData["canEdit"];
+    bool showItem = true;
+    if (Request.QueryString["viewEdit"] == "true" && canEdit)
+    {
+        viewEdit = true;
+    }
+    string createoredit = GlobalMessages.MODIFY_CONTENT;
+    string actionCreateOrEdit = "Edit";
+    string extraparams = "";
+}
+@{
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+}
+@section Title{
+	@Model.Title 
+}
+
+<div class="row-fluid">
+<div class="page-header">
+<h1> @Model.Title <small> (Desde Febrero de 2015)</small></h1>
+</div>
+    </div>
+
+@{
+    int from = 0;
+
+    int to = 0;
+
+    int page = (int)ViewData["page"];
+    int pageSize = (int)ViewData["pageSize"];
+    int nResults = (int)ViewData["nResults"];
+    //to = (page * (nResults / pageSize));
+    int totalPages = (nResults / pageSize);
+
+    int lastResultsAfterLastPage = (nResults - (totalPages * pageSize));
+    if (lastResultsAfterLastPage > 0)
+    {
+        totalPages += 1;
+    }
+    to = page * pageSize;
+    if (to > nResults)
+    {
+        to = nResults;
+    }
+    if (page > 1){
+        from = (pageSize * page) - (pageSize - 1);
+    }else{
+        from = 1;
+        to = 1 + (pageSize - 1);
+    }
+    
+    int? prev = null;
+    int? next = null;
+    
+    if (page == 1){
+        prev = null ;
+    }else{
+        prev = page -1;
+    }
+  
+    if (page >= totalPages){
+        next = null ;
+    }else{
+        next = page + 1;
+    }
+   
+    string type = "update";
+    
+    
+    }
+@if (viewEdit)
+{
+<div class="row-fluid">
+    <div class="span12">
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Updates/Create?ReturnAfter=@(HttpUtility.UrlEncode(Request.Url.ToString()))&moduleKey=@(module!=null?module.ModuleKey:"")&type=@(Request.QueryString["type"])">Agregar nuevo </a>
+    </div>
+</div>
+}        
+
+<div class="row-fluid">
+    <div class="span12 text-right">
+        @if (currentPage > 1)
+        {
+
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Updates?"))&q=@(Request.QueryString["q"])&page=@(currentPage - 1)">< Anterior </a>
+        }
+        |
+        @if (ViewBag.MorePages == true)
+        {
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Updates?"))&q=@(Request.QueryString["q"])&page=@(currentPage + 1)">Siguiente ></a>
+
+        }
+
+    </div>
+</div>
+
+<div class="row-fluid">
+
+    <div class="span12 blog">
+@foreach (var content in Model.Contents)
+{
+    string logoSourceCode ="";
+    if (content.NameValues.Count(p => p.Name == "IsSourceCode") > 0)
+    {
+        //TODO: Localizar
+        logoSourceCode = "<img Title='Actualización automática desde código fuente' src='" + VirtualPathUtility.ToAbsolute("~/Content/images/bitbucket_logo_16.png") + "' /> ";
+    }
+    string moduleKey = "SFSdotNetFrameworkSecurity";
+    if (content.NameValues.Count(p=> p.Name == "ModuleKey") > 0){
+        moduleKey = content.NameValues.FirstOrDefault(p=> p.Name == "ModuleKey").Value.ToString();
+    }
+     string moduleName = "";
+    if (content.NameValues.Count(p=> p.Name == "ModuleName") > 0){
+        moduleName = content.NameValues.FirstOrDefault(p=> p.Name == "ModuleName").Value.ToString();
+    }
+    var draftText = "";
+    if (viewEdit) {
+        if (!content.Published)
+        {
+            draftText = "(Borrador)";
+        }
+      
+        
+    }
+    
+<table style="width:100%">
+    <tr><td style="width:80px; vertical-align:top;padding-right:20px;">
+@{  string idupdate = "";
+    if (content.PublishedDate != null ){
+        idupdate = content.PublishedDate.Value.ToString("yyMMdd.HHmm");
+    }
+    
+    }
+    <table class="date">
+      @*  <tr>
+            <td class="head">@(idupdate)</td>
+        </tr>*@
+        <tr>
+            <td class="day">@(content.IdContent)</td>
+        </tr>
+    </table>
+
+</td>
+<td>
+      
+    <div class="media">
+   
+  <div class="media-body">
+    <h2>
+        
+        <span class="label">@draftText</span><a href="@(VirtualPathUtility.ToAbsolute("~/"))Updates/Id/@(content.IdContent)"> @content.Title</a></h2>
+        <div class="publish-data ">
+            <table style="width:100%; border-width:0px;"><tr>
+                <td style="text-align:left; width:33%; font-size:120%">
+                    <a href="@(VirtualPathUtility.ToAbsolute("~/") + moduleKey)"><img src="@(VirtualPathUtility.ToAbsolute("~/") + moduleKey)/Content/img/logo-32.png" /></a> <a href="@(VirtualPathUtility.ToAbsolute("~/") + moduleKey)">@(moduleName)</a></td>
+                                                             <td style="text-align:center; width:33%;">@Html.Raw(logoSourceCode)</td>
+                                                             <td style="text-align:right; width:33%;">@(content.PublishedDate != null ? content.PublishedDate.Value.ToLongDateString() : "") </td>
+                
+                </tr></table>    
+        
+        </div>
+      
+      <div>
+
+   
+
+@if (viewEdit)
+{
+        <p>
+    @if (content.PublishedDate != null && content.PublishedDate.Value > DateTime.UtcNow ){ //localizar fecha
+            <span><i class="icon-calendar"></i> Programado @(content.PublishedDate.Value.ToShortDateString()) ( en @(SFSdotNet.Framework.Globals.DateAndTime.DateDiff(SFSdotNet.Framework.Globals.DateInterval.Day, DateTime.UtcNow, content.PublishedDate.Value)) días</span> 
+    }
+
+
+        </p>
+    
+}
+            </div>
+        </div>
+        </div>
+   </td></tr>
+    </table>@*
+    
+    
+      <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line"></hr>
+
+        </div>
+         </div>*@
+    
+    
+}
+</div>
+    </div>
+
+<div class="row-fluid paging" >
+    <div class="span4 ">
+       
+         @if (prev  != null ){
+            <text>
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Blog?type=@(type)&page=@(prev)" class="btn "> <i class="icon-flip-horizontal icon-share-alt "></i> @GlobalMessages.PREVIEW_PAGE </a>
+        </text>
+        }
+    </div>
+    <div class="span4 text-center" style="color:#CCCCCC;">
+        @(string.Format(GlobalMessages.FROM_TO_OF_RESULTS, from, to, nResults)) 
+    </div>
+    <div class="span4 text-right">
+        @if (next != null ){
+            <text>
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Updates?type=@(type)&page=@(next)" class="btn btn-primary">@GlobalMessages.NEXT_PAGE <i class="icon-white icon-chevron-right"></i>
+            </text>
+        }
+        </a>
+</div>
+</div>
+@if (canEdit ){
+    <div class="row-fluid">
+        <div class="span12 text-center">
+@if (Request.QueryString["viewEdit"] == "true") {
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Updates/@(module != null? module.ModuleKey:"")?type=@(type)"> <i class="icon-pencil "></i> Salir de modo edición </a>
+
+}else{
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Updates/@(module != null? module.ModuleKey:"")?type=@(type)&viewEdit=true"> <i class="icon-pencil "></i> Ver modo edición</a>
+
+}
+            </div>
+        </div>
+}    

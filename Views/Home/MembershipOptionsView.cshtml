@@ -1,0 +1,191 @@
+﻿
+@model List<SFSdotNet.Framework.Web.Mvc.Models.MemershipOptionModule>
+@{
+    Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = null;
+    string moduleKey = "";
+    if (ViewData["module"] != null ){
+        module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+        moduleKey = moduleKey;
+    }
+    }
+<div class="page-header">
+<h1>@MembershipAppsMessages.PRICE_OF_APPLICATION</h1>
+</div>
+@{
+    List<SFSdotNet.Framework.Security.BusinessObjects.secContent> contents = new List<SFSdotNet.Framework.Security.BusinessObjects.secContent>();
+    SFSdotNet.Framework.Security.BusinessObjects.secContent content = null;
+    if (ViewData["contents"] != null){
+        contents = (List<SFSdotNet.Framework.Security.BusinessObjects.secContent>)ViewData["contents"];
+        
+    }
+}
+@{
+    content = contents.FirstOrDefault(p=>p.TitleKey == "prices-intro");
+    if (content != null ){
+        <p>
+            @Html.Raw(content.LargeContent)
+        </p>
+    }
+    }    
+<div class="row-fluid">
+        <div class="span12 space-contents">
+             <hr class="fancy-line spaceline"></hr>
+        </div>
+    </div>
+
+<h2>Absolutamente sobre demanda</h2>
+@{
+    content = contents.FirstOrDefault(p=>p.TitleKey == "prices-ondemand");
+    if (content != null && content.LargeContent !=null ){
+        <p>
+            @Html.Raw(content.LargeContent)
+        </p>
+        <p class="text-center">
+        <a href="@VirtualPathUtility.ToAbsolute("~/")Go/RequestAppMembership/@(moduleKey)?op=on-demand" class=" btn btn-primary">@MembershipAppsMessages.SELECT_MEMBERSHIP_TEXT </a>
+        </p>
+    }
+    }
+
+
+
+<div class="row-fluid">
+        <div class="span12 space-contents">
+             <hr class="fancy-line spaceline"></hr>
+        </div>
+    </div>
+
+<h2>@MembershipAppsMessages.STANDARD_MEMBERSHIPS</h2>
+@{
+    content = contents.FirstOrDefault(p=>p.TitleKey == "prices-standard");
+    if (content != null ){
+        <p>
+            @Html.Raw(content.LargeContent)
+        </p>
+    }
+    }
+<table class="table table-striped table-condensed">
+
+<thead class="text-color-principal">
+    <tr>
+        <th rowspan="2" class="" style="text-align:right;">@MembershipAppsMessages.MONTHLY_COST</th>
+@foreach (var membership in Model)
+{
+    <text>
+        <th>@(membership.Title)
+
+        </th>        
+    </text>
+}
+            </tr>
+    <tr>
+@foreach (var membership in Model)
+{
+    <text>
+        <td>  @(string.Format("{0:C}",membership.PriceMonthly)) USD 
+            <br />
+               
+        </td>        
+    </text>
+}
+    </tr>
+
+    </thead>
+    <tbody>
+@foreach (var feature in ((List<SFSdotNet.Framework.Web.Mvc.Models.MembershipFeature>)ViewData["features"]))
+{
+    <tr>
+        <td>@(feature.Title)</td>
+@foreach (var membershipLevel in Model)
+{
+    var memFeature = membershipLevel.Features.FirstOrDefault(p => p.GuidFeature == feature.GuidFeature);
+    if (memFeature != null ){
+        <td>@Html.Raw(memFeature.ValueString)</td>
+    }else{
+        <td></td>
+    }    
+    
+}        
+
+
+    </tr>
+}
+       
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+    @{
+    foreach (var membership in Model)
+    {
+      
+    <text>
+        
+        <td align="center" class="text-center" style="text-align:center"><a href="@VirtualPathUtility.ToAbsolute("~/")Go/RequestAppMembership/@(moduleKey)?membership=@membership.GuidMembershipModule" class="btn  " > @MembershipAppsMessages.SELECT_MEMBERSHIP_TEXT </a><br />
+            @*<a href="@VirtualPathUtility.ToAbsolute("~/")SFSdotNetFrameworkSecurity/secMemberModuleComps/CreateGen?usemode=trial&moduleKey=@Request.QueryString["module"]" style="" class="btn btn-link" > @MembershipAppsMessages.SELECT_MEMBERSHIP_TEXT</a>*@
+
+        </td>        
+    </text>
+       
+    }
+}
+
+             </tr>
+        </tfoot>
+</table>
+
+<div class="row-fluid">
+        <div class="span12 space-contents">
+             <hr class="fancy-line spaceline"></hr>
+        </div>
+    </div>
+<h2>Infraestrucutra exclusiva</h2>
+@{
+    content = contents.FirstOrDefault(p=>p.TitleKey == "prices-exclusive");
+    if (content != null ){
+        <p>
+            @Html.Raw(content.LargeContent)
+        </p>
+        <p class="text-center">
+        <a href="@VirtualPathUtility.ToAbsolute("~/")Go/RequestAppMembership/@(moduleKey)?op=exclusive" class=" btn btn-primary">@MembershipAppsMessages.SELECT_MEMBERSHIP_TEXT </a>
+        </p>
+    }
+    }
+<div class="row-fluid">
+        <div class="span12 space-contents">
+             <hr class="fancy-line spaceline"></hr>
+        </div>
+    </div>
+<h2>@MembershipAppsMessages.YOUR_LOCATION_MEMBERSHIPS</h2>
+@{
+    content = contents.FirstOrDefault(p=>p.TitleKey == "prices-inhouse");
+    if (content != null ){
+        <p>
+            @Html.Raw(content.LargeContent)
+        </p>
+       <p class="text-center">
+        <a href="@VirtualPathUtility.ToAbsolute("~/")Go/RequestAppMembership/@(moduleKey)?op=inhouse" class=" btn btn-primary">@MembershipAppsMessages.SELECT_MEMBERSHIP_TEXT </a>
+        </p>
+    }
+    }
+<div class="row-fluid">
+        <div class="span12 space-contents">
+             <hr class="fancy-line spaceline"></hr>
+        </div>
+    </div>
+<h2>@MembershipAppsMessages.OTHER_COSTS_CUSTOMIZATIONS_CONSULTING</h2>
+@{
+    content = contents.FirstOrDefault(p=>p.TitleKey == "prices-othercosts");
+    if (content != null ){
+        <p>
+            @Html.Raw(content.LargeContent)
+        </p>
+    }
+    }
+
+<div class="row-fluid">
+        <div class="span12 space-contents">
+             <hr class="fancy-line spaceline"></hr>
+        </div>
+    </div>

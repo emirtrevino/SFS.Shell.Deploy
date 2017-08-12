@@ -1,0 +1,38 @@
+﻿@using System.Linq
+@{
+    PropertyDefinition property = (PropertyDefinition)ViewData["currentProperty"];
+    string classId = "a"+Guid.NewGuid().ToString().Replace("-","").Substring(0, 10);
+    string id = ViewData.ModelMetadata.PropertyName;
+    var propertyValue = ViewData.ModelMetadata.Model;
+    RouteValueDictionary fileDataAttributes = null;
+    if (ViewData.ModelMetadata.AdditionalValues.Count(x => x.Key == "FileData") > 0)
+    {
+        fileDataAttributes =
+       (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "FileData").Single().Value;
+    }
+
+    RouteValueDictionary lu = new RouteValueDictionary();
+    if (ViewData.ModelMetadata.AdditionalValues.Where(p => p.Key == "LookUpData").Count() > 0)
+    { 
+       lu = (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "LookUpData").Single().Value;
+    }
+    string urlFileThumb = VirtualPathUtility.ToAbsolute("~/") + "Content/images/no_image.jpg";
+    string urlFileFull = urlFileThumb;
+    if (propertyValue != null ){
+        urlFileThumb = VirtualPathUtility.ToAbsolute("~/") + "image.ashx?comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany + "&controller=" + lu["controllerName"] + "&ns=" + lu["moduleNamespace"] + "&idc=" + fileDataAttributes["PropertyId"] + "&datac=" + fileDataAttributes["PropertyData"] + "&typec=" + fileDataAttributes["PropertyFileType"] + "&sizec=" + fileDataAttributes["PropertyFileSize"] + "&filenamec=&id=" + propertyValue + "&model=" + fileDataAttributes["ModelPathType"] + "&type=undefined&w=120&h=120";
+        urlFileFull = VirtualPathUtility.ToAbsolute("~/") + "image.ashx?comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany + "&controller=" + lu["controllerName"] + "&ns=" + lu["moduleNamespace"] + "&idc=" + fileDataAttributes["PropertyId"] + "&datac=" + fileDataAttributes["PropertyData"] + "&typec=" + fileDataAttributes["PropertyFileType"] + "&sizec=" + fileDataAttributes["PropertyFileSize"] + "&filenamec=&id=" + propertyValue + "&model=" + fileDataAttributes["ModelPathType"] + "&type=undefined&w=&h=&down=1";    
+        
+    }
+    }
+<a href="@(urlFileFull)" class="@(classId)" id="lnk@(property.PropertyName)" target="_blank"  ><img border="0" src="@(urlFileThumb)" width="120" height="120" /></a>
+<script>
+
+   
+
+</script>
+@*<div id="lb@(id)" class="lightbox hide fade"  tabindex="-1" role="dialog" aria-hidden="true">
+	<div class='lightbox-content'>
+		<img src="@(urlFile)" />
+		<div class="lightbox-caption"><p>Your caption here</p></div>
+	</div>
+</div>*@

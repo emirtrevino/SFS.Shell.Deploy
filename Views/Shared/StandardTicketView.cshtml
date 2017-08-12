@@ -1,0 +1,48 @@
+﻿@model List<string>
+
+<html>
+    <head>
+        <title></title>
+        <style type="text/css" media="screen">
+
+body {
+	margin:5px 0px; padding:0px; /* Need to set body margin and padding to get consistency between browsers. */
+	text-align:center; /* Hack for IE5/Win */
+	}
+	
+#Content {
+	width:95%;
+	margin:0px auto;
+     margin-top:5px; /* Right and left margin widths set to "auto" */
+	text-align:center; /* Counteract to IE5/Win Hack */
+	padding:15px;
+	
+	}
+            .each {
+            border-bottom:1px dashed #333;
+	text-align:left; /* Counteract to IE5/Win Hack */
+            padding:15px;
+            }
+</style>
+    </head>
+    <body >
+       <div id="Content">
+           @{
+               
+               
+               }
+        <a href="@VirtualPathUtility.ToAbsolute("~/")@ViewContext.RouteData.DataTokens["area"]/@ViewContext.RouteData.Values["Controller"]/@ViewContext.RouteData.Values["Action"]?id=@(System.Web.HttpContext.Current.Request.QueryString["id"])&format=pdf" > <img border="0" style="" src="@VirtualPathUtility.ToAbsolute("~/")Content/icons/icon-16-pdf.png"/> Download PDF </a>
+
+        @foreach (var html in Model)
+        {
+            <div class="each">
+            @Html.Raw(  html)
+
+
+                </div>
+        }
+
+            </div>
+    </body>
+
+</html>

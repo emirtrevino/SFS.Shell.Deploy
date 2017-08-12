@@ -1,0 +1,83 @@
+﻿@model List<SFSdotNet.Framework.Web.Mvc.Models.ContentBaseModel>
+@{
+    bool isAuthenticated = false;
+    string messageAnonymous = "Identificate para poder participar";
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null)
+    {
+        isAuthenticated = true;
+    }
+    }
+@foreach (var comment in Model)
+{
+    string classValue = "cero";
+    if (comment.Priority > 0) {
+        classValue = "plus";
+
+    }
+    else if (comment.Priority < 0) {
+        classValue = "less";
+    }
+    
+<table width="100%" id="comment@(comment.GuidContent.ToString())" class="comment"  >
+    <tr>
+        <td colspan="2" class="text-right publish-data">@GlobalMessages.BY <strong>@(comment.UserDisplayName)</strong>, &nbsp;&nbsp; <time class='timeago' title='@(comment.PublishedDate.Value.ToString("s"))Z' datetime='@(comment.PublishedDate.Value.ToString("s"))'></time> </td>
+    </tr>
+    <tr>
+          <td class="votes" style="padding-top: 13px;" id="priority-@comment.GuidContent">
+                    <div class="amount @classValue">
+                        @comment.Priority
+
+                    </div>
+                    <div>
+                        <a href="#" @(isAuthenticated ? "" : "disabled='disabled'") data-loading-text="..." title="@(isAuthenticated ? "Sí es muy importante para mí" : messageAnonymous)" class="plus no btn btn-small">+ </a>
+                        <a href="#" @(isAuthenticated ? "" : "disabled='disabled'") data-loading-text="..." title="@(isAuthenticated ? "No es importante para mí" : messageAnonymous)" class="less no btn btn-small">&minus; </a>
+                    </div>
+                </td>
+        <td class="comment-content">
+            <div class="body-issue">
+            @Html.Raw(comment.LargeContent)
+            </div>
+
+             @if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null && SFSdotNet.Framework.My.Context.CurrentContext.User.GuidUser == comment.GuidUser )
+             {
+                 <div class="text-right">
+                <a  class="btn btn-mini edit-comment" popupId="popup-@(comment.GuidContent)" href="@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/SFSdotNetFrameworkSecurity/secIssues/EditViewGen/" + comment.GuidContent.ToString() + "?type=comment&actionName=EditDone&popup=true&dec=true"))" ><i class="icon  icon-pencil"></i> </a>
+                <a href="#"  id="" idIssue="@(comment.GuidContent)" class=" delete-comment" messageConfirm="Confirme que desea eliminar el mensaje" actionType="delete" controllerName="secIssues"  areaName="SFSdotNetFrameworkSecurity" defaultPropertyValue="" ><i class=" icon-trash"></i></a>
+
+                 </div>
+             }
+            <div class="quote"  style="margin-top:-25px;">&ldquo;</div>
+        </td>
+    </tr>
+</table>
+    <script>
+        $(document).ready(function () {
+        
+            prepareButtonsForVote("@(comment.GuidContent)");
+         
+        });
+
+
+    </script>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".edit-comment").click(function (e) {
+            e.preventDefault();
+            waitActionComplete("EditDone");
+            openModal($(this), editCommentDone);
+          
+        });
+        prepareDeleteComments();
+        //alert($(".publishdate .timeago").length);
+        $(".publishdate .timeago").each(function (e) {
+           $(this).attr("title", ParseISO8601($(this).attr("title")));
+            
+        });
+
+        $('.timeago').timeago();
+    });
+
+    
+</script>

@@ -1,0 +1,376 @@
+﻿@{
+    SFSdotNet.Framework.Web.Mvc.Models.UIModel uiModel = (SFSdotNet.Framework.Web.Mvc.Models.UIModel)ViewData["uiModel"];
+    string idWindow = (string)ViewData["idWindow"];
+    List<SFSdotNet.Framework.Security.BusinessObjects.WFProcess> processes = (List<SFSdotNet.Framework.Security.BusinessObjects.WFProcess>)ViewData["activities"];
+
+    
+    }
+<style>
+    .bubble 
+{
+position: relative;
+width: 455px;
+min-height: 80px;
+padding: 2px;
+background: #FFFFFF;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+border: #9a9a9a solid 1px;
+}
+
+.bubble:after 
+{
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 15px 15px 15px 0;
+border-color: transparent #FFFFFF;
+display: block;
+width: 0;
+z-index: 1;
+left: -15px;
+top: 5px;
+}
+
+.bubble:before 
+{
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 15px 15px 15px 0;
+border-color: transparent #9a9a9a;
+display: block;
+width: 0;
+z-index: 0;
+left: -16px;
+top: 5px;
+}
+</style>
+@foreach (var process in processes)
+{
+
+    <div style="text-align:center">
+        <span style="font-size:150%;font-weight:bold;color:black;">@process.Title </span>
+        @if (process.CurrentState != null)
+        {
+            <div style="font-size:large;text-align:center;"><span class="@process.CurrentState.ClassStyle" style="padding: 10px; font-size: 22px; margin:20px;">@process.CurrentState.Title</span></div>
+        }
+        @foreach (var activity in process.Activities.Where(p => p.ActivityType == "user-decision" && p.ActivityUsers.Count > 0).OrderByDescending(p => p.CompletedDate))
+        {
+
+
+
+            <div class="text-center"><span style="font-size:120%;font-weight:bold;color:grey;">@activity.Title</span></div>
+
+            <div style="font-weight: normal;">
+                @foreach (var actUser in activity.ActivityUsers.OrderByDescending(p => p.CompletedDate))
+                {
+                    if (actUser.Completed == false && (actUser.User != null && actUser.User.GuidUser == SFSdotNet.Framework.My.Context.CurrentContext.User.GuidUser))
+                    {
+                        bool exist = false;
+                        string classExistResponse = "badge badge-success";
+
+                        if (actUser.GuidActivityUserLog != null)
+                        {
+                            exist = true;
+                            if (!actUser.Decision)
+                            {
+                                classExistResponse = "badge badge-important";
+                            }
+                        }
+                        string decisionText = "";
+                        if (actUser.Decision)
+                        {
+                            decisionText = GlobalMessages.YES;
+                        }
+                        else
+                        {
+                            decisionText = GlobalMessages.NO;
+                        }
+
+                        <text>
+
+                            @if (exist == false)
+                            {
+                                <textarea name="comments@(actUser.GuidActivityUser.ToString())" class="field text span12" id="comments@(actUser.GuidActivityUser.ToString())" rows="4" placeholder="Comentarios opcionales..."></textarea> <br /><br />
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(actUser.Comments))
+                                {
+                                    <span class=""> @Html.Raw(actUser.Comments)</span> <br /><br />
+                                }
+                            }
+
+                            @if (exist == false)
+                            {
+                                <a href="" case="confirm" style="margin-right:60px;" class=" btn btn-large btn-success" id="yes-@(actUser.GuidActivityUser.ToString())">@GlobalMessages.YES</a>
+                                <a href="" style="margin-right:60px;" case="confirm" class=" btn btn-large btn-danger" id="no-@(actUser.GuidActivityUser.ToString())">@GlobalMessages.NO</a>
+                                <a href="" case="confirm" class=" btn btn-large " id="cancel-@(actUser.GuidActivityUser.ToString())">@GlobalMessages.CANCEL</a>
+                            }
+                            else
+                            {
+                                <div style="font-size:x-large"><span class="@classExistResponse">Tu decisión fue @Html.Raw(decisionText)</span></div>
+                            }
+                            <script>
+                                function setDecision@(actUser.GuidActivityUser.ToString().Replace("-", ""))(decision) {
+                                    var url = "@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/WorkFlow/SetActivityDecision?moduleKey=" + ViewData["moduleKey"].ToString() + "&entityKey=" + ViewData["entityKey"].ToString() + "&usemode=" + ViewData["usemode"].ToString() + ""))";
+                                    var data = new Object();
+                                    data.ItemSafeKey = "@(SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.ViewContext.RequestContext, "id"))";
+
+                                    if (decision == "true") {
+                                        data.Decision = true;
+                                    } else {
+                                        data.Decision = false;
+                                    }
+                                    var idButton = "";
+                                    if (decision == "true") {
+                                        idButton = "yes-@(actUser.GuidActivityUser.ToString())";
+                                    } else {
+                                        idButton = "no-@(actUser.GuidActivityUser.ToString())";
+
+                                    }
+                                    if ($("#comments@(actUser.GuidActivityUser.ToString())").val().length > 0) {
+                                        data.Comments = $("#comments@(actUser.GuidActivityUser.ToString())").val();
+                                    }
+                                    data.GuidActivityUser = "@(actUser.GuidActivityUser.ToString())";
+
+                                    callServerSend(url, jQuery.parseJSON('{"data": "' + escape(JSON.stringify(data)) + '"}'), function (data) {
+                                        if (data == "ok") {
+                                            $("#" + idButton + "").button("loading");
+                                            @if (Request.QueryString["layout"] == "clean")
+                            {
+                                <text>
+                                            window.location.href = "@(Request.Url.ToString())";
+
+
+                                            </text>
+                            }
+                            else
+                            {
+                                <text>
+                                            $("#returnLink@(idWindow)")[0].click();
+
+                                            </text>
+                            }
+                                        } else {
+
+                                        }
+                                    }, $("#" + idButton));
+                                }
+                                $(document).ready(function () {
+                                    $("#cancel-@(actUser.GuidActivityUser.ToString())").hide();
+                                    $("#cancel-@(actUser.GuidActivityUser.ToString())").click(function (e) {
+                                        e.preventDefault();
+                                        $(this).hide();
+                                        $("#no-@(actUser.GuidActivityUser.ToString())").show();
+                                        //$("#no-@(actUser.GuidActivityUser.ToString())").
+                                        $("#yes-@(actUser.GuidActivityUser.ToString())").show();
+                                        $("#no-@(actUser.GuidActivityUser.ToString())").text("@GlobalMessages.NO");
+                                        $("#yes-@(actUser.GuidActivityUser.ToString())").text("@GlobalMessages.YES");
+                                        $("#no-@(actUser.GuidActivityUser.ToString())").attr("case", "confirm");
+                                        $("#yes-@(actUser.GuidActivityUser.ToString())").attr("case", "confirm");
+
+                                    });
+                                    $("#yes-@(actUser.GuidActivityUser.ToString())").click(function (e) {
+                                        e.preventDefault();
+                                        if ($(this).attr("case") == "confirm") {
+                                            $(this).attr("data-loading-text", "@(GlobalMessages.PROCESSING_PLEASE_WAIT)");
+                                            $(this).text("@Html.Raw(GlobalMessages.CONFIRM)");
+                                            $("#cancel-@(actUser.GuidActivityUser.ToString())").show();
+                                            $("#no-@(actUser.GuidActivityUser.ToString())").hide();
+                                            $(this).attr("case", "");
+                                        } else {
+                                            $(this).attr("loading");
+                                            // procesar yes
+                                            setDecision@(actUser.GuidActivityUser.ToString().Replace("-", ""))("true");
+                                        }
+
+                                    });
+
+                                    $("#no-@(actUser.GuidActivityUser.ToString())").click(function (e) {
+                                        e.preventDefault();
+                                        if ($(this).attr("case") == "confirm") {
+                                            $(this).attr("data-loading-text", "@(GlobalMessages.PROCESSING_PLEASE_WAIT)");
+                                            $(this).text("@Html.Raw(GlobalMessages.CONFIRM)");
+                                            $("#cancel-@(actUser.GuidActivityUser.ToString())").show();
+                                            $("#yes-@(actUser.GuidActivityUser.ToString())").hide();
+                                            $(this).attr("case", "");
+                                        } else {
+                                            if ($("#comments@(actUser.GuidActivityUser.ToString())").val().length > 0){
+                                                $(this).attr("loading");
+                                                // procesar no
+                                                setDecision@(actUser.GuidActivityUser.ToString().Replace("-", ""))("false");
+                                            }else{
+                                                alert("Para rechazar debe colocar comentarios");
+                                            }
+                                        }
+
+                                    });
+                                });
+                            </script>
+                        </text>
+                    }
+                    else
+                    {
+                        if (actUser.User != null || actUser.DynamicUsers.Count > 0)
+                        {
+                            int maxLargeName = 10;
+                            string fullUserDesc = "";
+                            if (actUser.User == null || actUser.DynamicUsers.Count > 0)
+                            {
+                                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                                foreach (var dynUser in actUser.DynamicUsers)
+                                {
+                                    string displayDynUser = dynUser.DisplayName;
+                                    fullUserDesc = dynUser.DisplayName + " (" + dynUser.Email + ")";
+                                    if (string.IsNullOrEmpty(displayDynUser))
+                                    {
+                                        displayDynUser = dynUser.UserName;
+                                    }
+                                    if (displayDynUser.Contains("@"))
+                                    {
+                                        displayDynUser = displayDynUser.Split(char.Parse("@"))[0] + "...";
+                                    }
+                                    else
+                                    {
+                                        if (displayDynUser.Length > maxLargeName)
+                                        {
+                                            displayDynUser = displayDynUser.Substring(0, maxLargeName) + "...";
+                                        }
+                                    }
+                                    //<img src="@(image)" style="width:50px;height:50px;" />
+
+                                    displayDynUser = "<img src=\"" + dynUser.UrlImage + "\" style=\"width:50px;height:50px;\" /> <br /> <span title=\"" + fullUserDesc + "\">" + displayDynUser + "</span>";
+                                    if (sb.Length > 0)
+                                    {
+                                        sb.Append(" ");
+                                    }
+                                    sb.Append("<td>");
+                                    sb.Append(displayDynUser);
+                                    sb.Append("</td>");
+                                }
+                                <p style="text-align:center"> Esperando por</p>
+                                <table style="margin-right: auto; margin-left: auto; margin-bottom:30px; ">
+                                    <tr>
+                                        
+                                        @Html.Raw(sb.ToString())
+                                    </tr>
+                                </table>
+
+                            }
+                            else
+                            {
+                                string displayName = actUser.User.DisplayName;
+                                fullUserDesc = displayName + " (" + actUser.User.Email + ")";
+
+                                if (string.IsNullOrEmpty(displayName))
+                                {
+                                    displayName = actUser.User.UserName;
+                                }
+                                
+                                if (displayName.Contains("@"))
+                                {
+                                    displayName = displayName.Split(char.Parse("@"))[0] +"...";
+                                }
+                                else
+                                {
+                                    if (displayName.Length > maxLargeName)
+                                    {
+                                        displayName = displayName.Substring(0, maxLargeName) + "...";
+                                    }
+                                }
+                                if (actUser.Completed == false || actUser.Completed == null)
+                                {
+
+                                    @(displayName)
+                                }
+                                else
+                                {
+                                    string image = actUser.User.UrlImage;
+                                    if (!string.IsNullOrEmpty(image))
+                                    {
+                                        image = image.Replace("h=", "h=50").Replace("w=", "w=50");
+                                    }
+                                    if (!string.IsNullOrEmpty(actUser.Comments))
+                                    {
+
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                    <table style="width:600px;margin-right: auto; margin-left: auto; margin-bottom:30px; ">
+                                        <tr>
+                                            <td style="width:200px;"><img src="@(image)" style="width:50px;height:50px;" />
+                                            <br />
+                                                <span title="@(fullUserDesc)"> @(displayName)</span>
+
+                                            </td>
+                                            @*<td style="text-align:left;width:200px"><span>@(displayName)</span><br /><span style="color: grey; font-size: 13px;">@(actUser.CompletedDate.ToString())</span></td>*@
+                                            <td style="text-align:left">
+                                                <div class="bubble">
+                                                    <table width="100%" style="100%">
+                                                        <tr>
+                                                            <td style=" width:100%">
+                                                                <p style="">
+                                                                    <span style="
+    font-style: italic;
+    font-size: 70%;
+    color: grey;">@(actUser.CompletedDate.ToString())</span>
+                                                            </p>
+                                                                <blockquote style="margin-left:20px;">
+                                                                    @(actUser.Comments)
+                                                                </blockquote>
+                                                            </td>
+                                                            <td style="">
+                                                                @if (actUser.Decision == true)
+                                                                {
+                                                                    <div style="padding: 10px; color: white; font-size: 120%; background-color: green;">
+                                                                        @(GlobalMessages.YES)
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div style="padding: 10px; color: white; font-size: 120%; background-color: red;">
+                                                                        @(GlobalMessages.NO)
+                                                                    </div>
+                                                                }
+
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <div class="pointer" >
+                                                    </div>
+                                                    <div class="pointerBorder" >
+                                                    </div>
+                                                </div>
+                                            
+                                            </td>
+                                            @*<td style="width: 40px; text-align: center;">
+ñ
+                                               
+
+                                            </td>*@
+                                        </tr>
+
+                                    </table>
+
+
+                                }
+                            }
+                        }
+                        else
+                        {
+
+
+                        }
+                    }
+                }
+            </div>
+        }
+    </div>
+
+}
+

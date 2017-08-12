@@ -1,0 +1,317 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ExportHierarchical</name>
+    </assembly>
+    <members>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.AdvancedStringRenderer">
+            <summary>
+            string renderer - 
+                can be used with TOLOWER (TOUPPER)or HTML or any other format
+            
+            </summary>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.AdvancedStringRenderer.ToString(System.Object)">
+            <summary>
+            IAttributeRenderer implementation
+            </summary>
+            <param name="o">The value object - string </param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.AdvancedStringRenderer.ToString(System.Object,System.String)">
+            <summary>
+            formats the string.
+            </summary>
+            <param name="o">The value object - string</param>
+            <param name="formatName">Name of the format - TOUPPER, TOLOWER, HTML or any other .NET format</param>
+            <returns></returns>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.AdvancedDateTimeRenderer">
+            <summary>
+            date time renderer - 
+                can be used with any other format implemented by .NET
+            </summary>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.AdvancedDateTimeRenderer.ToString(System.Object)">
+            <summary>
+            IAttributeRenderer implementation
+            </summary>
+            <param name="o">The value object - string </param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.AdvancedDateTimeRenderer.ToString(System.Object,System.String)">
+            <summary>
+            formats the string.
+            </summary>
+            <param name="o">The value object - string</param>
+            <param name="formatName">Name of the format - TOUPPER, TOLOWER, HTML or any other .NET format</param>
+            <returns></returns>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode">
+            <summary>
+            Inode is the specific interface for a node to be serialized
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.Level">
+            <summary>
+            Gets or sets the level. - you can verify agains the maximum number of levels
+            </summary>
+            <value>The level.</value>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.Name">
+            <summary>
+            Gets or sets the display name.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.UniqueID">
+            <summary>
+            Gets or sets the unique ID - usefull for achor, references etc.
+            </summary>
+            <value>The unique ID.</value>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.oType">
+            <summary>
+            Gets the type of the object
+            </summary>
+            <value>The type of the object</value>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.AddProperty(System.String)">
+            <summary>
+            Adds the property to the node to be displayed
+            </summary>
+            <param name="Key">The key = property name</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.AddObjects(System.String,System.String,System.String)">
+            <summary>
+            Adds the objects to the tree
+            </summary>
+            <param name="NamePropObject">The prop name of the object.</param>
+            <param name="DisplayName">The display name </param>
+            <param name="Key">The key</param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.AddObjects(System.String,System.String,System.String,System.Func{System.Object,System.Boolean})">
+            <summary>
+            Adds the objects to the tree
+            </summary>
+            <param name="NamePropObject">The prop name of the object.</param>
+            <param name="DisplayName">The display name of the object</param>
+            <param name="Key">The key - must return Enumerable</param>
+            <param name="Exclude">Exclude some values on condition</param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.AddObject(System.String,www.serviciipeweb.ro.iafblog.ExportHierarchical.HashTableAddRecursiveObjects)">
+            <summary>
+            Adds directly teh subnodes
+            </summary>
+            <param name="Key">The key</param>
+            <param name="val">The value to be added</param>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.Properties">
+            <summary>
+            Gets the properties to be displayed
+            </summary>        
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.INode.SubNodes">
+            <summary>
+            Gets the sub nodes to be displayed
+            </summary>        
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1">
+            <summary>
+            One implementation of the INode
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1"/> class.
+            </summary>
+            <param name="o">The object to be displayed - helpfull to find its properties</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.#ctor(`0,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1"/> class.
+            </summary>
+            <param name="o">The object to be displayed with properties</param>
+            <param name="NameProp">The name property that acts as display name</param>
+            <param name="DefaultID">The property name of the default ID</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.#cctor">
+            <summary>
+            Initialize caching for methods...
+            </summary>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current value<see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current id and display name<see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.oType">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.Level">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.Name">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.UniqueID">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.Properties">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.SubNodes">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.AddObject(System.String,www.serviciipeweb.ro.iafblog.ExportHierarchical.HashTableAddRecursiveObjects)">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+            <param name="Key"></param>
+            <param name="val"></param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.AddObjects(System.String,System.String,System.String)">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+            <param name="NamePropObject"></param>
+            <param name="DisplayName"></param>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.AddObjects(System.String,System.String,System.String,System.Func{System.Object,System.Boolean})">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+            <param name="NamePropObject"></param>
+            <param name="DisplayName"></param>
+            <param name="Key"></param>
+            <param name="Exclude"></param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.AddProperty(System.String)">
+            <summary>
+            see <see cref="!:INODE"/>
+            </summary>
+            <param name="Key"></param>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.ExistSubNodesOrProperties">
+            <summary>
+            Gets a value indicating whether exist sub nodes or properties.
+            </summary>        
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.ExistSubNodes">
+            <summary>
+            Gets a value indicating whether exist sub nodes.
+            </summary>        
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.ExistProperties">
+            <summary>
+            Gets a value indicating whether exist properties.
+            </summary>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.PropertyMethodValueRecurse(System.String,System.Object)">
+            <summary>
+            Returns the value of Key property or method
+            uses methodsCachePrimary 
+            </summary>
+            <param name="Key">The name of prop or method (with Paranthesis!).</param>
+            <param name="o">The object to find the method and value</param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.ST_Node`1.PropertyValue(System.String)">
+            <summary>
+            returns the value of the property
+            Virtual for can be retrieved on other implementations
+            </summary>
+            <param name="Key">The key</param>
+            <returns></returns>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.utilitiesString">
+            <summary>
+            utilities for transforming to/from UTF8
+            </summary>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.utilitiesString.UTF8ByteArrayToString(System.Byte[])">
+            <summary>
+            UTf8 byte array to string.
+            </summary>
+            <param name="characters">The characters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.utilitiesString.StringToUTF8ByteArray(System.String)">
+            <summary>
+            Strings to UTf8 byte array.
+            </summary>
+            <param name="pXmlString">The p XML string.</param>
+            <returns></returns>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.HashTableAddRecursiveCollection">
+            <summary>
+            class for objects - recursive collection
+            </summary>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.HashTableAddRecursiveObjects">
+            <summary>
+            class for each object
+            </summary>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.HashTableAddRecursiveProperties">
+            <summary>
+            class for properties
+            </summary>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.HashTableAddRecursive`1">
+            <summary>
+            abstract class for tree adding
+            </summary>    
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.HashTableAddRecursive`1.op_Implicit(www.serviciipeweb.ro.iafblog.ExportHierarchical.HashTableAddRecursive{`0})~System.Collections.Hashtable">
+             <summary>
+             conversion to Hash Table
+            required by String Template implementation
+             </summary>
+             <param name="t"></param>
+             <returns></returns>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.HierarchySerializer`1">
+            <summary>
+            not finished class to can serialize the hierarchy of objects
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportHierarchical.GenReflectNode">
+            <summary>
+            Implemented after
+            http://bartdesmet.net/blogs/bart/archive/2006/09/11/4410.aspx
+            </summary>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportHierarchical.GenReflectNode.CreateExporter(System.Object,System.String,System.String)">
+            <summary>
+            Creates the exporter of ST_NODE
+            </summary>
+            <param name="oLoop">The object to be searached for properties/tree nodes</param>
+            <param name="NameProp">The property name - see constructor of ST_NODE</param>
+            <param name="DefaultID">The ID of the node - see constructor of ST_NODE</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

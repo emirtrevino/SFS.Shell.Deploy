@@ -1,0 +1,126 @@
+﻿.color-dark-bg, .bigbuttons .faq {
+   
+}
+ul.crumbs{
+    margin-left:0px;
+}
+.mfp-img
+{
+    background-color:white;
+}
+div.faq h2, div.feature h2, div.apps h2, div.advantages h2{
+    font-size:30px;
+}
+
+div.faq {
+    border-left-style: solid;
+    border-left-width: 10px;
+    border-left-color: #ff7f2a;
+}
+div.feature {
+    border-left-style: solid;
+    border-left-width: 10px;
+    border-left-color: #5aa02c;
+}
+div.advantages {
+    border-left-style: solid;
+    border-left-width: 10px;
+    border-left-color: #4174a3;
+}
+div.goapp {
+    background-color: #EFEFEF;
+}
+.color-primary-bg {
+     background-color:#955bd3;
+}
+
+
+.color-error-bg {
+    background-color: #cb0077;
+}
+.color-warning-bg, .bigbuttons .feature {
+    /*background-color:#daac68;*/
+}
+.bigbuttons .advantages {
+    /*background-color: #35475A;*/ /*#955bd3;*/
+}
+
+.navbar-inverse .navbar-inner, .navbar-inverse .btn-navbar,  .navbar.top{
+background-color: #4174a3;
+background-image:none;
+border:none;
+border-bottom-style:none;
+border-width:0px;
+}
+
+.navbar-inverse .nav li.open.dropdown > .dropdown-toggle, .navbar-inverse .nav li.active.dropdown > .dropdown-toggle, .navbar-inverse .nav li.active.open.dropdown > .dropdown-toggle {
+    background-color: #588CBC;
+    background-image: none;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+    background-color: #588CBC;
+    background-image: none;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .active.btn-primary, .disabled.btn-primary, [disabled].btn-primary, .btn-primary {
+     background-color:#4174a3;
+     background-image:none;
+}
+h1 {
+    color:#588CBC;
+}
+h2 {
+    color:rgba(153, 153, 153, 1);
+    font-weight:normal;
+
+}
+
+h3 {
+    color: #ff7f2a;
+}
+
+a, a.btn-link {
+    color:#566576;
+}
+.multicolumn .control-group
+{
+    padding-left:5px;
+    padding-right:5px;
+        /*border: 7px solid #F2F0E1;*/
+
+}
+.control-group.over
+{
+
+    background-color: #F2F0E1;
+}
+
+
+
+.dashboard-item
+{
+    margin-top:15px;
+    box-shadow:0 0 15px #E4E4E4; /*#999;*/
+}
+.visual-page .bigbuttons .goapp a, .visual-page .bigbuttons .goapp  a:hover, .visual-page .bigbuttons .goapp  a:focus, .visual-page .bigbuttons .goapp a:active, .visual-page .bigbuttons  .goapp a:visited, .goapp a, .goapp a:hover, .goapp a:active, .goapp a:visited {
+    color: #4174a3;
+    font-size: 25px;
+    
+}
+.visual-page h2.title-section {
+ color:#182d42;
+ font-weight:normal;
+}
+
+.details-edit, .popup .modal-body {
+    background-color:#f6f6f6 !important;
+}
+.display .display-field, .edit .display-field{
+    background-color:white;
+}
+.display .rowform{
+
+    margin-bottom:10px;
+}
+.modal-footer.buttons{
+    padding-top:15px;
+}

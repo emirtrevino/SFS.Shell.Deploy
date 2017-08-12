@@ -1,0 +1,275 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.PropertyDefinition
+@{  
+
+    PropertyDefinition propertyDef = (PropertyDefinition)this.ViewContext.ViewData["property"];
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    //string usemode = "";
+
+    string propertyName = propertyDef.PropertyName;
+    object model = this.ViewContext.ViewData["model"];
+    Type modelType = model.GetType();
+    var property = modelType.GetProperty("Fk" + propertyName);
+    string valueString = null;
+    if (property != null && (uiModel.IsNew == false || uiModel.IsNew == null ))
+    {
+        var propValue = property.GetValue(model);
+        if (propValue != null)
+        {
+            valueString = propValue.ToString();
+        }
+    }
+    string idElement = "Fk" + propertyName;
+    if (property == null)
+    {
+        property = modelType.GetProperty( propertyName);
+        idElement = propertyName;
+    }
+
+
+    //var attribute = SFSdotNet.Framework.Metadata.MetadataAttributes.GetMyAttribute<SFSdotNet.Framework.Web.Mvc.Extensions.RelationFilterableAttribute>(property);
+    //string displayText = propertyDef.GetMethodDisplayText;
+    //string displayValue = propertyDef.GetMethodDisplayValue;
+
+    string paramfilter = "";
+    string queryParams = "";
+
+    if (propertyDef.GetMethodParameters.Contains("=") || propertyDef.GetMethodParameters.Contains(">") || propertyDef.GetMethodParameters.Contains("<"))
+    {
+        paramfilter = propertyDef.GetMethodParameters;
+    }
+    else {
+        queryParams = propertyDef.GetMethodParameters;
+    }
+
+    string usemode = "";
+    string overrideModule = "";
+    if (!string.IsNullOrEmpty(uiModel.OverrideApp)) {
+        overrideModule = "&overrideModule=" + uiModel.OverrideApp;
+    }
+    if (!string.IsNullOrEmpty(propertyDef.UseMode)) {
+        usemode = "&usemode=" + propertyDef.UseMode;
+    }
+    string urlCreate = VirtualPathUtility.ToAbsolute("~/") + propertyDef.PathName + "/CreateViewGen?actionName=addFk" + idElement + "&popup=true" + usemode + overrideModule;
+    string urlToCatalog = VirtualPathUtility.ToAbsolute("~/") + propertyDef.PathName + "/?" + usemode + overrideModule;
+    }    
+    @if (propertyDef.CanAdd || propertyDef.CanGoToCatalog)
+    { 
+
+
+        <div class="dropdown fkactions" style="display:inline;">
+    <a href="#" class="dropdown-toggle" tabindex="-1" role="button" id="fkA-@idElement" data-toggle="dropdown"><b class="caret"></b> </a>
+<ul class="dropdown-menu" role="menu" aria-labelledby="fkA-@idElement">   
+
+
+
+@if (propertyDef.CanAdd == true)
+   { 
+
+         <li role="presentation"><a href="@(urlCreate)" class="" id="add@(idElement)"><i class="icon-plus gray-icon "></i> @GlobalMessages.ADD_NEW</a></li>
+ } 
+@if (propertyDef.CanGoToCatalog == true)
+{ 
+
+<li role="presentation">    <a href="@(urlToCatalog)" class="" target="_blank" id="goto@(idElement)"><i class="icon-share-alt gray-icon "></i> @GlobalMessages.GO_TO_CATALOG</a></li>
+} 
+
+
+
+ <script>
+    var is@(idElement )Added = false;
+     $(document).ready(function () {
+
+@if (propertyDef.CanAdd == true)
+    {
+    <text>
+        if ($("#@(idElement )").is("select")){
+             $("#@(idElement )").append($("<option></option>")
+            .attr("cus", "+")
+            .attr("value", "")
+            .text("+ @(GlobalMessages.ADD_NEW)"));
+            $("#@(idElement )").change(function() {
+                var cus = $('option:selected', this).attr('cus');
+                if (cus == "+"){
+                     $("#add@(idElement )").click();
+                }
+            });
+
+        }
+         </text>
+    }
+
+
+         $("#add@(idElement )").on("click", function(e){
+             e.preventDefault();
+             waitActionComplete("addFk@(idElement )");
+             openModal($(this), onCloseAdd@(idElement ));
+         });
+        /*
+        $("#add@(idElement )").on("click", function(e){
+        e.preventDefault();
+            $('body').modalmanager('loading');
+        var url = $(this).attr('href');
+        if ($("#modal@(idElement )").length == 0){
+                $("body").append('<div id="modal@(idElement )" class="modal hide fade tex-left" ><div class="modal-body text-left"><div class="preloader-big"></div></div></div>');
+        }else{
+                $("#modal@(idElement )").html('<div class="modal-body text-left"><div class="preloader-big"></div></div>');
+        }
+
+            $("#modal@(idElement )").on('hidden', function () {
+            onCloseAdd@(idElement )();
+        });
+            //$("#modal@(idElement )").modal("show");
+            $.ajax({
+            url: url + "&actionName=is@(idElement )Added",
+                dataType: "html",
+                cache:false,
+                success: function (data) {
+                    //is@(idElement )Added = false;
+                    $("#modal@(idElement )").html(data );
+                    $("#modal@(idElement )").modal("show");
+                repositionModal($("#modal@(idElement )"));
+            }
+        });
+
+
+
+    });
+     */
+
+
+});
+     function onCloseAdd@(idElement )() {
+         if ($("#@(idElement )").is("select")){
+             if (isActionComplete("addFk@(idElement )")){
+                 $("#@(idElement )").attr("disabled", true);
+                 callServerGet('@(VirtualPathUtility.ToAbsolute("~/") )@(propertyDef.PathName  )/GetJsonContent?overrideModule=@(uiModel.OverrideApp)&usemode=@(uiModel.UseMode)&methodName=@(propertyDef.GetMethodName)&queryParams=@(queryParams)&filter=@(HttpUtility.UrlEncode(paramfilter))', onCloseAddEnd@(idElement ));
+
+             }
+         }
+    }
+    function onCloseAddEnd@(idElement )(data) {
+        // limpiar cmbo
+        $("#@(idElement )").empty();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].CreatedDate != undefined && data[i].CreatedDate != null ){
+                data[i].__date = parseDate(data[i].CreatedDate);
+            }else{
+                data[i].__date = new Date();
+            }
+            if (data[i].@(propertyDef.GetMethodDisplayText ) == null ){
+                data[i].@(propertyDef.GetMethodDisplayText ) = "";
+            }
+            $("#@(idElement )").append("<option value='" + data[i].@(propertyDef.GetMethodDisplayValue ) + "'>" + data[i].@(propertyDef.GetMethodDisplayText ) + "</option>");
+        }
+
+        $("#@(idElement )").append($("<option></option>")
+        .attr("value","+")
+        .text("+ Agregar nuevo"));
+         data = data.sort(function(a,b){
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(b.__date) - new Date(a.__date);
+         });
+         var last = data[0];
+         $("#@(idElement )").val(last.@(propertyDef.GetMethodDisplayValue ));
+
+        $("#@(idElement )").change(function () {
+            if ($(this).val() == "+"){
+                $("#add@(idElement )").click();
+            }
+        });
+
+
+        $("#@(idElement )").removeAttr("disabled");
+        // $("#@(idElement )").
+    }
+
+
+ </script>
+ 
+    </ul>
+    </div>
+ }
+ 
+  @if (uiModel.ExtraData.Exists(p => p.ExtraParameters.Count > 0 && p.PropertyName == propertyDef.PropertyName))
+  {
+      // es dependiente, llenado dependiente
+      string actionMethodUrl = propertyDef.PathName + "/GetByJson";
+      var data = uiModel.ExtraData.FirstOrDefault(p => p.PropertyName == propertyDef.PropertyName);
+      string area = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "area");
+      string controller = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "controller");
+
+      if (!string.IsNullOrEmpty(data.ActionMethod) && !string.IsNullOrEmpty(area))
+      {
+          actionMethodUrl = area + "/" + controller + "/" + data.ActionMethod;
+      }
+      System.Text.StringBuilder sb = new System.Text.StringBuilder();
+      System.Text.StringBuilder sbFieldChanged = new System.Text.StringBuilder();
+      System.Text.StringBuilder sbQueryString = new System.Text.StringBuilder();
+      string selectorType = "#";
+      if (propertyDef.ContextType == UIModelContextTypes.FilterFields)
+      {
+          selectorType = ".";
+      }
+      foreach (var depent in data.ExtraParameters)
+      {
+          var propFinded = uiModel.Properties.FirstOrDefault(p=>p.PropertyName == depent);
+          if (propFinded != null ){
+              string prefix = "";
+              if (propFinded.IsNavigationProperty){
+                  prefix = "Fk";
+              }
+              sb.Append(" + ");
+
+              sb.Append("'" + depent + ":'" + " + $('" + selectorType + prefix + depent + "').val()" + " + ';'");
+              sbQueryString.Append(" + ");
+              sbQueryString.Append("'" + depent + "='" + " + $('" + selectorType + prefix + depent + "').val()" + " + '&'");
+
+              if (sbFieldChanged.Length > 0){
+                  sbFieldChanged.Append(";");
+                  sbFieldChanged.AppendLine("");
+
+              }
+              if (prefix == "Fk"){
+                  //sbFieldChanged.AppendLine("fill_" + propertyDef.PropertyName + "();");
+                  sbFieldChanged.AppendLine("$('" + selectorType + prefix + depent + "').change(function () { fill_" + propertyDef.PropertyName + "(); });");
+              }
+          }
+      
+<text>
+    <script>
+    $(document).ready(function () {
+        @Html.Raw(sbFieldChanged.ToString())
+        @if (propertyDef.ContextType == UIModelContextTypes.FilterFields)
+        {
+            <text>
+            fill_@(propertyDef.PropertyName)();
+            </text>
+        }
+    });
+    function fill_@(propertyDef.PropertyName)() {
+        var exp = 'ex='@Html.Raw(sb.ToString());
+        var extraParams = ''@Html.Raw(sbQueryString.ToString());
+        var url = "@(VirtualPathUtility.ToAbsolute("~/" +actionMethodUrl))?" + extraParams;
+        $("@(selectorType)Fk@(propertyDef.PropertyName)").empty();
+        $("@(selectorType)Fk@(propertyDef.PropertyName)").append('<option selected value="">@(GlobalMessages.PROCESSING_PLEASE_WAIT)</option>');
+        $("@(selectorType)Fk@(propertyDef.PropertyName)").val("");
+        callServerGet(url, function (data) {
+            $("@(selectorType)Fk@(propertyDef.PropertyName)").fill({ data: data });
+            $("@(selectorType)Fk@(propertyDef.PropertyName)").append('<option selected value="">--@(GlobalMessages.SELECT)--</option>');
+            $("@(selectorType)Fk@(propertyDef.PropertyName)").val("@(valueString)");
+
+            if (typeof(separeWithNameKey@(propertyDef.PropertyName)) != "undefined"){
+                separeWithNameKey@(propertyDef.PropertyName)();
+            }
+            $("@(selectorType)Fk@(propertyDef.PropertyName)").trigger("change");
+            var data_val_required = $("@(selectorType)Fk@(propertyDef.PropertyName)").attr("data-val-required");
+            if (typeof(data_val_required) != "undefined" && data_val_required  != null ){
+                setRequired($("@(selectorType)Fk@(propertyDef.PropertyName)"), true, true);
+            }
+        });
+    }
+</script>
+</text>
+      }
+  } 

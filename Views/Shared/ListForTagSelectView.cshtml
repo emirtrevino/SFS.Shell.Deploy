@@ -1,0 +1,147 @@
+﻿
+@{
+    PropertyDefinition property = (PropertyDefinition)ViewData["parentRelationProperty"];
+    string propertyName = "Ch" + property.PropertyName + "Text";
+    string urlGetData = VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secTags/GetByJson?filter=";
+    var propertyValue = (string)ViewData["parentRelationPropertyValue"];
+    string resultPropertyValue = "GuidTag";
+    string resultPropertyText = "Title";
+    
+    
+    }
+
+<input type="hidden" class="" style="width:100%" name="@(propertyName)" value="@(propertyValue)" id="@(propertyName)" dataTypeValue=""  class="autocomplete  " propertyKeyName="" filtrablePathName="" />
+
+<script type="text/javascript">
+   
+
+    $(document).ready(function () {
+     
+        $('#@(propertyName)').change(function () {
+            //alert($(this).val())
+            $("#@(propertyName)Values").val($(this).val());
+        });
+        var @(propertyName)Search = "";
+        $('#@(propertyName)').select2({
+            width: 'resolve',
+            initSelection: function(element, callback) {
+                var data = [];
+                $(element.val().split(",")).each(function(i) {
+                    var item = this.split(':');
+                    data.push({
+                        id: item[0],
+                        text: item[1]
+                    });
+                });
+                element.val("");
+                //$(element).val('');
+                callback(data);
+            },
+
+            placeholder: "",
+            maximumSelectionSize: 100,
+            minimumInputLength: 2,
+            multiple:true,
+            allowClear: true, 
+            
+            id: function(e) { return e.id+":"+e.text; },
+            tags: true,
+            ajax: {
+                url: "@(urlGetData)" + "|",
+                cache:false, 
+                dataType: 'json',
+                data: function (term, page) {
+                    @(propertyName)Search = term;
+                    return {
+                        q: term
+                    };
+                },
+                //formatSelection :FormatSelection,
+
+                results:
+                     function (data, page) { 
+                         /*if (data.length == 0){
+                             var newData =  new Object();
+                            newData.GuidTag = "00000000-0000-0000-0000-000000000000"; 
+                            newData.Title = @(propertyName)Search; 
+                            data.push(newData);
+                         }*/
+                         return {
+                             results: $.map(data, function (item) {
+                               /*  if (item.@(resultPropertyValue) == undefined){
+                                     item.@(resultPropertyValue) = "00000000-0000-0000-0000-000000000000";
+                                     item.@(resultPropertyText) = @(propertyName)Search;
+                                 }*/
+                                    return {
+                                            id: item.@(resultPropertyValue),
+                                            text: item.@(resultPropertyText)
+                                        };
+                                })
+                                 //results: data
+                              
+                         };
+                }
+            },
+            createSearchChoice: function(term) {
+                var xtranew = "";
+                //if (item.id == "00000000-0000-0000-0000-000000000000"){
+                    //xtranew = "<span class='label label-warning'>new</span>";
+                //}
+                return {
+                    id: "00000000-0000-0000-0000-000000000000|" + term,
+                    text: term + " " + xtranew
+                };
+            },
+           
+            formatSelection: function(item) { 
+                var xtranew = "";
+                if (item.id.startsWith("00000000-0000-0000-0000-000000000000")){
+                    xtranew = "<span class='label label-warning'>new</span>";
+                }
+                return xtranew + " " +item.text; 
+            },
+            formatResult: function(term) {
+                var xtranew = "";
+                if (term.id.startsWith("00000000-0000-0000-0000-000000000000")){
+                    xtranew = "<span class='label label-warning'>new</span>";
+                }
+                return "<div class='select2-user-result'>" +  xtranew + " " + term.text + "</div>"; 
+
+            }
+    }).on("change", function(e){
+        if (e.removed != null){
+            var sb = [];
+            var data = $("#" + $(e.currentTarget).attr("id")).select2("data");
+            for (var i = 0; i < data.length; i++) {
+                sb.push(data[i].id + ":" + data[i].text);
+            }
+           /* var index = 0;
+            for (var i = 0; i < e.val.length; i++) {
+                if (e.val[i].startsWith(e.removed.id)){
+                    index = i;
+                }
+            }
+            e.val.splice(index, 1);
+            $(e.currentTarget).val(e.val);*/
+
+            //$("#" + $(e.currentTarget).attr("id")).attr("value", e.val.join(","));
+            setTimeout(function () {
+
+                $("#" + $(e.currentTarget).attr("id")).attr("value", sb.join(","));
+
+            }, 1000);
+           
+
+        }
+
+    });
+
+        
+
+          
+      
+        
+    });
+   
+
+</script>

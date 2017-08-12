@@ -1,0 +1,696 @@
+﻿@*<form id="fileupload" action="/Files/Uploads" method="POST" enctype="multipart/form-data">*@
+@{
+    string ModelPathType = ViewData["ModelPathType"].ToString();
+    string idFile = "";
+    string moduleNamespace = ViewData["ModuleNamespace"].ToString();
+    string areaNamespace = ViewData["AreaName"].ToString();
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+    int maxSize = 2;
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null)
+    {
+        int maxSizeCompany = (int)SFSdotNet.Framework.Configuration.CompanyAppSettings.GetValue("file-upload-max-size", uiModel.ModuleKey, SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany, "Int32", maxSize, false);
+        maxSize = maxSizeCompany;
+    }
+
+
+    string idPropertyName = ViewData["PropertyId"].ToString();
+    string fileTypePropertyName = ViewData["PropertyFileType"].ToString();
+    string fileDataPropertyName = ViewData["PropertyFileData"].ToString();
+    string fileSizePropertyName = ViewData["PropertyFileSize"].ToString();
+    string fileNamePropertyName = ViewData["PropertyFileName"].ToString();
+    string controllerName = ViewData["ControllerName"].ToString();
+    string propertyValue = ViewData["propertyValue"] != null ? ViewData["propertyValue"].ToString() : null;
+    PropertyDefinition currentProperty = null;
+    string hs = "";
+    string ws = "";
+    if (ViewData["currentProperty"] != null)
+    {
+        currentProperty = (PropertyDefinition)ViewData["currentProperty"];
+        if (currentProperty.ImageSize != null)
+        {
+            if (currentProperty.ImageSize.H != null)
+            {
+                hs = currentProperty.ImageSize.H.ToString();
+            }
+            if (currentProperty.ImageSize.W != null)
+            {
+                ws = currentProperty.ImageSize.W.ToString();
+            }
+        }
+    }
+    var custPropAutoUpload = currentProperty.CustomProperties.FirstOrDefault(p=> p.Name == "AutoUpload");
+    var custPropAutoCloseModal = currentProperty.CustomProperties.FirstOrDefault(p => p.Name == "AutoCloseModal");
+    Boolean autoCloseModal = false;
+    bool autoUpload = false;
+    if (custPropAutoUpload != null)
+    {
+        autoUpload = bool.Parse(custPropAutoUpload.Value);
+    }
+    if (custPropAutoCloseModal != null)
+    {
+        autoCloseModal = bool.Parse(custPropAutoCloseModal.Value);
+    }
+
+    string urlpic = VirtualPathUtility.ToAbsolute("~/") + "Content/images/no_image.jpg";
+    string urlDown = VirtualPathUtility.ToAbsolute("~/") + "Content/images/no_image.jpg";
+    if (propertyValue != null)
+    {
+        string companyId = "";
+        if (SFSdotNet.Framework.My.Context.CurrentContext.Company != null)
+        {
+            companyId = SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany.ToString();
+
+        }
+        urlpic = VirtualPathUtility.ToAbsolute("~/") + "image.ashx?comp=" + companyId + "&dec=true&controller=" + controllerName + "&ns=" + moduleNamespace + "&idc=" + idPropertyName + "&datac=" + fileDataPropertyName + "&typec=" + fileTypePropertyName + "&sizec=" + fileSizePropertyName + "&filenamec=&id=" + propertyValue + "&model=" + ModelPathType + "&type=undefined&w=" + ws + "&h=" + hs;
+        urlDown = VirtualPathUtility.ToAbsolute("~/") + "image.ashx?comp=" + companyId + "&dec=true&controller=" + controllerName + "&ns=" + moduleNamespace + "&idc=" + idPropertyName + "&datac=" + fileDataPropertyName + "&typec=" + fileTypePropertyName + "&sizec=" + fileSizePropertyName + "&filenamec=&id=" + propertyValue + "&model=" + ModelPathType + "&type=undefined&w=&h=&down=1";
+
+    }
+    //int? h = null;
+    //int? w = null;
+
+    //if (currentProperty.ImageSize != null ){
+    //    currentProperty.ImageSize.H = h;
+    //    currentProperty.ImageSize.W = w;
+    //}
+    bool multipleUpload = false;
+    if (currentProperty.CustomProperties.Count(p => p.Name == "MultipleUpload" && p.Value == "true") == 1)
+    {
+        multipleUpload = true;
+    }
+}
+@if (uiModel.ContextType == UIModelContextTypes.EditForm && uiModel.IsNew == true /*&& multipleUpload == true */)
+{
+    string requiredAttributes = "";
+
+    if (currentProperty != null && currentProperty.IsRequired == true)
+    {
+        requiredAttributes = "data-val=\"true\" data-val-required=\"" + string.Format(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.THE_FIELD_IS_REQUIRED, currentProperty.PropertyDisplayName) + "\"";
+    }
+
+    <input @Html.Raw(requiredAttributes) type="hidden" name="files_@(currentProperty.PropertyName)" id="files_@(currentProperty.PropertyName)" value="" />
+    <div id="form-@(currentProperty.PropertyName)" name="form-@(currentProperty.PropertyName)" action="/test" method="POST" enctype="multipart/form-data">
+        <!-- Redirect browsers with JavaScript disabled to the origin page -->
+        <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <div class=" fileupload-buttonbar">
+            <div class="">
+
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>@(GlobalMessages.ADD_FILES)...</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+                <button type="submit" class="btn btn-primary start">
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>@(GlobalMessages.UPLOAD_ALL)</span>
+                </button>
+                <button type="reset" class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>@(GlobalMessages.CANCEL_UPLOAD)</span>
+                </button>
+                @*<button type="button" class="btn btn-danger delete">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span>Delete</span>
+                    </button>*@
+                <input type="checkbox" class="toggle">
+                <!-- The global file processing state -->
+                <span class="fileupload-process"></span>
+            </div>
+            <!-- The global progress state -->
+            <div class="fileupload-progress ">
+                <!-- The global progress bar -->
+                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar progress-bar progress-bar-success" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress state -->
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+        <!-- The table listing the files available for upload/download -->
+        <div class="dropzone  well" id="dropzone@(currentProperty.PropertyName)"></div>
+        <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+    </div>
+
+
+    <script id="template-upload@(currentProperty.PropertyName)" type="text/x-tmpl">
+        {% for (var i=0, file; file=o.files[i]; i++) { %}
+        <tr class="template-upload fade">
+            <td>
+                <span class="preview"></span>
+            </td>
+            <td>
+                <p class="name">{%=file.name%}</p>
+                <strong class="error text-danger"></strong>
+            </td>
+            <td>
+                <p class="size">@(GlobalMessages.PROCESSING_PLEASE_WAIT)...</p>
+                <div class="progress progress-striped active progress-success " role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar progress-bar progress-bar-success" style="width:0%;"></div></div>
+            </td>
+            <td>
+                {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>@(GlobalMessages.UPLOAD)</span>
+                </button>
+                {% } %}
+                {% if (!i) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>@(GlobalMessages.CANCEL)</span>
+                </button>
+                {% } %}
+            </td>
+        </tr>
+        {% } %}
+    </script>
+    <!-- The template to display files available for download -->
+    <script id="template-download" type="text/x-tmpl">
+        {% for (var i=0, file; file=o.files[i]; i++) { %}
+        <tr class="template-download fade">
+            <td>
+                <span class="preview">
+                    {% if (file.thumbnailUrl) { %}
+                    @*<a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery>*@
+                    <img src="{%=file.thumbnailUrl%}">
+                    @*</a>*@
+                    {% } %}
+                </span>
+            </td>
+            <td>
+                <p class="name">
+                    {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                    {% } else { %}
+                    <span>{%=file.name%}</span>
+                    {% } %}
+                </p>
+                {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+                {% } %}
+            </td>
+            <td>
+                <span class="size">{%=o.formatFileSize(file.size)%}</span>
+            </td>
+            <td>
+                <i class="fa fa-check-circle fa-2x" style="color:green"></i>
+                {% if (file.deleteUrl) { %}
+                @*<button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span>Delete</span>
+                    </button>
+                    <input type="checkbox" name="delete" value="1" class="toggle">*@
+                {% } else { %}
+                @*<button class="btn btn-warning cancel">
+                        <i class="glyphicon glyphicon-ban-circle"></i>
+                        <span>Cancel</span>
+                    </button>*@
+                {% } %}
+            </td>
+        </tr>
+        {% } %}
+    </script>
+
+
+    <script>
+
+        $(document).bind('drop dragover', function (e) {
+            e.preventDefault();
+        });
+        $(document).bind('dragover', function (e) {
+            var dropZone = $('#dropzone@(currentProperty.PropertyName)'),
+                timeout = window.dropZoneTimeout;
+            if (!timeout) {
+                dropZone.addClass('in');
+            } else {
+                clearTimeout(timeout);
+            }
+            var found = false,
+                node = e.target;
+            do {
+                if (node === dropZone[0]) {
+                    found = true;
+                    break;
+                }
+                node = node.parentNode;
+            } while (node != null);
+            if (found) {
+                dropZone.addClass('hover');
+            } else {
+                dropZone.removeClass('hover');
+            }
+            window.dropZoneTimeout = setTimeout(function () {
+                window.dropZoneTimeout = null;
+                dropZone.removeClass('in hover');
+            }, 100);
+        });
+        var idFile@(currentProperty.PropertyName) = "";
+        var imageResourcesLoaded = false;
+    var urlUpload@(currentProperty.PropertyName) = '@(VirtualPathUtility.ToAbsolute("~/"))Files/Uploads?dec=true&id=' + idFile@(currentProperty.PropertyName) + '&filenamec=@(fileNamePropertyName)&typec=@(fileTypePropertyName)&idc=@(idPropertyName)&ns=@(moduleNamespace)&areaName=@(areaNamespace)&modelPathType=@(ModelPathType)&controller=@(controllerName)&sizec=@(fileSizePropertyName)&propertyData=@(fileDataPropertyName)&h=@(hs)&w=@(ws)';
+    function removeFile@(currentProperty.PropertyName)() {
+        //TODO: eliminar archivo en base al Guid
+        var urlpic = "@(VirtualPathUtility.ToAbsolute("~/"))" + "Content/images/no_image.jpg";
+        $("#img-place-@(currentProperty.PropertyName)").attr("src", urlpic);
+        $("#Fk@(currentProperty.PropertyName)").val("");
+
+    }
+        $(document).ready(function () {
+            @if(ViewData["idModal"] != null)
+            {
+                <text>
+
+                        $('#@(ViewData["idModal"].ToString())').on('hidden', function () {
+
+                        })
+                </text>
+            }
+        $("#delfile@(currentProperty.PropertyName)").click(function (e) {
+                e.preventDefault();
+                removeFile@(currentProperty.PropertyName)();
+            });
+        @{  if (propertyValue == null)
+            {
+        <text>
+        $("#delfile@(currentProperty.PropertyName)").hide();
+        </text>
+            }
+
+}
+        if (window["imageResources"] == undefined) {
+
+            window["imageResources"] = new Array();
+        }
+
+        'use strict';
+
+
+
+        $(function () {
+
+            if (typeof (jQuery().fileupload) == "undefined") {
+                window["imageResources"].push("@(currentProperty.PropertyName)");
+                @{
+                    var helper = (new UrlHelper(ViewContext.RequestContext));
+                    }
+                //alert("leyendo");
+
+                Utilities.requireFiles(["@(SFSdotNet.Framework.Web.Urls.Tag("~/Content/jquery.fileupload-ui.css"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/vendor/jquery.ui.widget.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/tmpl.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/load-image.all.min.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/canvas-to-blob.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.blueimp-gallery.min.js"))",
+
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.iframe-transport.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload-process.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload-image.js"))",
+
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload-validate.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload-ui.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/jquery.form.min.js"))"], function () {
+
+                        if (typeof (jQuery().magnificPopup) == "undefined") {
+                            Utilities.requireFiles(["@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/magnificPopup/jquery.magnific-popup.min.js"))"], function () {
+                                    setTimeout(function () {
+                                        setFileUpload@(currentProperty.PropertyName)();
+                                    }, 500);
+                                });
+                        } else {
+                            setTimeout(function () {
+                                setFileUpload@(currentProperty.PropertyName)();
+                            }, 500);
+                        }
+
+
+
+                    });
+
+            } else {
+                setTimeout(function () {
+                    setFileUpload@(currentProperty.PropertyName)();
+
+                }, 3000);
+            }
+        });
+    });
+        var filesUploaded@(currentProperty.PropertyName) = new Array();
+        function updateFiles@(currentProperty.PropertyName)() {
+            $("#files_@(currentProperty.PropertyName)").val(filesUploaded@(currentProperty.PropertyName).join(","));
+        }
+    function setFileUpload@(currentProperty.PropertyName)() {
+
+
+        $('#form-@(currentProperty.PropertyName)').fileupload({
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            downloadTemplateId: "template-download",
+            pasteZone: null,
+            dropZone: $("#dropzone@(currentProperty.PropertyName)"),
+            uploadTemplateId: "template-upload@(currentProperty.PropertyName)",
+            progress:function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+            },
+            progressall:function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('.fileupload-progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+  @if (autoCloseModal) {
+                    <text>
+                           if (progress == 100){
+                               setTimeout(function () {
+                                   $('#form-@(currentProperty.PropertyName)').closest("div.popup").find("div.modal-footer button.save").click();
+                               },1000);
+                           }
+
+                    </text>
+                }
+            },
+            //autoUpload: true,
+              @Html.Raw(multipleUpload?"": "autoUpload: true,")
+
+            @Html.Raw(multipleUpload? "" : "limitMultiFileUploads: 1, maxNumberOfFiles: 1,")
+            @if (autoUpload == true)
+            {
+                <text>
+            autoUpload: true,
+                </text>
+            }
+            /*maxNumberOfFiles: 1,*/
+            sequentialUploads: true,
+            url: urlUpload@(currentProperty.PropertyName),
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png|xls|xlsx|txt|docx|doc|ppt|pptx|zip|xml|pdf|html|rar|cs|css|js|cshtml)$/i,
+            maxFileSize: @(maxSize * 1000000),
+        });
+
+        @*$('#form-@(currentProperty.PropertyName)').addClass('fileupload-processing');
+        $.ajax({
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url: $('#form-@(currentProperty.PropertyName)').fileupload('option', 'url'),
+            dataType: 'json',
+            context: $('#form-@(currentProperty.PropertyName)')[0]
+        }).always(function () {
+            $(this).removeClass('fileupload-processing');
+        }).done(function (result) {
+            $(this).fileupload('option', 'done')
+                .call(this, $.Event('done'), { result: result });
+        });*@
+
+        $('#form-@(currentProperty.PropertyName)').bind("fileuploaddone", function (e, data) {
+
+            if (data.fileInput.attr("propName") == "@(currentProperty.PropertyName)") {
+                $("#img-place-@(currentProperty.PropertyName)").attr("src", data.result.files[0].thumbnail_url);
+                data.filesContainer.empty();
+                idFile@(currentProperty.PropertyName) = data.result.files[0].FileId;
+                urlUpload@(currentProperty.PropertyName) = '@(VirtualPathUtility.ToAbsolute("~/"))Files/Uploads?dec=true&id=' + idFile@(currentProperty.PropertyName) + '&filenamec=@(fileNamePropertyName)&typec=@(fileTypePropertyName)&idc=@(idPropertyName)&ns=@(moduleNamespace)&areaName=@(areaNamespace)&modelPathType=@(ModelPathType)&controller=@(controllerName)&sizec=@(fileSizePropertyName)&propertyData=@(fileDataPropertyName)&h=@(hs)&w=@(ws)';
+                $('#form-@(currentProperty.PropertyName)').fileupload(
+                    'option',
+                    'url',
+                    urlUpload@(currentProperty.PropertyName)
+                );
+                $("#Fk@(currentProperty.PropertyName)").val(idFile@(currentProperty.PropertyName));
+
+                $("#delfile@(currentProperty.PropertyName)").show();
+                $("#tablefileupload@(currentProperty.PropertyName)").hide();
+            } else {
+                if (data.result.files.length == 1) {
+                    filesUploaded@(currentProperty.PropertyName).push(data.result.files[0].FileId);
+                }
+                updateFiles@(currentProperty.PropertyName)();
+            }
+
+        });
+
+        $('#form-@(currentProperty.PropertyName)').bind("fileuploadadd", function (e, data) {
+            //$("#img-place-").attr("src", data.result.files[0].thumbnail_url)
+            @*if (data.fileInput.attr("propName") == "@(currentProperty.PropertyName)") {
+                setTimeout(function () {
+                    $("#tableFiles@(currentProperty.PropertyName)").find(".btn-upload").click();
+                }, 1000);
+                $("#tablefileupload@(currentProperty.PropertyName)").show();
+            }*@
+
+            //alert(.length);
+        });
+
+
+
+        $('#form-@(currentProperty.PropertyName)').bind('fileuploadprogress', function (e, data) {
+                // Log the current bitrate for this upload:
+                console.log(data.bitrate);
+            });
+
+
+        // Enable iframe cross-domain access via redirect option:
+        $('#form-@(currentProperty.PropertyName)').fileupload(
+                 'option',
+                 'redirect',
+                 window.location.href.replace(
+                     /\/[^\/]*$/,
+                     '/cors/result.html?%s'
+                 )
+             );
+
+
+
+
+        }
+    </script>
+
+
+    }
+    else {
+        <div id="form-@(currentProperty.PropertyName)" name="form-@(currentProperty.PropertyName)" action="/test" method="post">
+            <div>
+                <a href="@(urlDown)" target="_blank"> <img src="@(urlpic)" id="img-place-@(currentProperty.PropertyName)" style="height:120px; " /></a>
+
+
+                <a href="#" id="delfile@(currentProperty.PropertyName)" class="btn delete btn-mini">
+                    <i class="icon-remove "></i>
+                    @GlobalMessages.DELETE
+                </a>
+
+                <span class=" btn fileinput-button btn-mini" style="float: none;">
+                    <i class="icon-plus"></i>
+                    <span>@(GlobalMessages.UPLOAD_FILE)</span>
+                    <input type="file" id="file-input@(currentProperty.PropertyName)" propName="@(currentProperty.PropertyName)" name="files[]" multiple />
+
+
+                </span>
+
+            </div>
+            @* <div class="span5 fileupload-progress fade">
+                    <!-- The global progress bar -->
+                    <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        <div class="bar" style="width:0%;"></div>
+                    </div>
+                    <!-- The extended global progress information -->
+                    <div class="progress-extended">&nbsp;</div>
+                </div>*@
+            @*</form>*@
+            <div class="fileupload-loading"></div>
+
+            <!-- The table listing the files available for upload/download -->
+            <table role="presentation" id="tablefileupload@(currentProperty.PropertyName)" style="display:none" class="span8 table table-striped">
+                <tbody id="tableFiles@(currentProperty.PropertyName)" class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+            </table>
+        </div>
+
+        <!-- The template to display files available for upload -->
+        <script id="template-upload@(currentProperty.PropertyName)" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-upload fade">
+                <td class="preview"><span class="fade"></span> <div>{%=o.formatFileSize(file.size)%}</div></td>
+                @* <td class="name" style="display:none;"><span>{%=file.name%}</span></td>*@
+                <td>
+                    @*</td>*@
+
+                    {% if (file.error) { %}
+                    @*<td class="error" colspan="2">*@<span class="label label-important">Error</span> {%=file.error%}@*</td>*@
+                    {% } else if (o.files.valid && !i) { %}
+                    @*   <td>*@
+                    <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style=""></div></div>
+                    @*{% if (!o.options.autoUpload) { %}*@
+
+                    <div class="start" style="display:inline;">
+                        <button class="btn btn-upload btn-mini">
+                            <i class="icon-plus "></i>
+                            <span>@GlobalMessages.UPLOAD_FILE</span>
+                        </button>
+
+                    </div>
+                    @*{% } %}*@
+                    @* </td>
+                        <td class="start"></td>*@
+                    {% } else { %}
+                    @* <td colspan="2"></td>*@
+                    {% } %}
+
+                    <div class="cancel" style="display:inline;">
+                        {% if (!i) { %}
+                        <button class="btn btn-mini">
+                            <i class="icon-ban-circle "></i>
+                            <span>@GlobalMessages.CANCEL</span>
+                        </button>
+                        {% } %}
+                    </div>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+
+        <script>
+    var idFile@(currentProperty.PropertyName) = "";
+    var urlUpload@(currentProperty.PropertyName) = '@(VirtualPathUtility.ToAbsolute("~/"))Files/Uploads?dec=true&id=' + idFile@(currentProperty.PropertyName) + '&filenamec=@(fileNamePropertyName)&typec=@(fileTypePropertyName)&idc=@(idPropertyName)&ns=@(moduleNamespace)&areaName=@(areaNamespace)&modelPathType=@(ModelPathType)&controller=@(controllerName)&sizec=@(fileSizePropertyName)&propertyData=@(fileDataPropertyName)&h=@(hs)&w=@(ws)';
+    function removeFile@(currentProperty.PropertyName)() {
+        //TODO: eliminar archivo en base al Guid
+        $("#Fk@(currentProperty.PropertyName)").val("");
+        var urlpic = "@(VirtualPathUtility.ToAbsolute("~/"))" + "Content/images/no_image.jpg";
+        $("#img-place-@(currentProperty.PropertyName)").attr("src", urlpic);
+
+
+    }
+    $(document).ready(function () {
+        $("#delfile@(currentProperty.PropertyName)").click(function (e) {
+            e.preventDefault();
+            removeFile@(currentProperty.PropertyName)();
+        });
+        @{  if (propertyValue == null)
+            {
+        <text>
+        $("#delfile@(currentProperty.PropertyName)").hide();
+        </text>
+            }
+
+}
+        if (window["imageResources"] == undefined) {
+
+            window["imageResources"] = new Array();
+        }
+
+        'use strict';
+
+
+
+        $(function () {
+
+            if (window["imageResources"].length == 0 && typeof (jQuery().fileupload) == "undefined") {
+                window["imageResources"].push("@(currentProperty.PropertyName)");
+                @{
+                    var helper = (new UrlHelper(ViewContext.RequestContext));
+                    }
+                //alert("leyendo");
+
+                Utilities.requireFiles(["@(SFSdotNet.Framework.Web.Urls.Tag("~/Content/jquery.fileupload-ui.css"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/vendor/jquery.ui.widget.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/tmpl.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/load-image.all.min.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/canvas-to-blob.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.blueimp-gallery.min.js"))",
+
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.iframe-transport.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload-process.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload-image.js"))",
+
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload-validate.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/FileUpload/jquery.fileupload-ui.js"))",
+                    "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/jquery.form.min.js"))"], function () {
+
+                        if (typeof (jQuery().magnificPopup) == "undefined") {
+                            Utilities.requireFiles(["@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/magnificPopup/jquery.magnific-popup.min.js"))"], function () {
+                                    setTimeout(function () {
+                                        setFileUpload@(currentProperty.PropertyName)();
+                                    }, 500);
+                                });
+                        } else {
+                            setTimeout(function () {
+                                setFileUpload@(currentProperty.PropertyName)();
+                            }, 500);
+                        }
+
+
+
+                    });
+
+            } else {
+                setTimeout(function () {
+                    setFileUpload@(currentProperty.PropertyName)();
+
+                }, 3000);
+            }
+        });
+    });
+    function setFileUpload@(currentProperty.PropertyName)() {
+
+
+        $('#form-@(currentProperty.PropertyName)').fileupload({
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            downloadTemplateId: null,
+            pasteZone: null,
+            uploadTemplateId: "template-upload@(currentProperty.PropertyName)",
+            autoUpload: true,
+            /*limitMultiFileUploads: 1,*/
+            maxNumberOfFiles: 1,
+            url: urlUpload@(currentProperty.PropertyName),
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png|xls|xlsx|txt|docx|doc|ppt|pptx|zip|xml|pdf|html|rar|cs|css|js|cshtml)$/i,
+            maxFileSize: @(maxSize * 1000000),
+        });
+        $('#form-@(currentProperty.PropertyName)').bind("fileuploaddone", function (e, data) {
+
+            if (data.fileInput.attr("propName") == "@(currentProperty.PropertyName)") {
+                $("#img-place-@(currentProperty.PropertyName)").attr("src", data.result.files[0].thumbnail_url);
+                data.filesContainer.empty();
+                idFile@(currentProperty.PropertyName) = data.result.files[0].FileId;
+                urlUpload@(currentProperty.PropertyName) = '@(VirtualPathUtility.ToAbsolute("~/"))Files/Uploads?dec=true&id=' + idFile@(currentProperty.PropertyName) + '&filenamec=@(fileNamePropertyName)&typec=@(fileTypePropertyName)&idc=@(idPropertyName)&ns=@(moduleNamespace)&areaName=@(areaNamespace)&modelPathType=@(ModelPathType)&controller=@(controllerName)&sizec=@(fileSizePropertyName)&propertyData=@(fileDataPropertyName)&h=@(hs)&w=@(ws)';
+                $('#form-@(currentProperty.PropertyName)').fileupload(
+                    'option',
+                    'url',
+                    urlUpload@(currentProperty.PropertyName)
+                );
+                $("#Fk@(currentProperty.PropertyName)").val(idFile@(currentProperty.PropertyName));
+
+                $("#delfile@(currentProperty.PropertyName)").show();
+                $("#tablefileupload@(currentProperty.PropertyName)").hide();
+            }
+
+        });
+        $('#form-@(currentProperty.PropertyName)').bind("fileuploadadd", function (e, data) {
+            //$("#img-place-").attr("src", data.result.files[0].thumbnail_url)
+            if (data.fileInput.attr("propName") == "@(currentProperty.PropertyName)") {
+                setTimeout(function () {
+                    $("#tableFiles@(currentProperty.PropertyName)").find(".btn-upload").click();
+                }, 1000);
+                $("#tablefileupload@(currentProperty.PropertyName)").show();
+            }
+
+            //alert(.length);
+        });
+
+
+
+
+        // Enable iframe cross-domain access via redirect option:
+        $('#form-@(currentProperty.PropertyName)').fileupload(
+                 'option',
+                 'redirect',
+                 window.location.href.replace(
+                     /\/[^\/]*$/,
+                     '/cors/result.html?%s'
+                 )
+             );
+
+
+
+
+    }
+        </script>
+
+
+
+    }

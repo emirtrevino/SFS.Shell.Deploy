@@ -1,0 +1,185 @@
+﻿@{
+    object ModelValue = null;
+
+    if (ViewData.TemplateInfo.FormattedModelValue == ViewData.ModelMetadata.Model) {
+        ModelValue = String.Format(System.Globalization.CultureInfo.CurrentCulture,
+                                         "{0:0}", ViewData.ModelMetadata.Model);
+    }
+    else {
+
+        ModelValue =  ViewData.TemplateInfo.FormattedModelValue;
+    }
+
+    //ViewData.TemplateInfo.GetType()
+
+
+    string classExtra = "";
+    PropertyDefinition property = null;
+    string wsize = "span8";
+
+    if (ViewData["currentProperty"] != null)
+    {
+        property = (PropertyDefinition)ViewData["currentProperty"];
+        //if (ViewData["fieldMultiLine"] != null)
+        //{
+        if (property.HorizontalSize != null)
+        {
+            wsize = "span12";
+        }
+        //}
+    }
+    string maxlengthAttr = "";
+    string maxValueAttr = "";
+    if (property.TypeName.ToLower().Contains("int32") || property.TypeName.ToLower().Contains("integer"))
+    {
+
+        maxlengthAttr = " maxlength=\"" + int.MaxValue.ToString().Length + "\" ";
+        maxValueAttr = " data-val-range=\"" + string.Format(GlobalMessages.VAL_RANGE_INT32, int.MinValue.ToString(), int.MaxValue.ToString()) + "\" data-val-range-max=\"" + int.MaxValue.ToString() + "\" data-val-range-min=\"" + int.MinValue.ToString() + "\" ";
+
+        var fromAmountProp = property.CustomProperties.FirstOrDefault(p => p.Name == "from-amount");
+        var toAmountProp = property.CustomProperties.FirstOrDefault(p => p.Name == "to-amount");
+        if (fromAmountProp != null && toAmountProp != null)
+        {
+            maxValueAttr = "data-val-range-min=\"" + fromAmountProp.Value.ToString() + "\" data-val-range-max=\"" + toAmountProp.Value.ToString() + "\" data-val-range=\"" + string.Format("El valor debe ser entre {0} y {1}", fromAmountProp.Value, toAmountProp.Value) + "\" ";
+        }
+
+    }
+
+    var uiModel = (UIModel)ViewData["uiModel"];
+
+    if (ViewData["class"] != null)
+    {
+        classExtra = ViewData["class"].ToString();
+    }
+    else
+    {
+        ViewData.Add("class", "field text small " + classExtra);
+    }
+
+    string controlInputClass = "";
+    if (uiModel.UIVersion == 2)
+    {
+        if (uiModel.ContextType == UIModelContextTypes.FilterFields)
+        {
+            controlInputClass = "form-control input-sm";
+
+        }
+        else
+        {
+            controlInputClass = "form-control";
+
+        }
+    }
+
+    string sffAttr = "";
+    if (ViewData["sff"] != null){
+
+        sffAttr = ViewData["sff"].ToString();
+    }
+    string requiredAttributes = "";
+    if (property != null && property.IsRequired == true)
+    {
+        requiredAttributes = " data-val-required=\"" + string.Format(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.THE_FIELD_IS_REQUIRED, property.PropertyDisplayName) + "\"";
+    }
+
+
+    string propertyname = ViewData.ModelMetadata.PropertyName;
+    if (string.IsNullOrEmpty(propertyname))
+    {
+        if (property != null)
+        {
+
+            propertyname = property.PropertyName;
+        }
+        else
+        {
+            propertyname = ViewData["id"].ToString();
+
+        }
+    }
+    string idField = property.PropertyName;
+    if (property.ContextType == UIModelContextTypes.FilterFields)
+    {
+        idField = idField + "_" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
+    }
+    bool multiline = false;
+    if (ViewData["currentProperty"] != null)
+    {
+        PropertyDefinition propDef = (PropertyDefinition)ViewData["currentProperty"];
+
+        multiline = propDef.IsMultiline;
+        if (propDef.HorizontalSize != null)
+        {
+            wsize = "span12";
+        }
+        //}
+    }
+    System.Text.StringBuilder sbValAttr = new System.Text.StringBuilder();
+    sbValAttr.Append(requiredAttributes);
+    sbValAttr.Append(maxlengthAttr);
+    sbValAttr.Append(maxValueAttr);
+    if (sbValAttr.Length > 3)
+    {
+        sbValAttr.Append(" data-val=\"true\" ");
+    }
+    classExtra = classExtra + " " + wsize;
+
+    controlInputClass = controlInputClass + " " + classExtra;
+    string value = "";
+    if (ModelValue != null)
+    {
+        value = ModelValue.ToString();
+    }
+    if (property.IsDynamic == true && property.Value != null )
+    {
+        value = property.Value.ToString();
+
+    }
+}
+   
+    @if (ViewData["uiMask"] == null)
+    {
+
+        if (property != null)
+        {
+
+            <input typeData="integer" @Html.Raw(sbValAttr.ToString())  tabindex="@(property.Order != null ? property.Order.ToString() : "")" name="@(idField)" sff="@( ViewData[" sff"] )" class="@( ViewData["class"]  ) @(controlInputClass)" id="@(idField)"  type="text" value="@( value )" />
+        }
+        else
+        {
+            @Html.TextBox("", value, new { @id = idField, sff = sffAttr, @class = "field text small " + classExtra, typeData = "integer", style = "" })
+        }
+
+
+
+    }
+    else
+    {
+        if (property != null)
+        {
+            <input typeData="integer" name='@(idField )' @(sffAttr) id='@(idField )' type='hidden' value='' />
+    <input @Html.Raw(sbValAttr.ToString()) typeData="decimal" tabindex="@(property.Order != null ? property.Order.ToString() : "")" name="mask@(idField )" sff="@( ViewData[" sff"] )" class="@( ViewData["class"]  )" id="mask@(idField )"    type="text" value="@( value )" />
+        }
+        else
+        {
+            <input typeData="integer" name='@(idField )' @(sffAttr) id='@(idField )' type='hidden' value='' />
+            @Html.TextBox("mask" + propertyname, value, new { @id=idField, sff = sffAttr, @class = "field text small " + classExtra, typeData="integer", style = "" })
+        }
+
+
+    }
+    <script>
+@if (ViewData["uiMask"] == null)
+{ 
+    <text>
+    $("#@( idField  )").ForceNumericOnly();
+</text>
+}else{ 
+    <text>
+    $("#mask@(idField  )").mask('@(ViewData["uiMask"] )');
+    $("#mask@(idField  )").change(function () {
+            $("#@(idField  )").val($(this).mask());
+    });
+</text>
+} 
+    </script>

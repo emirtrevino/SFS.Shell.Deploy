@@ -1,0 +1,120 @@
+﻿@section Title{
+    @ViewBag.Title
+}
+
+@{
+    if (ViewBag.Case == "all"){
+         <text>
+    <div class="page-header">
+  <h1>@MembershipAppsMessages.ALL_APPS <small>(@(MembershipAppsMessages.BUILDING))</small></h1>
+</div>
+    </text>
+    
+    
+    }else{
+    <text>
+<div class="page-header">
+  <h1>@MembershipAppsMessages.MY_APPS</h1>
+</div>
+    </text>
+    
+    }
+    }
+@{
+    List<SFSdotNet.Framework.Security.BusinessObjects.secModule> modulesOfUser = new List<SFSdotNet.Framework.Security.BusinessObjects.secModule>();
+    if (ViewBag.ModulesOfUser != null ){
+        modulesOfUser = (List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)ViewBag.ModulesOfUser;
+    } 
+    //List<>
+    //var currentNode = System.Web.SiteMap.CurrentNode;
+    if (((List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)ViewBag.AllModules).Count > 0) {
+    var allSystemsNode = MvcSiteMapProvider.SiteMaps.Current.RootNode.ChildNodes.ToList().Where(p => p.Key == "allapps").FirstOrDefault();
+    
+    if (allSystemsNode != null ){
+        foreach (var node in allSystemsNode.ChildNodes.ToList())
+        {
+            var moduleFinded = ((List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)ViewBag.AllModules).FirstOrDefault(p=>p.ModuleKey == node.Key );
+            if (moduleFinded != null){
+                node.Title = moduleFinded.Name;
+            } 
+        }
+        foreach (var  node  in allSystemsNode.ChildNodes.ToList().OrderBy(p=>p.Title))
+        {
+            if (((MvcSiteMapProvider.ISiteMapNode)node).Attributes.ContainsKey("moduleKey")) 
+            { 
+            string areaName = ((MvcSiteMapProvider.ISiteMapNode)node).Attributes["moduleKey"].ToString();
+            if (((List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)ViewBag.AllModules).Exists(p => p.ModuleKey == areaName ))
+            {
+                var moduleObj = ((List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)ViewBag.AllModules).FirstOrDefault(p => p.ModuleKey.ToLower() == areaName.ToLower());
+                if (moduleObj != null )
+                {
+                    node.Title = moduleObj.Name;
+                    //node.Description = moduleObj.
+                }
+                
+if (ViewBag.Case == "all"){
+    <text>
+    
+    </text>
+}else{
+       <text>
+   
+    </text>
+}   
+                <text>
+<div class="row-fluid">
+    <div class="logo span2" style="padding-top:15px;padding-bottom:20px;">
+       
+        <img src="@Html.Action("LogoUrl", "Home", new { area = ((MvcSiteMapProvider.ISiteMapNode)node).Attributes["moduleKey"].ToString() })" />
+            </div>
+    <div id="app@(node.Key)" class="span10">
+        <h2>@(moduleObj.Name)</h2>
+        <p>
+            @{ 
+                if (string.IsNullOrEmpty(moduleObj.DescriptionShort)){
+                    Html.RenderAction("ShortDescription", "Home", new { area = areaName });                    
+                }else{
+                    @Html.Raw(moduleObj.DescriptionShort);
+                }
+               }
+        </p>
+          <hr style="margin:8px;"/>
+        <p style="text-align:right;">
+        <a href="@VirtualPathUtility.ToAbsolute("~/")Home/App/@areaName" class="btn btn-primary btn-small" > Ver más </a>
+
+           
+            @if(modulesOfUser.Where(p=>p.ModuleKey.ToLower() == areaName.ToLower()).Count() == 0){
+                <a href="@VirtualPathUtility.ToAbsolute("~/")Go/Content/Contact" class="btn btn-small"  >Solicitar acceso </a>@*
+                <a href="@VirtualPathUtility.ToAbsolute("~/")Home/MembershipOptions?module=@areaName" class="btn btn-warning" > Comenzar a usar</a>*@
+                
+            }
+             @if(modulesOfUser.Where(p=>p.ModuleKey.ToLower() == areaName.ToLower()).Count() > 0){
+             <a href="@VirtualPathUtility.ToAbsolute("~/")@areaName/Home" id="" class="goto btn btn-success btn-small" > Ir a aplicación </a>
+                
+            }
+
+        </p>
+    </div>
+</div>
+</text>         
+   
+            }
+            }
+        }
+    }
+    }else{
+        // no tiene aplicaciones
+       <text>
+   <div class="alert alert-block">
+  @MembershipAppsMessages.YOU_DO_NOT_HAVE_ANY_APP_SELECT_ONE_FROM_STORE 
+</div>
+<p>
+@{
+        Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(MembershipAppsMessages.GO_TO_BROWSE_IN_ALL_APPS, 1,"", VirtualPathUtility.ToAbsolute("~/") + "Home/AllApps"));
+
+}
+   </p>
+    </text>
+    }
+    
+}

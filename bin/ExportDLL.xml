@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ExportDLL</name>
+    </assembly>
+    <members>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat">
+            <summary>
+            Name of formats
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.Word2003XML">
+            <summary>
+            word 2003 xml
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.Excel2003XML">
+            <summary>
+            excel 2003 xml
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.CSV">
+            <summary>
+            csv
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.HTML">
+            <summary>
+            html
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.XML">
+            <summary>
+            xml
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.itextSharpXML">
+            <summary>
+            itexsharp xml
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.PDFtextSharpXML">
+            <summary>
+            PDF from itextSharpXML
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.Word2007">
+            <summary>
+            word 2007
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat.Excel2007">
+            <summary>
+            excel 2007
+            </summary>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportDLL.Fake">
+            <summary>
+            just an internal class for ST_NODE creation
+            </summary>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps">
+            <summary>
+            what props to export from object
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps.NameProp">
+            <summary>
+            Gets or sets the name prop.
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps.DisplayNameProp">
+            <summary>
+            Gets or sets the display name prop.
+            </summary>        
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps.Format">
+            <summary>
+            Gets or sets the format - how to display
+            </summary>
+        </member>
+        <member name="T:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties">
+            <summary>
+            extension methods for IENUMERABLE AND DATATABLE
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.methods">
+            <summary>
+            internal caching the methods for each type
+            </summary>
+        </member>
+        <member name="F:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.nameprops">
+            <summary>
+            internal caching properties for each type
+            </summary>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.InitializeProperties(System.Type)">
+            <summary>
+            Initializes the properties for the type and populates the cache
+            </summary>
+            <param name="t">The type</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.ExportTo``1(System.Collections.Generic.IEnumerable{``0},www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat,System.String)">
+            <summary>
+            helper method - if you know the type
+            </summary>
+            <typeparam name="T">type to </typeparam>
+            <param name="col">collection to be exported</param>
+            <param name="exp">the format to export</param>
+            <param name="FileName">Name file to be written </param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.PropsFromObject(System.Type)">
+            <summary>
+            Properties from object.
+            </summary>
+            <param name="type">The type to retrieve all properties</param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.ExportTo(System.Collections.IEnumerable,System.Type,www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat,System.String)">
+            <summary>
+            helper method to export all properties.
+            </summary>
+            <param name="col">The collection</param>
+            <param name="type">The type to be exported</param>
+            <param name="exp">The export format</param>
+            <param name="FileName">Name of the file to be written</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.CreateExcel2007(System.String,System.String)">
+            <summary>
+            helper method to create excel .
+            </summary>
+            <param name="Sheet1Text">The text of sheet1</param>
+            <param name="DestinationFile">The destination file.</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.Node(System.Collections.IEnumerable,System.Type,System.Collections.Generic.List{www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps})">
+            <summary>
+            INodes from the specified col.
+            </summary>
+            <param name="col">The collection of objects</param>
+            <param name="type">The type of objects</param>
+            <param name="properties">The properties of objects to be exported </param>        
+            <returns>INode to be serialized</returns>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.PathFiles">
+            <summary>
+            Todo :use this with Server.MapPath(".") and put
+            the templates folder in the root of your web files
+            </summary>
+        </member>
+        <member name="P:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.stgCollection">
+            <summary>
+            Gets the StringTemplateGroup  collection.
+            </summary>        
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.CreateFilePDF(System.String,System.String)">
+            <summary>
+            Creates the PDF from itextsharp xml
+            uses temporary folder
+            </summary>
+            <param name="ItextSharpXML">The itext sharp XML.</param>
+            <param name="FileName">Name of the file.</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.WriteToPart(DocumentFormat.OpenXml.Packaging.OpenXmlPart,System.String)">
+            <summary>
+            Writes to part - helper method to fill a part from a string
+            </summary>
+            <param name="oxp">The OpenXmlPart </param>
+            <param name="Text">The text.</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.CreateWord2007(System.String,System.String)">
+            <summary>
+            hemper method to create word2007 from a XML main text 
+            </summary>
+            <param name="Text">The text</param>
+            <param name="FileName">Name of the file.</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.ExportTo(System.Collections.IEnumerable,System.Type,System.Collections.Generic.List{www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps},www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat,System.String)">
+            <summary>
+            Exports to a format the IEnumerable 
+            </summary>
+            <param name="col">The collection</param>
+            <param name="type">The type of the objects</param>
+            <param name="properties">The properties of the objects</param>
+            <param name="exp">The export format</param>
+            <param name="FileName">Name of the file.</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.ExportTo(System.Data.DataTable,www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat,System.String)">
+            <summary>
+            helper method to export a data table
+            </summary>
+            <param name="dt">The datatable</param>
+            <param name="exp">The export format</param>
+            <param name="FileName">Name of the file.</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.PropsFromObject(System.Data.DataTable)">
+            <summary>
+            Properties from data table.
+            </summary>
+            <param name="dt">The datatable to be exported</param>
+            <returns>columns as properties</returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.ExportTo(System.Data.DataTable,System.Collections.Generic.List{www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps},www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat,System.String)">
+            <summary>
+            Exports to a specific format
+            </summary>
+            <param name="dt">The data table</param>
+            <param name="properties">The properties to be exported</param>
+            <param name="exp">The export format</param>
+            <param name="FileName">Name of the file.</param>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.Template2String(System.Collections.IEnumerable,System.Type,System.Collections.Generic.List{www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps},www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat)">
+            <summary>
+            Template2s the string.
+            </summary>
+            <param name="col">The col.</param>
+            <param name="type">The type.</param>
+            <param name="properties">The properties.</param>
+            <param name="exp">The exp.</param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.DataTable2String(System.Data.DataTable,System.Collections.Generic.List{www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps},www.serviciipeweb.ro.iafblog.ExportDLL.ExportToFormat)">
+            <summary>
+            Exports the Datatable to a string.
+            </summary>
+            <param name="dt">The datatable</param>
+            <param name="properties">The properties to be exported</param>
+            <param name="exp">The export format</param>
+            <returns></returns>
+        </member>
+        <member name="M:www.serviciipeweb.ro.iafblog.ExportDLL.CollectionRenderProperties.NodeFromDataTable(System.Data.DataTable,System.Collections.Generic.List{www.serviciipeweb.ro.iafblog.ExportDLL.ExportProps})">
+            <summary>
+            Makes a INode from data table.
+            </summary>
+            <param name="dt">The datatable.</param>
+            <param name="properties">The properties.</param>
+            <returns>ST_NODE</returns>
+        </member>
+    </members>
+</doc>

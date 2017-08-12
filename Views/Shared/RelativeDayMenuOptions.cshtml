@@ -1,0 +1,27 @@
+﻿@{
+    
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+  
+}
+<div class="btn-group btn-group-sm" style="@(uiModel.UIVersion ==2 ? "margin-top:5px;":"")">
+    <a class="btn btn-white dropdown-toggle" data-toggle="dropdown" href="#"> <span class="relativeday" relday="crdtoday">Hoy</span> <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a href="#" class="switchrelativeday @Model" relday="crdtoday"> Hoy</a></li>
+        <li><a href="#" class="switchrelativeday @Model" relday="crdstartyear"> Inicio de año</a></li>
+        <li><a href="#" class="switchrelativeday @Model" relday="crdendtyear"> Fin de año</a></li>
+        <li><a href="#" class="switchrelativeday @Model" relday="crdstartmonth"> Inicio de mes</a></li>
+        <li><a href="#" class="switchrelativeday @Model" relday="crdendmonth"> Fin de mes</a></li>
+        <li><a href="#" class="switchrelativeday @Model" relday="crdstartweek"> Inicio se semana</a></li>
+        <li><a href="#" class="switchrelativeday @Model" relday="crdjustnow"> Justo ahora</a></li>
+        @*  <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>*@
+        @* <li class="divider"></li>
+            <li><a href="#"><i class="i"></i> Make admin</a></li>*@
+    </ul>
+</div>
+
+<script>
+    $(".switchrelativeday.@Model").click(function (e) {
+        e.preventDefault();
+        switchRelativeDay($(this));
+    });
+</script>

@@ -1,0 +1,61 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.DashboardItem
+@{ string classIcon = "icon-bar-chart";
+    string contentClass = "content";
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    if (uiModel != null &&  uiModel.UIVersion == 2)
+    {
+        contentClass = "";
+    }
+    if (Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.ChartHistory || Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.ChartPie  ){
+
+    }else if (Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.ListView){
+        classIcon = "icon-list";
+    }
+    string extraClass = "";
+    if (Model.ItemType == DashboardItemTypes.Total)
+    {
+        extraClass = "total";
+    }
+    }
+
+<div class="dashboard-item" id="dashboard-Item-@Model.Id">
+@if (!string.IsNullOrEmpty(Model.Title) ){
+
+    <div class="title box-header with-border"><i class="@classIcon"></i> @Model.Title</div>
+}
+
+    
+    <div class="@(contentClass) @(extraClass )" style="@(Model.ItemType == DashboardItemTypes.ChartPartialDonut  ? "text-align:center":"")">
+@{
+
+    if (Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.Bar || Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.ChartHistory || Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.ChartPie || Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.ChartDonut || Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.ChartPartialDonut )
+    {
+        SFSdotNet.Framework.Web.Mvc.Models.ChartModel chart = new SFSdotNet.Framework.Web.Mvc.Models.ChartModel();
+        chart.DataGraph = Model.DataGraph;
+        chart.DataGraphUrl = Model.DataGraph.UrlData;
+        chart.Height = Model.Height;
+        chart.Title = Model.DataGraph.Title;
+        //chart.Type = Model.DataGraph.ChartType;
+        chart.CssClass = Model.CssClass;
+        Html.RenderPartial("ChartView", chart);
+
+
+    }else if(Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.ListView){
+
+        Html.RenderPartial("DashboardListView", Model);
+
+    }else if (Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.GeoMap ){
+        Html.RenderPartial("GeoMapView", Model);
+    }
+    else if (Model.ItemType == SFSdotNet.Framework.Web.Mvc.Models.DashboardItemTypes.Total)
+    {
+        Html.RenderPartial("DashboardItemNum", Model.DataNum);
+    }
+
+    }
+        </div>
+    </div>
+<script>
+     
+
+</script>

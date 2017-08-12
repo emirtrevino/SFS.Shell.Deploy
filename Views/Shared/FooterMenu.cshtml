@@ -1,0 +1,209 @@
+﻿@{
+    string moduleName = "";
+    string urlNewsLetter = "";
+    string moduleKey = "";
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = null;
+    }
+
+@if (!SFSdotNet.Framework.Web.Mvc.Utils.IsApplicationModule(this.ViewContext))
+{
+    
+    if (this.ViewContext.RouteData.Values["area"] == null && this.ViewContext.RouteData.Values["controller"] != null && this.ViewContext.RouteData.Values["action"] != null)
+    {
+        if (this.ViewContext.RouteData.Values["controller"].ToString() == "Home" && (this.ViewContext.RouteData.Values["action"].ToString() == "App" || ViewData["module"] != null ))
+        {
+            
+            if (ViewData["module"] != null)
+            {
+                module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+                moduleName = ((SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"]).Name;
+                moduleKey = ((SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"]).ModuleKey ;
+                
+                 if (moduleKey == "SFSTravelSystem") {
+                    urlNewsLetter = "http://eepurl.com/WfHr9";
+                 }
+                 else if (moduleKey == "SFSCredit")
+                 {
+                     urlNewsLetter = "http://eepurl.com/WfW7z";
+                }
+            }
+        }
+    }
+  <div class="row-fluid">
+<div class="span3">
+    <h4>Accesos rápidos</h4>
+@{ if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User == null ){
+   <text>
+         <ul>
+
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/LogIn">Identificarse</a></li>
+    </ul>
+    <ul>
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Register">Registrarse</a></li>
+    </ul>
+
+    </text>
+}else{
+   <text>
+    <ul>
+
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/MyAccount">Mi cuenta</a></li>
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/MyCurrentCompany">Mi empresa</a><li>
+    </ul>
+    <ul>
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/LogOff">Salir del sistema</a></li>
+    </ul>
+    </text>   
+   
+   }
+   
+    <h4>Suscribirse a newsletter</h4>
+    <ul>
+           <li><a href="http://eepurl.com/WfV7X">Global del ecosistema</a></li>
+@if (moduleName != "" && urlNewsLetter != "")
+{           
+            <li><a href="@(urlNewsLetter)">De esta aplicación (@(moduleName))</a></li>
+}
+    </ul>
+    }
+</div>
+<div class="span3">
+@{
+  if (moduleName != ""){
+    <text>
+        <h4>@(moduleName)</h4>
+        <ul>
+            <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=faq">Faqs</a></li>
+            <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=feature">@GlobalMessages.FEATURES</a></li>
+            <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Prices/@(moduleKey)">@GlobalMessages.PRICES_AND_OPTIONS </a></li>
+            
+            <li><a href="@VirtualPathUtility.ToAbsolute("~/")@(module.ModuleKey)">@GlobalMessages.USE_APPLICATION</a></li>
+
+
+        </ul>
+    </text>
+       }
+
+         
+
+}
+    @*<h4>Servicios y productos</h4>
+<ul>
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/AllApps">Aplicaciones de negocio</a></li>
+        <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/custom-development">Desarrollo a la medida</a><br /></li>
+    </ul>
+@if (module == null ){
+    <ul>
+            <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Prices">@GlobalMessages.PRICES_AND_OPTIONS </a></li>
+    </ul>
+}*@
+
+     <h4>Actualizaciones y mejoras</h4>
+
+<ul>
+               <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues">Mejoras y cambios</a></li>
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues?type=error-user">Bugs reportados</a></li>
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Issues?type=error-system">Erores auto-administrados sistema</a></li>
+
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Updates">Actualizaciones</a></li>
+
+    </ul>
+</div>
+<div class="span3">
+     @*<h4>La diferencia</h4>
+<ul>
+        <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/cloud-apps">Cómputo en la nube</a></li>
+        <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/compare-us">Compárenos</a></li>
+        <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/advantages">Principales ventajas</a></li>
+
+</ul>
+    <h4>Noticias y novedades</h4>
+<ul>
+        <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Blog">Blog global</a></li>
+        
+
+</ul>*@
+</div>
+<div class="span2">
+       @*<h4>Sobre nosotros</h4>
+<ul>
+           <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/about-us">Acerca de nosotros</a></li>
+        <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/strategic-map">Misión y visión</a></li>
+</ul>
+    <ul>
+     <li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/work-with-us">Trabaja con nosotros</a></li>
+    </ul>*@
+
+<ul>
+        <li><a  href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/contact">Contacto</a></li>
+        @*<li><a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/support">Soporte</a></li>*@
+</ul>
+</div>
+    <div class="span1 text-right">
+   <ul>
+    <li><a  href="//www.facebook.com/applicationecosystem"><img src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/facebook-icon.png" /></a></li>
+    <li><a href="//twitter.com/appecosys"><img src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/twitter-icon.png" /></a></li>
+   <li> <a href="//www.linkedin.com/company/application-ecosystem"><img 
+                                                                        src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/linkedin-icon.png" /></a></li>
+   <li> <a href="//google.com/+Appecosystem"><img src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/google-plus-icon.png" /></a></li>
+   <li> <a href="//www.youtube.com/c/Appecosystem "><img src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/youtube-icon.png" /></a></li>
+   <li> <a href="@(VirtualPathUtility.ToAbsolute("~/"))Blog"><img src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/rss-icon.png" /></a></li>
+       </ul>
+
+</div>
+</div>
+}
+else
+{
+  <text>
+<div class="row-fluid">
+    <div  class="span12 text-center">
+        @*<a class="foot" href="@(VirtualPathUtility.ToAbsolute("~/"))">Inicio de ecosistema</a>
+    &nbsp; &nbsp; &nbsp;
+        <a class="foot" href="@(VirtualPathUtility.ToAbsolute("~/"))">Página de la aplicación</a>
+    &nbsp; &nbsp; &nbsp;
+        <a class="foot"  href="@(VirtualPathUtility.ToAbsolute("~/"))Go/AllApps">Otras aplicaciones</a>
+    &nbsp; &nbsp; &nbsp;
+        <a class="foot" href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/services-products">Servicios y productos</a>
+    &nbsp; &nbsp; &nbsp;
+        <a class="foot"  href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/contact">Contacto</a>*@
+        </div></div>
+   </text> 
+}  
+  <div class="row-fluid" style="font-size:95%">
+<div class="span4 text-left">
+    Application Ecosystem
+</div>
+<div class="span4 text-center">
+    &copy; 2008 - 2014 Todos los derechos reservados
+</div>
+
+<div class="span4 text-right">
+    <a class="foot" href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/privacy">Privacidad</a>      &nbsp;&nbsp;&nbsp;<a class="foot" href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Content/terms-of-use">Términos de uso</a>
+</div>
+
+      </div>
+@{
+    if (Request.Url.Host != "localhost")
+    {
+        //if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null ){
+        //    if (SFSdotNet.Framework.My.Context.CurrentContext.IsSuperAdmin()){
+
+        //    }
+        //}
+    <text>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-3632499-8', 'appecosys.com');
+  ga('send', 'pageview');
+
+</script>
+</text>
+          
+    }
+
+    }

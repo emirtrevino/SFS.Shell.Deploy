@@ -1,0 +1,285 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.MessageModel
+@{
+    var data = DataAction.GetDataAction(Request);
+
+    if (data.uiv == "2") {
+        if (Model.MessageResultType == SFSdotNet.Framework.BusinessObjects.Custom.MessageResultTypes.Ok || Model.MessageResultType == SFSdotNet.Framework.BusinessObjects.Custom.MessageResultTypes.Error)
+        {
+            if (Model.AutoClose == null)
+            {
+                Model.AutoClose = true;
+            }
+        }
+    }
+
+    string wid = "";
+    if (!string.IsNullOrEmpty(Request.QueryString["wid"])) {
+
+        wid = Request.QueryString["wid"];
+    }
+    if (string.IsNullOrEmpty(wid)) {
+        wid = Guid.NewGuid().ToString();
+    }
+
+    System.Text.StringBuilder sbClass = new System.Text.StringBuilder();
+    if (Model.MessageResultType == SFSdotNet.Framework.BusinessObjects.Custom.MessageResultTypes.Ok) {
+
+        sbClass.Append("alert alert-block alert-success");
+
+    }
+    else if (Model.MessageResultType == SFSdotNet.Framework.BusinessObjects.Custom.MessageResultTypes.Error) {
+        sbClass.Append("alert alert-block alert-error");
+
+    }
+    else if (Model.MessageResultType == SFSdotNet.Framework.BusinessObjects.Custom.MessageResultTypes.Warning)
+    {
+        sbClass.Append("alert alert-block alert-warning");
+
+    }
+
+    string displayNone = "";
+    if (Model.AutoClose == true)
+    {
+        displayNone = "display:none;";
+    }
+
+    if (string.IsNullOrEmpty(Model.Id))
+    {
+        if (!string.IsNullOrEmpty(Request.QueryString["actionName"]))
+        {
+            Model.Id = Request.QueryString["actionName"];
+        }
+    }
+}
+    @*@if (Model.AutoClose)
+   {
+        string idProx = Guid.NewGuid().ToString().Replace("-", "").Substring(1, 5); 
+        <a  href="javascript:void(0);" id="@(idProx )" onclick="closeCurrentDialog(this)"></a>
+<script>
+
+    $(document).ready(function () {
+        if (getUIVersion() == 2){
+            $("#@(idProx )").click();
+            showMessages();
+        }
+    
+    });
+</script>
+    }else{*@
+<div class="popup" id="pf_UpdateTargetId_@(wid )" style="@(displayNone)">
+<div id="mcontainer" class="@( Model.MessageResultType.ToString() )">
+
+    @using (Ajax.BeginForm(Model.Action, Model.Controller, new { area = Model.Area, usemode = Request.QueryString["usemode"] }, new AjaxOptions { UpdateTargetId = "pf_UpdateTargetId_" + wid, OnSuccess = "onMessageSuccess", LoadingElementId = "pf_loading" }, new { id = "messageForm" }))
+    {    
+      
+    foreach (var param in Request.QueryString.AllKeys)
+   {    
+        <input type="hidden" id="@( param )" name="@( param )" value="@( Request.QueryString[param] )" />
+    }
+    
+       
+
+
+    if (!string.IsNullOrEmpty(Model.Title))
+    { 
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3>@Html.Raw(HttpUtility.UrlDecode(Model.Title))</h3>
+               </div>
+
+    }
+    
+    
+ 
+<div class="modal-body " style="padding:15px;">
+                <div class="@Html.Raw(sbClass.ToString())">
+                @Html.Raw( HttpUtility.UrlDecode(Model.Message))
+                </div>
+
+</div>
+
+ <div class="modal-footer ">
+                <div class="x-buttons">
+  
+    @if (Model.ActionButtons != null)
+    {
+        foreach (var button in Model.ActionButtons)
+        {
+            if (button.Type != null)
+            {
+                switch (button.Type)
+                {
+                    case SFSdotNet.Framework.BusinessObjects.Custom.ButtonTypes.YesIamSure:
+                        if (string.IsNullOrEmpty(button.Text)) { 
+                            button.Text = GlobalMessages.YES_I_AM_SURE;
+                        }
+                        if (!string.IsNullOrEmpty(Request.QueryString["actionName"]) && !string.IsNullOrEmpty(Request.QueryString["objectKey"]))
+                        {
+                            if (Request.QueryString["actionName"].Contains("Delete"))
+                            {
+                                        @Html.Raw(Html.HttpMethodOverride(HttpVerbs.Delete))
+                                        @( Html.HiddenFor(p => p.ObjectKey))
+                            }
+                        } 
+                        if (!string.IsNullOrEmpty(Request.Form["postData"]))
+                        {  
+
+              <input type='hidden' value='@Html.Raw(Request.Form["postData"] )' id='postData' name='postData'/>
+                        } 
+
+                                        <button id="btn_@( Model.Id + button.Id )" data-loading-text="@Html.Raw(GlobalMessages.PROCESSING_PLEASE_WAIT )..."  class="btn neutral btn-warning" type="submit">  @Html.Raw(button.Text)</button>     <a href="#"  class="btn" data-dismiss="modal" aria-hidden="true">@( GlobalMessages.CANCEL )</a> <div id="pf_loading" class="local-loading" ></div>      
+<script>
+    $(document).ready(function () {
+    @if (!string.IsNullOrEmpty(Request.QueryString["actionName"])) { 
+        <text>
+        if (typeof (lastAction) != "undefined") { 
+            lastAction = '@(Request.QueryString["actionName"] )';
+            lastActionExecuted = false;
+        }else{
+            
+        }
+        </text>
+    }
+        $('#btn_@( Model.Id + button.Id )').click(function (e) {
+            //alert("sadasdsada");
+            $(this).button('loading');
+            var f = $('#btn_@( Model.Id + button.Id )').parents("form");
+            //if (validForm(f[0])) {
+            //e.preventDefault();
+
+            //$.blockUI({ baseZ: 2000, message: '<h1><img alt="" src="<%=ResolveUrl("~/") %>Content/ajax-loader.gif" /> <%: GlobalMessages.PROCESSING_PLEASE_WAIT  %></h1>' });
+            return true;
+            //}
+
+        });
+
+    });
+</script>
+
+    break;
+                    case SFSdotNet.Framework.BusinessObjects.Custom.ButtonTypes.Ok:
+                        <script>
+
+                        </script>
+
+    break;
+                    case SFSdotNet.Framework.BusinessObjects.Custom.ButtonTypes.OkClose:
+    if (string.IsNullOrEmpty(button.Text)){
+        button.Text = GlobalMessages.CLOSE_WINDOW;
+    }
+
+    if (!string.IsNullOrEmpty(Request.QueryString["actionName"])) { 
+<script>
+    // despues de guardar, viene un param= ?lastAction=NombreDeVariable
+    $(document).ready(function () {
+
+        //alert(typeof (<%=Request.QueryString["actionName"]%>) != "undefined");
+        if (typeof (@Html.Raw(Request.QueryString["actionName"])) != "undefined") {
+            @Html.Raw(Request.QueryString["actionName"]) = true;
+        }else{
+
+        }
+
+    });
+
+</script>
+} 
+                <script>
+                    checkPendings();
+                    $(document).ready(function () {
+                        $("#btn_@( Model.Id + button.Id )").focus();
+                    });
+                    if (typeof (lastActionExecuted) != "undefined") {
+                        lastActionExecuted = @( Model.ActionExecuted.ToString().ToLower() );
+                    }
+                    @{if (!string.IsNullOrEmpty(Request.QueryString["actionId"]) || !string.IsNullOrEmpty(Model.ActionNameExecute) || !string.IsNullOrEmpty(Request.QueryString["actionName"]))
+                       {
+                           string actionName = "";
+                           if (!string.IsNullOrEmpty(Request.QueryString["actionId"]))
+                           {
+                               actionName = Request.QueryString["actionId"];
+                           }else if(!string.IsNullOrEmpty(Model.ActionNameExecute))
+                           {
+                               actionName = Model.ActionNameExecute;
+                           }
+                           else {
+                               actionName = Request.QueryString["actionName"];
+                           }
+
+
+                    @Html.Raw("completeAction(\"" + actionName+ "\")");
+                    }
+                }
+                </script>   
+                                       <!--xs--> <button id="btn_@( Model.Id + button.Id )" data-dismiss="modal" aria-hidden="true" class="button neutral principal btn btn-success" type="button"> @(button.Text)</button>
+
+
+                                    break;
+
+
+                                default:
+                                    break;
+                            }
+
+
+                        }
+                        else
+                        {
+
+                            if (button.Priority == 1)
+                            {
+
+
+                             <!--dw-->  <button id="btn_@( Model.Id + button.Id )" class="button positive principal" type="submit"><img alt="" src="@(VirtualPathUtility.ToAbsolute("~/"))Content/tick.png" border="0" /> @( button.Text)</button>
+                            }
+                            else if (button.Priority > 1)
+                            {
+
+
+                              <!--ie--> <a id="btn_@( Model.Id + button.Id )" class="button" href="@( button.Url )">@( button.Text)</a>            
+                          }
+
+            }
+        }
+
+    }    
+
+                
+                </div>
+            </div>
+      
+     } 
+
+    @if (Model.AutoClose == true)
+    {
+        string idProx = "a" + Guid.NewGuid().ToString().Replace("-", "").Substring(1, 5);
+          <!--cs--> <a href="javascript:void(0);" id="@(idProx )" onclick="closeCurrentDialog(this)"></a>
+        <script>
+
+    $(document).ready(function () {
+        if (getUIVersion() == 2){
+           // $("#@(idProx )").closest(".modal").hide();
+
+            setTimeout(function(){
+
+                var m1 =$("#@(idProx )").closest(".modal");
+                var m2 =$("#@(idProx )").closest(".modal").prev();
+                m2.remove();
+                $("#@(idProx )").click();
+                //m1.remove();
+                //m2.remove();
+                // $("#@(idProx )").closest(".modal").hide();
+            }, 500);
+
+            showMessages();
+        }
+
+    });
+        </script>
+    }
+
+        </div>
+</div>
+
+
+@*}*@ 

@@ -1,0 +1,159 @@
+﻿@{
+    List<SelectListItem> TriStateValues = new List<SelectListItem>();
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    string classExtra = "";
+    string tabindex = "";
+    if (ViewData["class"] != null)
+    {
+        classExtra = ViewData["class"].ToString();
+
+    }
+    PropertyDefinition propDef = null;
+    if (ViewData["currentProperty"] != null)
+    {
+        propDef = (PropertyDefinition)ViewData["currentProperty"];
+        //if (ViewData["fieldMultiLine"] != null)
+        //{
+        if (propDef.Order != null)
+        {
+            tabindex = propDef.Order.ToString();
+
+        }
+        if (propDef.HorizontalSize != null)
+        {
+            classExtra = classExtra + " span12 col-md-12 ";
+        }
+        //}
+    }
+    if (propDef.RemoveLabel == true && string.IsNullOrEmpty(propDef.PlaceHolder) && propDef.UIText == null || (propDef.UIText != null && string.IsNullOrEmpty(propDef.UIText.PlaceHolder)))
+    {
+        propDef.PlaceHolder = propDef.PropertyDisplayName;
+    }
+    string text = "--" + GlobalMessages.SELECT + "--";
+    if (!string.IsNullOrWhiteSpace(propDef.PlaceHolder))
+    {
+
+        text = "--" + propDef.PlaceHolder + "--";
+
+    }
+   
+
+    bool ? Value = null;
+    if (ViewData.Model != null) {
+        Value = Convert.ToBoolean(ViewData.Model, System.Globalization.CultureInfo.InvariantCulture);
+    }
+    if (propDef != null && propDef.IsDynamic == true  && propDef.Value != null )
+    {
+        Value = Convert.ToBoolean(propDef.Value.ToString());
+    }
+    TriStateValues.Add(new SelectListItem { Text =text, Value = String.Empty, Selected = !Value.HasValue });
+
+    TriStateValues.Add(new SelectListItem { Text = "SI", Value = "true", Selected = Value.HasValue && Value.Value });
+    TriStateValues.Add(new SelectListItem { Text = "NO", Value = "false", Selected = Value.HasValue && !Value.Value });
+
+
+
+
+}
+@{
+   
+    string sffAttr = "";
+    if (ViewData["sff"] != null){
+        sffAttr = ViewData["sff"].ToString();
+    }
+   
+    string classInputExtra = "";
+
+    if (uiModel.UIVersion == 2)
+    {
+        classExtra = classExtra + " form-control ";
+        //classInputExtra = " form-control ";
+    }
+    string requiredAttributes = "";
+    
+    if (propDef != null && propDef.IsRequired == true)
+    {
+        requiredAttributes = "data-val=\"true\" data-val-required=\"" + string.Format(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.THE_FIELD_IS_REQUIRED, propDef.PropertyDisplayName) + "\"";
+    }
+   
+
+}
+@if (ViewData.ModelMetadata.IsNullableValueType || propDef.Nullable == true)
+{
+    if (propDef.FieldType == FieldType.RadioButton)
+    {
+        <text>
+            <input type="radio" name="p@(propDef.PropertyName)" id="p@(propDef.PropertyName)y" value="true" /> SI
+            <input type="radio" name="p@(propDef.PropertyName)" id="p@(propDef.PropertyName)n" value="false" /> NO
+
+            <input type="hidden" @Html.Raw(requiredAttributes) id="@(propDef.PropertyName)" name="@(propDef.PropertyName)" value="" />
+            <script>
+            $(document).ready(function () {
+
+                $("#p@(propDef.PropertyName)y, #p@(propDef.PropertyName)n").on("click", function () {
+                    $("#@(propDef.PropertyName)").val($("input[name=" + $(this).attr("id") + "]").is(":checked").toString());
+
+
+                });
+            });
+            </script>
+        </text>
+    }
+    else {
+       
+
+        <select id="@(propDef.PropertyName)" tabindex="@tabindex" class="list-box tri-state @(classExtra)" @Html.Raw(requiredAttributes) name="@(propDef.PropertyName)">
+            @foreach (var item in TriStateValues)
+            {
+
+                string selected = "";
+                if (item.Selected == true)
+                {
+                    selected = "selected";
+                }
+                <option @(selected) value="@(item.Value)">@(item.Text)</option>
+            }
+        </select>
+
+    }
+} else {
+
+    @Html.CheckBox("", Value ?? false, new { @class = "check-box i-check", @tabIndex = tabindex })
+
+    if (uiModel.UIVersion == 2)
+    {
+        <text>
+            <script>
+
+    $(document).ready(function () {
+        $('#@(ViewData.ModelMetadata.PropertyName)').wrap('<div class="checkbox i-check" id="wrap_@(ViewData.ModelMetadata.PropertyName)" />');
+        $('#wrap_@(ViewData.ModelMetadata.PropertyName)').iCheck({
+                /* labelHover: false,
+                 cursor: true,*/
+                checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+
+        });
+        });
+
+    // $('.switch').bootstrapSwitch('toggleActivation');
+            </script>
+        </text>
+    }
+    else
+    {
+    <text>
+    <script>
+
+           // $(document).ready(function () {
+           //$('#@(ViewData.ModelMetadata.PropertyName)').wrap('<div class="switch" data-on-label="@(GlobalMessages.YES )" data-off-label="@(GlobalMessages.NO )" />').parent().bootstrapSwitch();
+           // });
+
+    // $('.switch').bootstrapSwitch('toggleActivation');
+    </script>
+    </text>
+
+
+    }
+
+} 

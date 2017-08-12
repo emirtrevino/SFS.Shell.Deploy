@@ -1,0 +1,20 @@
+﻿@if (ViewData["children"] != null && ((List<SFSdotNet.Framework.Security.BusinessObjects.secContent>)ViewData["children"]).Count > 0)
+{
+    <h3>Características que dependen de ésta</h3>
+    <ul>
+        @foreach (var content in ((List<SFSdotNet.Framework.Security.BusinessObjects.secContent>)ViewData["children"]))
+        {
+            <li> @Html.Raw("<a style='text-decoration:underline' href='" + VirtualPathUtility.ToAbsolute("~/Features/id/") + content.Slug + "_" + content.IdContent + "'>" + content.Title + "</a>") </li>
+        }
+    </ul>
+}
+@if (ViewData["related"] != null && ((List<SFSdotNet.Framework.Security.BusinessObjects.secContent>)ViewData["related"]).Count > 0)
+{
+    <h3>Características relacionadas</h3>
+    <ul>
+        @foreach (var content in ((List<SFSdotNet.Framework.Security.BusinessObjects.secContent>)ViewData["related"]))
+        {
+            <li>@Html.Raw("<a style='text-decoration:underline' href='" + VirtualPathUtility.ToAbsolute("~/Features/id/") + content.Slug + "_" + content.IdContent + "'>" + content.Title + "</a>")</li>
+        }
+    </ul>
+}

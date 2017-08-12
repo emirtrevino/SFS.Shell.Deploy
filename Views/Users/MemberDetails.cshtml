@@ -1,0 +1,125 @@
+﻿@model SFSdotNet.Framework.Security.BusinessObjects.secUser
+@{
+    
+    string imageUrl = Model.UrlImage;
+    string fullImage = imageUrl.Replace("w=240&h=","w=&h=");
+
+    string bioContent = Model.Bio;
+    if (!string.IsNullOrEmpty(bioContent))
+    {
+        bioContent = SFSdotNet.Framework.Security.BR.secContentsBR.Instance.ReplaceHtmlWikiTokens(Model.Bio);
+    }
+    else
+    {
+        bioContent = "";
+    }
+}
+
+<div class="span4">
+    <div class="row-fluid">
+        <div class="span12">
+            <a href="@(fullImage)" class="filethumb"><img src="@(imageUrl)" style="width:240px" width="240" height="240" /></a>
+        </div>
+
+    </div>
+</div>
+
+<div class="span8">
+    <div class="row-fluid">
+        <div class="span12">
+            <h1></h1>
+            <p class="bio">
+              
+            </p>
+
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <h2>Empresas donde participa</h2>
+        </div>
+    </div>
+
+    @foreach (var company in (List<SFSdotNet.Framework.Security.BusinessObjects.secCompany>)ViewData["companies"])
+    {
+        string image = SFSdotNet.Framework.ImageUtils.GetImageUrl("secFiles", "SFSdotNet.Framework.Security", "GuidFile", "FileData", "FileType", "FileSize", company.GuidSecFile.ToString(), "secFiles.secFileModel", 60, 60);
+        if (company.Name != null && company.Name.Contains("@"))
+        {
+            company.Name = company.Name.Split(char.Parse("@"))[0] + "...";
+        }
+        //string link = VirtualPathUtility.ToAbsolute("~/");
+        <div class="row-fluid">
+            <div class="span12" style="font-size:120%;">
+
+               
+            </div>
+        </div>
+    }
+    <div class="row-fluid">
+        <div class="span12">
+            <h2>Aplicaciones que usa</h2>
+        </div>
+    </div>
+
+
+    @foreach (var app in (List<SFSdotNet.Framework.Security.BusinessObjects.secModule>)ViewData["apps"])
+    {
+        
+        //string link = VirtualPathUtility.ToAbsolute("~/");
+        <div class="row-fluid">
+            <div class="span12" style="font-size:120%;">
+                
+            </div>
+        </div>
+    }
+
+
+    <div class="row-fluid">
+        <div class="span12 space-contents" style=""></div>
+    </div>
+
+
+</div>
+
+<script>
+
+                        'use strict';
+
+                        $(function () {
+
+                            if (typeof (jQuery().magnificPopup) == "undefined") {
+                                @{
+                                    var helper = (new UrlHelper(ViewContext.RequestContext));
+                                }
+                                //alert("leyendo");
+
+                                Utilities.requireFiles([
+                                    "@(helper.Content("~/Content/Lightbox/magnific-popup.css"))",
+                                    "@(helper.Content("~/Scripts/Lightbox/magnific.js"))"], function () {
+                                        $(document).magnificPopup({
+                                            type: 'image',
+                                            delegate: 'a.filethumb',
+                                            gallery: {
+                                                enabled:true
+                                            },
+                                            image: {
+                                                tError: '<p><a href="%url%"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a href="%url%">The image</a> could not be loaded.' // Error message
+                                            }
+                                        });
+                                    });
+
+                            } else {
+                                $(document).magnificPopup({
+                                    type: 'image',
+                                    delegate: 'a.filethumb',
+                                    gallery: {
+                                        enabled:true
+                                    },
+                                    image: {
+                                        tError: '<p><a href="%url%"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a href="%url%">The image</a> could not be loaded.' // Error message
+                                    }
+                                });
+                            }
+                        });
+</script>

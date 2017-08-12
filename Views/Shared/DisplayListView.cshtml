@@ -1,0 +1,19 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.DetailsRelationManydItem
+        
+<script>
+    $(document).ready(function () {
+        $.ajax({
+
+            url: "@Html.Raw(Model.UrlContent)",
+            dataType: "html",
+            cache: false,
+            success: function (data) {
+                $("#@Model.Id").html(data);
+            }
+        });
+
+    });
+
+</script>
+
+<div id="@Model.Id" class="list-in-details"></div>

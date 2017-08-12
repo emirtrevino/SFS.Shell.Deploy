@@ -1,0 +1,49 @@
+﻿
+@{
+    PropertyDefinition propDef = (PropertyDefinition)ViewData["_prop"] ;
+    object modelModel = ViewData["_model"];
+    object modelProp = modelModel.GetType().GetProperty(propDef.PropertyName).GetValue(modelModel, null);
+    
+    
+    }
+
+ @if (propDef.IsHidden)
+ {
+     if (propDef.IsNavigationProperty && !propDef.IsNavigationPropertyMany)
+     {
+         @Html.Hidden("Fk" + propDef.PropertyName, modelProp);
+     }else{
+        @Html.Hidden(propDef.PropertyName,modelProp);
+     }
+     
+ }else{
+        @{
+         string fromFK = ViewData["fk"].ToString();
+          string  fkValue = ViewData["fkValue"].ToString();
+        }
+     
+     if ((propDef.IsNavigationProperty && propDef.IsNavigationPropertyMany == false ) && fromFK == propDef.PropertyName  && !string.IsNullOrEmpty(Request.QueryString["popup"]){
+        
+         <input type="hidden" name="Fk@(fromFK)" id="Fk@(fromFK)" value="@(fkValue)" />
+     
+     }else{
+     
+     <div id="dc@(propDef.PropertyName)" class="li control-group focushl ">
+				
+
+
+
+				@Html.Label(propDef.PropertyName, true, "control-label" ) 
+<div class="controls">
+				
+				<div class="grid_7 omega editor-field"> 
+				 @Html.EditorFor(m=>modelProp,  new { currentProperty = propDef,   maxlength="200" }) </div>
+				
+				<div class="errorMessage">@Html.ValidationMessageFor(m => modelProp)</div>
+			
+
+				</div>
+	        </div>
+        }
+     
+ }

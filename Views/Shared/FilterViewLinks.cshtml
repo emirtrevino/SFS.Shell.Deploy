@@ -1,0 +1,134 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.UIModel
+
+@{
+    string idTab = Request.QueryString["idTab"];
+    List<SFSdotNet.Framework.Web.Mvc.Models.UIFilterView> filterViews = Model.FilterViews;
+    string filterKey = "all";
+    if (!string.IsNullOrEmpty(Request.QueryString["view"])){
+        filterKey = Request.QueryString["view"];
+    }
+    else if (!string.IsNullOrEmpty(Model.DefaultFilterView))
+    {
+        filterKey = Model.DefaultFilterView;
+    }
+
+    System.Text.StringBuilder extraParams = new System.Text.StringBuilder();
+    foreach (var qs in Request.QueryString.AllKeys)
+    {
+        if (qs != "view"){
+            if (!string.IsNullOrEmpty(Request.QueryString[qs]))
+            {
+                if (extraParams.Length > 0)
+                {
+                    extraParams.Append("&");
+                }
+                extraParams.Append(qs + "=" + HttpUtility.UrlEncode(Request.QueryString[qs]));
+            }
+        }
+    }
+    //if (Model.Count == 0){
+    var preventAllPermission = Model.Permissions.FirstOrDefault(p=> p.PermissionKey == "prevent-all");
+    if (preventAllPermission != null && preventAllPermission.IsAllowed == true)
+    {
+        filterViews.Remove(filterViews.FirstOrDefault(p => p.FilterKey == "all"));
+    }
+    else {
+        if (filterViews.Count(p => p.InDropDown == false) > 0)
+        {
+            //SFSdotNet.Framework.Web.Mvc.Models.UIFilterView filterAll = new SFSdotNet.Framework.Web.Mvc.Models.UIFilterView();
+            //filterAll.Title = GlobalMessages.ALL;
+            //filterAll.FilterKey = "all";
+            //filterAll.Query = "";// string.Format("{0} <> NULL", secMessage.PropertyNames.ReadDate);
+
+            //filterViews.Add(filterAll);
+        }
+    }
+    //}
+
+    foreach (var filter in filterViews.Where(p=> p.InDropDown == false))
+    {
+        bool canSee = true ;
+        if (!string.IsNullOrEmpty(filter.PermissionKey))
+        {
+            string entityKeyUseMode = Model.EntityKey;
+            if (!string.IsNullOrEmpty(Model.UseMode) && !entityKeyUseMode.Contains(Model.UseMode))
+            {
+                entityKeyUseMode = Model.EntityKey + "_" + Model.UseMode;
+            }
+            var permission = new SFSdotNet.Framework.Security.Permissions();
+            canSee = permission.IsAllowed(SFSdotNet.Framework.My.Context.CurrentContext.User, Model.ModuleKey, entityKeyUseMode, filter.PermissionKey) || (SFSdotNet.Framework.My.Context.CurrentContext.IsSuperAdmin() || SFSdotNet.Framework.My.Context.CurrentContext.IsModuleAdmin("SFSAccounting", SFSdotNet.Framework.My.Context.CurrentContext.Company));
+
+        }
+        if (canSee == true) {
+     <text>&nbsp;&nbsp;&nbsp;</text>
+            if (filterKey.ToLower().Equals(filter.FilterKey.ToLower()))
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["popup"]) || !string.IsNullOrEmpty(Request.QueryString["idTab"]))
+                {
+                    <text>
+                        <a  href="?@(extraParams.ToString() + "&view=" + filter.FilterKey  )" filterKey="@(filter.FilterKey)" class="filterview selected currentFilterview@(idTab) @(filter.FilterKey)" pk="@(filter.PermissionKey)" query="@WebUtility.UrlEncode( filter.Query)">@filter.Title</a>
+                    </text>
+                }
+                else
+                {
+             <text>
+            <span class=" filterview selected currentFilterview@(idTab) @(filter.FilterKey)" filterKey="@(filter.FilterKey)" query="@WebUtility.UrlEncode( filter.Query)">@filter.Title</span>
+             </text>
+                }
+        }else{
+            
+            
+            <text>
+                <a href="?@(extraParams.ToString() + "&view=" + filter.FilterKey  )" filterKey="@(filter.FilterKey)" class="filterview @(filter.FilterKey)" pk="@(filter.PermissionKey)" query="@WebUtility.UrlEncode( filter.Query)">@filter.Title</a>
+            </text>
+            }
+        }
+    }
+    if (!string.IsNullOrEmpty(Request.QueryString["popup"]) || !string.IsNullOrEmpty(Request.QueryString["idTab"])){
+          <text>
+        <script>
+            $(document).ready(function () {
+                //debugger;
+                $("#place-list@(idTab) .filterview").click(function (e) {
+                    e.preventDefault();
+                    $("#place-list@(idTab) .filterview").each(function () {
+                        $(this).removeClass("currentFilterview@(idTab)");
+                        $(this).removeClass("selected");
+                    });
+                    
+                    $(this).addClass("currentFilterview@(idTab)");
+                    $(this).addClass("selected");
+                  
+
+                    refreshList@(idTab)();
+
+                });
+            });
+        </script>
+        </text>
+    }
+    if (filterViews.Count(p => p.InDropDown == true) > 0)
+    {
+        <text>
+            <script>
+            $(document).ready(function () {
+                $("#filterViewDD@(idTab)").change(function (e) {
+
+                    var query = $('option:selected', this).attr('query');
+                    $("#proxyFilterView@(idTab)").attr("query", query);
+                    refreshList@(idTab)();
+                });
+            });
+            </script>
+        </text>
+        <span id="proxyFilterView@(idTab)" class="filterview currentFilterview@(idTab) " style="display:none" query=""></span>
+    <select id="filterViewDD@(idTab)">
+        <option value="all" query="">@(GlobalMessages.ALL) </option>
+
+        @foreach (var filter in filterViews.Where(p => p.InDropDown == true))
+        {
+            <option value="@(filter.FilterKey)" query="@WebUtility.UrlEncode(filter.Query)">@filter.Title </option>
+        }
+    </select>
+        }
+    }

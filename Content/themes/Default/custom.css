@@ -1,0 +1,212 @@
+body {background:url(grey_gradient_bg.jpg) repeat-x scroll 0 0 #fff;color:#555;font-family:"Lucida Grande","Lucida Sans",Arial,Helvetica,Sans-Serif;font-size:75%;line-height:1.5em;}
+
+h1,h2,h3,h4,h5,h6 {color:#3d3d3d;font-family:Arial,Helvetica,Sans-Serif;line-height:1em;word-spacing:-1px;}
+h1 {font-size:21px;margin-bottom:30px;}
+h2 {font-size:21px;margin-bottom:12px;}
+h3 {font-size:18px;margin-bottom:6px;}
+h4 {font-size:15px;margin-bottom:6px;}
+h5 {font-size:12px;margin-bottom:6px;}
+h6 {font-size:11px;margin-bottom:6px;}
+
+/*HEADER DETAILS*/
+h1#L1 {/*see headerLogo h1*/}
+h1#L2,h1#L3 {border-bottom:1px solid #ccc;color:#BE342C;padding-bottom:6px;}
+h1#L3 span {border-left:1px solid #ccc;color:#8c8c8c;font-weight:normal;margin-left:9px;padding-left:9px;}
+
+/*HEADER IMAGE DEFAULTS*/
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
+
+/*IMAGE DEFAULTS*/
+img, a img{
+	border:none;
+	-ms-interpolation-mode: bicubic;
+}
+
+/*PARAGRAPH DEFAULTS*/
+p {margin-bottom:18px;}
+p img {margin:0 12px 12px 0;}
+p img.left {float:left;margin:0 12px 12px 0;}
+p img.right {float:right;margin:0 0 12px 12px;}
+
+/*PARAGRAPH SPECIFICS*/
+#pageIntro {margin-bottom:21px;margin-top:-15px;}
+#pageIntro p {color:#444;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:21px;margin-bottom:0;}
+
+/*LINK DEFAULTS*/
+a {color:#3B73B9;}
+a:link, a:visited {text-decoration:none;}
+a:hover, a:active {color:#39c;text-decoration:underline;}
+a:focus {outline:none;}
+
+
+
+#mainContent.levelThree table {background:none;border:0;width:auto;margin-left:0;}
+#mainContent.levelThree table th,#mainContent.levelThree table td {background:none;border-bottom:0;border-top:0;font-weight:normal;padding:0;}
+#mainContent.levelThree table tr:hover {background:none;}
+#mainContent.levelThree table p {margin-bottom:12px;}
+#mainContent.levelThree table br {white-space:nowrap;}
+/* for CES newsletters */
+#article {vertical-align:auto;}
+#article td {width:40%;padding-right:20px;}
+
+#mainContent.levelThree #right-header {border-bottom:1px dotted #ccc;margin-bottom:18px;padding-bottom:3px;}
+#mainContent.levelThree #right-header span.L3-Header {font-family:Arial,Helvetica,Sans-Serif;font-size:18px;}
+#mainContent.levelThree #right-header span.L3-Header-sub {font-family:Arial,Helvetica,Sans-Serif;font-size:15px;font-weight:bold;}
+
+
+#mainWrapper,
+#universalWrapper,
+#mastheadWrapper,
+#primaryWrapper,
+#contentWrapper,
+#directoryWrapper,
+#footerWrapper {margin:0 auto;width:1020px;}
+
+/*Wrapper Shadows*/ 
+#mainWrapper {background:none;}
+#universalWrapper {background:none;}
+#mastheadWrapper {background:url("bkgd_content_top9.png") no-repeat scroll 50% -20px transparent;}
+#primaryWrapper {background:url("bkgd_content_top9.png") no-repeat scroll 50% -40px transparent;}
+#contentWrapper {background:url("bkgd_content_mid.png") repeat-y scroll 50% 0 transparent;}
+#directoryWrapper {background:none;}
+#footerWrapper {background:none;}
+
+/*Wrapper top and Bottom Cap Shadows*/
+.mainCap {background:url("bkgd_content_top9.png") no-repeat scroll 0 0 transparent;position:absolute;width:1020px;}
+.mainCap.top {background-position:50% 0;top:10px;height:20px;z-index:-5;}
+.mainCap.bottom {background-position:50% 100%;height:30px;}
+
+
+
+#universalContainer {height:30px;}
+
+/*Universal Navigation*/
+#universalNav {height:30px;line-height:30px;}
+#universalNav h2 {display:none;}
+#universalNav ul {list-style:none;margin:0;position:absolute;right:0;}
+#universalNav li {display:inline;font-size:11px;padding:0;}
+#universalNav a {border-right:1px solid #ccc;padding:0 9px;color:#444;font-weight:bold;text-shadow:1px 1px #fff;}
+#universalNav a:hover {color:#000;}
+#universalNav .first {padding-left:0;}
+#universalNav .last {border:0;padding-right:0;}
+
+
+#mastheadContainer {height:100px;}
+#mastheadContainer img {display:block;}
+
+/*Header Logo & Title*/
+#headerLogo h1, #headerLogo .siteTitle {font-size:normal;margin:20px 0 0 11px;height:60px;border:0;}
+#headerLogo h1 {font-size:14px;}
+#headerLogo .siteTitle {font-size:normal;}
+#headerLogo h1 span.logo.aia, #headerLogo .siteTitle span.logo.aia {background:url(aia_logo_screen.png) no-repeat scroll 0 0 #fff;height:60px;position:absolute;left:10px;top:20px;width:276px;_width:100%;}
+
+/*Identity Navigation*/ 
+#identityNav {height:20px;line-height:20px;margin-top:30px;}
+#identityNav h2 {display:none;}
+#identityNav ul {list-style:none;margin:0;position:absolute;right:0;}
+#identityNav li {display:inline;font-size:11px;padding:0;}
+#identityNav a, #identityNav span {border-right:1px solid #ccc;padding:0 9px;color:#be342c;}
+#identityNav a:hover {}
+#identityNav .first {padding-left:0;}
+#identityNav .last {border:0;padding-right:0;}
+#identityNav .renew {/*display:none;*/}
+#identityNav .signedIn span {font-weight:bold;}
+
+/*Member Navigation*/
+#memberNav {height:40px;line-height:40px;}
+#memberNav h2 {display:none;}
+#memberNav ul {list-style:none;margin:0;position:absolute;right:0;}
+#memberNav li {display:inline;font-size:11px;padding:0;}
+#memberNav a {border-right:1px solid #ccc;padding:0 9px;color:#555;}
+#memberNav a:hover {color:#000;}
+#memberNav .first {padding-left:0;}
+#memberNav .last {border:0;padding-right:0;}
+
+/*Search Navigation*/ 
+#searchNav {height:40px;line-height:40px;position:relative;}
+#searchNav h2 {display:none;}
+#searchNav form {}
+#searchNav legend, #searchNav label {display:none;}
+#searchNav fieldset {}
+#searchNav span {position:absolute;right:0;_margin-top:6px;*margin-top:6px;}
+#searchNav input.searchText {border:1px solid #bbb;color:#8c8c8c;font-size:12px;padding:4px 6px;width:164px;*height:15px;*vertical-align:middle;}
+
+#searchNav input.searchText:hover {}
+#searchNav input.searchText:focus {background:#FFFFBD;border:1px solid #999;color:#565656;}
+
+
+
+/*Primary Navigation Container*/
+#primaryContainer {}
+#primaryContainer img {display:block;}
+
+
+#secondaryNavContainer {}
+#secondaryNavContainer img {display:block;}
+
+/*Secondary Navigation Defaults*/
+#secondaryNav {background:none;}
+#secondaryNav {margin-bottom:30px;}
+
+/*Secondary Navigation Details*/
+#secondaryNav h2 {display:none;}
+#secondaryNav ul {list-style:none;margin:0;}
+#secondaryNav ul li {color:#555;list-style-position:outside;padding-bottom:0;font-size:11px;font-weight:bold;}
+#secondaryNav a {display:block;_display:inline-block;color:#333;}
+#secondaryNav ul li a:link,#secondaryNav li a:visited {color:#333;padding:2px 0;}
+#secondaryNav ul li a:hover,#secondaryNav li a:active {color:#555;background:#eee;text-decoration:underline;_display:block;}
+
+/*Tertiary Navigation - currently not used*/
+#secondaryNav ul ul {display:none;}
+#secondaryNav ul ul {margin-bottom:15px;line-height:12px;}
+#secondaryNav ul ul li {font-weight:normal;}
+#secondaryNav ul ul li a:link,#secondaryNav ul ul li a:visited {color:#555;}
+#secondaryNav ul ul li a:hover,#secondaryNav ul ul li a:active {color:#777;}
+
+/*Secondary and Tertiary Navigation Selected States*/
+a.snSelect, a.tnSelect {background:#eee;color:#BE342C !important;cursor:default;text-decoration:none!important;_display:block !important;}
+a.tnSelect:hover, a.tnSelect.hover {text-decoration:none !important;}
+
+
+/* BEGIN DIRECTORY NAV CONTAINER GROUP
+*************************************************************/
+/*Directory Navigation Container*/
+#directoryContainer {border-bottom:1px solid #ddd;padding-bottom:20px;margin-top:50px;}
+
+/*Directory Navigation*/ 
+#directoryNav {background:lime;}
+#directoryNav h2 {display:none;}
+#directoryNav h3 {color:#666;font-size:11px;margin-bottom:6px;}
+#directoryNav ul {list-style:none;margin:0;}
+#directoryNav li {font-size:11px;padding:0;}
+#directoryNav a {padding:0 0 9px 0;color:#888;}
+#directoryNav a:hover {color:#333;}
+#directoryNav .first {padding-left:0 !important;}
+#directoryNav .last {padding-right:0;}
+
+/*Directory Navigation Columns - Home*/ 
+#directoryNav.home #dnColumnA,#directoryNav.home #dnColumnB,#directoryNav.home #dnColumnC,#directoryNav.home #dnColumnD,#directoryNav.home #dnColumnE,#directoryNav.home #dnColumnF {background:none;}
+
+
+/* BEGIN FOOTER NAV CONTAINER GROUP
+*************************************************************/
+/*Footer Navigation Container*/
+#footerContainer {height:60px;padding-bottom:20px;}
+
+/*Footer Navigation Defaults*/ 
+#footerNav {color:#888;}
+#footerNav h2, #footerNav h3 {display:none;}
+#footerNav .top, #footerNav .bottom {height:30px;line-height:30px;}
+#footerNav .top {border-bottom:1px solid #ddd;}
+#footerNav ul {list-style:none;margin:0;}
+#footerNav .tr ul, #footerNav .br ul {position:absolute;right:0;}
+#footerNav li {display:inline;font-size:11px;padding:0;}
+#footerNav a, #footerNav span {border-right:1px solid #ccc;padding:0 9px;}
+#footerNav .first {padding-left:0 !important;}
+#footerNav .last {border:0;padding-right:0;}
+
+/*Footer Navigation - Social Defaults*/ 
+#footerNav .social a {border:0;}
+#footerNav .social span {border:0;padding-right:6px;}
+#footerNav .social a.icon {margin:0 3px;padding:0;}
+#footerNav .social a.icon img {height:20px;width:20px;position:relative;top:5px;_top:4px;}

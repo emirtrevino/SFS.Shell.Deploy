@@ -1,0 +1,472 @@
+﻿<!DOCTYPE html>
+<html lang="@(System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName.ToLower())">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="google-translate-customization" content="9da77907336bb19b-1638141f26b3b78e-g98d68b5fcd02a875-d"></meta>
+        
+    @if (Request.QueryString["type"] == "error-system")
+    {
+        <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
+    }
+    <title>@RenderSection("Title", false)</title>
+    <!--WE543-->
+    @{  
+        string area = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "area");
+        UIModel uiModel = (UIModel)ViewData["uiModel"];
+        bool isDetailsOrEdit = false;
+        bool hideBrand = false;
+        SFSdotNet.Framework.Security.BusinessObjects.secCompanyModule companyModule = SFSdotNet.Framework.Web.Utils.GetDomainCompany(this.Request.RequestContext.HttpContext);
+        SFSdotNet.Framework.Security.BusinessObjects.secCompany companyDomain = null;
+        if (companyModule != null && companyModule.secCompany != null)
+        {
+            companyDomain = companyModule.secCompany;
+        }
+
+        SFSdotNet.Framework.My.BusinessModuleApp moduleDef = null;
+        SFSdotNet.Framework.Security.BusinessObjects.secModule module = null;
+        if (ViewData["module"] != null)
+        {
+            if (ViewData["moduleKey"] == null ){
+                ViewData["moduleKey"] = ((SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"]).ModuleKey;
+            }
+            moduleDef = SFSdotNet.Framework.My.Context.GetOverrideApplication(ViewData["moduleKey"].ToString());
+
+            module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+
+            if (!moduleDef.UseOwnStylesAndScripts)
+            {
+        @Html.Raw(SFSdotNet.Framework.My.Context.SystemApplication.GetAllScriptsAndCss())
+            }
+            else
+            {
+        @Html.Raw(moduleDef.ScriptsAndCssOverrided)
+            }
+
+        }
+        else
+        {
+            if (!SFSdotNet.Framework.My.Context.OverrideApplication.UseOwnStylesAndScripts)
+            {
+        @Html.Raw(SFSdotNet.Framework.My.Context.SystemApplication.GetAllScriptsAndCss())
+            }
+            else
+            {
+        @Html.Raw(SFSdotNet.Framework.My.Context.OverrideApplication.ScriptsAndCssOverrided)
+            }
+        }
+    }
+
+@if (module != null ){
+    <link rel="icon" 
+      type="image/png" 
+      href="@Html.Action("LogoUrl", "Home", new { area = module.ModuleKey })" >
+    
+}else{
+    <link rel="shortcut icon" 
+     
+      href="@(VirtualPathUtility.ToAbsolute("~/"))logo.ico?sdfsd=dg" >
+}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        //lang_sfs();
+  @if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Language == "es")
+  {
+   <text>
+        jQuery.timeago.settings.strings = {
+            prefixAgo: "hace",
+            prefixFromNow: "dentro de",
+            suffixAgo: "",
+            suffixFromNow: "",
+            seconds: "segundos",
+            minute: "un minuto",
+            minutes: " %d min",
+            hour: "una hora",
+            hours: "%d horas",
+            day: "un día",
+            days: "%d días",
+            month: "un mes",
+            months: "%d meses",
+            year: "un año",
+            years: "%d años"
+
+        };
+        </text>
+  }
+
+        @if (!Request.Url.ToString().Contains("Public/Login"))
+        { 
+    <text>
+
+        
+
+    </text>
+        }
+        var rootSfsAppUrl = '@VirtualPathUtility.ToAbsolute("~/")';
+        var overrideApp = '@(SFSdotNet.Framework.Web.Utils.GetOverrideApp(this.Context))';
+
+    </script>
+
+    @RenderSection("CustomScript", false)
+    @if (ViewData["HeaderScript"] != null)
+    {
+        @Html.Raw(ViewData["HeaderScript"].ToString());
+    }
+
+</head>
+<body>
+
+    @*    <div id="headtop" class="colordarkbg">
+            <div class="container">
+                <div class="row-fluid">
+                <div class="span6">
+                    <img  src="@SFSdotNet.Framework.My.Context.SystemApplication.SystemDefaultThemePath/img/top-webapps.png" />
+                </div>
+                <div class="span6">
+                    @Html.Partial("MenuSystem")
+                </div>
+
+                </div>
+        </div>
+             </div>*@
+    <div class="navbar  navbar-inverse top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar " data-toggle="collapse" data-target=".nav-collapse"><span class="icon-th-list"></span></a>
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))" class="brand">
+                    <img src="@SFSdotNet.Framework.My.Context.SystemApplication.SystemDefaultThemePath/img/top-webapps.png" />
+                </a>
+                <ul class="nav">
+                    @Html.Partial("MenuLogoTop")
+                </ul>
+
+
+                <div class="nav-collapse collapse">
+                    <ul class="nav pull-right">
+                        @Html.Partial("TopMessages")
+                        @Html.Partial("MenuLanguage")
+                        @Html.Partial("MenuSystem")
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    @{
+        bool insertBreadInBody = false;
+        if (Request.RequestContext.RouteData.Values["controller"] != "Home" && Request.RequestContext.RouteData.Values["action"] != "Index" && module != null)
+        { //no es página inicial
+            insertBreadInBody = true;
+            <div id="" class="colorlitemedbg">
+
+                <div class="container">
+
+                    <style>
+                        .bigbuttons {
+                            padding-top: 20px;
+                            padding-bottom: 20px;
+                        }
+
+                        .page-header {
+                            margin-top: 0px;
+                        }
+
+                        .topmenu {
+                            vertical-align: central;
+                            height: 80px;
+                            padding: 20px;
+                            font-size: large;
+                        }
+
+                            .topmenu a {
+                                margin-left: 10px;
+                                /*margin-right: 10px;*/
+                                padding: 10px;
+                            }
+
+                        .listfeatures {
+                            color: #999999;
+                        }
+
+                            .topmenu a, .topmenu a:hover, .topmenu a:link, .topmenu a:visited, .listfeatures h3 a, .listfeatures h3 a:link, .listfeatures h3 a:visited {
+                                /*color: #808080;*/
+                            }
+                    </style>
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <a style="text-decoration:none" href="@(VirtualPathUtility.ToAbsolute("~/"))Home/App/@(module.ModuleKey)">
+                                <img border="0" style="border:none; width:70px; height:70px; " width="70" height="70" src="@Html.Action("LogoUrl", "Home", new { area = module.ModuleKey })" data-src="@Html.Action("LogoUrl", "Home", new { area = module.ModuleKey })" />
+
+                                <span style="text-decoration:none;font-size: x-large; color: gray; display: inline;">@(module.Name)</span>
+                            </a>
+                        </div>
+                        <div class="span8 topmenu text-right">
+                            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=faq">Faqs</a>
+                            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=feature">@GlobalMessages.FEATURES</a>
+                            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=advantage">@GlobalMessages.ADVANTAGES</a>
+                            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Go/Prices/@(module.ModuleKey)">@GlobalMessages.PRICES</a>
+                            <a href="@VirtualPathUtility.ToAbsolute("~/")@(module.ModuleKey)">@GlobalMessages.USE_APP &#10140;</a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        }
+        else if (Request.RequestContext.RouteData.Values["controller"].ToString() == "Home" && Request.RequestContext.RouteData.Values["action"].ToString() == "Index")
+        {
+
+        }
+        else
+        {
+            <text>
+                <style>
+                    .bigbuttons {
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                    }
+
+                    .page-header {
+                        margin-top: 0px;
+                    }
+
+                    .topmenu {
+                        vertical-align: central;
+                        height: 80px;
+                        padding: 20px;
+                        font-size: large;
+                    }
+
+                        .topmenu a {
+                            margin-left: 10px;
+                            /*margin-right: 10px;*/
+                            padding: 10px;
+                        }
+
+                    .listfeatures {
+                        color: #999999;
+                    }
+
+                        .topmenu a, .topmenu a:hover, .topmenu a:link, .topmenu a:visited, .listfeatures h3 a, .listfeatures h3 a:link, .listfeatures h3 a:visited {
+                            /*color: #808080;*/
+                        }
+                </style>
+
+                <div id="headnav" class="colorlitemedbg">
+                    <div class="container">
+                        <div class="row-fluid">
+                            <div class="span6">
+                                @Html.Partial("LogoCompany")
+                            </div>
+                            <div class="span6">
+                                @Html.Partial("LoginStatus")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="menunav" class="colorlitemedbg">
+                    <div class="container">
+                        <div class="row-fluid">
+                            <div class="span10">
+
+                                @Html.Partial("MenuTopModule")
+
+                            </div>
+                            <div class="span2"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div id="breadcumb" class="smalltext">
+                    <div class="container">
+                        <div class="row-fluid">
+                            <div class="span10">
+                                @if (ViewData["breadcrumb"] != null)
+                                {
+                                    @Html.Raw(ViewData["breadcrumb"].ToString())
+                                }
+                                else
+                                {
+                                    @Html.MvcSiteMap().SiteMapPath()
+
+                                }
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </text>
+
+        }
+    }
+    @{
+        bool maxh = false;
+        string controller = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "controller");
+        string action = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "action");
+
+
+        if ((action == "Index" && controller == "Home") || (action == "App" && controller == "Home"))
+        {
+            maxh = true;
+        }
+    }
+
+
+    @if (insertBreadInBody == true)
+    {
+        <div id="breadcumb" class="smalltext">
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="span8">
+                        @if (ViewData["breadcrumb"] != null)
+                        {
+                            @Html.Raw(ViewData["breadcrumb"].ToString())
+                        }
+                        else
+                        {
+                            @Html.MvcSiteMap().SiteMapPath()
+
+                        }
+                    </div>
+                    <div class="span4">
+
+                        <script>
+    (function () {
+        var cx = '013882211922101200135:p0yw1sgyu7c';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//cse.google.com/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+    })();
+                        </script>
+                        <style>
+                            .cse .gsc-control-cse,
+.gsc-control-cse {
+  padding: 0px !important;
+  width: auto;
+}
+                        </style>
+                        <gcse:search></gcse:search>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <div class="colorbg" id="bodyconten">
+        <div class="container" style="@(maxh? "width:100%;max-width:none":"")">
+
+            @* <div class="container-fluid">*@
+            <div class="row-fluid">
+                <div class="span12 " style="">
+                    @*<div class="alert alert-block" style="margin-bottom:0px;">
+                          <strong>@GlobalMessages.MAINTENANCE</strong>
+                          @GlobalMessages.MAINTENANCE_PAGE_MESSAGE
+                        </div>*@
+
+
+
+                    @RenderBody()
+                </div>
+            </div>
+            @* </div>*@
+        </div>
+    </div>
+
+    <div id="footer" class="colorlitemedbg">
+        <div class="container">
+
+
+
+            @Html.Partial("FooterAllSiteView")
+
+        </div>
+
+    </div>
+
+    <div class="container">
+
+
+        <div class="text-center">
+            @if (SFSdotNet.Framework.My.Context.CurrentContext != null)
+            {
+            <span style="font-size: 90%">Culture: @System.Threading.Thread.CurrentThread.CurrentCulture UICulture: @System.Threading.Thread.CurrentThread.CurrentCulture cookieserver: @SFSdotNet.Framework.My.Context.CurrentContext.ReadCookie("lang_sfs") company: @(SFSdotNet.Framework.My.Context.CurrentContext != null ? SFSdotNet.Framework.My.Context.CurrentContext.Company != null ? SFSdotNet.Framework.My.Context.CurrentContext.Company.Name : "" : "")  user: @(SFSdotNet.Framework.My.Context.CurrentContext.User != null ? SFSdotNet.Framework.My.Context.CurrentContext.User.UserName : "") </span>
+            }
+        </div>
+
+
+    </div>
+
+    @if (System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower() != "es")
+    {
+        <div id="google_translate_element" style="float:right; position:fixed; bottom:10px; right:10px;"></div>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'es'
+                }, 'google_translate_element');
+            }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script>
+            function fireEvent(element, event) {
+                console.log("in Fire Event");
+                if (document.createEventObject) {
+                    // dispatch for IE
+                    console.log("in IE FireEvent");
+                    var evt = document.createEventObject();
+                    return element.fireEvent('on' + event, evt)
+                }
+                else {
+                    // dispatch for firefox + others
+                    console.log("In HTML5 dispatchEvent");
+                    var evt = document.createEvent("HTMLEvents");
+                    evt.initEvent(event, true, true); // event type,bubbling,cancelable
+                    return !element.dispatchEvent(evt);
+                }
+            }
+
+
+            var google_translate_element_changed = false;
+            $(document).ready(function () {
+                $('#google_translate_element').bind('DOMSubtreeModified', function () {
+                    if (google_translate_element_changed == false) {
+                        google_translate_element_changed = true;
+                        setTimeout(function () {
+                            var jObj = $('select.goog-te-combo');
+                            var db = jObj.get(0);
+                            jObj.val("en");
+                            fireEvent(db, 'change');
+
+                        }, 1000);
+                    }
+                });
+
+            });
+        </script>
+    }
+    @*<div id='MicrosoftTranslatorWidget' class='Dark' style='color:white;background-color:#555555'></div>
+        <script type='text/javascript'>setTimeout(function () { { var s = document.createElement('script'); s.type = 'text/javascript'; s.charset = 'UTF-8'; s.src = ((location && location.href && location.href.indexOf('https') == 0) ? 'https://ssl.microsofttranslator.com' : 'http://www.microsofttranslator.com') + '/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&ctf=True&ui=true&settings=undefined&from='; var p = document.getElementsByTagName('head')[0] || document.documentElement; p.insertBefore(s, p.firstChild); } }, 0);</script>*@
+
+
+
+</body>
+</html>

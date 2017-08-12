@@ -1,0 +1,40 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.DashboardItem
+
+<script type="text/javascript">
+
+        $(document).ready(function() {
+                // Also works with: var yourStartLatLng = '59.3426606750, 18.0736160278';
+            //    var yourStartLatLng = new google.maps.LatLng(59.3426606750, 18.0736160278);
+            //$('#map@(Model.Id)').gmap({ 'center': yourStartLatLng });
+            $('#map@(Model.Id)').gmap().bind('init', function () {
+                @foreach (var location in Model.GeoData.Locations)
+{
+    <text>   
+                $('#map@(Model.Id)').gmap('addMarker', {
+                    'position': new google.maps.LatLng(@location.Lat, @location.Lon),
+                    'bounds': true
+                }).click(function () {
+                    $('#map@(Model.Id)').gmap('openInfoWindow', { 'content': '@location.Title' }, this);
+                });
+                </text>
+}                
+            }); 
+                /*
+                $('#map_canvas').gmap().bind('init', function () {
+                // This URL won't work on your localhost, so you need to change it
+                // see http://en.wikipedia.org/wiki/Same_origin_policy
+                $.getJSON('http://jquery-ui-map.googlecode.com/svn/trunk/demos/json/demo.json', function (data) {
+                    $.each(data.markers, function (i, marker) {
+                        $('#map_canvas').gmap('addMarker', {
+                            'position': new google.maps.LatLng(marker.latitude, marker.longitude),
+                            'bounds': true
+                        }).click(function () {
+                            $('#map_canvas').gmap('openInfoWindow', { 'content': marker.content }, this);
+                        });
+                    });
+                });
+            });*/
+        });
+</script>
+
+<div id="map@(Model.Id)" class="" style="width:100%; height:250px"></div>

@@ -1,0 +1,1635 @@
+﻿@using SFSdotNet.Framework.Security.Web.Mvc.Resources
+@using SFSdotNet.Framework.Web.Mvc.Helpers
+@using System.Linq
+@using System.Collections.Generic
+@using System.Collections
+@{
+
+    string idTab = "";
+    bool isPopUp = false;
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    SFSdotNet.Framework.Web.Mvc.Models.Features.HelpModel help = new SFSdotNet.Framework.Web.Mvc.Models.Features.HelpModel(uiModel.ModuleKey, uiModel.EntityKey);
+    help.ActionKey = "rl";
+
+    string idWindow = uiModel.Id;
+
+    string fromFk = "";
+    if (ViewData["fk"] != null)
+    {
+        fromFk = ViewData["fk"].ToString();
+    }
+    string fkValue = "";
+    if (ViewData["fkValue"] != null)
+    {
+        fkValue = ViewData["fkValue"].ToString();
+    }
+    System.Text.StringBuilder extraParams = new System.Text.StringBuilder();
+    string detailsActionName = "DetailsGen";
+    System.Text.StringBuilder filter = new System.Text.StringBuilder();
+    if (ViewData["startFilter"] != null)
+    {
+        filter.Append(ViewData["startFilter"].ToString());
+    }
+    bool manyToMany = false;
+    string propReturn = Request.QueryString["propReturn"];
+    string dialogId = Request.QueryString["dialogId"];
+
+    string loadingHtml = "<div class=\"preloader-big\"></div>";
+    if (uiModel.UIVersion == 2)
+    {
+        loadingHtml = "<i class=\"fa fa-refresh fa-spin\"></i>";
+    }
+    // ----
+
+    if (!string.IsNullOrEmpty(Request.QueryString["idTab"]))
+    {
+        idTab = Request.QueryString["idTab"];
+
+    }
+    string paginationContainer = "pagination";
+    if (uiModel.UIVersion == 2)
+    {
+        // paginationContainer = "paginationContainer" + idTab;
+    }
+    idWindow = "list_" + idWindow + idTab;
+    bool preventPp = false;
+    if (!string.IsNullOrEmpty(Request.QueryString["preventPp"]))
+    {
+        preventPp = true;
+    }
+    string modalEntityId = uiModel.EntityKey + "" + dialogId + idTab;
+    ViewData["modalEntityId"] = modalEntityId;
+    int sizeThumb = 100;
+    bool includeViewer = false;
+    if (uiModel.Properties.Count(p => p.IsImage == true && p.IsHidden == false) > 0)
+    {
+        if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null)
+        {
+            int sizeThumbCompany = (int)SFSdotNet.Framework.Configuration.CompanyAppSettings.GetValue("file-thumb-list-size", uiModel.ModuleKey, SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany, "Int32", sizeThumb, false);
+            sizeThumb = sizeThumbCompany;
+            bool includeViewerCompany = (bool)SFSdotNet.Framework.Configuration.CompanyAppSettings.GetValue("file-thumb-list-size", uiModel.ModuleKey, SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany, "Boolean", includeViewer, false);
+            includeViewer = includeViewerCompany;
+        }
+
+    }
+
+}
+<script>
+    function onUpdateListData@(idTab)() {
+        var e = new Object();
+			if (typeof(onUpdatingListData@( idTab )) != 'undefined'){
+                onUpdatingListData@( idTab )(e);
+			}
+        if (e.Cancel != true ){
+            refreshList@( idTab )();
+            selectRows@(idTab ) = new Array();
+            allSelected@(idTab ) = false;
+            updateSelected(allSelected@(idTab ), selectRows@(idTab ), "@(idTab )");
+        }
+    @if (!string.IsNullOrEmpty(Request.QueryString["onChangeData"]))
+    {
+        <text>
+            if (typeof(@( Request.QueryString["onChangeData"])) != 'undefined'){
+                window['@( Request.QueryString["onChangeData"])']();
+            }
+
+        </text>
+    }
+        }
+
+</script>
+<div id="@(idWindow)">
+    @{
+
+        string container = "";
+        string bodyclass = "";
+        string titleclass = "";
+
+        if (!string.IsNullOrEmpty(Request.QueryString["popup"]))
+        {
+            isPopUp = true;
+            container = "container_16";
+            bodyclass = "modal-body";
+            titleclass = "modal-header";
+        }
+        if (isPopUp)
+        {
+            //classcancel = @"data-dismiss=""modal"" aria-hidden=""true""";
+            idWindow = "popup_" + idWindow;
+        }
+
+        string classHeaderDiv = "row-fluid";
+        string classRow = "row-fluid";
+        string classTitleSpace = "span9";
+        string colName = "span";
+        if (uiModel.UIVersion == 2)
+        {
+            classHeaderDiv = "row";
+            colName = "col-md-";
+            if (Request.QueryString["fromDashboard"] == "1")
+            {
+                classRow = "";
+
+            }
+            else
+            {
+                classRow = "row";
+
+            }
+            if (uiModel.NewUILayoutTool == false)
+            {
+                classTitleSpace = "col-lg-10";
+            }
+            else
+            {
+                classTitleSpace = "col-lg-10";
+            }
+            if (string.IsNullOrEmpty(Request.QueryString["idTab"]))
+            {
+                if (uiModel.NewUILayoutTool == true)
+                {
+                    classHeaderDiv = "row border-bottom white-bg page-heading content-header";
+
+                }
+                else
+                {
+                    classHeaderDiv = "row wrapper border-bottom white-bg page-heading";
+
+                }
+            }
+        }
+
+    }
+
+    @if (isPopUp)
+    {
+
+        if (uiModel.UIHeaderInclude)
+        {
+            Html.RenderPartialIfExist(uiModel.HeaderPartialView);
+        }
+        @Html.Raw(uiModel.HeaderScript)
+        @Html.Raw(@"
+  <div class=""" + titleclass + @""">
+			 <button type=""button"" class=""close"" data-dismiss=""modal"" aria-hidden=""true""><i class=""icon-remove""></i></button>
+    ");
+        if (uiModel.Integrations.Count > 0)
+        {
+            @Html.Raw(@"<div class=""" + classRow + @""">
+            <div class=""" + colName + @"9"">");
+        }
+        <h2>@( uiModel.TitleForm)@{ Html.RenderPartial("Help", help.GetForForm(uiModel.ModuleKey, uiModel.EntityKey, "r", uiModel.UseMode, null, "" @*Falta texto*@ )); } </h2>
+        @Html.Raw(@"</div>");
+
+            if (uiModel.Integrations.Count > 0)
+            {
+                <div class="@(colName)3 pull-right">
+                    <div class="pull-right" style="margin-top:10px;">
+                        <div class="dropdown">
+                            <a class="btn dropdown-toggle " data-toggle="dropdown" href="#" id="integrationLinks@(idTab )"> Integrados <b class="caret"></b></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="integrationLinks@(idTab )">
+                                @foreach (var integration in uiModel.Integrations)
+                                {
+                                    <li> <a class="lnk_integrated" int-id="@(integration.IdIntegrationDefinition )" int-entname="@( integration.EntityName )" int-setname="@( integration.ControllerName )" int-module="@( integration.ModuleKey )" href="#"> @( integration.Title) </a></li>
+
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                            @Html.Raw("</div>");
+                @Html.Raw("</div>");
+
+
+            }
+            @Html.Raw("<div class=\"modal-body\">");
+            }
+            else if (uiModel.IsMiniContainer || !string.IsNullOrEmpty(Request.QueryString["idTab"]))
+            {
+
+                if (uiModel.UIHeaderInclude)
+                {
+                    Html.RenderPartialIfExist(uiModel.HeaderPartialView);
+                }
+                @Html.Raw(uiModel.HeaderScript)
+            }
+    @{
+        string hTitle = "h1";
+        if (!string.IsNullOrEmpty(Request.QueryString["idTab"]))
+        {
+            hTitle = "h3";
+        }
+    }
+    <div class="form @((!isPopUp ? "nomodal" : "")) col1 list @(container) ">
+        @if (Request.QueryString["deleted"] == "1")
+        {
+            <div class="alert alert-error">
+                Esta viendo elementos eliminados solamente
+            </div>
+        }
+        @if (string.IsNullOrEmpty(Request.QueryString["int"]))
+        {
+            <div class="@(classHeaderDiv)">
+                @if ((!isPopUp && !uiModel.IsMiniContainer))
+                {
+                    <div class="@(classTitleSpace) @(titleclass )">
+                        @if (uiModel.UIVersion == 2)
+                        {
+                            @Html.Raw("<" + hTitle + " lang=''>") @Html.Raw(uiModel.TitleForm) @Html.Raw("</" + hTitle + ">")
+
+                            if (uiModel.NewUILayoutTool == false)
+                            {
+                                if (ViewData["breadcrumb"] != null)
+                                {
+                                    @Html.Raw(ViewData["breadcrumb"].ToString())
+                                }
+                                else
+                                {
+                                    @Html.MvcSiteMap().SiteMapPath("SiteMapTemplate")
+
+                                }
+                                <script>
+                                $("#ulbread").attr("class", "breadcrumb");
+                                </script>
+                            }
+                        }
+                        else
+                        {
+                            <div class="page-header">
+                                @Html.Raw("<h" + (string.IsNullOrEmpty(idTab) ? "1" : "2") + " lang=''>" + uiModel.TitleForm + "</h" + (string.IsNullOrEmpty(idTab) ? "1" : "2") + ">")
+                            </div>
+                        }
+
+                    </div>
+
+                    if (uiModel.Links.Count() > 0 && string.IsNullOrEmpty(Request.QueryString["fk"]))
+                    {
+
+                        <div class="@(colName)3 pull-right ">
+                            <div class="dropdown">
+                                <a class="btn dropdown-toggle btn-inverse" data-toggle="dropdown" href="#" id="links@(idTab )"> <i class="icon-share-sign"></i>  @(uiModel.LinksTitle)  <b class="caret"></b></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="links@(idTab)">
+                                    @foreach (var link in uiModel.Links)
+                                    {
+                                        <li><a href="@(link.Url)"><i class="icon-share-alt"></i> @(link.Title)</a></li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    }
+                    else if (uiModel.Integrations.Count > 0)
+                    {
+                        <div class="@(colName)3 pull-right ">
+                            <div class="pull-right" style="margin-top:10px;">
+                                <div class="dropdown">
+                                    <a class="btn dropdown-toggle " data-toggle="dropdown" href="#" id="integrationLinks@(idTab )">  Integrados <b class="caret"></b></a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="integrationLinks@(idTab )">
+                                        @foreach (var integration in uiModel.Integrations)
+                                        {
+                                            <li> <a class="lnk_integrated" int-id="@(integration.IdIntegrationDefinition )" int-entname="@( integration.EntityName )" int-setname="@( integration.ControllerName )" int-module="@( integration.ModuleKey )" href="#"> @( integration.Title) </a></li>
+
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                    if (uiModel.NewUILayoutTool == true)
+                    {
+                        if (ViewData["breadcrumb"] != null)
+                        {
+                            @Html.Raw(ViewData["breadcrumb"].ToString())
+                        }
+                        else
+                        {
+                            @Html.MvcSiteMap().SiteMapPath("SiteMapTemplate")
+
+                        }
+                        <script>
+                                $("#ulbread").attr("class", "breadcrumb");
+                        </script>
+                    }
+                }
+            </div>
+            if (uiModel.Integrations.Count > 0)
+            {
+                <script>
+                    var viewen_extern_int_module@(idTab ) = null;
+                    var viewen_extern_int_entity@(idTab ) = null;
+                    var current_module@(idTab ) = "@(uiModel.ModuleKey)";
+                    var current_entity@(idTab ) = "@(uiModel.EntityKey)";
+                    var current_entityset@(idTab ) = "@(uiModel.EntitySetName)";
+                    $(document).ready(function () {
+                        $(".lnk_integrated").click(function (e){
+                            e.preventDefault();
+
+                            integrated_def_@(idTab ) = $(this).attr("int-id");
+                            viewen_extern_int_module@(idTab ) = $(this).attr("int-module");
+                            viewen_extern_int_entity@(idTab ) = $(this).attr("int-entname");
+
+
+                            window["integrated_def_" + $(this).attr("int-setname")] = $(this).attr("int-id");
+                            window["viewen_extern_int_module" + $(this).attr("int-setname")] = $(this).attr("int-module");
+                            window["viewen_extern_int_entity" + $(this).attr("int-setname")] = $(this).attr("int-entname");
+                            if ($(this).attr("int-module") != "@(uiModel.ModuleKey)"){
+                                window["viewen_extern_int_" + $(this).attr("int-setname")] = true;
+                            }else{
+                                window["viewen_extern_int_" + $(this).attr("int-setname")] = false;
+                            }
+                            changeIntegrationList($(this), "@(idTab )", window["viewen_extern_int_" + $(this).attr("int-setname")]);
+                            /*
+                            if ($(this).attr("int-module") != "SFSdotNetFrameworkSecurity"){
+
+                                viewen_extern_int_@(idTab ) =  true;
+                            viewen_extern_int_module@(idTab ) = $(this).attr("int-module");
+                            viewen_extern_int_entity@(idTab ) = $(this).attr("int-entname");
+                        }
+                    integrated_def_@(idTab ) = $(this).attr("int-id");
+                        e.preventDefault();
+                        var urlPath = "@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/"))" + $(this).attr("int-module") + "/" + $(this).attr("int-setname");
+                        _urlCount@(idTab ) =  urlPath + "/GetByCount";
+                        _urlGet@(idTab ) =  urlPath +"/@(uiModel.PrincipalActionName)";
+
+                        refreshList@(idTab )();
+
+                        */
+
+                    });
+                    });
+                </script>
+            }
+        }
+
+
+        @if (isPopUp)
+        {
+            <div class="gotocatalog"><i class="icon-share-alt"></i> <a href="@(VirtualPathUtility.ToAbsolute("~/") )@(uiModel.ModuleKey)/@(uiModel.EntitySetName)" class="btn-link">@(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.GO_TO_CATALOG)</a></div>
+        }
+
+        @{
+            bool es = false;
+            if (!string.IsNullOrEmpty(Request.QueryString["es"]))
+            {
+                es = Convert.ToBoolean(Request.QueryString["es"].ToLower());
+            }
+
+            string classListPlace = "";
+            if (uiModel.UIVersion == 2)
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["idTab"]))
+                {
+                    if (uiModel.NewUILayoutTool == true)
+                    {
+                        classListPlace = "wrapper-content animated fadeInRight content";
+
+                    }
+                    else
+                    {
+                        classListPlace = "wrapper wrapper-content animated fadeInRight content";
+
+                    }
+                }
+            }
+            string topborderclass = "";
+            string divsContainerStart = "";
+            string divsContainerEnd = "";
+            if (uiModel.UIVersion == 2)
+            {
+                if (uiModel.NewUILayoutTool == true)
+                {
+                    if (Request.QueryString["fromDashboard"] == "1")
+                    {
+                        divsContainerStart = "<div class=\"row\"><div class=\"col-lg-12\"><div class=\"margins-h-10\">";
+
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(Request.QueryString["idTab"]))
+                        {
+                            topborderclass = "box float-e-margins";
+                        }
+                        divsContainerStart = "<div class=\"row\"><div class=\"col-lg-12\"><div class=\"" + topborderclass + "\"><div class=\"box-body\">";
+
+                    }
+
+                }
+                else
+                {
+                    divsContainerStart = "<div class=\"row\"><div class=\"col-lg-12\"><div class=\"ibox float-e-margins\"><div class=\"ibox-content\">";
+
+                }
+
+                if (Request.QueryString["fromDashboard"] == "1")
+                {
+
+                    divsContainerEnd = "</div></div></div>";
+                }
+                else
+                {
+
+                    divsContainerEnd = "</div></div></div></div>";
+
+
+
+                }
+            }
+        }
+        @if (Request.QueryString["int"] == "1")
+        {
+            <div class="@(classRow)">
+                <div class="@(colName)12">
+                    @Html.Raw(string.Format("Usted esta viendo el catálogo \"Clientes\" de la aplicación \"Credit\" (Los integrados y los no integrados). Usted puede integrar o modificar la integración y eliminarla en cada registro. Haga clic un registro no integrado para empezar a usarlo en este catálogo. "));
+                </div>
+            </div>
+        }
+        <div id="place-list@(idTab )" class="@(classListPlace)">
+            <div class="other"></div>
+            <div class="current">
+
+                @Html.Raw(divsContainerStart)
+                <div class="@(classRow) results-add search" style="@(uiModel.UIVersion == 1 ? (uiModel.CanAction("c") ? "display:inline-block" : "") : "")" id="place-search@(idTab)">
+                    @if (uiModel.IsMiniContainer)
+                    {
+                        <div class="@(colName)4">
+                            <div class="results-found" id="results@(idTab )"></div>
+                        </div>
+                    }
+                    else
+                    {
+
+                    }
+                    @{ int btnAddContainer = 8; }
+                    @if (!es && uiModel.HideSearch == false)
+                    {
+                        string inputGroupClass = "input-append";
+                        string btnSearchClass = "search-btn";
+                        string inputTextClass = "input-xlarge search-list";
+                        string iconsearch = "icon-search";
+                        if (!string.IsNullOrEmpty(Request.QueryString["idTab"]))
+                        {
+                            btnAddContainer = 4;
+                        }
+                        if (uiModel.UIVersion == 2)
+                        {
+
+
+                            iconsearch = "fa fa-search";
+                            inputTextClass = "form-control";
+                            inputGroupClass = "input-group";
+                            btnSearchClass = "btn-default";
+                            if (!string.IsNullOrEmpty(Request.QueryString["idTab"]))
+                            {
+                                btnSearchClass = "btn-default btn-sm";
+                                inputTextClass = "form-control input-sm";
+                            }
+                        }
+
+                        <div class="@( uiModel.IsMiniContainer? colName + "4": colName + "7" )">
+
+                            <div class="form-inline">
+                                <div class="@(inputGroupClass)">
+                                    <input class="@(inputTextClass)" id="searchText@(idTab )" type="text" />
+                                    @Html.Raw(uiModel.UIVersion == 2 ? "<span class=\"input-group-btn\">" : "")
+                                    <a href="" id="btnSearch@(idTab)" class="btn @(btnSearchClass)">@Html.Raw(uiModel.IsMiniContainer ? "<i class='" + iconsearch + "'></i>" : GlobalMessages.SEARCH)</a>
+                                    @Html.Raw(uiModel.UIVersion == 2 ? "</span>" : "")
+                                </div>
+                                @if (!uiModel.IsMiniContainer && !uiModel.RemoveFilter)
+                                {
+                                    <span id="filter@( ViewData["idTab"] )" class="filterlink">
+
+                                        @{ ViewData["idTab"] = idTab;
+                                            ViewData["entityKey"] = uiModel.EntitySetName + "." + uiModel.EntityKey;
+                                            ViewData["controller"] = uiModel.EntitySetName;
+                                            ViewData["moduleNS"] = uiModel.ModuleNamespace;
+                                            ViewData["entityName"] = uiModel.EntityKey;
+                                            ViewData["moduleKey"] = uiModel.ModuleKey;
+                                            ViewData["uiModel"] = uiModel;
+
+                                            Html.RenderPartial("AdvancedSearch", ViewData);
+                                        }
+                                    </span>
+                                            }
+                            </div>
+                        </div>
+
+                        <script>
+
+                            $('#searchText@(idTab )')
+                            .listenForEnter()
+                            .bind('pressedEnter', function (e) {
+                                e.preventDefault();
+                                searchText@(idTab ) = $("#searchText@(idTab )").val();
+                                refreshList@(idTab )();
+                            });
+                            $("#btnSearch@(idTab)").click(function(e){
+                                e.preventDefault();
+                                searchText@(idTab ) = $("#searchText@(idTab )").val();
+                                refreshList@(idTab )();
+                            });
+                        </script>
+                                            }
+                    <div class="@((uiModel.IsMiniContainer? (uiModel.UIVersion == 2 ? "col-md-" + btnAddContainer + "": ""): colName + "5" ) ) text-right">
+                        <div class="buttons">
+                            @{
+                                string iconadd = "details.png";
+                                string iconaddcss = "details";
+                                if (preventPp)
+                                {
+                                    iconadd = "details_go.png";
+                                    iconaddcss = "details_go";
+                                }
+
+                                if ((!string.IsNullOrEmpty(fromFk) && !preventPp) || uiModel.ForcePopUp)
+                                {
+                                    detailsActionName = "DetailsViewGen";
+                                }
+
+
+                                if (!string.IsNullOrEmpty(Request.QueryString["isManyToMany"]))
+                                {
+                                    manyToMany = bool.Parse(Request.QueryString["isManyToMany"]);
+                                }
+
+                                string usemodePart = "";
+                                if (!string.IsNullOrEmpty(uiModel.UseMode))
+                                {
+                                    usemodePart = "/usemode/" + uiModel.UseMode;
+                                }
+                                if (!string.IsNullOrEmpty(uiModel.OverrideApp))
+                                {
+                                    usemodePart = usemodePart + "/overrideModule/" + uiModel.OverrideApp;
+                                }
+
+                                foreach (var qs in Request.QueryString.AllKeys)
+                                {
+                                    if (qs != "usemode" && qs != "overrideModule")
+                                    {
+                                        if (!string.IsNullOrEmpty(Request.QueryString[qs]))
+                                        {
+                                            if (extraParams.Length > 0)
+                                            {
+                                                extraParams.Append("&");
+                                            }
+                                            extraParams.Append(qs + "=" + HttpUtility.UrlEncode(Request.QueryString[qs]));
+                                        }
+                                    }
+                                }
+                                ViewData["list-button-position"] = ButtonPosition.Top;
+                                ViewData["extraParams"] = extraParams;
+
+                                Html.RenderPartial("ListButtons");
+                                //if (uiModel.CanAction("c"))
+                                //{
+                                //    if (ViewData["detpop"] != null || uiModel.ForcePopUp)
+                                //    {
+                                //        ActionModel actionListAdd = uiModel.ActionButtons.FirstOrDefault(p=>p.ActionKey == "c");
+                                //        ActionModel actionListAddRelation = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "set-relation-fk");
+                                //        string urlAdd = VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + "/" + uiModel.EntitySetName + usemodePart + "/CreateViewGen?" + extraParams.ToString();
+                                //        if (actionListAdd != null ){
+                                //            urlAdd = actionListAdd.Url;
+                                //        }
+                                //        if (!manyToMany)
+                                //        {
+                                //            if (!preventPp)
+                                //            {
+                                //                //urlAdd = urlAdd.Replace("CreateGen", "CreateViewGen");
+                                //                if (actionListAddRelation != null && Request.QueryString["forSelect"] == null)
+                                //                {
+                                //                    Html.RenderPartial("ButtonLink", ButtonLinkModel.GetForPopUp(actionListAddRelation != null ? (!string.IsNullOrEmpty(actionListAddRelation.Title) ? actionListAddRelation.Title: GlobalMessages.ADD_NEW ) : "Relacionar existentes", uiModel.IsMiniContainer ? 0 : 1, "add", actionListAddRelation.Url /*&fk=" + fromFk + "&fkValue=" + fkValue*/, "onUpdateListData" + idTab, modalEntityId));
+
+                                //                }
+                                //                Html.RenderPartial("ButtonLink", ButtonLinkModel.GetForPopUp(actionListAdd != null ? (!string.IsNullOrEmpty(actionListAdd.Title) ? actionListAdd.Title : GlobalMessages.ADD_NEW) : GlobalMessages.ADD_NEW, uiModel.IsMiniContainer ? 0 : 1, "add", urlAdd + "&popup=1"/*&fk=" + fromFk + "&fkValue=" + fkValue*/, "onUpdateListData" + idTab, modalEntityId));
+                                //            }
+                                //            else
+                                //            {
+                                //                urlAdd = VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + "/" + uiModel.EntitySetName + usemodePart + "/CreateGen?" + extraParams.ToString();
+
+                                //                Html.RenderPartial("ButtonLink", ButtonLinkModel.GetCustom(actionListAdd != null ? (!string.IsNullOrEmpty(actionListAdd.Title) ? actionListAdd.Title : GlobalMessages.ADD_NEW) : GlobalMessages.ADD_NEW, 1, "add", urlAdd /*+ "&fk=" + fromFk + "&fkValue=" + fkValue */));
+                                //            }
+                                //        }
+                                //        else
+                                //        {
+
+                                //            Html.RenderPartial("ButtonLink", ButtonLinkModel.GetCustomScript(GlobalMessages.ADD_NEW, uiModel.IsMiniContainer ? 0 : 1, "add", "addForManyToMany" + idTab + "();"));
+                                //        }
+
+                                //    }
+                                //    else
+                                //    {
+                                //        Html.RenderPartial("ButtonLink", ButtonLinkModel.GetCustom(GlobalMessages.ADD_NEW, 1, "add", VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + "/" + uiModel.EntitySetName + usemodePart + "/CreateGen?" + extraParams.ToString() + ""));
+
+                                //    }
+                                //}
+                            }
+                        </div>
+
+                    </div>
+                </div><!--results-add-->
+
+                <div id="spaceFilter@(idTab )" class="filterarea"></div>
+
+
+                @if (!uiModel.HideFilterViews)
+                {
+                    string colFilterView = colName + "8";
+                    if (Request.QueryString["dashboard"] == "1")
+                    {
+                        colFilterView = colName + "12";
+                    }
+                    string stylesExt = "";
+                    if (uiModel.IsMiniContainer && uiModel.UIVersion == 1)
+                    {
+                        colFilterView = "";
+                        stylesExt = "display:inline";
+                    }
+                    <div style="@(stylesExt)" class="@(classRow) results-add filterviews">
+                        <div class="@((uiModel.IsMiniContainer ? "" : colName + "4") )" style="@((uiModel.IsMiniContainer ? "display:none" : ""))">
+                            <div id="results@(idTab )"></div>
+                        </div>
+
+                        <div class="@(colFilterView) text-right"><div class="filterlinks"> @{ Html.RenderPartial("FilterViewLinks", uiModel); } </div></div>
+                    </div><!--results-add filterviews-->
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(uiModel.DefaultFilterView))
+                                {
+                                    var filterView = uiModel.FilterViews.FirstOrDefault(p=> p.FilterKey == uiModel.DefaultFilterView);
+                                    if (filterView != null)
+                                    {
+                                        <span class="filterview currentFilterview@(idTab)" query="@WebUtility.UrlEncode( filterView.Query)" style="display:none"></span>
+                                    }
+                                }
+
+                            }
+
+
+                @if (manyToMany)
+                {
+
+                    string propertyName = "manyToMany";
+
+                    <div id="lookUp@( propertyName )"></div>
+                    <script type="text/javascript">
+                        var @( propertyName ) = null;
+                    function updateRelationsDone@(propertyName )(data) {
+                        refreshList@(idTab )();
+
+
+                    }
+                    function addForManyToMany@(idTab)() {
+                        if ($("#modal_mtm_@(propertyName)").length > 0){
+                                $("#modal_mtm_@(propertyName)").remove();
+                        }
+
+                        if ($("#modal_mtm_@(propertyName)").length == 0){
+                                $("body").append('<div id="modal_mtm_@(propertyName )" class="modal hide fade tex-left" ><div class="modal-body text-left">@Html.Raw(loadingHtml)</div></div>');
+
+                                $("#modal_mtm_@(propertyName)").modal("show");
+                                $("#modal_mtm_@(propertyName)").on('hidden', function () {
+
+                                if (@( propertyName) != null ){
+                                    callServerGetHtml("@( VirtualPathUtility.ToAbsolute("~/") )@(uiModel.ModuleKey)/@(uiModel.EntitySetName)/AddRelation?objectKey="+ @( propertyName ).SafeKey + "&relationship=@(fromFk )&relationshipValue=@(fkValue)", updateRelationsDone@(propertyName ));
+                                }
+                            });
+                        }else{
+                                $("#modal_mtm_@(propertyName)").html('<div class="modal-body text-left">@Html.Raw(loadingHtml)</div>');
+                                $("#modal_mtm_@(propertyName)").modal("show");
+                        }
+                            @{
+                            string startFilter = filter.ToString();
+                        }
+                            @( propertyName ) = null;
+                            $.ajax({ url: '@( VirtualPathUtility.ToAbsolute("~/") )@(uiModel.ModuleKey)/@(uiModel.EntitySetName)/ListViewGen?idTab=many&popup=1&fk=@(ViewData["fk"].ToString() )&fkValue=@( ViewData["fkValue"].ToString() )&startFilter=@Html.Raw( startFilter.Replace("True", "False") )&updateRel=1&forSelect=*&propReturn=@( propertyName )&dialogId=modal_mtm_@( propertyName )',
+                                success: function (data) {
+                                    $("#modal_mtm_@( propertyName )").html(data);
+
+                            },
+                                dataType: 'html', cache: false
+                            });
+
+
+                    }
+                    </script>
+
+
+    }
+                <!-- Plantillas -->
+                <script id="@(uiModel.EntitySetName)_FootTemplate" type="text/html">
+                    <tr id="sumHead@(idTab )" class="sumRow">
+                        <th class=""></th>
+
+                        @foreach (var item in uiModel.Properties.Where(p => !p.IsNavigationPropertyMany && !p.IsHidden).OrderBy(p => p.Order))
+                        {
+                            if (item.Sum)
+                            {
+                                if (item.TypeName.ToLower().Contains("decimal") || item.TypeName.ToLower().Contains("int") || item.TypeName.ToLower().Contains("double"))
+                                {
+                                    <th class="cel@(item.PropertyName)"> <span class="label label-default"> {{>@( item.PropertyName)Text}} </span></th>
+
+                                }
+                                else
+                                {
+                                    <th class="cel@(item.PropertyName)"> <span class="label label-default"> {{>@( item.PropertyName)}} </span></th>
+
+                                }
+                            }
+                            else
+                            {
+                                <th class="cel@(item.PropertyName )"></th>
+                            }
+
+                        }
+                    </tr>
+
+                </script>
+                @{
+                    System.Text.StringBuilder sbBooleans = new System.Text.StringBuilder();
+                string tagCol = "td";
+                    if (uiModel.UIVersion == 2)
+                    {
+                        tagCol = "th";
+                    }
+                }
+                @if (!uiModel.UseCustomListTemplate)
+                {
+
+                    <script id="@(uiModel.EntityKey)Template@(idTab )" type="text/html">
+                        <tr id="tr{{>~getSafeKeyId(SafeKey)}}" class="itemData trRow@(idTab )" key="{{>
+                            @(uiModel.PropertyKeyName)}}" safeKey="{{>SafeKey}}">
+                            <td class="select"><input type="checkbox" name="@(idTab )sel_{{>@(uiModel.PropertyKeyName)}}" list="list@(idTab)" class="select" id="@(idTab)sel_{{>@(uiModel.PropertyKeyName)}}" value="{{>@(uiModel.PropertyKeyName)}}" /></td>
+                            @if (uiModel.Integrations.Count > 0 || Request.QueryString["int"] == "1")
+                {
+                    @Html.Raw("<td class=\"integrationMark\">");
+                    @Html.Raw("</td>");
+                }
+                            @{
+                                string propText = "";
+                string extra2 = "";
+                                if (!string.IsNullOrEmpty(Request.QueryString["usemode"]))
+                                {
+
+                                }
+                                if (preventPp)
+                                {
+                                    extra2 = "&fk=" + fromFk + "&fkValue=" + fkValue;
+                                }
+                                System.Text.StringBuilder sbParamsDetails = new System.Text.StringBuilder();
+
+                                if ((!string.IsNullOrEmpty(fromFk) && !preventPp) || uiModel.ForcePopUp)
+                                {
+                                    // is a childs page for open popup
+                                    //if (!string.IsNullOrEmpty(Request.QueryString["usemode"])){
+                                    //	sbParamsDetails.Append(extraParams.ToString());
+                                    //}
+                                    sbParamsDetails.Append(extraParams.ToString());
+                                    if (sbParamsDetails.Length > 0)
+                                    {
+                                        sbParamsDetails.Append("&");
+                                    }
+                                    sbParamsDetails.Append("popup=true");
+                                }
+                                else
+                                {
+                                    //if (!string.IsNullOrEmpty(Request.QueryString["usemode"]))
+                                    //{
+                                    //    sbParamsDetails.Append("usemode=" + Request.QueryString["usemode"]);
+                                    //}
+                                    sbParamsDetails.Append(extraParams.ToString());
+
+                                }
+                            }
+                            @foreach (var item in uiModel.Properties.Where(p => !p.IsNavigationPropertyMany && !p.IsHidden).OrderBy(p => p.Order))
+                            {
+                                string localUseMode = null;
+                                if (!string.IsNullOrEmpty(item.UseMode))
+                                {
+                                    localUseMode = "/usemode/" + item.UseMode;
+                                }
+                                if (!item.IsNavigationProperty)
+                                {
+                                    if (item.TypeName.ToLower() == "boolean")
+                                    {
+                                        if (sbBooleans.Length > 0)
+                                        {
+                                            sbBooleans.Append(",");
+                                        }
+                                        sbBooleans.Append(item.PropertyName);
+                                    }
+                                    propText = "";
+                                    var textWithHtml = "";
+
+                                    if (item.IsImage)
+                                    {
+                                        <td>
+                                            {{if GuidFile}}
+                                            <a class="filethumb {{>~getExtension(FileName)}}" href="@(VirtualPathUtility.ToAbsolute("~/"))image.ashx?controller=@(uiModel.EntitySetName)&comp=@(SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany)&ns=@(uiModel.ModuleNamespace)&idc=@(item.FileIdField)&datac=@(item.FileDataField)&typec=@(item.FileTypeField)&sizec=@(item.FileSizeField)&filenamec=@(item.FileNameField)&SafeKey={{>SafeKey}}&id={{>GuidFile}}&filename={{>FileName}}&model=@(uiModel.EntitySetName).@(uiModel.EntityKey)Model&type={{>FileType}}&w=&h="><img width="@(sizeThumb)" style="width:@(sizeThumb)px;height:@(sizeThumb)px" height="@(sizeThumb)" src="@(VirtualPathUtility.ToAbsolute("~/"))image.ashx?controller=@(uiModel.EntitySetName)&comp=@(SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany)&ns=@(uiModel.ModuleNamespace)&idc=@(item.FileIdField)&datac=@(item.FileDataField)&typec=@(item.FileTypeField)&sizec=@(item.FileSizeField)&filenamec=@(item.FileNameField)&SafeKey={{>SafeKey}}&id={{>GuidFile}}&filename={{>FileName}}&model=@(uiModel.EntitySetName).@(uiModel.EntityKey)Model&type={{>FileType}}&w=@(sizeThumb)&h=@(sizeThumb)"></a>
+                                            {{else}}
+                                            {{/if}}
+                                        </td>
+
+
+                                    }
+                                    else
+                                    {
+                                        if (item.TypeName.ToString().ToLower().Contains("bool")  || item.TypeName.ToString().ToLower().Contains("int") || item.TypeName.ToString().ToLower().Contains("datetime") || item.TypeName.ToString().ToLower().Contains("timespan") || item.TypeName.ToString().ToLower().Contains("decimal") || item.TypeName.ToString().ToLower().Contains("float"))
+                                        {
+                                            propText = item.PropertyName + "Text";
+                                        }
+                                        else
+                                        {
+                                            propText = item.PropertyName;
+                                        }
+                                        if (item.IsDefaultProperty)
+                                        {
+                                            if (!item.PreventNavigation)
+                                            {
+                                                textWithHtml = "<a popupId='" + modalEntityId + "' class=' principal-cel-row " + idTab + "list-details' href='" + VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + "/" + uiModel.EntitySetName + (localUseMode != null ? localUseMode : usemodePart) + "/" + detailsActionName + "/{{>SafeKey}}?" + sbParamsDetails.ToString() + extra2 + "'>{{>" + propText + "}}</a>";
+
+                                            }
+                                            else
+                                            {
+                                                textWithHtml = "<span  class=' principal-cel-row " + idTab + "list-details' >{{>" + propText + "}}</span>";
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            textWithHtml = "{{>" + propText + "}}";
+                                        }
+                                        string cellclass = "";
+                                        if (item.TypeName.ToString().ToLower().Contains("datetime") && item.IsUpdatedDate)
+                                        {
+                                            textWithHtml = "<time class='timeago'  title='{{>~parseDateLocale(" + propText + ")}}' datetime='{{>" + propText + "}}'></time>";
+                                            cellclass = "datecell";
+                                        }
+                                        else if (item.TypeName.ToString().ToLower().Contains("datetime") && !item.IsUpdatedDate)
+                                        {
+                                            if (!item.IsDefaultProperty)
+                                            {
+                                                textWithHtml = "{{:" + propText + "}}";
+                                            }
+                                            //cellclass= "datecell";
+                                            //cellclass= "datecell";
+
+                                        }
+
+                                        if (!item.IsDefaultProperty)
+                                        {
+                                            if (item.TypeName.ToString().ToLower().Contains("datetime"))
+                                            {
+
+                                                @Html.Raw("{{if " + propText + "}}");
+                                                <td class="@(cellclass ) cel@(item.PropertyName)">@Html.Raw(textWithHtml)</td>
+
+                                                @Html.Raw("	{{else}}");
+                                                <td class="cel@(item.PropertyName)"></td>
+                                                @Html.Raw("{{/if}}");
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(@"
+
+
+                    {{if " + propText + @"}}
+								<td class=""cel" + item.PropertyName + @""">{{:" + propText + @"}}</td>
+
+					{{else}}
+                    <td class=""cel" + item.PropertyName + @"""></td>
+                    {{/if}}");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(@"
+                    {{if " + propText + @"}}
+							<td class=""cel" + item.PropertyName + @""">" + textWithHtml + @"</td>
+
+					{{else}}
+							<td class=""cel" + item.PropertyName + @"""><a popupId='" + modalEntityId + @"' class='bold principal-cel-row " + idTab + @"list-details' href='" + VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + "/" + uiModel.EntitySetName + (localUseMode != null ? localUseMode : usemodePart) + "/" + detailsActionName + @"/{{>SafeKey}}?" + sbParamsDetails.ToString() + extra2 + @"'>" + GlobalMessages.UNDEFINED + @"</a></td>
+                    {{/if}}
+                    ");
+
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.IsImage)
+                                    {
+                                        string filetypeModel = item.CustomProperties.Find(p => p.Name == "FileTypeModelName").Value;
+                string fileGuidField = item.CustomProperties.Find(p => p.Name == "IdentifierFileField").Value;
+                string FileControllerName = item.CustomProperties.Find(p => p.Name == "FileControllerName").Value;
+
+                @Html.Raw(@"<td> {{if GuidFile}} <a class=""filethumb {{>~getExtension(FileName)}}""  href=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany.ToString() + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=&h=""><img  width=""" + sizeThumb + @""" height=""" + sizeThumb + @""" style=""width:" + sizeThumb + @"px;height:" + sizeThumb + @"px"" src=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=" + sizeThumb + @"&h=" + sizeThumb + @"""></a> {{else}} {{/if}} </td>");
+                                    }
+                                    else
+                                    {
+
+                                        propText = "Fk" + item.PropertyName + "Text";
+                                        if (!item.IsDefaultProperty)
+                                        {
+
+                                            if (!item.PreventNavigation)
+                                            {
+                                                @Html.Raw(@"
+
+                    {{if " + propText + @"}}
+								            <td class=""cel" + item.PropertyName + @"""><a class=""" + idTab + @"list-details"" href=""" + VirtualPathUtility.ToAbsolute("~/") + item.PathName + (localUseMode != null ? localUseMode : usemodePart) + "/" + detailsActionName + "/{{>Fk" + item.PropertyName + "}}?dec=true&" + sbParamsDetails.ToString() + @""" >{{:Fk" + item.PropertyName + @"Text}}</a></td>
+
+					            {{else}}
+                                <td class=""cel" + item.PropertyName + @"""></td>
+                                {{/if}}
+
+                    ");
+                                            }
+                                            else
+                                            {
+
+                                                @Html.Raw(@"
+
+                    {{if " + propText + @"}}
+								            <td class=""cel" + item.PropertyName + @""">{{:Fk" + item.PropertyName + @"Text}}</td>
+
+					            {{else}}
+                                <td class=""cel" + item.PropertyName + @"""></td>
+                                {{/if}}
+
+                    ");
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(@"
+								{{if " + propText + @"}}
+										<td class=""cel" + item.PropertyName + @"""><a popupId='" + modalEntityId + @"' class=' principal-cel-row bold " + idTab + @"list-details' href=""" + VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + @"/" + uiModel.EntitySetName + usemodePart + "/" + detailsActionName + "/{{>SafeKey}}?" + (sbParamsDetails.ToString() + extra2) + @""" >{{:Fk" + item.PropertyName + @"Text}}</a></td>
+
+					            {{else}}
+										<td class=""cel" + item.PropertyName + @"""><a  popupId='" + modalEntityId + @"' class='principal-cel-row bold " + idTab + "list-details' href='" + VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + @"/" + uiModel.EntitySetName + usemodePart + "/" + detailsActionName + @"/{{>SafeKey}}?" + (sbParamsDetails.ToString() + extra2) + @"'>" + GlobalMessages.UNDEFINED + @"</a></td>
+                                {{/if}}
+                        ");
+                                        }
+                                    }
+                                }
+
+                            }
+
+
+
+                        </tr>
+
+                    </script>
+                                }
+
+                <script type="text/javascript">
+                    var extraParamsList@(idTab ) = "";
+                    var firstTimeLoadPage1@(idTab ) = true;
+                    function pageselectCallback@(idTab )(page_index, jq) {
+                        var orderBy = "";
+                var orderDir = ""
+                        opt = getOptionsFromForm@(idTab )();
+                        var staticFilter@(idTab ) = '@( Url.Encode(filter.ToString()) )';
+                        var sepFF@(idTab ) = "";
+                        if (staticFilter@(idTab ).length > 0 && queryB@(idTab ).length > 0)
+                            sepFF@(idTab ) = " AND ";
+                        if (page_index > 0 || firstTimeLoadPage1@(idTab ) == false){
+                            if (firstTimeLoadPage1@(idTab ) == true) firstTimeLoadPage1@(idTab ) = false;
+                            @*var topPrev  = null;
+                            var pageFinded = $.grep(pagesEndOrderBy, function (e) {
+                                return e.page == currentPage@(idTab );
+                            });
+                            if (pageFinded.length > 0){
+                                topPrev  = pageFinded[0].end;
+
+                            }*@
+                            @*var pOrderByFilter = "";
+
+                            if (topPrev != null ){
+                                var dateLast = parseDate(topPrev)
+                                //if (filter != null && filter.length > 0){
+                                pOrderByFilter = "CreatedDate @Html.Raw("<") DateTime(" + dateLast.getTime()  +")";
+
+
+                            }*@
+
+                           // getResults@(idTab )(queryB@(idTab ) + sepFF@(idTab ) +staticFilter@(idTab ) + pOrderByFilter +'|'+ encodeURIComponent(searchText@(idTab )), page_index + 1, opt["items_per_page"], opt["orderBy"], opt["orderDir"]);
+                            getResults@(idTab )(queryB@(idTab ) + sepFF@(idTab ) +staticFilter@(idTab ) +'|'+ encodeURIComponent(searchText@(idTab )), page_index + 1, opt["items_per_page"], opt["orderBy"], opt["orderDir"]);
+
+                        }
+                        return false;
+                    }
+
+                    @if (!string.IsNullOrEmpty(uiModel.UIListFooter )){
+                        <text>
+                    function ShowSummaryFooterList@(idTab)(filter) {
+                        callServerGet("@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/") + uiModel.ModuleKey + "/" + uiModel.EntitySetName )/GetSummaryOperation?operation=sum&filter=" +   filter + "&usemode=@(uiModel.UseMode)&fk=@(fromFk)", getFooters@(idTab )Done);
+
+                    }
+                    </text>
+                    }
+                    function getFooters@(idTab )Done(data) {
+                    //$('#foot@(idTab )').empty();
+                    var html =  $('#@(uiModel.EntitySetName)_FootTemplate').render(data);
+                        $("#sumHead@(idTab )").replaceWith(html)
+
+                        if (typeof(onOperationListLoaded@(idTab )) != 'undefined'){
+                        onOperationListLoaded@(idTab )($("#sumHead@(idTab )"), data);
+                    }
+                }
+                function listResults@(idTab )(data) {
+                        var newcontent = '';
+                        //$("#results@(idTab )").html("<span id='realn@(idTab )'>" + _totalResults + "</span> @( GlobalMessages.RESULTS ) (<span id='seln@(idTab )'>0</span>&nbsp;@( GlobalMessages.SELECTED_S ))");
+                        if (data.length > 0) {
+                            $("#tableSearchresult@(idTab )").show();
+                            $("#noresults@(idTab )").hide();
+                            $("#pagination@(idTab )").show();
+                            $("#place-list@(idTab ) .filterviews").show();
+                           // $("#preloader-@(idTab )").hide();
+
+                            if (data != null) {
+                                $('#Searchresult@(idTab )').empty();
+                var html = $('#@(uiModel.EntityKey)Template@(idTab )').render(data);
+                                $('#Searchresult@(idTab )').html(html);
+                                @if (!string.IsNullOrEmpty(Request.QueryString["dialogId"]) && isPopUp )
+                {
+			        <text>repositionModal($("#@(Request.QueryString["dialogId"])"));</text>
+
+				}
+                                SetSelectableChecks('@(idTab )');
+                                @if (!string.IsNullOrEmpty(Request.QueryString["isLookUp"]))  {
+                    <text>readyForSelectFromLookUp@(idTab )();</text>
+                }
+
+                                existSimpleList = true;
+                                refreshForms();
+                                //listPopupDelete();
+                                @if ((!string.IsNullOrEmpty(fromFk)  && !preventPp) || uiModel.ForcePopUp){
+                <text>listPopupDetails@(idTab )();</text>
+    	    }
+
+
+
+
+
+
+                                $(".trRow@(idTab )").click(
+                                        function (e) {
+                                            if(!$(e.target).hasClass("rowMoreData") && e.target.tagName != null  && e.target.tagName.toLowerCase() != "a" &&  e.target.tagName.toLowerCase() != "i" && e.target.tagName.toLowerCase() != "input" && e.target.tagName.toLowerCase() != "img" && e.target.tagName.toLowerCase() != "li" && e.target.tagName.toLowerCase() != "ul"){
+                                                var check = $($(e.target).parents("TR").children()[0]).children()[0];
+                                                if (check.type == "checkbox" && $(check).hasClass("select")){
+                                                    check.click();
+                                                    return false;
+                                                }
+
+                                            }
+                                        }
+                                    );
+                                if (typeof(allSelected@(idTab)) != "undefined"){
+                                    updateSelected(allSelected@(idTab ), selectRows@(idTab ), "@(idTab )");
+                                }
+                                $("#place-list@(idTab ) .list-foot").show();
+                               // $("#preloader-@(idTab )").hide();
+                                //return false;
+                            }else{
+                                $("#tableSearchresult@(idTab )").hide();
+                                $("#noresults@(idTab )").show();
+                                $("pagination@(idTab )").hide();
+                                //$("#preloader-@(idTab )").hide();
+
+                                //return false;
+                            }
+
+                        }else{
+                            // updateSelected(allSelected@(idTab ), selectRows@(idTab ), "@(idTab )");
+
+                            $("#place-list@(idTab ) .list-foot").hide();
+                            $("#tableSearchresult@(idTab )").hide();
+                            $("#noresults@(idTab )").show();
+                           // $("pagination@(idTab )").hide();
+                            //$("#place-list@(idTab ) .filterviews").hide();
+
+                            //$("#preloader-@(idTab )").hide();
+                        }
+                        @if (sbBooleans.Length > 0)
+                {
+
+                }
+                        @if (uiModel.Properties.Count(p=>p.IsImage) > 0)
+        {
+            <text>
+                        'use strict';
+
+                        $(function () {
+
+                    if (typeof (jQuery().magnificPopup) == "undefined") {
+                                @{
+                            var helper = (new UrlHelper(ViewContext.RequestContext));
+                        }
+                        //alert("leyendo");
+
+                        Utilities.requireFiles([
+                            "@(helper.Content("~/Static/v2/magnificPopup/jquery.magnific-popup.min.js"))"], function () {
+
+                            @if (includeViewer == true) {
+                            <text>
+                                        $('#tableSearchresult@(idTab ) .filethumb.unk, #tableSearchresult@(idTab ) .filethumb.jpg, #tableSearchresult@(idTab ) .filethumb.png, #tableSearchresult@(idTab ) .filethumb.gif').magnificPopup({
+                                    type: 'image',
+                                            //delegate: 'a.filethumb',
+                                            //gallery: {
+                                            //    enabled:true
+                                            //},
+                                            image: {
+                                        tError: '<p><a target="_blank" href="%url%&down=1"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a  target="_blank" href="%url%&down=1">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> ' // Error message
+                                            }
+                                });
+
+                                        $('#tableSearchresult@(idTab ) .filethumb.pdf').each(function(){
+                                    var url = $(this).attr("href");
+                                            $(this).attr("href", "@(VirtualPathUtility.ToAbsolute("~/"))Static/v2/pdf/web/viewer.html?file=" + encodeURIComponent(url + "&down=1"));
+                                });
+                                        $('#tableSearchresult@(idTab ) .filethumb.pdf').magnificPopup({
+                                    type: 'iframe',
+                                            //delegate: 'a.filethumb',
+                                            //gallery: {
+                                            //    enabled:true
+                                            //},
+                                        });
+                                        </text>
+                        }
+                        else
+                        {
+                            <text>
+                                        $('#tableSearchresult@(idTab ) .filethumb').magnificPopup({
+                                    type: 'image',
+
+                                            //delegate: 'a.filethumb',
+                                            //gallery: {
+                                            //    enabled:true
+                                            //},
+                                            image: {
+                                        tError: '<p><a target="_blank" href="%url%&down=1"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a  target="_blank" href="%url%&down=1">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> ' // Error message
+                                            }
+                                });
+                                        </text>
+                        }
+                        });
+
+                    } else {
+                        @if (includeViewer == true)
+                 {
+                     <text>
+
+                                $('#tableSearchresult@(idTab ) .filethumb.unk, #tableSearchresult@(idTab ) .filethumb.jpg, #tableSearchresult@(idTab ) .filethumb.png, #tableSearchresult@(idTab ) .filethumb.gif').magnificPopup({
+                                type: 'image',
+                                    //delegate: 'a.filethumb',
+                                    //gallery: {
+                                    //    enabled:true
+                                    //},
+                                    image: {
+                                    tError: '<p><a target="_blank" href="%url%&down=1"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a  target="_blank" href="%url%&down=1">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> ' // Error message
+                                    }
+                            });
+                                $('#tableSearchresult@(idTab ) .filethumb.pdf').each(function(){
+                                var url = $(this).attr("href");
+                                    $(this).attr("href", "@(VirtualPathUtility.ToAbsolute("~/"))Static/v2/pdf/web/viewer.html?file=" + encodeURIComponent(url + "&down=1"));
+                            });
+                                $('#tableSearchresult@(idTab ) .filethumb.pdf').magnificPopup({
+                                type: 'iframe',
+                                    //delegate: 'a.filethumb',
+                                    //gallery: {
+                                    //    enabled:true
+                                    //},
+                                });
+                                </text>
+                 }else
+                 {
+                            <text>
+                        $('#tableSearchresult@(idTab ) .filethumb').magnificPopup({
+                                type: 'image',
+                            callbacks: {
+                                    beforeOpen: function() {
+                                        console.log('Start of popup initialization');
+                                    },
+                                elementParse: function(item) {
+                                        // Function will fire for each target element
+                                        // "item.el" is a target DOM element (if present)
+                                        // "item.src" is a source that you may modify
+
+                                        console.log('Parsing content. Item object that is being parsed:', item);
+                                    },
+                                change: function() {
+                                        console.log('Content changed');
+                                        console.log(this.content); // Direct reference to your popup element
+                                    },
+                                resize: function() {
+                                        console.log('Popup resized');
+                                        // resize event triggers only when height is changed or layout forced
+                                    },
+                                open: function() {
+                                        console.log('Popup is opened');
+                                    },
+
+                                beforeClose: function() {
+                                        // Callback available since v0.9.0
+                                        console.log('Popup close has been initiated');
+                                    },
+                                close: function() {
+                                        console.log('Popup removal initiated (after removalDelay timer finished)');
+                                    },
+                                afterClose: function() {
+                                        console.log('Popup is completely closed');
+                                    },
+
+                                markupParse: function(template, values, item) {
+                                        // Triggers each time when content of popup changes
+                                        // console.log('Parsing:', template, values, item);
+                                    },
+                                updateStatus: function(data) {
+                                        console.log('Status changed', data);
+                                        // "data" is an object that has two properties:
+                                        // "data.status" - current status type, can be "loading", "error", "ready"
+                                        // "data.text" - text that will be displayed (e.g. "Loading...")
+                                        // you may modify this properties to change current status or its text dynamically
+                                    },
+                                imageLoadComplete: function() {
+                                        // fires when image in current popup finished loading
+                                        // avaiable since v0.9.0
+                                        console.log('Image loaded');
+                                    },
+
+
+                                // Only for ajax popup type
+                                parseAjax: function(mfpResponse) {
+                                        // mfpResponse.data is a "data" object from ajax "success" callback
+                                        // for simple HTML file, it will be just String
+                                        // You may modify it to change contents of the popup
+                                        // For example, to show just #some-element:
+                                        // mfpResponse.data = $(mfpResponse.data).find('#some-element');
+
+                                        // mfpResponse.data must be a String or a DOM (jQuery) element
+
+                                        console.log('Ajax content loaded:', mfpResponse);
+                                    },
+                                ajaxContentAdded: function() {
+                                        // Ajax content is loaded and appended to DOM
+                                        console.log(this.content);
+                                    }
+                                },
+                            //delegate: 'a.filethumb',
+                            //gallery: {
+                            //    enabled:true
+                            //},
+                            image: {
+                                    tError: '<p><a target="_blank" href="%url%&down=1"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a  target="_blank" href="%url%&down=1">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> test2' // Error message
+                            }
+                            });
+                            </text>
+
+                 }
+                    }
+                });
+
+
+                        </text>
+		  }
+                        @if (ViewData["IsWorkFlowState"] != null && ((bool)ViewData["IsWorkFlowState"]) == true)
+        {
+
+            <text>
+                        @*var str = '@Html.Raw( ViewData["jsonWFProcess"])';
+                        if (str.length > 2){
+                            var wfInfo = resolveReferences(str);
+                            setFormatListForWorkFlow($("#tableSearchresult@(idTab )"), data, wfInfo,"@(uiModel.Properties.FirstOrDefault(p=>p.IsHidden == false && p.IsDefaultProperty).PropertyName )", "@(idTab )");
+                        }*@
+
+                        </text>
+		}
+                        @if (uiModel.PropertyForActions != null)
+                        {
+                            <text>
+                            setRowMenu@(idTab)();
+                            </text>
+                        }
+                        if (typeof(onListLoaded@(idTab )) != 'undefined'){
+                            onListLoaded@(idTab )($("#tableSearchresult@(idTab )"), data);
+                        }
+
+                    }
+                </script>
+                @{
+                    string extraproxy = "";
+                    if (manyToMany || !string.IsNullOrEmpty(Request.QueryString["updateRel-mtm"]))
+                    {
+                        extraproxy = "&manyToMany=True&extraParams=relationship:" + fromFk + "|relationshipValue:" + fkValue;
+                    }
+                    Html.RenderPartial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "listPopupDelete", OnCloseFunction = "onUpdateListData" + idTab, TargetClassName = "list-delete", ProxyId = "deleteProxy" + idTab, StartUrl = VirtualPathUtility.ToAbsolute("~/") + "Messages/Delete?areaName=" + uiModel.ModuleKey + "&controllerName=" + uiModel.EntitySetName + "&actionName=DeleteGen" + extraproxy });
+
+                    if ((!string.IsNullOrEmpty(fromFk) && !preventPp) || uiModel.ForcePopUp)
+                    {
+                        Html.RenderPartial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "listPopupDetails" + idTab, OnCloseFunction = "onUpdateListData" + idTab, TargetClassName = idTab + "list-details" });
+                    }
+                    int pageSize = 15;
+                    if (!string.IsNullOrEmpty(Request.QueryString["pag"]))
+                    {
+                        pageSize = Convert.ToInt32(Request.QueryString["pag"]);
+                    }
+                    string urlPath = VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + "/" + uiModel.EntitySetName;
+
+                    SFSdotNet.Framework.Web.Mvc.Models.SimplePagedListModel model = new SFSdotNet.Framework.Web.Mvc.Models.SimplePagedListModel();
+                    model.JsonUrlGetData = urlPath + "/" + uiModel.PrincipalActionName;
+                    model.UrlGetCount = urlPath + "/GetByCount";
+                    model.PageSize = pageSize;
+                    model.Filter = filter.ToString();
+                    model.EntityName = uiModel.EntitySetName;
+                    model.ModuleKey = uiModel.ModuleKey;
+                    model.IdTab = idTab;
+                    model.PropertyKeyName = uiModel.PropertyKeyName;
+                    model.SortBy = uiModel.SortBy;
+                    model.SortDirection = uiModel.SortDirection.ToString().ToLower();
+                    Html.RenderPartial("SimplePagedList", model);
+                }
+
+                <div id="resultsAll@(idTab )">
+                    <div class="preloader-big align-center" id="preloader-@(idTab )" style="display:none;">@Html.Raw(loadingHtml)</div>
+
+                    <div id="listContainer@(idTab )" class="ListContainer">
+
+                        @if (!uiModel.UseCustomListTemplate)
+                        {
+
+                            <table class="simple-list nowrap-table table table-condensed " id="tableSearchresult@(idTab )" style=" display:none">
+                                <thead>
+                                    <tr class="headers">
+                                        @if (uiModel.UIVersion == 2)
+                                        {
+                                            <th nowrap="nowrap" class="select" style=" clear:both;">
+                                                @{ Html.RenderPartial("SelectCheckBoxesView"); }
+                                            </th>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td nowrap="nowrap" class="select" style=" clear:both;">
+                                                            @{ Html.RenderPartial("SelectCheckBoxesView"); }
+                                                        </td>
+                                                                }
+                                        @if (uiModel.Integrations.Count > 0 || Request.QueryString["int"] == "1")
+                                        {
+                                            if (uiModel.UIVersion == 2)
+                                            {
+                                                <th class="integrationMark"></th>
+                                            }
+                                            else
+                                            {
+                                                <td class="integrationMark"></td>
+                                            }
+
+                                        }
+                                        @{ string sortIcon = "&darr;";
+                                            if (uiModel.SortDirection == UIModelSortDirection.DESC)
+                                            {
+                                                sortIcon = "&uarr;";
+                                            }
+                                        }
+
+                                        <script>
+
+                                            var currentOrderIco@(idTab ) = "@Html.Raw(sortIcon)";
+                                        </script>
+
+                                        @foreach (var item in uiModel.Properties.Where(p => !p.IsNavigationPropertyMany && !p.IsHidden).OrderBy(p => p.Order))
+                                        {
+                                            if (item.PropertyName == "Title")
+                                            {
+                                                item.IsDefaultProperty = true;
+                                            }
+                                            string classtd = "cel" + item.PropertyName;
+                                            if (item.IsDefaultProperty)
+                                            {
+                                                classtd = classtd + " max100percent";
+
+                                            }
+                                            if (!string.IsNullOrEmpty(item.SortBy))
+                                            {
+
+                                                if (!item.IsNavigationProperty)
+                                                {
+                                                    if (uiModel.UIVersion == 2)
+                                                    {
+                                                        <th class="@(classtd )"><span lang="" sortby="@(item.SortBy)" property="@(item.PropertyName)" class="list-header-col" orderdir="@(uiModel.SortDirection.ToString().ToLower() )">@( item.PropertyDisplayName)</span> <span id="icoSort@(item.PropertyName)@(idTab )" class="icoSort@(idTab )" style="font-weight:bold">@Html.Raw((item.PropertyName == uiModel.SortBy ? sortIcon : ""))</span></th>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="@(classtd )"><span lang="" sortby="@(item.SortBy)" property="@(item.PropertyName)" class="list-header-col" orderdir="@(uiModel.SortDirection.ToString().ToLower() )">@( item.PropertyDisplayName)</span> <span id="icoSort@(item.PropertyName)@(idTab )" class="icoSort@(idTab )" style="font-weight:bold">@Html.Raw((item.PropertyName == uiModel.SortBy ? sortIcon : ""))</span></td>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (uiModel.UIVersion == 2)
+                                                    {
+                                                        <th class="@(classtd )"><span lang="" sortby="@(item.SortBy)" property="@(item.PropertyName)" class="list-header-col" orderdir="@(uiModel.SortDirection.ToString().ToLower() )">@( item.PropertyDisplayName)</span> <span id="icoSort@(item.PropertyName)@(idTab )" class="icoSort@(idTab )" style="font-weight:bold">@Html.Raw((item.PropertyName == uiModel.SortBy ? sortIcon : ""))</span></th>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="@(classtd )"><span lang="" sortby="@(item.SortBy)" property="@(item.PropertyName)" class="list-header-col" orderdir="@(uiModel.SortDirection.ToString().ToLower() )">@( item.PropertyDisplayName)</span> <span id="icoSort@(item.PropertyName)@(idTab )" class="icoSort@(idTab )" style="font-weight:bold">@Html.Raw((item.PropertyName == uiModel.SortBy ? sortIcon : ""))</span></td>
+
+                                                    }
+
+
+
+                                                }
+                                            }
+                                            else
+                                            { // no es sortable
+                                                if (uiModel.UIVersion == 2)
+                                                {
+                                                    <th class="@(classtd )"><span class="" lang="" property="@(item.PropertyName)" style="text-decoration:none" title="@( GlobalMessages.NOT_SUPPORT_SORT )">@( item.PropertyDisplayName)</span> </th>
+
+                                                }
+                                                else
+                                                {
+                                                    <td class="@(classtd )"><span class="" lang="" property="@(item.PropertyName)" style="text-decoration:none" title="@( GlobalMessages.NOT_SUPPORT_SORT )">@( item.PropertyDisplayName)</span> </td>
+
+                                                }
+
+                                            }
+                                        }
+
+
+                                    </tr>
+                                    <tr id="sumHead@(idTab )"></tr>
+                                </thead>
+
+                                <tbody id="Searchresult@(idTab )">
+
+                                    <tr>
+                                        <td colspan="5"></td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                                            if (Request.QueryString["forSelect"] == "*")
+                                            {
+                                                string actionKey = "updateRel";
+                                                if (!string.IsNullOrEmpty(Request.QueryString["updateRel-mtm"]))
+                                                {
+                                                    actionKey = "updateRel-mtm";
+                                                }
+                                                string propertyForUpdate = Request.QueryString["propertyForUpdate"];
+                                                if (!string.IsNullOrEmpty(Request.QueryString["proxyMany"]))
+                                                {
+                                                    actionKey = "updateRel-proxyMany";
+                                                    propertyForUpdate = propertyForUpdate + "." + Request.QueryString["propFKOther"] + "|" + Request.QueryString["propFKThis"];
+                                                }
+                                                <div class="" style="width: 100%; text-align: center; display: block;"><a id="selectAndReturn@(idTab)" href="@(VirtualPathUtility.ToAbsolute("~/") + uiModel.ModuleKey + "/" + uiModel.EntitySetName + "/CustomActionExecute?proxyManyEntity=" + Request.QueryString["proxyMany"]  + "&propertyForUpdate=" + propertyForUpdate + "&valueForUpdate=" + Request.QueryString["valueForUpdate"])" actionkey="@(actionKey)" withconfirm="false" controllername="@(uiModel.ControllerName)" class="btn btn-primary selectAndReturn@(idTab)">Seleccionar <span class="selected@(idTab)"></span></a></div>
+                                            }
+                                            if (Request.QueryString["updateRel"] == "1" || !string.IsNullOrEmpty(Request.QueryString["updateRel-mtm"]))
+                                            {
+                                                <script>
+    $(document).ready(function(){
+        $(".selectAndReturn@(idTab)").click(function (e) {
+            e.preventDefault();
+            CustomAction($(this)[0], null,'@(idTab)',null, selectAndClose@(idTab));
+        });
+
+    });
+    function selectAndClose@(idTab)(){
+        @{
+        string actionExecuted = Request.QueryString["actionName"];
+
+        }
+        @if (!string.IsNullOrEmpty(actionExecuted))
+        {
+            <text>
+            @(actionExecuted) = true;
+            </text>
+        }
+        selectFromLookUpDome();
+
+    }
+                                                </script>
+        }
+    }
+    else
+    {
+        <!--<div id="Searchresult@(idTab )" data-toggle="modal-gallery" data-target="#modal-gallery"></div>-->
+        <div class="" id="Searchresult@(idTab )"></div>
+        }
+    </div><!-- /listContainer-->
+
+
+    <div class="noResults" id="noresults@(idTab )" style="display:none">
+        <p>@( GlobalMessages.NO_RESULTS)</p>
+    </div>
+</div><!-- /resultsAll-->
+
+
+
+<div class="@(classRow) list-foot">
+    <div class="@((((isPopUp || uiModel.IsMiniContainer) && uiModel.UIVersion == 1)?"": colName + "7")  )">
+        <div id="pagination@(idTab )" style=" display:none" class="@(paginationContainer)"></div>
+
+    </div>
+
+    <div class="@(((uiModel.IsMiniContainer && uiModel.UIVersion == 1)? "": colName + "5" ) )  text-right actions">
+        @{
+            ViewData["list-button-position"] = ButtonPosition.Foot;
+            Html.RenderPartial("ListButtons");
+        }
+
+
+    </div>
+
+</div><!--list-foot-->
+
+@Html.Raw(divsContainerEnd)
+
+</div><!--current-->
+</div>
+
+<script type="text/javascript">
+            @if (Request.QueryString["isLookUp"] == "true"){
+                <text>
+            function readyForSelectFromLookUp@(idTab )() {
+                $("#tableSearchresult@(idTab ) input.select").click(
+                        function () {
+                            callServerGet('@(VirtualPathUtility.ToAbsolute("~/"))@(uiModel.ModuleKey)/@(uiModel.EntitySetName)/GetByKeyJson/' + $(this).parents("tr").attr("safeKey"), selectFromLookUpDome);
+                        }
+                    );
+            }
+            </text>
+
+            }
+            function selectFromLookUpDome(data) {
+                @if (!string.IsNullOrEmpty(propReturn)){
+            <text>
+                if (typeof(@(propReturn )) != 'undefined'){
+                    @(propReturn ) = data;
+                }else{
+                }
+                window['@(propReturn )'] = data;
+                </text>
+
+		        }
+
+                $('#@( dialogId)').modal("hide");
+            }
+
+</script>
+
+
+
+@{     string extraParamsDel = "";
+    if (manyToMany)
+    {
+        extraParamsDel += "&ExtraParams=relationship:" + fromFk + "|relationshipValue:" + fkValue;
+    }
+    string message = GlobalMessages.CONFIRM_DELETE_MANY_QUESTION;
+
+    if (manyToMany)
+    {
+        message = GlobalMessages.CONFIRM_DELETE_RELATIONS;
+    }
+
+    Html.RenderPartial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "actionDeleteMany" + idTab, OnCloseFunction = "onUpdateListData" + idTab, ProxyId = "deleteProxyMany" + idTab, Message = message, StartUrl = VirtualPathUtility.ToAbsolute("~/") + "Messages/Confirm?areaName=" + uiModel.ModuleKey + "&controllerName=" + uiModel.EntitySetName + "&actionName=CustomActionExecute" + extraParamsDel });
+}
+</div>
+@if (isPopUp)
+{
+    @Html.Raw("</div>");
+}
+
+@if ((!string.IsNullOrEmpty(Request.QueryString["isLookUp"]) && !string.IsNullOrEmpty(Request.QueryString["propReturn"])) || manyToMany)
+{
+    if (isPopUp)
+    {
+        <div class="modal-footer list">
+            @{ Html.RenderPartial("ButtonLink", ButtonLinkModel.GetCancel()); }
+        </div>
+
+                    }
+                }
+</div>
+<script>
+    $(document).ready(function () {
+@if (System.Web.HttpContext.Current.User != null && System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true && SFSdotNet.Framework.My.Context.CurrentContext != null && (SFSdotNet.Framework.My.Context.CurrentContext.IsSuperAdmin() || SFSdotNet.Framework.My.Context.CurrentContext.IsModuleAdmin(uiModel.ModuleKey, SFSdotNet.Framework.My.Context.CurrentContext.Company)))
+    {
+        <text>
+        enableChangeTextUI("#@(idWindow)", "@(uiModel.ModuleKey)", "@(uiModel.EntityKey)", "@(uiModel.EntitySetName)", "@(System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName )", "@(Request.QueryString["usemode"])");
+        </text>
+    }
+        $("#@(idWindow) .list-header-col").click(function (e) {
+        SortBy@(idTab )($(this).attr("sortBy"), $(this).attr("property"), $(this)[0], e)
+        });
+
+});
+</script>

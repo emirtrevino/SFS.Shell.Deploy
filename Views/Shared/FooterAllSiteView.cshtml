@@ -1,0 +1,14 @@
+﻿@*@{  
+    var content = SFSdotNet.Framework.Security.BR.secContentsBR.Instance.GetBy(p=>p.TitleKey == "footerallsite").FirstOrDefault();
+    
+    if (content != null ){
+    <text>
+        @Html.Raw(content.LargeContent)
+    </text>        
+    }
+    
+}*@
+@{
+    
+   // Html.RenderPartial("FooterMenu");
+    }

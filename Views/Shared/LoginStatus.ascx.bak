@@ -1,0 +1,160 @@
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
+<div id="LoginEstatus" class="">
+    <%  
+        string overrideAppend = "";
+    string overrideModule = Request.QueryString["overrideModule"];
+    if (!string.IsNullOrEmpty(overrideModule))
+    {
+        overrideAppend = "?overrideModule=" + overrideModule;
+    }
+    else {
+        if (this.ViewContext.RouteData.DataTokens["area"] != null) {
+            if (this.ViewContext.RouteData.DataTokens["area"].ToString() != "SFSdotNetFrameworkSecurity") {
+                overrideAppend = "?overrideModule=" + this.ViewContext.RouteData.DataTokens["area"].ToString();
+            }
+        }
+    }
+    
+    
+     %>
+<%
+    int n = Session.Timeout;
+    int x = FormsAuthentication.Timeout.Seconds;
+    
+    if (Request.IsAuthenticated) {
+        
+        if (SFSdotNet.Framework.My.Context.CurrentContext.User == null)
+        { // puede ser nulo porque la sesion tiene un fin corto tiempo
+
+            if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+            {
+                string userId = ((FormsAuthenticationTicket)FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value)).Name;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    try
+                    {
+                        //Guid guidUser = new Guid(userId);
+                        SFSdotNet.Framework.My.Context.CurrentContext.User = SFSdotNet.Framework.Security.BR.secUsersBR.Instance.GetBy("UserName = \"" + userId + "\"", 1, 1, SFSdotNet.Framework.Security.BusinessObjects.secUser.PropertyNames.Email, "desc", "login").FirstOrDefault();
+                    }
+                    catch { 
+                        
+                    }
+                    if (SFSdotNet.Framework.My.Context.CurrentContext.User == null) {
+                        FormsAuthentication.SignOut();
+                        Session.Abandon();
+                        Response.Redirect(this.Request.RawUrl);
+                    
+                    }
+                }
+                //else
+                //{
+                //}
+            }
+        }
+        string displayName = "";
+        if (string.IsNullOrEmpty(SFSdotNet.Framework.My.Context.CurrentContext.User.DisplayName))
+            SFSdotNet.Framework.My.Context.CurrentContext.User.DisplayName = SFSdotNet.Framework.My.Context.CurrentContext.User.UserName ;
+        displayName = SFSdotNet.Framework.My.Context.CurrentContext.User.DisplayName ;
+        string imagename = "lp_sfs";
+        string messageLoginStatus = SFSdotNet.Framework.Security.Web.Mvc.Resources.AccountMessages.LOGIN_STATUS_PROVIDER + " SFS";      
+        if (SFSdotNet.Framework.My.Context.CurrentContext.User.secUser_LoginProviders.Count > 0) { 
+            //
+            imagename = string.Format("lp_{0}", SFSdotNet.Framework.My.Context.CurrentContext.User.secUser_LoginProviders.ToArray()[0].secLoginProvider.Name.Replace("!","").Replace(" ","").ToLower());
+            messageLoginStatus = SFSdotNet.Framework.Security.Web.Mvc.Resources.AccountMessages.LOGIN_STATUS_PROVIDER + " " + SFSdotNet.Framework.My.Context.CurrentContext.User.secUser_LoginProviders.ToArray()[0].secLoginProvider.Name;
+        }
+        string HostName = Request.Url.Host;
+        string port = "";
+        if (Request.Url.Port != 80)
+            port = string.Format(":{0}", Request.Url.Port.ToString());
+        
+        string emailForAvatar = "dasdaee@usnfdhfse.ref";
+        if (!string.IsNullOrEmpty(SFSdotNet.Framework.My.Context.CurrentContext.User.Email))
+            emailForAvatar = SFSdotNet.Framework.My.Context.CurrentContext.User.Email;
+
+        string urlImg = "";
+        if (SFSdotNet.Framework.My.Context.CurrentContext.User.ExistFile && SFSdotNet.Framework.My.Context.CurrentContext.User.GuidSecFile != Guid.Empty)
+        {
+            urlImg = SFSdotNet.Framework.ImageUtils.GetImageUrl("secFiles", "SFSdotNet.Framework.Security", "GuidFile", "FileData", "FileType", "FileSize", SFSdotNet.Framework.My.Context.CurrentContext.User.GuidSecFile.ToString(), "secFiles.secFileModel", 40, 40); 
+        }
+        else {
+
+            urlImg = SFSdotNet.Framework.Web.Mvc.GravatarImage.GetURL(emailForAvatar, 40, "g");
+        }
+%>
+
+    
+     <div class="navbar">
+        <div class="navbar-inner bgtrasparent noborder">
+         
+<ul class="nav pull-right"><li class="dropdown" id="fat-menu">
+
+<a  class="dropdown-toggle bgtrasparent"  data-toggle="dropdown"  role="button" id="dAccount" href="#"><img src="<%= urlImg %>" title="<%= emailForAvatar %>"  alt="<% = messageLoginStatus %>" border="0" /><b class="caret"></b></a>
+ <ul class="dropdown-menu" role="menu" aria-labelledby="dAccount">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1"  href="<%= ResolveUrl("~/")%>SFSdotNetFrameworkSecurity/MyAccount<%=overrideAppend %>"><i class="icon-user"></i> <%=GlobalMessages.MY_ACCOUNT %></a></li>
+                        
+     <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= ResolveUrl("~/")%>SFSdotNetFrameworkSecurity/Account/LogOff?returnUrl=<%=HttpContext.Current.Request.RawUrl %>"><i class=" icon-off"></i> <%= GlobalMessages.SIGN_OUT %></a></li>
+                      </ul>
+         </li></ul></div></div></div>
+          
+<%
+    }else{
+
+        string returnAppend = "";
+        if (!string.IsNullOrEmpty(Request.QueryString["ReturnUrl"])) {
+            returnAppend = "ReturnUrl=" + HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
+            
+        }
+        %>
+
+       
+     <div class="navbar">
+        <div class="navbar-inner bgtrasparent noborder">
+         
+<ul class="nav pull-right"><li class="dropdown" id="Li1">
+
+<a  class="dropdown-toggle bgtrasparent"  data-toggle="dropdown"  role="button" id="A1" href="#"><i class="cusicon-nopic-40"> </i><b class="caret"></b></a>
+ <ul class="dropdown-menu" role="menu" aria-labelledby="dAccount">
+
+                             <li role="presentation"><a role="menuitem" id="loginLink" tabindex="-1" href="<%= ResolveUrl("~/")%>SFSdotNetFrameworkSecurity/Public/Login?<%=returnAppend %>&<%=overrideAppend %>"><i class="icon-user"></i> <%=GlobalMessages.LOG_IN %></a></li>
+                             <li role="presentation"><a role="menuitem" id="registerLink" tabindex="-1" href="<%= ResolveUrl("~/")%>SFSdotNetFrameworkSecurity/Public/Register?<%=returnAppend %>&<%=overrideAppend %>"><i class="icon-plus-sign"></i> <%=GlobalMessages.SIGN_UP %></a></li>
+                        
+
+                      </ul>
+         </li></ul></div></div>
+
+
+
+<% }
+    SFSdotNet.Framework.Security.BusinessObjects.secCompany company = null;
+    bool existCompany =false;
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null)
+    {
+        company = SFSdotNet.Framework.My.Context.CurrentContext.Company;
+    }
+    if (company == null)
+    {
+        company = new SFSdotNet.Framework.Security.BusinessObjects.secCompany();
+        company.Name = GlobalMessages.NOT_DEFINED;
+        
+    }else{
+        existCompany =true;
+    }
+    
+     %>
+
+      <script>
+        //$(document).ready(function () {
+        //    $('#lnkCurrentCompany').jeegoocontext('mchangeCompany', { openBelowContext: true, event: 'click', ignoreHeightOverflow: true, submenuLeftOffset: -1, startTopOffset: -1, fadeIn: 0, autoHide: true });
+        //});
+</script>
+    
+
+<% if (existCompany)
+   {
+        %>
+
+<%} %>
+
+   

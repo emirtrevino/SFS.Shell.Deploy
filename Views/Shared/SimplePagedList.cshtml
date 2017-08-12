@@ -1,0 +1,404 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.SimplePagedListModel
+
+<script type='text/javascript'>
+    var _results@(Model.IdTab) = null;
+    var _totalResults = 0;
+    var _propertyKeyName@(Model.IdTab)  = null;
+
+    @{  System.Text.StringBuilder sbFields = new System.Text.StringBuilder();
+        UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+        foreach (var prop in uiModel.Properties.Where(p => p.IsHidden == false || p.GetData == true || (p.IsHidden == true && p.GetData == true) || (p.IsHidden == true && p.SystemProperty == SystemProperties.Identifier)))
+        {
+            if (prop.IsDynamic == false)
+            {
+                if (sbFields.Length > 0)
+                {
+                    sbFields.Append(",");
+                }
+
+                sbFields.Append(prop.PropertyName);
+            }
+        }
+
+        string usemode = "";
+        if (!string.IsNullOrEmpty(Request.QueryString["usemode"])){
+            usemode = "&usemode=" + Request.QueryString["usemode"];
+        }
+
+        string fk = "";
+        if (!string.IsNullOrEmpty(Request.QueryString["fk"]))
+        {
+            fk = "&fk=" + Request.QueryString["fk"];
+        }
+        if (!string.IsNullOrEmpty(Request.QueryString["fkValue"]))
+        {
+            fk = fk + "&fkValue=" + Request.QueryString["fkValue"];
+        }
+        string overrideModule = "";
+        if (!string.IsNullOrEmpty(Request.QueryString["overrideModule"]))
+        {
+            overrideModule = "&overrideModule=" + Request.QueryString["overrideModule"];
+        }
+
+        string propagateParams = SFSdotNet.Framework.Web.Utils.GetForPropagateExtraParams(this.Request.RequestContext, "popup", "id", "idTab", "fk", "fkValue", "usemode", "overrideModule");
+
+    }
+    @if (!string.IsNullOrEmpty(Model.JsonUrlGetData))
+    {
+        <text>
+    var currentPage@(Model.IdTab) = 1;
+    var pagesEndOrderBy@(Model.IdTab) = new Array();
+    function getResults@(Model.IdTab)(filter, page, pagesize, orderby, orderdir) {
+        var extraWithModel = "";
+        if (typeof(extraParamsList@(Model.IdTab)) != "undefined" && extraParamsList@(Model.IdTab).length > 0){
+            extraWithModel = "&params=" + extraParamsList@(Model.IdTab);
+        }
+        @if (uiModel.UIVersion == 1) {
+            <text>
+            $("#resultsAll@(Model.IdTab)").css("position", "relative");
+            </text>
+         }
+        var pageForRequest = page;
+        currentPage@(Model.IdTab) = page;
+        $.ajax({ url: _urlGet@(Model.IdTab) + '?filter=' + filter + '&page=' + pageForRequest + '&fields=@(sbFields.ToString())&pageSize=' + pagesize + '&orderBy=' + orderby  + '&orderDir=' + orderdir + extraWithModel + '@Html.Raw(usemode)@Html.Raw(fk)@Html.Raw(overrideModule)&@Html.Raw(propagateParams)',
+            success: function (data) {
+
+                    _results@(Model.IdTab) = data;
+
+
+                listResults@(Model.IdTab)(_results@(Model.IdTab));
+                @*currentPage@(Model.IdTab) = page;
+                    //$("#pagination@(Model.IdTab) span.current:contains('" + page + "')").attr("last-orderby", data[data.length - 1].CreatedDate);
+                // if ($.inArray())
+                var pageFinded = $.grep(pagesEndOrderBy@(Model.IdTab), function (e) {
+                    return e.page == page;
+                });
+                if (pageFinded.length > 0){
+                    pageFinded[0].end =  data[data.length - 1].CreatedDate;
+                }else{
+                    pagesEndOrderBy@(Model.IdTab).push({ page: page, end: data[data.length - 1].CreatedDate });
+
+                }*@
+
+                    addIntegratedSettingData@(Model.IdTab)();
+                },
+            cache:false,
+            dataType: 'json',
+            async: true
+        });
+        }
+
+    </text>
+
+      }else if (!string.IsNullOrEmpty(Model.UrlGetData)){
+          <text>
+    function getResults@(Model.IdTab)(url, filter, page, pagesize, extra) {
+        $.ajax({ url: '@(Model.UrlGetData)?filterText=' + filter + '&page=' + page + '&fields=@(sbFields.ToString())&pageSize=' + pagesize + extra + '@Html.Raw(usemode)@Html.Raw(fk)@Html.Raw(overrideModule)',
+            success: function (data) {
+                _results@(Model.UrlGetData) = data;
+
+            },
+            cache:false,
+            dataType: 'html',
+            async: true
+        })
+
+
+    }
+    </text>
+     }
+
+    var _urlGet@(Model.IdTab) = null;
+    var _urlCount@(Model.IdTab) = null;
+    @if (string.IsNullOrEmpty(Model.IdTab ))
+{
+    <text>
+    var viewen_extern_int_@(Model.IdTab) = null;
+    </text>
+ }
+    //var integrated_def_@Model.IdTab = null;
+    function getInfoIntegrationWithThis@(Model.IdTab)(data) {
+        for (var i = 0; i < _results@(Model.IdTab).length; i++) {
+            if (data != null ){
+                var integratedFinded = data.Items.filter(function(obj) { return obj.Name ==  _results@(Model.IdTab)[i].IntegrationID });
+                if (integratedFinded.length > 0){
+                    $('tr.itemData', $("#tableSearchresult@(Model.IdTab)")).eq(i).find("td.integrationMark").each(function () {
+                        $(this).append("<div class='dropdown'><a class='dropdown-toggle btn-mini btn btn-primary' role='button' id='int-dd-" + i + "' data-toggle='dropdown'  href='#'><i class='icon-resize-small icon-white' title='Integrado al catálogo actual'></i></a><ul class='dropdown-menu' role='menu' aria-labelledby='int-dd-" + i + "'><li role='presentation'><a href='#' class='lnk-Int-Details' integrationid='" + _results@(Model.IdTab)[i].IntegrationID + "' ><i class=' icon-resize-full'></i> Desintegrar del catálogo actual</a></li></ul></div>");
+
+                    });
+                }else{
+                    $('tr.itemData', $("#tableSearchresult@(Model.IdTab)")).eq(i).find("td.integrationMark").each(function () {
+                        $(this).append("<div class='dropdown'><a class='dropdown-toggle btn-mini btn' role='button' id='int-dd-" + i + "' data-toggle='dropdown'  href='#'><i class=' icon-resize-full' title='No integrado al catálogo actual'></i></a><ul class='dropdown-menu' role='menu' aria-labelledby='int-dd-" + i + "'><li role='presentation'><a href='#' class='lnk-Int-Add' intdef='' idother='" + _results@(Model.IdTab)[i].SafeKey + "' ><i class=' icon-resize-small'></i> Integrar a un registro existente del catálogo actual</a></li></ul></div>");
+                    });
+                }
+            }else{
+                if (_results@(Model.IdTab)[i].IntegrationID != null ){
+                    $('tr.itemData', $("#tableSearchresult@(Model.IdTab)")).eq(i).find("td.integrationMark").each(function () {
+                        $(this).append("<div class='dropdown'><a class='dropdown-toggle btn-mini btn btn-primary' role='button' id='int-dd-" + i + "' data-toggle='dropdown'  href='#'><i class='icon-resize-small icon-white' title='Integrado a otro registro'></i></a><ul class='dropdown-menu' role='menu' aria-labelledby='int-dd-" + i + "'><li role='presentation'><a href='#' class='lnk-Int-Details' integrationid='" + _results@(Model.IdTab)[i].IntegrationID + "' ><i class=' icon-resize-full'></i> Desintegrar del catálogo actual</a></li></ul></div>");
+
+                    });
+                }/*else{
+                    $('tr.itemData', $("#tableSearchresult@Model.IdTab")).eq(i).find("td.integrationMark").each(function () {
+                            $(this).append("<div class='dropdown'><a class='dropdown-toggle btn-mini btn' role='button' id='int-dd-" + i + "' data-toggle='dropdown'  href='#'><i class=' icon-resize-full' title='No integrado al catálogo actual'></i></a><ul class='dropdown-menu' role='menu' aria-labelledby='int-dd-" + i + "'><li role='presentation'><a href='#' class='lnk-Int-Add' intdef='' idother='" + _results@Model.IdTab[i].SafeKey + "' ><i class=' icon-resize-small'></i> Integrar a un registro existente del catálogo actual</a></li></ul></div>");
+                    });
+                }*/
+            }
+
+
+        }
+            @if (uiModel.PropertyForActions == null) {
+                <text>
+                $('#tableSearchresult@(Model.IdTab) .dropdown-toggle').dropdown();
+                </text>
+            }
+            prepareOpenDetailsIntegration@(Model.IdTab)();
+        }
+    var intAddResult@(Model.IdTab) = null;
+    function prepareOpenDetailsIntegration@(Model.IdTab)(){
+        $("#tableSearchresult@(Model.IdTab) .lnk-Int-Details").click(function (e) {
+            var url = "@SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/")SFSdotNetFrameworkSecurity/secSyncIntegrators/DetailsViewGen/" + $(this).attr("integrationid") + "?popup=1&dec=true";
+
+            e.preventDefault();
+            //waitActionComplete("EditDone");
+            openModal($("<a href='" + url + "'></a>"), function(){ refreshList@(Model.IdTab)(); });
+        });
+
+        $("#tableSearchresult@(Model.IdTab) .lnk-Int-Add").click(function (e) {
+            var  url = "@SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/")@this.Request.RequestContext.RouteData.DataTokens["area"]/@this.Request.RequestContext.RouteData.Values["controller"]/ListViewGen/?idTab=Int2Current&fk=&fkValue=&popup=1&isLookUp=true&forSelect=1&propReturn=intAddResult@Model.IdTab&dialogId=modal_intAddResult@Model.IdTab";
+            var intDef = "";
+            if (typeof(integrated_def_@Model.IdTab) != "undefined"){
+                intDef = integrated_def_@Model.IdTab;
+            }else{
+                $("#integrationLinks@(Model.IdTab)").closest(".dropdown").find(".lnk_integrated").each(function() {
+                    if ($(this).attr("int-module") == "@Model.ModuleKey" && $(this).attr("int-entname") == "@Model.EntityName"){
+                        intDef = $(this).attr("int-id");
+                    }
+                });
+            }
+            var idOther = $(this).attr("idother");
+            e.preventDefault();
+            //waitActionComplete("EditDone");
+            intAddResult@(Model.IdTab) = null;
+            openModal($("<a popupId='modal_intAddResult@Model.IdTab' href='" + url + "'></a>"), function(){
+                if (intAddResult@(Model.IdTab) != null ){
+                    callServerGet("@SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/")Features/SetIntegrationTwoItems?currentModule=@Model.ModuleKey&currentEntity=@Model.EntityName&currentId=" + intAddResult@(Model.IdTab).Id + "&intDef=" + intDef + "&otherId=" + idOther,
+                    function(data) {
+                        refreshList@(Model.IdTab)();
+
+                    });
+                }
+
+            });
+        });
+    }
+    function addIntegratedSettingData@(Model.IdTab)(){
+        if (typeof(viewen_extern_int_@(Model.IdTab)) != "undefined" && viewen_extern_int_@(Model.IdTab) == true){
+            $(".principal-cel-row.@(Model.IdTab)list-details").each(function() {
+                $(this).attr("href", $(this).attr("href").replace("@Model.ModuleKey", current_module).replace("@SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "controller")",current_entityset) + "&intDef=" + integrated_def_@(Model.IdTab));
+            });
+
+            var urlGetInfo  = "@SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/")Features/GetIntegratedInfoWithCurrent?currentEntity=@(Model.EntityName)&currentModule=@(Model.ModuleKey)&entity=" + viewen_extern_int_entity@(Model.IdTab) + "&module=" + viewen_extern_int_module@(Model.IdTab);
+            //_results@Model.IdTab
+            otherItemsArray = [];
+            for (var i = 0; i < _results@(Model.IdTab).length; i++) {
+                if (_results@(Model.IdTab)[i].IntegrationID != null ){
+                    otherItemsArray.push(_results@(Model.IdTab)[i].IntegrationID);
+                }
+            }
+            if (otherItemsArray.length > 0){
+            }else{
+            }
+            var itemsOther = { itemsOther: otherItemsArray.join("|").toString() };
+            callServerSend(urlGetInfo, itemsOther,  getInfoIntegrationWithThis@(Model.IdTab));
+
+        }else{
+            getInfoIntegrationWithThis@(Model.IdTab)(null);
+        }
+    }
+
+    function countResults@(Model.IdTab)(filter, jqElement) {
+        var extraParams = "";
+        if (typeof(extraParamsList@(Model.IdTab)) != "undefined" && extraParamsList@(Model.IdTab).length > 0){
+            extraParams = "&params=" + extraParamsList@(Model.IdTab);
+        }
+        $.ajax(
+            { url:_urlCount@(Model.IdTab) + "?filter=" + filter + '@Html.Raw(usemode)@Html.Raw(fk)@Html.Raw(overrideModule)' + extraParams + '&@Html.Raw(propagateParams)',
+                success: function (data) {
+                    if (typeof(onCountResults@(Model.IdTab)Done) != "undefined"){
+                        onCountResults@(Model.IdTab)Done(data, jqElement);
+                    }
+                        _totalResults = data;
+                        var optInit = getOptionsFromForm@(Model.IdTab)();
+
+                        $("#pagination@(Model.IdTab)").pagination(_totalResults, optInit);
+
+                    $("#results@(Model.IdTab)").html("<span id='realn@(Model.IdTab)'>" + _totalResults + "</span> @( GlobalMessages.RESULTS ) (<span id='seln@(Model.IdTab)'>0</span>&nbsp;@( GlobalMessages.SELECTED_S ))");
+                },
+                cache:false,
+                async: true
+            }
+            );
+
+    }
+
+    function SortBy@(Model.IdTab)(propertyOrderBy, propertyName, element, e){
+        e.preventDefault();
+        var orderDir ="asc";
+        if( $(element).attr("orderDir") != null){
+            if ($(element).attr("orderDir") == "asc"){
+                orderDir = "desc";
+                $(element).attr("orderDir", "desc");
+            }else{
+                orderDir = "asc";
+                $(element).attr("orderDir", "asc");
+            }
+        }else{
+            $(element).attr("orderDir", "asc")
+        }
+        if (orderDir == "asc")
+            currentOrderIco@(Model.IdTab) = "&darr;";
+        else
+            currentOrderIco@(Model.IdTab) = "&uarr;";
+
+        //        //getResults(1);
+        var optInit = getOptionsFromForm@(Model.IdTab)();
+        currentOrderBy@(Model.IdTab) = propertyOrderBy;
+        currentOrderDir@(Model.IdTab) = orderDir;
+        //$(".pagination@Model.IdTab").pagination(_totalResults, optInit);
+        refreshList@(Model.IdTab)(null, true);
+        //countResults@Model.IdTab("@Url.Encode(Model.Filter)"+"|"+searchText@Model.IdTab);
+        refreshForms();
+        $(".icoSort@(Model.IdTab)").html("");
+        $("#icoSort" + propertyName + "@(Model.IdTab)").html(currentOrderIco@(Model.IdTab));
+    }
+    var currentOrderBy@(Model.IdTab) = "@Model.SortBy";
+    var searchText@(Model.IdTab) = "";
+    var currentOrderDir@(Model.IdTab) = "@Model.SortDirection";
+    function getOptionsFromForm@(Model.IdTab)() {
+        var opt = { callback: pageselectCallback@(Model.IdTab) };
+
+        opt["items_per_page"] = @Model.PageSize;
+        opt["num_display_entries"] = 2;
+        opt["num_edge_entries"] = 1;
+        opt["prev_text"] = "@(GlobalMessages.PREVIOUS)";
+        opt["next_text"] = "@(GlobalMessages.NEXT)";
+        opt["orderBy"] =currentOrderBy@(Model.IdTab);
+        opt["orderDir"] = currentOrderDir@(Model.IdTab);
+        //opt["current_page"] = 1;
+        // Avoid html injections in this demo
+        var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }
+        $.each(htmlspecialchars, function (k, v) {
+            opt.prev_text = opt.prev_text.replace(k, v);
+            opt.next_text = opt.next_text.replace(k, v);
+        })
+        return opt;
+    }
+
+    var queryB@(Model.IdTab) = "";
+    var fullQueryList@(Model.IdTab) = "";
+    var fixedCustomFilter@(Model.IdTab) = "";
+
+    function refreshList@(Model.IdTab)(customFilter, preventCount, preventGet, preventFilterView, jqElement) {
+
+        //debugger;
+        queryB@(Model.IdTab) = "";
+        var filterview = "";
+        if (typeof(usingSavedFilter@(ViewData["idTab"])) != 'undefined'){
+            if (usingSavedFilter@(ViewData["idTab"]) == false){
+                queryB@(Model.IdTab) = "" + escape(GetFilter('filterT@(ViewData["idTab"])'));
+                if (queryB@(Model.IdTab).length > 0){
+                    queryB@(Model.IdTab) = "bs~" + queryB@(Model.IdTab);
+                }
+            }
+        }
+        if (preventFilterView != true ){
+            filterview = $(".currentFilterview@(Model.IdTab)").attr("query");
+        }else{
+
+
+        }
+        if (typeof(customFilter) != "undefined" && customFilter != null){
+
+            if (fixedCustomFilter@(Model.IdTab).length > 0 ){
+                customFilter =  customFilter  +" AND " + fixedCustomFilter@(Model.IdTab);
+            }else{
+                //customFilter = fixedCustomFilter@(Model.IdTab);
+            }
+
+            if (queryB@(Model.IdTab).length > 0){
+                queryB@(Model.IdTab) = queryB@(Model.IdTab) + ";cf~" + customFilter ;
+            }else{
+                queryB@(Model.IdTab) = "cf~" + customFilter ;
+
+            }
+        }else if (fixedCustomFilter@(Model.IdTab).length > 0 ){
+            if (queryB@(Model.IdTab).length > 0){
+                queryB@(Model.IdTab) = queryB@(Model.IdTab) + ";cf~" + fixedCustomFilter@(Model.IdTab) ;
+            }else{
+                queryB@(Model.IdTab) = "cf~" + fixedCustomFilter@(Model.IdTab) ;
+
+            }
+        }
+        if (typeof(filterview) != "undefined")
+        {
+            if (filterview != null ){
+                if (filterview.length > 0){
+                    if (queryB@(Model.IdTab).length > 0)
+                        queryB@(Model.IdTab) = queryB@(Model.IdTab) + ";sk~" + filterview ;
+                    else
+                        queryB@(Model.IdTab) = "sk~" + filterview ;
+                }
+            }
+        }
+
+        if (typeof(onList@(Model.IdTab)Binding) != "undefined"){
+            onList@(Model.IdTab)Binding();
+        }
+        if (_urlGet@(Model.IdTab) == null){
+            _urlGet@(Model.IdTab) = "@(Model.JsonUrlGetData)";
+        }
+        if (_urlCount@(Model.IdTab) == null){
+            _urlCount@(Model.IdTab) = "@Model.UrlGetCount";
+        }
+        @if (uiModel.UIVersion  == 1) {
+            <text>
+            $("#resultsAll@(Model.IdTab)").css("position", "relative");
+            </text>
+        }
+        //$("#resultsAll@Model.IdTab").block({overlayCSS:  {backgroundColor: 'transparent'},baseZ:2000, message: '<h1><img alt="" src="@Url.Content("~/")Content/ajax-loader.gif" /> @GlobalMessages.PROCESSING_PLEASE_WAIT</h1>',  css: { border: '3px solid #a00' } });
+        var staticFilter@(Model.IdTab) = '@Url.Encode(Model.Filter)';
+        var sepFF@(Model.IdTab) = "";
+        if (staticFilter@(Model.IdTab).length > 0 && queryB@(Model.IdTab).length > 0)
+            sepFF@(Model.IdTab) = " AND ";
+        fullQueryList@(Model.IdTab) = queryB@(Model.IdTab) + sepFF@(Model.IdTab) + staticFilter@(Model.IdTab) + '|'+ encodeURIComponent(searchText@(Model.IdTab));
+        if (preventGet !=  true){
+            getResults@(Model.IdTab)(queryB@(Model.IdTab) + sepFF@(Model.IdTab) +staticFilter@(Model.IdTab) +'|'+ encodeURIComponent(searchText@(Model.IdTab)), currentPage@(Model.IdTab), @(Model.PageSize), currentOrderBy@(Model.IdTab), currentOrderDir@(Model.IdTab));
+        }
+        if (preventCount != true )
+            countResults@(Model.IdTab)(fullQueryList@(Model.IdTab), jqElement);
+
+        if (preventCount != true ){
+            if (typeof(ShowSummaryFooterList@(Model.IdTab)) != "undefined"){
+                ShowSummaryFooterList@(Model.IdTab)( queryB@(Model.IdTab) + sepFF@(Model.IdTab) + staticFilter@(Model.IdTab) + '|'+ encodeURIComponent(searchText@(Model.IdTab)) );
+            }
+        }
+    }
+
+    $(document).ready(function () {
+
+        @{
+        bool pal = false;
+        if(!string.IsNullOrEmpty(Request.QueryString["pal"])) {
+            pal = Convert.ToBoolean(Request.QueryString["pal"]);
+        }
+        if (pal ==false) {
+           @Html.Raw(" refreshList" + Model.IdTab + "();");
+       }
+        }
+        refreshForms();
+
+    });
+</script>
+
+

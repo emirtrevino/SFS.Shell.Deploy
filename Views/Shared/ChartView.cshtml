@@ -1,0 +1,280 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.ChartModel
+<script>
+
+    function getUrlGet(url){
+        if (url !=null  && url.length > 0 ){
+            if (url.indexOf("?") == -1){
+                url = url + "?";
+            }
+            url = url + "&from=" + $("#DateFrom").val() + "&to=" + $("#DateTo").val();
+            return url;
+
+        }else{
+            return null;
+        }
+
+    }
+</script>
+@{
+    
+    if (Model.Type == SFSdotNet.Framework.Graph.ChartTypes.Historical)
+    {
+  <text>
+
+        <script class="code" type="text/javascript">
+    function refreshItem@(Model.Id)() {
+        var url = getUrlGet("@(Model.DataGraphUrl)");
+        if (url != null ){
+            //var grapData = ;
+            $.ajax({
+                cache: false,
+                url:url,
+                dataType: 'json',
+                data: null,
+                success: function (data) {
+                    fillChart@(Model.Id)(data);
+                    //alert( $("#chart@(Model.Id)").length);
+                    $("#chart@(Model.Id)").css("height", "300px");
+                    //
+                    // setTimeout(function () {
+                    $("#chart@(Model.Id) .jqplot-axis.jqplot-xaxis").css("bottom", "40px");
+                    $("#chart@(Model.Id) .jqplot-table-legend").css("top", "190px");
+                    // }, 1000);
+                    //$("#chart@(Model.Id)").css("height", "300px");
+                }
+            });
+        }
+    }
+
+    EventManager.Subscribe("dashboardRefresh", refreshItem@(Model.Id));
+    $(document).ready(function () {
+
+        refreshItem@(Model.Id)();
+
+    });
+    function fillChart@(Model.Id)(dataGraph) {
+        var data = dataGraph.Data;
+        var labels = new Array();
+        var datas = new Array();
+        for (var i = 0; i < dataGraph.DataLabels.length; i++) {
+            if (dataGraph.HideLabels == true){
+                labels.push("");
+            }else{
+                labels.push(dataGraph.DataLabels[i]);
+            }
+        }
+        for (var i = 0; i < data.length; i++) {
+            var dataItem = new Object();
+            dataItem.label = dataGraph.Series[i].Title;
+            dataItem.test  = "sdfs";
+            dataItem.axis = dataGraph.Series[i].Group;
+
+            if (dataGraph.Series[i].FillColor == null && dataGraph.Series[i].FillCssColor != null ){
+                dataGraph.Series[i].FillColor = getCSS("background-color", dataGraph.Series[i].FillCssColor);
+            }
+           
+
+            if ( dataGraph.Series[i].StrokeColor == null && dataGraph.Series[i].LineCssColor != null ){
+                dataGraph.Series[i].StrokeColor = getCSS("border-top-color", dataGraph.Series[i].LineCssColor);
+            }
+            dataItem.fillColor = dataGraph.Series[i].FillColor;
+            dataItem.strokeColor = dataGraph.Series[i].StrokeColor;
+            if (dataGraph.Series[i].PointColor == null && dataGraph.Series[i].PointCssColor != null ){
+                dataGraph.Series[i].PointColor =  getCSS("background-color", dataGraph.Series[i].PointCssColor);
+            }
+            dataItem.pointColor = dataGraph.Series[i].PointColor;
+            //dataItem.pointColor= "rgba(220,220,220,0)";
+           
+
+           /* dataItem.pointStrokeColor = "#fff",
+            dataItem.pointHighlightFill = "#fff",
+            dataItem.pointHighlightStroke = "rgba(220,220,220,1)",*/
+            dataItem.data = data[i];
+            datas.push(dataItem);
+        }
+        var lineChartData = {
+            labels : labels,
+            datasets : datas
+
+        }
+
+       
+        var ctx = document.getElementById("chart@(Model.Id)").getContext("2d");
+        
+        window.myLine = new Chart(ctx).MultiAxisLine(lineChartData, { omitXLabels: true,showLabels: false, scaleShowLabels: false, pointHitDetectionRadius: 1,  maintainAspectRatio: false, responsive: true, customTooltips: function(tooltip) {
+        var tooltipEl = $('#chartjs-tooltip');
+
+        if (!tooltip) {
+            tooltipEl.css({
+                opacity: 0
+            });
+            return;
+        }
+
+        tooltipEl.removeClass('above below');
+        tooltipEl.addClass(tooltip.yAlign);
+
+        var innerHtml = '';
+        var htmlTitle = [
+                 '<div class="chartjs-tooltip-section">',
+                 '	<span class="chartjs-tooltip-value">' + tooltip.title + '</span>',
+                 '</div>'
+        ].join('');
+        for (var i = tooltip.labels.length - 1; i >= 0; i--) {
+            innerHtml += [
+        		'<div class="chartjs-tooltip-section">',
+        		'	<span class="chartjs-tooltip-key" style="background-color:' + tooltip.legendColors[i].fill + '"></span>',
+        		'	<span class="chartjs-tooltip-value">' + (i == 0? bytesToSize(tooltip.labels[i])  : i == 1? tooltip.labels[i] + " agregados" : i == 2? tooltip.labels[i] + " modificados": i == 3? tooltip.labels[i] + " eliminados" : i == 4? tooltip.labels[i] + " mensajes":  tooltip.labels[i]) + 
+                '</span>',
+        		'</div>'
+            ].join('');
+        }
+        tooltipEl.html(htmlTitle + innerHtml);
+        
+        tooltipEl.css({
+            opacity: 1,
+            left: tooltip.chart.canvas.offsetLeft + tooltip.x + 'px',
+            top: tooltip.chart.canvas.offsetTop + tooltip.y + 'px',
+            fontFamily: tooltip.fontFamily,
+            fontSize: tooltip.fontSize,
+            fontStyle: tooltip.fontStyle,
+        });
+        tooltipEl.show();
+    }
+        });
+        
+
+    }
+            function bytesToSize(bytes) {
+                var sizes = ['Bytes acumulado', 'KB acumulado', 'MB acumulado', 'GB acumulado', 'TB acumulado'];
+                if (bytes == 0) return '0 Byte';
+                var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+                return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+            };
+</script>
+    
+    </text>
+    }
+    else if (Model.Type == SFSdotNet.Framework.Graph.ChartTypes.Pie && Model.DataForPie != null)
+    {
+        
+         
+        
+        <text>
+ <script class="code" type="text/javascript">
+    function refreshItem@(Model.Id)(){
+        var pieData = @Html.Raw(Model.DataForPie);
+
+
+
+        var ctx = document.getElementById("chart@(Model.Id)").getContext("2d");
+
+        // $("#chart@(Model.Id)").
+         myNewChart = new Chart(ctx).Pie(pieData);
+
+
+     }
+
+     $(document).ready(function () {
+         EventManager.Subscribe("dashboardRefresh", refreshItem@(Model.Id));
+        //var grapData =
+
+
+    });
+    </script>
+
+        </text>
+
+    }else if (Model.Type == SFSdotNet.Framework.Graph.ChartTypes.Donut)
+    {
+     <text>
+ <script class="code" type="text/javascript">
+     function refreshItem@(Model.Id)(){
+         var data = @Html.Raw(Model.DataForPie);
+
+
+         //var ctx = document.getElementById().getContext("2d");
+        // window.onload = function(){
+         var ctx = document.getElementById("chart@(Model.Id)").getContext("2d");
+         window.myDoughnut@(Model.Id) = new Chart(ctx).Doughnut(data, { responsive : false });
+         //};
+     }
+
+     $(document).ready(function () {
+         EventManager.Subscribe("dashboardRefresh", refreshItem@(Model.Id));
+         //var grapData =
+
+
+     });
+
+     $(document).ready(function () {
+
+         refreshItem@(Model.Id)();
+
+     });
+    </script>
+<div style="width:100%">
+    <div style="width: 100%; text-align:center;">
+        <canvas  id="chart@(Model.Id)" width="@(Model.Height)" height="@(Model.Height)" ></canvas><!--dsdf-->
+    </div>
+</div>
+
+        </text>
+        }else if (Model.Type == SFSdotNet.Framework.Graph.ChartTypes.PartialDonut)
+        {
+          var cssFillColor =   Model.DataGraph.Series.First().FillCssColor;
+
+        <text>
+            <input class="knob" data-text="%" data-readOnly="true"  id="partial@(Model.Id)" data-angleOffset=-125 data-angleArc=250 data-width="@(Model.Height)"  value="@(Model.DataGraph.Data.First().First())">
+        <script>
+            $(function() {
+                $("#partial@(Model.Id)").knob({ height: @(Model.Height), fgColor : getCSS("background-color", "@(cssFillColor)")});
+
+                $('#partial@(Model.Id)').trigger('configure', {
+                    'format': function (v) {
+                        return v + ' %';
+                    }
+                });
+                $('#partial@(Model.Id)').trigger('change');
+            });
+            $(document).ready(function () {
+                $("#@(Model.Id)_title").css("color", getCSS("background-color", "@(cssFillColor)"));
+
+            });
+        </script>
+                <span style="display:block; font-weight:bold;position:relative;top:-20px;" id="@(Model.Id)_title">@(Model.DataGraph.Series.First().Title)</span>
+        </text>
+    }
+}
+
+@*<div class="@Model.CssClass plot" id="chart@(Model.Id)" Style="height:250px; width:100%;"></div>*@
+@if (Model.Type != SFSdotNet.Framework.Graph.ChartTypes.PartialDonut && Model.Type != SFSdotNet.Framework.Graph.ChartTypes.Donut && Model.Type != SFSdotNet.Framework.Graph.ChartTypes.Bar)
+{
+<div style="width:100%">
+    <div style=" width: 100%;
+    height: @(Model.Height)px;">
+        <canvas width="700" height="300"  id="chart@(Model.Id)" style=" width:100%;height:100%;"></canvas>
+    </div>
+</div>
+
+<div id="chartjs-tooltip" style="display:none;"></div>
+
+}
+
+
+@if (Model.Type == SFSdotNet.Framework.Graph.ChartTypes.Bar)
+{
+    int iN = 0;
+    <div style="width:100%">
+        <div class="progress">
+@foreach (var serieData in Model.DataGraph.Data[0])
+{
+            <div class="bar @(Model.DataGraph.Series[iN].FillCssColor)" style="width: @(serieData)%;"></div>
+    iN++;
+}
+           
+
+        </div>
+    </div>
+
+}

@@ -1,0 +1,311 @@
+﻿@{
+    string content = "";
+    if (ViewData.Model != null)
+    {
+        content = ViewData.Model;
+    }
+    PropertyDefinition property = null;
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    if (ViewData["currentProperty"] != null)
+    {
+        property = (PropertyDefinition)ViewData["currentProperty"];
+        //if (ViewData["fieldMultiLine"] != null)
+        //{
+
+        //}
+    }
+    
+    var editorTypeProperty = property.CustomProperties.FirstOrDefault(p=> p.Name == "editor-type");
+    var editorType = "summernote";
+    if (editorTypeProperty != null)
+    {
+        editorType = editorTypeProperty.Value;
+    }
+ }
+<textarea style="display:none" id="@(ViewData.ModelMetadata.PropertyName )" rows='0' cols='0' name="@(ViewData.ModelMetadata.PropertyName )" class="field text medium">@(content )</textarea>
+
+@if (editorType == "summernote")
+{
+
+<div id="@(ViewData.ModelMetadata.PropertyName )_editor"></div>
+<script type="text/javascript">
+    if ($.summernote == undefined) {
+        @*Utilities.requireFiles([
+             "@(SFSdotNet.Framework.Web.Urls.Tag("//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.min.css"))",
+             "@(SFSdotNet.Framework.Web.Urls.Tag("//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/theme/monokai.min.css"))",
+             "@(SFSdotNet.Framework.Web.Urls.Tag("//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.min.js"))",
+             "@(SFSdotNet.Framework.Web.Urls.Tag("//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/xml/xml.min.js"))",
+             "@(SFSdotNet.Framework.Web.Urls.Tag("//cdnjs.cloudflare.com/ajax/libs/codemirror/2.36.0/formatting.min.js"))"
+
+
+             ],
+             function () {
+
+             });*@
+        //loadCSS("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css");
+        loadCSS("@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/Static/v2/summernote/summernote.css"))");
+        $.ajax({
+            url: "@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/Static/v2/summernote/summernote.js"))",
+        dataType: "script",
+        async: false
+    });
+    }
+
+    $('#@(ViewData.ModelMetadata.PropertyName )').summernote({
+        height: 200,
+        codemirror: { // codemirror options
+            theme: 'monokai'
+        },
+        onFocus: function(e) {
+            $(this).parents('.focushl').addClass("over");
+
+        },
+
+
+        //onEnter: function (e) {
+        //    // insert 2 br tags (if only one br tag is inserted the cursor won't go to the second line)
+        //    document.execCommand('insertHTML', false, '<br>');
+        //    // prevent the default behaviour of return key pressed
+        //    e.preventDefault();
+        //    return false;
+        //},
+        onInit: function (e) {
+            //$("#@(ViewData.ModelMetadata.PropertyName )_editor").summernote({ tabsize: @(property.Order) });
+            setTimeout(function () {
+            $('#dc@(ViewData.ModelMetadata.PropertyName ) .note-editable').attr("tabIndex", "@(property.Order)");
+
+            }, 1000);
+        },
+        onBlur: function (e) {
+            $(this).parents('.focushl').removeClass("over");
+           // $('#@(ViewData.ModelMetadata.PropertyName )').text($('#@(ViewData.ModelMetadata.PropertyName )_editor').code());
+        }
+
+
+    });
+    $('#@(ViewData.ModelMetadata.PropertyName )').on('change', function () {
+       // $('#@(ViewData.ModelMetadata.PropertyName )_editor').code($(this).text());
+
+    });
+    //$('#@(ViewData.ModelMetadata.PropertyName )_editor').code($('#@(ViewData.ModelMetadata.PropertyName )').text());
+    @*$(function () {
+        $('#@(ViewData.ModelMetadata.PropertyName )').closest("form").on("submit", function () {
+            setTimeout(function () {
+
+
+                $('#@(ViewData.ModelMetadata.PropertyName )').text($('#@(ViewData.ModelMetadata.PropertyName )_editor').code());
+                return true; // return false to cancel form action
+            }, 1000);
+        });
+    });*@
+
+    $('#@(ViewData.ModelMetadata.PropertyName )').summernote({
+  callbacks: {
+      onImageUpload: function (files) {
+          alert("assdsadas");
+      // upload image to server and create imgNode...
+      //$summernote.summernote('insertNode', imgNode);
+    }
+  }
+});
+
+// summernote.image.upload
+    $('#@(ViewData.ModelMetadata.PropertyName )').on('summernote.image.upload', function (we, files) {
+        alert("assdsadas");
+        // upload image to server and create imgNode...
+  //$summernote.summernote('insertNode', imgNode);
+});
+    $('#@(ViewData.ModelMetadata.PropertyName )').summernote({
+        callbacks: {
+            onPaste: function (e) {
+                console.log('Called event paste');
+            }
+        }
+    });
+
+    // summernote.paste
+    $('#@(ViewData.ModelMetadata.PropertyName )').on('summernote.paste', function (e) {
+        console.log('Called event paste');
+    });
+    $('#@(ViewData.ModelMetadata.PropertyName )').on('summernote.change', function (we, contents, $editable) {
+        console.log('summernote\'s content is changed.');
+    });
+</script>
+
+    @*$('#@(ViewData.ModelMetadata.PropertyName )_editor').summernote({
+        height: 200,
+        codemirror: { // codemirror options
+            theme: 'monokai'
+        },
+        onFocus: function(e) {
+            $(this).parents('.focushl').addClass("over");
+
+        },
+
+
+        //onEnter: function (e) {
+        //    // insert 2 br tags (if only one br tag is inserted the cursor won't go to the second line)
+        //    document.execCommand('insertHTML', false, '<br>');
+        //    // prevent the default behaviour of return key pressed
+        //    e.preventDefault();
+        //    return false;
+        //},
+        onInit: function (e) {
+            //$("#@(ViewData.ModelMetadata.PropertyName )_editor").summernote({ tabsize: @(property.Order) });
+            setTimeout(function () {
+            $('#dc@(ViewData.ModelMetadata.PropertyName ) .note-editable').attr("tabIndex", "@(property.Order)");
+
+            }, 1000);
+        },
+        onBlur: function (e) {
+            $(this).parents('.focushl').removeClass("over");
+            $('#@(ViewData.ModelMetadata.PropertyName )').text($('#@(ViewData.ModelMetadata.PropertyName )_editor').code());
+        }
+
+
+    });
+    $('#@(ViewData.ModelMetadata.PropertyName )').on('change', function () {
+        $('#@(ViewData.ModelMetadata.PropertyName )_editor').code($(this).text());
+
+    });
+    $('#@(ViewData.ModelMetadata.PropertyName )_editor').code($('#@(ViewData.ModelMetadata.PropertyName )').text());
+    $(function () {
+        $('#@(ViewData.ModelMetadata.PropertyName )').closest("form").on("submit", function () {
+            setTimeout(function () {
+
+
+                $('#@(ViewData.ModelMetadata.PropertyName )').text($('#@(ViewData.ModelMetadata.PropertyName )_editor').code());
+                return true; // return false to cancel form action
+            }, 1000);
+        });
+    });
+	</script>*@
+}else if(editorType == "ckeditor"){
+    var uploadUrlProperty = property.CustomProperties.FirstOrDefault(p => p.Name == "ckeditor-uploadUrl");
+    string uploadUrl =null;
+    if (uploadUrlProperty != null)
+    {
+        uploadUrl = uploadUrlProperty.Value;
+    }
+    if (!string.IsNullOrEmpty(uploadUrl))
+    {
+        if (!uploadUrl.Contains("?"))
+        {
+            uploadUrl = uploadUrl + "?";
+        }
+        uploadUrl = uploadUrl + "&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany + "&type=ckeditor-paste&controller=cmeFiles&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&propertyData=FileData&areaName=SFSMobiikPoc2&modelPathType=cmeFiles.cmeFileModel&filenamec=FileName&";
+    }
+    <text>
+<script>
+    if( typeof(CKEDITOR) == "undefined" )
+    {
+        var CKEDITOR_BASEPATH = '@(VirtualPathUtility.ToAbsolute("~/"))Static/v2/ckeditor/';
+        $.ajax({
+            url: "@(SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/ckeditor/ckeditor.js"))",
+        dataType: "script",
+        async: false
+        });
+       
+        //$.ajax({
+        //    url: "//cdn.ckeditor.com/4.6.2/standard/ckeditor.js",
+        //dataType: "script",
+        //async: false
+        //});
+       
+        //loadJS("//cdn.ckeditor.com/4.6.2/standard/ckeditor.js");
+
+    }
+
+</script>
+    <textarea style="display:none" id="@(ViewData.ModelMetadata.PropertyName )" rows='0' cols='0' name="@(ViewData.ModelMetadata.PropertyName )" class="field text medium">@(content )</textarea>
+
+<script>
+    $(document).ready(function () {
+
+@if (uploadUrl == null) {
+<text>
+            CKEDITOR.config.extraPlugins = "pastebase64";
+            </text>
+}
+@if (uploadUrl == null) {
+    <text>
+        CKEDITOR.replace('@(ViewData.ModelMetadata.PropertyName )', { enterMode: CKEDITOR.ENTER_BR });
+
+        </text>
+}else
+{
+    <text>
+
+        setTimeout(function () {
+            //CKEDITOR.plugins.add('simplebutton', {
+            //    init: function (editor) {
+            //        editor.addCommand('simplebutton', new CKEDITOR.dialogCommand('simplebuttonDialog'));
+            //        editor.ui.addButton('simplebutton', {
+            //            label: 'Simple Button',
+            //            command: 'simplebutton',
+            //            icon: this.path + 'images/simplebutton.png'
+            //        });
+            //        editor.on('doubleclick', function (evt) {
+            //            var element = evt.data.element;
+            //            if (element.hasClass('simple-button-plugin')) {
+            //                evt.data.dialog = 'simplebuttonDialog';
+            //            }
+            //        });
+
+            //        CKEDITOR.dialog.add('simplebuttonDialog', this.path + 'dialogs/simplebutton.js');
+            //    }
+            //});
+
+
+            CKEDITOR.replace('@(ViewData.ModelMetadata.PropertyName )',
+                        {
+                            allowedContent : true,
+                            colorButton_enableAutomatic:true,
+                            toolbar : 'Basic',
+                            extraPlugins: 'uploadimage,image2,menu,contextmenu',
+                            uploadUrl: '@Html.Raw(uploadUrl)',
+                            toolbarGroups: [
+                    '/',
+                    '/',
+                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                    { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
+                    { name: 'links', groups: ['links'] },
+                    { name: 'insert', groups: ['insert'] },
+                    { name: 'forms', groups: ['forms'] },
+                    { name: 'tools', groups: ['tools'] },
+                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                    { name: 'others', groups: ['others'] },
+                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+                    { name: 'styles', groups: ['styles'] },
+                    { name: 'colors', groups: ['colors'] },
+                    { name: 'about', groups: ['about'] },
+                    { name: 'zz', groups: ['zz'] }
+                            ],
+                            removeButtons : 'Subscript,Superscript,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Scayt,Unlink,Anchor,Italic,Strike,SpecialChar,HorizontalRule,Source,Blockquote,About',
+                            on: {
+                                instanceReady: function (evt) {
+                                    if (typeof (instanceReady@(property.PropertyName)) != "undefined") {
+                                        instanceReady@(property.PropertyName)(evt);
+                                    }
+                                }
+                            }
+
+                        });
+
+            //CKEDITOR.editorConfig = function (config) {
+            //    config.
+
+            //    config.removeButtons = 'Subscript,Superscript,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Scayt,Unlink,Anchor,Italic,Strike,SpecialChar,HorizontalRule,Source,Blockquote,About';
+            //};
+        }, 500);
+
+    </text>
+}
+
+    });
+
+</script>
+
+    </text>
+}

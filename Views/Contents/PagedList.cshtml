@@ -1,0 +1,199 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.VisualContentPage
+@{
+    Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+   
+    bool viewEdit = false;
+    bool canEdit = (bool)ViewData["canEdit"];
+    bool showItem = true;
+    if (Request.QueryString["viewEdit"] == "true" && canEdit)
+    {
+        viewEdit = true;
+    }
+    string createoredit = GlobalMessages.MODIFY_CONTENT;
+    string actionCreateOrEdit = "Edit";
+    string extraparams = "";
+}
+@{
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+
+    string controller = SFSdotNet.Framework.Web.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "controller");
+    string urlPath = controller + "/App/" + module.ModuleKey;
+    string contentType = Request.QueryString["type"];
+    if (controller.ToLower() == "features")
+    {
+        urlPath = controller;
+        contentType = "feature";
+    }
+    
+    }
+@section Title{
+	@Model.Title 
+}
+
+<div class="row-fluid">
+<div class="page-header">
+<h1> @Model.Title </h1>
+</div>
+    </div>
+
+@{
+    int from = 0;
+
+    int to = 0;
+
+    int page = (int)ViewData["page"];
+    int pageSize = (int)ViewData["pageSize"];
+    int nResults = (int)ViewData["nResults"];
+    //to = (page * (nResults / pageSize));
+    int totalPages = (nResults / pageSize);
+
+    int lastResultsAfterLastPage = (nResults - (totalPages * pageSize));
+    if (lastResultsAfterLastPage > 0)
+    {
+        totalPages += 1;
+    }
+    to = page * pageSize;
+    if (to > nResults)
+    {
+        to = nResults;
+    }
+    if (page > 1){
+        from = (pageSize * page) - (pageSize - 1);
+    }else{
+        from = 1;
+        to = 1 + (pageSize - 1);
+    }
+    
+    int? prev = null;
+    int? next = null;
+    
+    if (page == 1){
+        prev = null ;
+    }else{
+        prev = page -1;
+    }
+  
+    if (page >= totalPages){
+        next = null ;
+    }else{
+        next = page + 1;
+    }
+
+    string type = contentType;
+    
+    
+    }
+@if (nResults < 1000)
+{
+    <div class="row-fluid"> 
+        <div class="span12 text-center">
+            @*@((DateTime.UtcNow - (new DateTime(2015, 08, 29))).Days) días capturando,*@ 
+            @(nResults) de 1000, falta por capturar @( 1000 - nResults ) características
+        </div>
+    </div>
+}
+@if (viewEdit)
+{
+<div class="row-fluid">
+    <div class="span12">
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))@(controller)/Create?ReturnAfter=@(HttpUtility.UrlEncode(Request.Url.ToString()))&moduleKey=@(module.ModuleKey)&contentType=@(contentType)">Agregar nuevo contenido</a>
+    </div>
+</div>
+}        
+<div class="row-fluid paging">
+    <div class="span4 ">
+       
+         @if (prev  != null ){
+            <text>
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))@(urlPath)?type=@(type)&page=@(prev)" class="btn btn-primary"> <i class="icon-white icon-chevron-left "></i> @GlobalMessages.PREVIEW_PAGE </a>
+        </text>
+        }
+    </div>
+    <div class="span4 text-center" style="color:#CCCCCC;">
+        @(string.Format(GlobalMessages.FROM_TO_OF_RESULTS, from, to, nResults)) 
+    </div>
+    <div class="span4 text-right">
+        @if (next != null ){
+            <text>
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))@(urlPath)?type=@(type)&page=@(next)" class="btn btn-primary">@GlobalMessages.NEXT_PAGE <i class="icon-white icon-chevron-right"></i>
+            </text>
+        }
+        </a>
+</div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+@foreach (var content in Model.Contents)
+{
+    var draftText = "";
+    if (viewEdit) {
+        if (!content.Published) {
+            draftText = "(Borrador)";
+        }
+    }
+    <div class="media">
+     <a class="pull-left" href="#"> 
+    <img class="media-object" data-src="@content.ImageUrl" src="@content.ImageUrl" />
+  </a>
+  <div class="media-body">
+    <h4 class="media-heading">
+        
+        <span class="label">@draftText</span><a href="@(VirtualPathUtility.ToAbsolute("~/"))@(controller)/Id/@(content.Slug)_@(content.IdContent)"> @content.Title</a></h4>
+             @Html.Raw(content.Description)...<br />
+      @Html.Raw(content.FeatureTypeKey != null ? (content.FeatureTypeKey == "biz" ? "<span class='badge badge-success'>" + content.FeatureTypeTitle + "</span>" : "<span class='badge badge-warning'>" + content.FeatureTypeTitle + "</span>") : "")
+       <p style="text-align:right"><a href="@(VirtualPathUtility.ToAbsolute("~/"))@(controller)/Id/@(content.Slug)_@(content.IdContent)">@GlobalMessages.VIEW_MORE </a></p>
+@if (viewEdit)
+{
+        <p>
+    @if (content.PublishedDate != null && content.PublishedDate.Value > DateTime.UtcNow ){ //localizar fecha
+            <span><i class="icon-calendar"></i> Programado @(content.PublishedDate.Value.ToShortDateString()) ( en @(SFSdotNet.Framework.Globals.DateAndTime.DateDiff(SFSdotNet.Framework.Globals.DateInterval.Day, DateTime.UtcNow, content.PublishedDate.Value)) días</span> 
+    }
+@*            <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Edit/?id=@(content.GuidContent)&@(extraparams)"> <i class="icon-edit "></i> @GlobalMessages.MODIFY</a>*@
+
+
+        </p>
+}
+        </div>
+    </div>    
+}
+</div>
+    </div>
+
+<div class="row-fluid paging" >
+    <div class="span4 ">
+       
+         @if (prev  != null ){
+            <text>
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))@(urlPath)?type=@(type)&page=@(prev)" class="btn btn-primary"> <i class="icon-white icon-chevron-left "></i> @GlobalMessages.PREVIEW_PAGE </a>
+        </text>
+        }
+    </div>
+    <div class="span4 text-center" style="color:#CCCCCC;">
+        @(string.Format(GlobalMessages.FROM_TO_OF_RESULTS, from, to, nResults)) 
+    </div>
+    <div class="span4 text-right">
+        @if (next != null ){
+            <text>
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))@(urlPath)?type=@(type)&page=@(next)" class="btn btn-primary">
+            @GlobalMessages.NEXT_PAGE <i class="icon-white icon-chevron-right"></i>
+    </text>
+        }
+    </a>
+</div>
+</div>
+@if (canEdit ){
+    <div class="row-fluid">
+        <div class="span12 text-center">
+@if (Request.QueryString["viewEdit"] == "true")
+{
+    <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))@(urlPath)?type=@(contentType)"> <i class="icon-pencil "></i> Salir de modo edición </a>
+
+}
+else
+{
+    <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))@(urlPath)?type=@(contentType)&viewEdit=true"> <i class="icon-pencil "></i> Ver modo edición</a>
+
+}
+            </div>
+        </div>
+}    

@@ -1,0 +1,286 @@
+﻿
+@{
+    SFSdotNet.Framework.Web.Mvc.Models.UIModel uiModel = (SFSdotNet.Framework.Web.Mvc.Models.UIModel)ViewData["uiModel"] ;
+    string controlId = this.ViewData.ModelMetadata.PropertyName;
+    if (ViewData["cusprop"] != null)
+    {
+        controlId = ViewData["cusprop"].ToString();
+    }
+    var propertyValue = ViewData.ModelMetadata.Model;
+    var displayText = "";
+    if (ViewData["DisplayText"] != null){
+        displayText = ViewData["DisplayText"].ToString();
+    }
+
+
+    string classExtra = "";
+    if (uiModel.UIVersion == 2)
+    {
+        classExtra = " form-control ";
+    }
+    RouteValueDictionary lu =
+          (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "GlobalData").Single().Value;
+
+    SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes globalDataType = ((SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes)lu.FirstOrDefault(p => p.Key == "GlobalDataType").Value);
+
+
+    string urlLoad = "";
+
+    bool useMultiple = false;
+    if (uiModel.Properties.Count(p=> p.CustomProperties.Any(x=> x.Name == "GeoState")) > 1)
+    {
+        useMultiple = true;
+    }
+    string geogroup = "";
+    if (globalDataType == SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes.GeoCountry)
+    {
+        if (TempData["geogroup"] != null)
+        {
+            int geogroupLast = (int)TempData["geogroup"];
+            geogroupLast++;
+            TempData["geogroup"] = geogroupLast;
+
+            geogroup = "geogroup" + geogroupLast.ToString();
+        }
+        else
+        {
+            TempData["geogroup"] = 1;
+            geogroup = "geogroup1";
+
+        }
+
+    }
+
+
+    string selectorGeoCountry = "$(\".geocountry\")";
+    string selectorGeoState = "$(\".geostate\")";
+    string selectorGeoCity = "$(\".geocity\")";
+    if (useMultiple)
+    {
+        selectorGeoCountry = "$(this).closest(\"fieldset\").find(\".geocountry\")";
+        selectorGeoState = "$(this).closest(\"fieldset\").find(\".geostate\")";
+    }
+
+
+    }
+
+@{  <text>
+        <script>
+            var loadStatesSetted = false;
+            $(document).ready(function () {
+                if (jQuery().CascadingDropDown == undefined) {
+                    $.ajax({
+                        url: "@(VirtualPathUtility.ToAbsolute("~/"))scripts/jquery.cascadingDropDown.js",
+                        dataType: "script",
+                        async: false
+                    });
+                }
+            });
+        </script>
+    </text>
+    if (globalDataType == SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes.GeoCountry){
+
+        string guidCountry  = "";
+        if (propertyValue != null ){
+            guidCountry  = propertyValue.ToString();
+        }
+        if (string.IsNullOrEmpty(guidCountry)){
+           guidCountry = SFSdotNet.Framework.Web.Mvc.Globalization.DetectGuidOfCurrentUserCountry(System.Web.HttpContext.Current.Request);
+        }
+        if (!string.IsNullOrEmpty(guidCountry)){
+            var urlLoadStates = VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secGeoStates/GetByCountry";
+
+        <text>
+        <script>
+            var geoCountryValue = "@(guidCountry)";
+            $(document).ready(function () {
+               @* if ($(".geostate").length > 0) {
+                    //loadStatesSetted = true;
+                    $(".geostate").CascadingDropDown("#" + $(".geocountry").attr("id"), "@(urlLoadStates)",
+                                {
+                                    promptText: '-- @(GlobalMessages.SELECT) --',
+                            loadingText: '@(GlobalMessages.PROCESSING_PLEASE_WAIT)',
+                            postData: function () {
+                                return { GuidCountry: $(".geocountry").val() }
+                            },
+
+                            onLoading: function () {
+                                $(this).css("background-color", "#ff3");
+                            },
+                            onLoaded: function () {
+                                $(this).animate({ backgroundColor: '#ffffff' }, 300);
+
+
+                            }
+                        });
+                }*@
+                //$("#@(controlId)").val("@(guidCountry)");
+                //$("#@(controlId)").trigger("change");
+
+            });
+
+        </script>
+        </text>
+        }else{
+    <text>
+        <script>
+            var geoCountryValue = "";
+        </script>
+    </text>
+        
+        }
+    <text>
+        @(Html.DropDownListFor(m=>m, new SelectList((System.Collections.IEnumerable)(new SFSdotNet.Framework.Security.Web.Mvc.Controllers.secGeoCountriesController()).GetAllWithFavorites(Request), "GuidCountry", "Name"), "--" + GlobalMessages.SELECT + "--",  new {@class = (uiModel.IsMultiColumn ? "span12":"span8") + " geocountry " + classExtra, globalData="geo-country"}))
+    
+
+    </text>
+    }else if (globalDataType == SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes.GeoState){
+        urlLoad = VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secGeoStates/GetByCountry";
+
+         <text>
+        @(Html.DropDownListFor(m => m, new SelectList(new List<SelectListItem>()), "--" + GlobalMessages.SELECT + "--", new { @class = (uiModel.IsMultiColumn ? "span12" : "span8") + " geostate " + classExtra, globalData = "geo-state" }))
+
+ <script>
+
+     $(document).ready(function () {
+         var geoStateValue = "@(propertyValue)";
+
+         if ($(".geocountry").length > 0) {
+             if (loadStatesSetted == false) {
+
+                 $(".geostate").CascadingDropDown("#" + @(Html.Raw(selectorGeoCountry)).attr("id"), "@(urlLoad)",
+                            {
+                                promptText: '-- @(GlobalMessages.SELECT) --',
+                                loadingText: '@(GlobalMessages.PROCESSING_PLEASE_WAIT)',
+                                postData: function () {
+                                    return { GuidCountry: @(Html.Raw(selectorGeoCountry)).val() }
+                                },
+
+                                onLoading: function () {
+                                    $(this).css("background-color", "#ff3");
+                                },
+                                onLoaded: function () {
+                                    $(this).animate({ backgroundColor: '#ffffff' }, 300);
+@{
+    if (propertyValue != null){
+    <text>
+                                    $(this).val(geoStateValue);
+                                    $(this).trigger("change");
+    </text>
+    }
+}
+                                }
+                            });
+             }
+            //var useFieldset = false;
+
+            
+                 $(".geocountry").val(geoCountryValue);
+
+                 $(".geocountry").trigger("change");
+                
+
+         }
+            });
+        </script>
+    </text>
+    }else if(globalDataType == SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes.GeoCity ){
+         urlLoad = VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secGeoCities/GetByState";
+      <text>
+        
+        <select name="@(controlId)_level_1" id="@(controlId)_level_1" class="@((uiModel.IsMultiColumn ? "span6" : "span4") + " geocity" + classExtra)" globalData="geo-city">
+            <option value="">@("--" + GlobalMessages.SELECT + "--")</option>
+        </select>
+
+        <select name="@(controlId)_level_2" id="@(controlId)_level_2" class="@((uiModel.IsMultiColumn ? "span6" : "span4") + " geocity " + classExtra)" globalData="geo-city">
+            <option value="">@("--" + GlobalMessages.SELECT + "--")</option>
+        </select>
+
+        <input type="hidden"  name="@(controlId)" id="@(controlId)" value="" />
+
+@*        @(Html.DropDownList("Proxy_GeoCity_1", new SelectList(new List<SelectListItem>()), "--" + GlobalMessages.SELECT + "--",  new {@class = (uiModel.IsMultiColumn ? "span12":"span8") +" geocity", globalData="geo-city"}))*@
+        
+            <script>
+                function setCityValue_@(controlId)(guidCity) {
+                    var urlGetParent = "@(VirtualPathUtility.ToAbsolute("~/"))SFSdotNetFrameworkSecurity/secGeoCities/GetParentGuid?GuidCity=" + guidCity;
+                    callServerGet(urlGetParent, function (data) {
+                        var parentCity = false;
+                        if (data != null) {
+                            if (data.length > 0) {
+                                parentCity = true;
+                            }
+                        }
+                        if (parentCity) {
+                            $("#@(controlId)_level_1").val(data.toString());
+                            geoCityValueLevel2 = guidCity;
+                            $("#@(controlId)_level_1").trigger("change");
+                            //$("#@(controlId)_level_2").val(guidCity);
+
+                        } else {
+                            $("#@(controlId)_level_1").val(guidCity);
+
+                        }
+                    });
+                }
+                function getCitiesDoneLevel2(data) {
+                    $("#@(controlId)_level_2").html("<option value=''>@("--" + GlobalMessages.SELECT + "--")</option>");
+                    for (var i = 0; i < data.length; i++) {
+                        $("#@(controlId)_level_2").append("<option value='" + data[i].Value + "'>" + data[i].Text + "</option>");
+                    }
+                    if (typeof (geoCityValueLevel2) != "undefined") {
+                        $("#@(controlId)_level_2").val(geoCityValueLevel2);
+                    }
+                }
+            $(document).ready(function () {
+                $(".geostate").change(function () {
+                    if ($(this).val().length > 0) {
+                        var url = "@(VirtualPathUtility.ToAbsolute("~/"))SFSdotNetFrameworkSecurity/secGeoCities/GetByState?GuidState=" + $(this).val() + "&includeChilds=true";
+                        callServerGet(url, getCitiesDoneLevel2);
+                    }
+                });
+                $("#@(controlId)_level_1").on("change", function () {
+                    //alert($(this).val());
+                    $("#@(controlId)").val($(this).val());
+                    if ($(this).val().length > 0) {
+                        var url = "@(VirtualPathUtility.ToAbsolute("~/"))SFSdotNetFrameworkSecurity/secGeoCities/GetByCity?GuidCity=" + $(this).val();
+                        callServerGet(url, getCitiesDoneLevel2);
+                    }
+                });
+                $("#@(controlId)_level_2").change(function () {
+                   // alert($(this).val());
+                    $("#@(controlId)").val($(this).val());
+
+                });
+                var geoCityValue = "@(propertyValue)";
+                var geoCityValueLevel2 = "";
+                if ($(".geostate").length > 0){
+                    $("#@(controlId)_level_1").CascadingDropDown("#" + @(Html.Raw(selectorGeoState)).attr("id"), "@(urlLoad)",
+                        {
+                            postData: function () {
+                                return { GuidState: @(Html.Raw(selectorGeoState)).val() }
+                            },
+                            promptText: '-- @(GlobalMessages.SELECT) --',
+                            loadingText: '@(GlobalMessages.PROCESSING_PLEASE_WAIT)',
+                            onLoading: function () {
+                                $(this).css("background-color", "#ff3");
+                            },
+                            onLoaded: function () {
+                                $(this).animate({ backgroundColor: '#ffffff' }, 300);
+@{
+    if (propertyValue != null){
+    <text>
+                                setCityValue_@(controlId)(geoCityValue);
+    </text>
+    }
+}
+
+
+                            }
+                        });
+                }
+            });
+        </script>
+    </text>
+    }
+    
+}

@@ -1,0 +1,428 @@
+﻿@model dynamic
+
+@using SFSdotNet.Framework.Web.Mvc.Models
+@using SFSdotNet.Framework.Web.Mvc.Resources
+@using SFSdotNet.Framework.Web.Mvc.Helpers
+
+
+@{
+    UIModel uiModel = null;
+    //ViewData["uiModel"]
+    if (ViewData["uiModel"] != null)
+    {
+       
+
+        uiModel = (UIModel)ViewData["uiModel"];
+    }
+    else
+    {
+        uiModel = new UIModel();
+        uiModel.TitleForm = "";
+    }
+    //if (ViewData["module"] != null ){
+    //    Layout = SFSdotNet.Framework.My.Context.OverrideApplication.GetLayout(clean);
+    //}
+
+    string titleFormHtml = uiModel.TitleForm;
+    string titleFormText = uiModel.TitleForm;
+    int nMenuRelated = 0;
+    string defaultPropertyValue = null;
+    System.Text.StringBuilder sbDefault = new System.Text.StringBuilder();
+    foreach (var itemDef in uiModel.Properties.Where(p => p.IsDefaultProperty))
+    {
+        string _safename = itemDef.PropertyName;
+        if (itemDef.IsNavigationProperty && !itemDef.IsNavigationPropertyMany)
+        {
+            _safename = "Fk" + itemDef.PropertyName + "Text";
+        }
+        var valDef = Model.GetType().GetProperty(_safename).GetValue(Model, null);
+        if (valDef != null)
+        {
+            sbDefault.Append(valDef.ToString());
+        }
+    }
+    defaultPropertyValue = sbDefault.ToString();
+    if (!string.IsNullOrEmpty(defaultPropertyValue))
+    {
+        titleFormHtml = "<h1 lang=''>" + titleFormHtml + " <small> (" + defaultPropertyValue + ") </small></h1>";
+        titleFormText = titleFormText + " (" + defaultPropertyValue + ")";
+        //}else if (uiModel.ContextType == UIModelContextTypes.EditForm){
+    }
+    else {
+        titleFormHtml = "<h1 lang=''>" + titleFormHtml + "</h1>";
+
+    }
+
+}
+
+
+@section Title{
+
+    @(titleFormText)
+}
+
+
+
+
+
+@{
+    string idValue = "";
+    if (this.ViewContext.RequestContext.RouteData.Values["id"] != null)
+    {
+        idValue = "";// SFSdotNet.Framework.Entities.Utils.GetPropertyKey(this.ViewContext.RequestContext.RouteData.Values["id"].ToString().Replace("-","/"), "UserId");
+    }
+    SFSdotNet.Framework.Web.Mvc.Models.MenuTabModel menuModel = new SFSdotNet.Framework.Web.Mvc.Models.MenuTabModel();
+
+    menuModel.TabId = "tabs";
+    SFSdotNet.Framework.Web.Mvc.Models.MenuTabItemModel menuItem = null;
+
+    int nTab = 0;
+    string returnAfter = "";
+    int menuTab = 0;
+    int index = 0;
+    SFSdotNet.Framework.Globals.Security.Permission permission = new SFSdotNet.Framework.Globals.Security.Permission();
+
+    foreach (var item in uiModel.Properties.Where(p => p.IsNavigationPropertyMany && !p.ChildsInDetails && p.IsHidden == false))
+    {
+        bool isAllowed = true;
+        if (!string.IsNullOrEmpty(item.BusinessObjectKey))
+        {
+            string entityKeyWithUseMode = null;
+            if (!string.IsNullOrEmpty(item.UseMode))
+            {
+                entityKeyWithUseMode = item.BusinessObjectKey + "_" + item.UseMode;
+
+            }
+            else
+            {
+                entityKeyWithUseMode = item.BusinessObjectKey;
+
+            }
+            if (item.SkipSecurity == false)
+            {
+                isAllowed = permission.IsAllowed("r", entityKeyWithUseMode, uiModel.ModuleKey);
+            }
+        }
+
+        if (isAllowed == true)
+        {
+
+            menuItem = new SFSdotNet.Framework.Web.Mvc.Models.MenuTabItemModel();
+            menuItem.Text = item.PropertyDisplayName;
+            menuItem.Link = item.Link;
+            menuItem.PropertyName = item.PropertyName;
+            if (item.Order != null)
+            {
+                menuItem.Order = item.Order.Value;
+            }
+            menuItem.Index = index;
+            if (item.PreventPopUp)
+            {
+                menuItem.Link = menuItem.Link + "&preventPp=1&ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString() + (Request.Url.ToString().Contains("?") ? "" : "?") + (!string.IsNullOrEmpty(Request.QueryString["currentTabIndex"]) ? "" : "&currentTabIndex=" + menuItem.Index.ToString()));
+            }
+            menuModel.Items.Add(menuItem);
+            if (menuItem.Order >= 0)
+            {
+                nTab++;
+
+            }
+            else if (item.Order < 0)
+            {
+                menuTab++;
+            }
+            index++;
+        }
+    }
+    nMenuRelated = nTab;
+
+    string editOrDetails = "details";
+    if (uiModel.ContextType == UIModelContextTypes.EditForm)
+    {
+        editOrDetails = "edit";
+    }
+
+    string tabOnShowEvent = "shown";
+    if (uiModel.UIVersion == 2)
+    {
+        tabOnShowEvent = "shown.bs.tab";
+    }
+
+}
+
+
+
+<div class="@Config.GetValue("parentformclass").ToString() nomodal @(editOrDetails) ">
+    @if (uiModel.UIVersion == 1)
+    {
+        <div id="frmTitle-@(uiModel.Id)" class="page-header frmTitle">@Html.Raw(titleFormHtml)</div>
+    }
+    else if (uiModel.UIVersion == 2)
+    {
+        string classWrap = " wrapper page-heading ";
+        if (uiModel.NewUILayoutTool == true)
+        {
+            classWrap = " page-heading content-header";
+        }
+        if (uiModel.RemoveTitleSpace == false)
+        {
+        <div class="row border-bottom white-bg @(classWrap)">
+            <div class="col-lg-10">
+                @Html.Raw(titleFormHtml)
+                @if (uiModel.NewUILayoutTool == false)
+                {
+                    if (ViewData["breadcrumb"] != null)
+                    {
+                        @Html.Raw(ViewData["breadcrumb"].ToString())
+                    }
+                    else
+                    {
+                        @Html.MvcSiteMap().SiteMapPath()
+
+                    }
+                    <script>
+                        $("#ulbread").attr("class", "breadcrumb");
+                    </script>
+                }
+            </div>
+            
+            @if (uiModel.NewUILayoutTool == true)
+            {
+                if (ViewData["breadcrumb"] != null)
+                {
+                @Html.Raw(ViewData["breadcrumb"].ToString())
+                }
+                else
+                {
+                @Html.MvcSiteMap().SiteMapPath("SiteMapTemplate")
+
+                }
+                <script>
+                                    $("#ulbread").attr("class", "breadcrumb");
+                </script>
+            }
+
+            @*<div class="col-lg-2">
+            </div>*@
+        
+        </div>
+
+            }
+        }
+    <script>
+
+        var tabsOpened = new Array();
+        $(document).ready(function () {
+
+            $('#detTab').bind('@(tabOnShowEvent)', function (e) {
+                var now_tab = e.target;
+
+                if ($(now_tab).attr('url') != null) {
+
+                    var link = $(now_tab).attr('url');
+                    var div = $(now_tab).attr('href').substr(1);
+                    if (tabsOpened[div] != true) {
+                        tabsOpened[div] = true;
+                        $.ajax({
+
+                            url: link,
+                            dataType: "html",
+                            cache: false,
+                            success: function (data) {
+                                $("#" + div).html(data);
+                            }
+                        });
+                    }
+                } else {
+
+                }
+            });
+        });
+
+    </script>
+@if (uiModel.UIVersion == 2)
+{
+    if (uiModel.NewUILayoutTool == true)
+    {
+        @Html.Raw(@"
+    <div class="" wrapper-content animated fadeInRight content"">
+        <div class=""row"">
+            <div class=""col-lg-12"">
+                <div class="" box float-e-margins nav-tabs-custom"">
+    ");
+    }
+    else
+    {
+        @Html.Raw(@"
+    <div class=""wrapper wrapper-content animated fadeInRight"">
+        <div class=""row"">
+            <div class=""col-lg-12"">
+                <div class="" box float-e-margins"">
+    ");
+    }
+
+}
+                    @if ((nMenuRelated > 0 || menuTab > 0 || uiModel.CustomProperties.Count(p => p.Name == "Auditable" && p.Value == "true") == 1) )
+                    {
+                        <ul class="nav nav-tabs principal-form" id="detTab">
+                            @if (uiModel.RemoveMoreInfoRelated == false)
+                            {
+
+                            <li class="active"><a href="#home" data-toggle="tab">@GlobalMessages.PRINCIPAL_INFORMATION </a> </li>
+                            foreach (var menuOp in menuModel.Items.Where(p => p.Order < 0))
+                            {
+                                <li class=""><a lang=""  property="@(menuOp.PropertyName)" href="#menuAuto_@(menuOp.Index)" url="@(menuOp.Link)" data-toggle="tab">@menuOp.Text</a></li>
+                            }
+                                if (menuModel.Items.Where(p => p.Order >= 0).Count() > 0)
+                                {
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@GlobalMessages.MORE_INFORMATION_RELATED <span class="badge">@(nMenuRelated)</span> <b class="caret"></b></a>
+
+                                    <ul class="dropdown-menu">
+                                        @foreach (var menuOp in menuModel.Items.Where(p => p.Order >= 0))
+                                        {
+
+                                            <li class=""><a href="#menuAuto_@(menuOp.Index)" url="@(menuOp.Link)" data-toggle="tab">@menuOp.Text</a></li>
+                                        }
+                                    </ul>
+
+                                </li>
+                                }
+                            }
+                            @if (uiModel.CustomProperties.Count(p => p.Name == "Auditable" && p.Value == "true") == 1)
+                            {
+                                string iconClassHistory = "icon-time";
+                                if (uiModel.UIVersion == 2)
+                                {
+                                    iconClassHistory = "fa fa-history";
+                                }
+                                <li class="pull-right history">
+                                    <a href="#tabAuditChangessecUser" case="history" data-toggle="tab"><i class="@(iconClassHistory)"></i> @GlobalMessages.HISTORY</a>
+                                </li>
+
+                            }
+
+                        </ul>
+
+
+
+                        <div id="detTab" class="tab-content">
+                            <div class="tab-pane fade active in" id="home">
+                               
+                                @Html.Partial("GenericFormPartial")
+                            </div>
+
+                            @foreach (var menuOp in menuModel.Items)
+                            {
+                                string loadingHtml = "<div class=\"preloader-big\"></div>";
+                                if (uiModel.UIVersion == 2)
+                                {
+                                    loadingHtml = "<i class=\"fa fa-refresh fa-spin\"></i>";
+                                }
+                                <div class="tab-pane fade" id="menuAuto_@(menuOp.Index)">
+                                    @Html.Raw(loadingHtml)
+                                </div>
+
+                            }
+
+
+                            @if (uiModel.CustomProperties.Count(p => p.Name == "Auditable" && p.Value == "true") == 1)
+                            {
+
+                                <div id="tabAuditChangessecUser" class="tab-history tab-pane fade ">
+                                    <h2>@GlobalMessages.HISTORY_CHANGES</h2>
+                                    @{
+                                        ViewData["entityKey"] = uiModel.EntitySetName + "." + uiModel.EntityKey;//"<#= entityPluralName #>.<#= entity.Name #>";
+                                        ViewData["entityName"] = uiModel.EntityKey; // "<#= entity.Name #>";
+                                        ViewData["keys"] = uiModel.PropertyKeyName;// "GuidProvider";//; "<#= sbKeys.ToString() #>";
+                                        ViewData["moduleNS"] = uiModel.ModuleNamespace;  //"<#= entity.Model.Namespace #>";
+                                        ViewData["entitySet"] = uiModel.EntitySetName;
+                                        ViewData["usemode"] = uiModel.UseMode;
+
+                                    }
+                                    @Html.Partial("AuditChangesView")
+
+                                </div>
+                            }
+                        </div>
+
+                                        }
+                                        else
+                                        {
+                                            if (uiModel.WizardSteps.Count > 0)
+                                            {
+
+                                                @Html.Partial("GenericFormPartialWizard")
+                                            }
+                                            else
+                                            {
+                                                @Html.Partial("GenericFormPartial")
+
+                                            }
+                                        }
+
+
+@if (uiModel.UIVersion == 2) {
+   @Html.Raw(@"
+                </div>
+
+            </div>
+        </div>
+    </div>
+   ");
+}
+     
+</div>
+ 
+@section CustomScript{
+
+    <script>
+        @{
+if (SFSdotNet.Framework.My.Context.CurrentContext.Language == "es"){
+            <text>
+        //jQuery.timeago.settings.strings = { prefixAgo: "hace", prefixFromNow: "dentro de", suffixAgo: "", suffixFromNow: "", seconds: "menos de un minuto",  minute: "un minuto", minutes: "unos %d minutos", hour: "una hora", hours: "%d horas", day: "un día", days: "%d días", month: "un mes", months: "%d meses",  year: "un año", years: "%d años" };
+        </text>
+        }
+}
+    </script>
+    @if (uiModel.UIVersion == 2)
+    {
+
+    }
+    else { 
+        @Html.Raw(Html.HeaderResources("popup"))
+        @Html.Raw(Html.HeaderResources("datepicker"))
+        @Html.Raw(Html.HeaderResources("simplelist"))
+        @Html.Raw(Html.HeaderResources("pagination"))
+
+
+
+        @Html.Raw(Html.HeaderResources("richeditor"))
+        @Html.Raw(Html.HeaderResources("autocomplete"))
+
+    }
+
+    @{
+        if (uiModel.UIHeaderInclude)
+        {
+            var area = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "area");
+            if (!string.IsNullOrEmpty(area))
+            {
+                @Html.Partial("~/Areas/" + area + "/Views/" + uiModel.ControllerName + "/" + uiModel.HeaderPartialView + ".cshtml");
+
+            }
+            else
+            {
+                @Html.Partial("" + uiModel.HeaderPartialView + "");
+
+            }
+            ((UIModel)ViewData["uiModel"]).UIHeaderInclude = false;
+        }
+    }
+
+    @Html.Raw(uiModel.HeaderScript)
+
+}
+
+
+
+

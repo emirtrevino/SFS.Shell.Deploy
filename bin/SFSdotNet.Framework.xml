@@ -1,0 +1,3491 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SFSdotNet.Framework</name>
+    </assembly>
+    <members>
+        <member name="M:SFSdotNet.Framework.Apps.Integration.CompleteIntegration(System.Object,System.String,System.String,System.String,System.String,System.String,System.Guid,System.Guid,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            
+            </summary>
+            <param name="createdIntegratedEntity"></param>
+            <param name="propertyKeyName"> Nombre de la propiedad llave</param>
+            <param name="entityName"></param>
+            <param name="moduleKey"></param>
+            <param name="idObjectIntegration"></param>
+            <param name="idItemForIntegrate"></param>
+            <param name="contextRequest"></param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Apps.Integration.FillIntegratedProperties(System.String,System.String,System.Object,System.Guid,System.Guid,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            
+            </summary>
+            <param name="entityName"></param>
+            <param name="moduleKey">Modulo al que pertenece entity</param>
+            <param name="entity"></param>
+            <param name="idItem">Id de elemento externo</param>
+            <param name="idObjectIntegration">Id de Integración y objeto de negocio (Externo)</param>
+            <param name="contextRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Apps.Integration.GetIntegratedInfoWithCurrentDetails(System.Guid,System.Nullable{System.Guid},System.String,System.String,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Obtiene los otros registros integrados y también los no integrados vacíos, para que al seleccionar
+            uno No integrado permita seleccionar uno para integrar
+            </summary>
+            <param name="idCurrent"></param>
+            <param name="integrationID"></param>
+            <param name="entityKey"></param>
+            <param name="moduleKey"></param>
+            <param name="contextRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.BR.ServiceBase.HandleException(System.Exception)">
+            <summary>
+            Maneja la excepción de acuerdo al contexto de donde ocurre
+            </summary>
+            <param name="ex">Excepción a manejar</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.BR.ServiceBase.NewException(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="extraInfo"></param>
+        </member>
+        <member name="T:SFSdotNet.Framework.BR.App_LocalResources.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.BR.App_LocalResources.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.BR.App_LocalResources.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.BR.App_LocalResources.Resources.ERROR_GENERAL_BR">
+            <summary>
+              Looks up a localized string similar to Error general en las reglas de negocio.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.BusinessObjects.Resources.GlobalMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.BusinessObjects.Resources.GlobalMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.BusinessObjects.Resources.GlobalMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.BusinessObjects.Resources.GlobalMessages.ErrorMessage">
+            <summary>
+              Looks up a localized string similar to Ha habido un error en el sistema, por favor contáctanos para poder ayudarte con esta operación..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.BusinessObjects.Resources.GlobalMessages.ErrorTitle">
+            <summary>
+              Looks up a localized string similar to Error del sistema.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.BusinessObjects.Resources.GlobalMessages.OkTitle">
+            <summary>
+              Looks up a localized string similar to Hecho.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Configuration.ConfigurationSettings.GetConnectionString(System.String,System.String)">
+            <summary>
+            Obtiene el connection string del Appication module
+            </summary>
+            <param name="connectionString"></param>
+            <param name="applicationModule">Nombre del Application module (Ex. 'MyCompany.MyModule1')</param>
+            <returns>ConnectionString</returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.Context.Application.ApplicationType">
+            <summary>
+            Tipo de aplicación en que se esta ejecutando el actual contexto
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Context.ApplicationTypes">
+            <summary>
+            Tipos de aplicación soportadas por el contexto
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Data.DAFacade.App_LocalResources.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Data.DAFacade.App_LocalResources.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Data.DAFacade.App_LocalResources.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Data.DAFacade.App_LocalResources.Resources.ENTITY_IS_NOT_RECYCLABLE">
+            <summary>
+              Looks up a localized string similar to La entidad de la tabla {0} no es reciclable.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Data.DAFacade.App_LocalResources.Resources.ERROR_GENERAL_DA">
+            <summary>
+              Looks up a localized string similar to Error general en el acceso a datos.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Data.DAFacade.App_LocalResources.Resources.ITEM_NOT_FOUND">
+            <summary>
+              Looks up a localized string similar to Registro no encontrado.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Validation.Check">
+             <summary>
+             Design By Contract Checks.
+             
+             Each method generates an exception or
+             a trace assertion statement if the contract is broken.
+             </summary>
+             <remarks>
+             This example shows how to call the Require method.
+             <code>
+             public void Test(int x)
+             {
+             	try
+             	{
+            			Check.Require(x > 1, "x must be > 1");
+            		}
+            		catch (System.Exception ex)
+            		{
+            			Console.WriteLine(ex.ToString());
+            		}
+            	}
+             </code>
+            
+             You can direct output to a Trace listener. For example, you could insert
+             <code>
+             Trace.Listeners.Clear();
+             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+             </code>
+             
+             or direct output to a file or the Event Log.
+             
+             (Note: For ASP.NET clients use the Listeners collection
+             of the Debug, not the Trace, object and, for a Release build, only exception-handling
+             is possible.)
+             </remarks>
+             
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Require(System.Boolean,System.String)">
+            <summary>
+            Precondition check - should run regardless of preprocessor directives.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Require(System.Boolean,System.String,System.Exception)">
+            <summary>
+            Precondition check - should run regardless of preprocessor directives.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Require(System.Boolean)">
+            <summary>
+            Precondition check - should run regardless of preprocessor directives.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Ensure(System.Boolean,System.String)">
+            <summary>
+            Postcondition check.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Ensure(System.Boolean,System.String,System.Exception)">
+            <summary>
+            Postcondition check.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Ensure(System.Boolean)">
+            <summary>
+            Postcondition check.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Invariant(System.Boolean,System.String)">
+            <summary>
+            Invariant check.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Invariant(System.Boolean,System.String,System.Exception)">
+            <summary>
+            Invariant check.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Invariant(System.Boolean)">
+            <summary>
+            Invariant check.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Assert(System.Boolean,System.String)">
+            <summary>
+            Assertion check.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Assert(System.Boolean,System.String,System.Exception)">
+            <summary>
+            Assertion check.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.Check.Assert(System.Boolean)">
+            <summary>
+            Assertion check.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Validation.Check.UseAssertions">
+            <summary>
+            Set this if you wish to use Trace Assert statements 
+            instead of exception handling. 
+            (The Check class uses exception handling by default.)
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Validation.Check.UseExceptions">
+            <summary>
+            Is exception handling being used?
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Validation.DesignByContractException">
+            <summary>
+            Exception raised when a contract is broken.
+            Catch this exception type if you wish to differentiate between 
+            any DesignByContract exception and other runtime exceptions.
+             
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Validation.PreconditionException">
+            <summary>
+            Exception raised when a precondition fails.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.PreconditionException.#ctor">
+            <summary>
+            Precondition Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.PreconditionException.#ctor(System.String)">
+            <summary>
+            Precondition Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.PreconditionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Precondition Exception.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Validation.PostconditionException">
+            <summary>
+            Exception raised when a postcondition fails.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.PostconditionException.#ctor">
+            <summary>
+            Postcondition Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.PostconditionException.#ctor(System.String)">
+            <summary>
+            Postcondition Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.PostconditionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Postcondition Exception.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Validation.InvariantException">
+            <summary>
+            Exception raised when an invariant fails.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.InvariantException.#ctor">
+            <summary>
+            Invariant Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.InvariantException.#ctor(System.String)">
+            <summary>
+            Invariant Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.InvariantException.#ctor(System.String,System.Exception)">
+            <summary>
+            Invariant Exception.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Validation.AssertionException">
+            <summary>
+            Exception raised when an assertion fails.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.AssertionException.#ctor">
+            <summary>
+            Assertion Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.AssertionException.#ctor(System.String)">
+            <summary>
+            Assertion Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Validation.AssertionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Assertion Exception.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.UUID.NewSequential">
+            <summary>
+            Generate a new <see cref="T:System.Guid"/> using the comb algorithm.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Utilities.SerializedFormat">
+            <summary>
+            Serialization format types.
+            </summary>
+        </member>
+        <member name="F:SFSdotNet.Framework.Utilities.SerializedFormat.Binary">
+            <summary>
+            Binary serialization format.
+            </summary>
+        </member>
+        <member name="F:SFSdotNet.Framework.Utilities.SerializedFormat.Document">
+            <summary>
+            Document serialization format.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Load(System.String)">
+            <summary>
+            Loads an object from an XML file in Document format.
+            </summary>
+            <example>
+            <code>
+            serializableObject = ObjectXMLSerializer&lt;SerializableObject&gt;.Load(@"C:\XMLObjects.xml");
+            </code>
+            </example>
+            <param name="path">Path of the file to load the object from.</param>
+            <returns>Object loaded from an XML file in Document format.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Load(System.String,SFSdotNet.Framework.Utilities.SerializedFormat)">
+            <summary>
+            Loads an object from an XML file using a specified serialized format.
+            </summary>
+            <example>
+            <code>
+            serializableObject = ObjectXMLSerializer&lt;SerializableObject&gt;.Load(@"C:\XMLObjects.xml", SerializedFormat.Binary);
+            </code>
+            </example>		
+            <param name="path">Path of the file to load the object from.</param>
+            <param name="serializedFormat">XML serialized format used to load the object.</param>
+            <returns>Object loaded from an XML file using the specified serialized format.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Load(System.String,System.Type[])">
+            <summary>
+            Loads an object from an XML file in Document format, supplying extra data types to enable deserialization of custom types within the object.
+            </summary>
+            <example>
+            <code>
+            serializableObject = ObjectXMLSerializer&lt;SerializableObject&gt;.Load(@"C:\XMLObjects.xml", new Type[] { typeof(MyCustomType) });
+            </code>
+            </example>
+            <param name="path">Path of the file to load the object from.</param>
+            <param name="extraTypes">Extra data types to enable deserialization of custom types within the object.</param>
+            <returns>Object loaded from an XML file in Document format.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Load(System.String,System.IO.IsolatedStorage.IsolatedStorageFile)">
+            <summary>
+            Loads an object from an XML file in Document format, located in a specified isolated storage area.
+            </summary>
+            <example>
+            <code>
+            serializableObject = ObjectXMLSerializer&lt;SerializableObject&gt;.Load("XMLObjects.xml", IsolatedStorageFile.GetUserStoreForAssembly());
+            </code>
+            </example>
+            <param name="fileName">Name of the file in the isolated storage area to load the object from.</param>
+            <param name="isolatedStorageDirectory">Isolated storage area directory containing the XML file to load the object from.</param>
+            <returns>Object loaded from an XML file in Document format located in a specified isolated storage area.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Load(System.String,System.IO.IsolatedStorage.IsolatedStorageFile,SFSdotNet.Framework.Utilities.SerializedFormat)">
+            <summary>
+            Loads an object from an XML file located in a specified isolated storage area, using a specified serialized format.
+            </summary>
+            <example>
+            <code>
+            serializableObject = ObjectXMLSerializer&lt;SerializableObject&gt;.Load("XMLObjects.xml", IsolatedStorageFile.GetUserStoreForAssembly(), SerializedFormat.Binary);
+            </code>
+            </example>		
+            <param name="fileName">Name of the file in the isolated storage area to load the object from.</param>
+            <param name="isolatedStorageDirectory">Isolated storage area directory containing the XML file to load the object from.</param>
+            <param name="serializedFormat">XML serialized format used to load the object.</param>        
+            <returns>Object loaded from an XML file located in a specified isolated storage area, using a specified serialized format.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Load(System.String,System.IO.IsolatedStorage.IsolatedStorageFile,System.Type[])">
+            <summary>
+            Loads an object from an XML file in Document format, located in a specified isolated storage area, and supplying extra data types to enable deserialization of custom types within the object.
+            </summary>
+            <example>
+            <code>
+            serializableObject = ObjectXMLSerializer&lt;SerializableObject&gt;.Load("XMLObjects.xml", IsolatedStorageFile.GetUserStoreForAssembly(), new Type[] { typeof(MyCustomType) });
+            </code>
+            </example>		
+            <param name="fileName">Name of the file in the isolated storage area to load the object from.</param>
+            <param name="isolatedStorageDirectory">Isolated storage area directory containing the XML file to load the object from.</param>
+            <param name="extraTypes">Extra data types to enable deserialization of custom types within the object.</param>
+            <returns>Object loaded from an XML file located in a specified isolated storage area, using a specified serialized format.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Save(`0,System.String,System.Boolean)">
+            <summary>
+            Saves an object to an XML file in Document format.
+            </summary>
+            <example>
+            <code>        
+            SerializableObject serializableObject = new SerializableObject();
+            
+            ObjectXMLSerializer&lt;SerializableObject&gt;.Save(serializableObject, @"C:\XMLObjects.xml");
+            </code>
+            </example>
+            <param name="serializableObject">Serializable object to be saved to file.</param>
+            <param name="path">Path of the file to save the object to.</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Save(`0,System.String,SFSdotNet.Framework.Utilities.SerializedFormat)">
+            <summary>
+            Saves an object to an XML file using a specified serialized format.
+            </summary>
+            <example>
+            <code>
+            SerializableObject serializableObject = new SerializableObject();
+            
+            ObjectXMLSerializer&lt;SerializableObject&gt;.Save(serializableObject, @"C:\XMLObjects.xml", SerializedFormat.Binary);
+            </code>
+            </example>
+            <param name="serializableObject">Serializable object to be saved to file.</param>
+            <param name="path">Path of the file to save the object to.</param>
+            <param name="serializedFormat">XML serialized format used to save the object.</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Save(`0,System.String,System.Type[])">
+            <summary>
+            Saves an object to an XML file in Document format, supplying extra data types to enable serialization of custom types within the object.
+            </summary>
+            <example>
+            <code>        
+            SerializableObject serializableObject = new SerializableObject();
+            
+            ObjectXMLSerializer&lt;SerializableObject&gt;.Save(serializableObject, @"C:\XMLObjects.xml", new Type[] { typeof(MyCustomType) });
+            </code>
+            </example>
+            <param name="serializableObject">Serializable object to be saved to file.</param>
+            <param name="path">Path of the file to save the object to.</param>
+            <param name="extraTypes">Extra data types to enable serialization of custom types within the object.</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Save(`0,System.String,System.IO.IsolatedStorage.IsolatedStorageFile)">
+            <summary>
+            Saves an object to an XML file in Document format, located in a specified isolated storage area.
+            </summary>
+            <example>
+            <code>        
+            SerializableObject serializableObject = new SerializableObject();
+            
+            ObjectXMLSerializer&lt;SerializableObject&gt;.Save(serializableObject, "XMLObjects.xml", IsolatedStorageFile.GetUserStoreForAssembly());
+            </code>
+            </example>
+            <param name="serializableObject">Serializable object to be saved to file.</param>
+            <param name="fileName">Name of the file in the isolated storage area to save the object to.</param>
+            <param name="isolatedStorageDirectory">Isolated storage area directory containing the XML file to save the object to.</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Save(`0,System.String,System.IO.IsolatedStorage.IsolatedStorageFile,SFSdotNet.Framework.Utilities.SerializedFormat)">
+            <summary>
+            Saves an object to an XML file located in a specified isolated storage area, using a specified serialized format.
+            </summary>
+            <example>
+            <code>        
+            SerializableObject serializableObject = new SerializableObject();
+            
+            ObjectXMLSerializer&lt;SerializableObject&gt;.Save(serializableObject, "XMLObjects.xml", IsolatedStorageFile.GetUserStoreForAssembly(), SerializedFormat.Binary);
+            </code>
+            </example>
+            <param name="serializableObject">Serializable object to be saved to file.</param>
+            <param name="fileName">Name of the file in the isolated storage area to save the object to.</param>
+            <param name="isolatedStorageDirectory">Isolated storage area directory containing the XML file to save the object to.</param>
+            <param name="serializedFormat">XML serialized format used to save the object.</param>        
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.ObjectXMLSerializer`1.Save(`0,System.String,System.IO.IsolatedStorage.IsolatedStorageFile,System.Type[])">
+            <summary>
+            Saves an object to an XML file in Document format, located in a specified isolated storage area, and supplying extra data types to enable serialization of custom types within the object.
+            </summary>
+            <example>
+            <code>
+            SerializableObject serializableObject = new SerializableObject();
+            
+            ObjectXMLSerializer&lt;SerializableObject&gt;.Save(serializableObject, "XMLObjects.xml", IsolatedStorageFile.GetUserStoreForAssembly(), new Type[] { typeof(MyCustomType) });
+            </code>
+            </example>		
+            <param name="serializableObject">Serializable object to be saved to file.</param>
+            <param name="fileName">Name of the file in the isolated storage area to save the object to.</param>
+            <param name="isolatedStorageDirectory">Isolated storage area directory containing the XML file to save the object to.</param>
+            <param name="extraTypes">Extra data types to enable serialization of custom types within the object.</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.Converter.ConvertSize(System.Double,System.String)">
+            <summary>
+            Function to convert the given bytes to either Kilobyte, Megabyte, or Gigabyte
+            </summary>
+            <param name="bytes">Double -> Total bytes to be converted</param>
+            <param name="type">String -> Type of conversion to perform</param>
+            <returns>Int32 -> Converted bytes</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.Converter.CalculateSquare(System.Int32)">
+            <summary>
+            Function to calculate the square of the provided number
+            </summary>
+            <param name="number">Int32 -> Number to be squared</param>
+            <returns>Double -> THe provided number squared</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SFSdotNet.Framework.Utilities.Converter.CalculateCube(System.Int32)">
+            <summary>
+            Function to calculate the cube of the provided number
+            </summary>
+            <param name="number">Int32 -> Number to be cubed</param>
+            <returns>Double -> THe provided number cubed</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:SFSdotNet.Framework.Entities.App_LocalResources.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Entities.App_LocalResources.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Entities.App_LocalResources.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Entities.App_LocalResources.Resources.ENTITY_NOT_IS_RECYCLABLE">
+            <summary>
+              Looks up a localized string similar to La entidad no es reciclable.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Entities.Base.EntityInfoBase.UseUniqueKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Base.EntityInfoBase.PrepareForExample">
+            <summary>
+            Habilita las propiedades para hacer una búsqueda a partir de este objeto.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Entities.Base.Strings_Validation">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Entities.Base.Strings_Validation.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Entities.Base.Strings_Validation.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Entities.Base.Strings_Validation.REQUIRED_FIELD">
+            <summary>
+              Looks up a localized string similar to The {0} is required.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions">
+            <summary>
+            Extension methods for DbContext to persist trackable entities.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.ApplyChanges(System.Data.Entity.DbContext,SFSdotNet.Framework.Common.Entities.ITrackable)">
+            <summary>
+            Update entity state on DbContext for an object graph.
+            </summary>
+            <param name="context">Used to query and save changes to a database</param>
+            <param name="item">Object that implements ITrackable</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.ApplyChanges(System.Data.Entity.DbContext,System.Collections.Generic.IEnumerable{SFSdotNet.Framework.Common.Entities.ITrackable})">
+            <summary>
+            Update entity state on DbContext for more than one object graph.
+            </summary>
+            <param name="context">Used to query and save changes to a database</param>
+            <param name="items">Objects that implement ITrackable</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.GetEntitySetName(System.Data.Entity.DbContext,System.Type)">
+            <summary>
+            For the given entity type return the EntitySet name qualified by container name.
+            </summary>
+            <param name="dbContext">Used to query and save changes to a database</param>
+            <param name="entityType">Type of an entity</param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.LoadRelatedEntities(System.Data.Entity.DbContext,SFSdotNet.Framework.Common.Entities.ITrackable,System.Boolean)">
+            <summary>
+            Load related entities for an object graph.
+            </summary>
+            <param name="context">Used to query and save changes to a database</param>
+            <param name="item">Object that implement ITrackable</param>
+            <param name="loadAll">True to load all related entities, false to load only added entities</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.LoadRelatedEntities(System.Data.Entity.DbContext,System.Collections.Generic.IEnumerable{SFSdotNet.Framework.Common.Entities.ITrackable},System.Boolean)">
+            <summary>
+            Load related entities for more than one object graph.
+            </summary>
+            <param name="context">Used to query and save changes to a database</param>
+            <param name="items">Objects that implements ITrackable</param>
+            <param name="loadAll">True to load all related entities, false to load only added entities</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.LoadRelatedEntitiesAsync(System.Data.Entity.DbContext,SFSdotNet.Framework.Common.Entities.ITrackable,System.Boolean)">
+            <summary>
+            Load related entities for an object graph asynchronously.
+            </summary>
+            <param name="context">Used to query and save changes to a database</param>
+            <param name="item">Object that implement ITrackable</param>
+            <param name="loadAll">True to load all related entities, false to load only added entities</param>
+            <returns>A task that represents the asynchronous operation</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.LoadRelatedEntitiesAsync(System.Data.Entity.DbContext,SFSdotNet.Framework.Common.Entities.ITrackable,System.Threading.CancellationToken,System.Boolean)">
+            <summary>
+            Load related entities for an object graph asynchronously.
+            </summary>
+            <param name="context">Used to query and save changes to a database</param>
+            <param name="item">Object that implement ITrackable</param>
+            <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
+            <param name="loadAll">True to load all related entities, false to load only added entities</param>
+            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.LoadRelatedEntitiesAsync(System.Data.Entity.DbContext,System.Collections.Generic.IEnumerable{SFSdotNet.Framework.Common.Entities.ITrackable},System.Boolean)">
+            <summary>
+            Load related entities for more than one object graph asynchronously.
+            </summary>
+            <param name="context">Used to query and save changes to a database</param>
+            <param name="items">Objects that implements ITrackable</param>
+            <param name="loadAll">True to load all related entities, false to load only added entities</param>
+            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.DbContextExtensions.LoadRelatedEntitiesAsync(System.Data.Entity.DbContext,System.Collections.Generic.IEnumerable{SFSdotNet.Framework.Common.Entities.ITrackable},System.Threading.CancellationToken,System.Boolean)">
+            <summary>
+            Load related entities for more than one object graph asynchronously.
+            </summary>
+            <param name="context">Used to query and save changes to a database</param>
+            <param name="items">Objects that implements ITrackable</param>
+            <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
+            <param name="loadAll">True to load all related entities, false to load only added entities</param>
+            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="T:SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper">
+            <summary>
+            This class facilitates proper checking for circular references when iterating the graph nodes.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper.EnsureCreated(SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper@)">
+            <summary>
+            Helper method which initializes the given reference to ObjectVisitationHelper
+            if it is null.
+            </summary>
+            <param name="visitationHelper">Reference to ObjectVisitationHelper</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper.#ctor(System.Object)">
+            <summary>
+            The collection will contain a single object or will be initialized empty
+            if no/null object is provided.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper.#ctor(System.Collections.Generic.IEqualityComparer{System.Object})">
+            <summary>
+            Initializes an empty collection with custom equality comparer.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper.Clone">
+            <summary>
+            Creates a shallow copy of self
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper.TryVisit(System.Object)">
+            <summary>
+            Checks if the given graph node has already been visited (is contained in the collection)
+            If not, then the object will be visited straight away, otherwise NOP and return false.
+            <param name="obj">An object to be visited</param>
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper.IsVisited(System.Object)">
+            <summary>
+            Checks if the given graph node has already been visited (is contained in the collection)
+            <param name="obj">An object to be checked</param>
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.ObjectVisitationHelper.FindVisited(System.Object)">
+            <summary>
+            Finds a visited object which matches the given object by the current EqualityComparer
+            <param name="obj">An object to be found</param>
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Entities.Trackable.Common.TrackableExtensions">
+            <summary>
+            Extension methods for entities that implement ITrackable.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.TrackableExtensions.AcceptChanges(SFSdotNet.Framework.Common.Entities.ITrackable)">
+            <summary>
+            Set tracking state to Unchanged on an entity and its child collections.
+            </summary>
+            <param name="item">Trackable object</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Trackable.Common.TrackableExtensions.AcceptChanges(System.Collections.Generic.IEnumerable{SFSdotNet.Framework.Common.Entities.ITrackable})">
+            <summary>
+            Set tracking state to Unchanged on entities and their child collections.
+            </summary>
+            <param name="items">Trackable objects</param>
+        </member>
+        <member name="T:SFSdotNet.Framework.Entities.IUISearcherFilter">
+            <summary>
+            Pantalla de creación del filtro
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Utils.GetPropertyKey(System.String,System.String)">
+            <summary>
+            Get one property value fron string key of the entity (ex. property:value;)
+            </summary>
+            <param name="entity"></param>
+            <param name="key">string key (ex. property:value;)</param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Entities.Utils.IsNew(System.Boolean,System.Object[])">
+            <summary>
+            Verifica que el conjunto de propiedades no hayan sido establecidas, si no lo fueron se trata de un objeto nuevo
+            </summary>
+            <param name="values">propiedades que representan la llave de la entidad</param>
+            <returns>Regresa verdadero si considera que las propiedades no fueron establecidas</returns>
+        </member>
+        <member name="T:SFSdotNet.Framework.Globalization.Provider.DBResourceProvider">
+            <summary>
+            Resource provider accessing resources from the database.
+            This type is thread safe.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.DBResourceProvider.#ctor(System.String)">
+            <summary>
+            Constructs this instance of the provider 
+            supplying a resource type for the instance. 
+            </summary>
+            <param name="resourceType">The resource type.</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.DBResourceProvider.GetObject(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Retrieves a resource entry based on the specified culture and 
+            resource key. The resource type is based on this instance of the
+            DBResourceProvider as passed to the constructor.
+            To optimize performance, this function caches values in a dictionary
+            per culture.
+            </summary>
+            <param name="resourceKey">The resource key to find.</param>
+            <param name="culture">The culture to search with.</param>
+            <returns>If found, the resource string is returned. 
+            Otherwise an empty string is returned.</returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.Globalization.Provider.DBResourceProvider.ResourceReader">
+            <summary>
+            Returns a resource reader.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Globalization.Provider.DBResourceReader">
+            <summary>
+            Implementation of IResourceReader required to retrieve a dictionary
+            of resource values for implicit localization. 
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Globalization.Provider.ExternalResourceExpressionBuilder">
+            <summary>
+            Custom expression builder support for $ExternalResources expressions.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Globalization.Provider.GlobalExternalResourceProvider">
+            <summary>
+            Resource provider for accessing external resources. 
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.GlobalExternalResourceProvider.#ctor(System.String)">
+            <summary>
+            Constructs an instance of the provider with the specified
+            assembly name and resource type. 
+            </summary>
+            <param name="classKey">The assembly name and 
+            resource type in the format [assemblyName]|
+            [resourceType]</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.GlobalExternalResourceProvider.EnsureResourceManager">
+            <summary>
+            Loads the resource assembly and creates a 
+            ResourceManager instance to access its resources.
+            If the assembly is already loaded, Load returns a reference
+            to that assembly.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.GlobalExternalResourceProvider.GetObject(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Retrieves resources using a ResourceManager instance
+            for the assembly and resource key of this provider 
+            instance. 
+            </summary>
+            <param name="resourceKey">The resource key to find.</param>
+            <param name="culture">The culture to find.</param>
+            <returns>The resource value if found.</returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.Globalization.Provider.GlobalExternalResourceProvider.ResourceReader">
+            <summary>
+            Implicit expressions are not supported by this provider 
+            therefore a ResourceReader need not be implemented.
+            Throws a NotSupportedException.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Globalization.Provider.ExternalResourceProviderFactory">
+            <summary>
+            Provider factory implementation for external resources. Only supports
+            global resources. 
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Globalization.Provider.StringResourcesDALC">
+            <summary>
+            Data access component for the StringResources table. 
+            This type is thread safe.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.StringResourcesDALC.#ctor(System.String)">
+            <summary>
+            Constructs this instance of the data access 
+            component supplying a resource type for the instance. 
+            </summary>
+            <param name="resourceType">The resource type.</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.StringResourcesDALC.GetResourceByCultureAndKeyInternal(System.Globalization.CultureInfo,System.String)">
+            <summary>
+            Uses an open database connection to recurse 
+            looking for the resource.
+            Retrieves a resource entry based on the 
+            specified culture and resource 
+            key. The resource type is based on this instance of the
+            StringResourceDALC as passed to the constructor.
+            Resource fallback follows the same mechanism 
+            of the .NET 
+            ResourceManager. Ultimately falling back to the 
+            default resource
+            specified in this class.
+            </summary>
+            <param name="culture">The culture to search with.</param>
+            <param name="resourceKey">The resource key to find.</param>
+            <returns>If found, the resource string is returned. 
+            Otherwise an empty string is returned.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.StringResourcesDALC.GetResourcesByCulture(System.Globalization.CultureInfo)">
+            <summary>
+            Returns a dictionary type containing all resources for a 
+            particular resource type and culture.
+            The resource type is based on this instance of the
+            StringResourceDALC as passed to the constructor.
+            </summary>
+            <param name="culture">The culture to search for.</param>
+            <param name="resourceKey">The resource key to 
+            search for.</param>
+            <returns>If found, the dictionary contains key/value 
+            pairs for each 
+            resource for the specified culture.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.Provider.StringResourcesDALC.GetResourceByCultureAndKey(System.Globalization.CultureInfo,System.String)">
+            <summary>
+            Retrieves a resource entry based on the specified culture and 
+            resource key. The resource type is based on this instance of the
+            StringResourceDALC as passed to the constructor.
+            To optimize performance, this function opens the database connection 
+            before calling the internal recursive function. 
+            </summary>
+            <param name="culture">The culture to search with.</param>
+            <param name="resourceKey">The resource key to find.</param>
+            <returns>If found, the resource string is returned. Otherwise an empty string is returned.</returns>
+        </member>
+        <member name="T:SFSdotNet.Framework.Globals.Messages">
+            <summary>
+            Esta clase provee algunos de los mensages genéricos más comunes para mostrarlos al usuario, y en todos los casos permite uno o dos parámetros dentro de la cadena
+            <remarks>{0} = Propiedad, {1} = Entidad </remarks>
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Globals.Messages.RequiredField">
+            <summary>
+            El campo '{0}' es requerido
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Globals.Messages.RangeOut">
+            <summary>
+            El valor de '{0}' está fuera del rango válido
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Globals.Messages.ErrorFormat">
+            <summary>
+            El formato de '{0}' no es el correcto
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globals.Entities.GetPropertyKey(System.String,System.String)">
+            <summary>
+            Get one property value fron string key of the entity (ex. property:value;)
+            </summary>
+            <param name="entity"></param>
+            <param name="key">string key (ex. property:value;)</param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globals.Security.EncryptString(System.String)">
+            <summary>
+            Encripta un string
+            </summary>
+            <param name="originalString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globals.Security.DecryptString(System.String)">
+            <summary>
+            Desencripta el string encriptado con EncryptString
+            </summary>
+            <param name="cryptedString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globals.Security.IsAllowed(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="customAction"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globals.Security.IsAllowed(System.String,System.String)">
+            <summary>
+            Its the best method for obtain the permission result
+            </summary>
+            <param name="moduleKey"></param>
+            <param name="customAction"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Index.Indexer.CanGetForIndex(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="appNameKey"></param>
+            <param name="entityNameKey"></param>
+            <returns></returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.Linq.FilterPart.Id">
+            <summary>
+            qi = queryfilter inicial
+            ci = código en controller, lógica de negocio
+            bs = filtro construído guardado
+            bn = filtro construído nuevo
+            sk = filtro link
+            br = filtro en regla de negocio
+            co = company
+            my = filtro de solo usuario
+            de = delete logic
+            ft = query de free text
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Linq.Filter.AppendFilter(System.String)">
+            <summary>
+            Agrega un filtro a la sección br regla de negocio
+            </summary>
+            <param name="filterText"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:SFSdotNet.Framework.Linq.EntityHelperUtil" -->
+        <!-- Badly formed XML comment ignored for member "M:SFSdotNet.Framework.Linq.EntityHelperUtil.AddObjectOrAttach(System.Data.Entity.Core.Objects.ObjectContext,System.String,System.Data.Entity.Core.Objects.DataClasses.EntityObject)" -->
+        <!-- Badly formed XML comment ignored for member "M:SFSdotNet.Framework.Linq.EntityHelperUtil.Attach(System.Data.Entity.Core.Objects.ObjectContext,System.Data.Entity.Core.Objects.DataClasses.EntityObject)" -->
+        <!-- Badly formed XML comment ignored for member "M:SFSdotNet.Framework.Linq.EntityHelperUtil.AddRelationships(System.Data.Entity.Core.Objects.ObjectContext,System.Collections.Generic.List{SFSdotNet.Framework.Linq.EntityHelperUtil.RelationsShipMapping})" -->
+        <!-- Badly formed XML comment ignored for member "M:SFSdotNet.Framework.Linq.EntityHelperUtil.RemoveRelationships(System.Collections.Generic.List{SFSdotNet.Framework.Linq.EntityHelperUtil.RelationsShipMapping},System.Data.Entity.Core.Objects.DataClasses.IEntityWithRelationships,System.Int32)" -->
+        <!-- Badly formed XML comment ignored for member "T:SFSdotNet.Framework.Linq.EntityHelperUtil.RelationsShipMapping" -->
+        <member name="M:SFSdotNet.Framework.Linq.Extensions.Localizable``1(System.Data.Entity.Core.Objects.ObjectSet{``0})">
+            <summary>
+            Marca una entidad de consulta en el contexto como candidata a la transformación si es que cuenta con una tabla de localización de columnas
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="objectSet"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SFSdotNet.Framework.Linq.LocalizableDataStructure">
+            <summary>
+            Representa las características de localización de un elemento
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Linq.IContextLocalizable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Linq.LocalizableData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Linq.LocalizableData.LocalizableItems">
+            <summary>
+            Valores de localizacion: Nombre de tabla auxiliar, nombres de columnas
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Linq.LocalizableData.GetLocalizedProcedure(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+            <summary>
+            Create the procedure for update or insert the localizable table
+            </summary>
+            <param name="tableLang">Complete name of the localizable table (with schema name)</param>
+            <param name="columnNames">Columns to update</param>
+            <param name="values">Values to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Linq.LocalizableData.GetLocalizedCommandQueryText(System.String)">
+            <summary>
+            Returns the localized query
+            </summary>
+            <param name="commandText">command text</param>
+            <returns>new command text with localized elements</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Linq.LocalizableData.ReplaceColumns(System.String,System.String,System.String,SFSdotNet.Framework.Linq.LocalizableDataStructure,System.String@,System.String@)">
+            <summary>
+            Replace the column names in the select sentence for localization
+            </summary>
+            <param name="select">select sentence</param>
+            <param name="where">where shetence</param>
+            <param name="alias">table alias on the query</param>
+            <param name="table">localizableItem table </param>
+            <param name="newSelect">select sentence returned</param>
+            <param name="newWhere">new where sentence returned</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Linq.LocalizableData.ReplaceKeys(System.Text.StringBuilder,System.String,SFSdotNet.Framework.Linq.LocalizableDataStructure)">
+            <summary>
+            Replace the keys on the from clause with the localizable names
+            </summary>
+            <param name="sbFrom">String builder with the from clause</param>
+            <param name="alias">Alias from the table in the linq generated query</param>
+            <param name="table">Object localizableItem table</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Linq.ContextQueryBuilder.ApplyContextQuery(SFSdotNet.Framework.My.ContextRequest,System.String[])">
+            <summary>
+            Aplica al query las opciones de paginación y ordenamiento que contiene el objeto contextRequest
+            </summary>
+            <param name="query">query inicializado previamente, de preferencia debe contener ya el Where</param>
+            <param name="contextRequest">Opciones de paginación y otras</param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Linq.ContextQueryBuilder`1.ApplyContextQuery(System.Linq.IQueryable{`0},SFSdotNet.Framework.My.ContextRequest,System.String[])">
+            <summary>
+            Aplica al query las opciones de paginación y ordenamiento que contiene el objeto contextRequest
+            </summary>
+            <param name="query">query inicializado previamente, de preferencia debe contener ya el Where</param>
+            <param name="contextRequest">Opciones de paginación y otras</param>
+            <returns></returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.Context.ModuleApplication">
+            <summary>
+            Entrega información de la aplicación en contexto
+            </summary>
+            
+        </member>
+        <member name="P:SFSdotNet.Framework.My.ProcessBackground.ClientFunctionProgress">
+            <summary>
+            Javascript function for call each progress info
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.ProcessBackground.ClientFunctionFinish">
+            <summary>
+            Javascript function for call to end of process
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.CurrentContextInfo.BuildCompanies">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.CurrentContextInfo.Permission">
+            <summary>
+            This utility allow share acces to permission engine
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.EventLog.Exception(System.Exception,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Registra una excepción no manejada
+            </summary>
+            <param name="ex"></param>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.EventLog.Error(System.Exception)">
+            <summary>
+            Registra una excepción de reglas de negocio
+            </summary>
+            <param name="ex">Excepción</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.EventLog.Error(System.String)">
+            <summary>
+            Registra un error de regla de negocio
+            </summary>
+            <param name="message">Mensaje de error</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.EventLog.Warning(System.String)">
+            <summary>
+            Registra un evento de advertencia 
+            </summary>
+            <param name="message">Mensaje de error</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.EventLog.Action(SFSdotNet.Framework.My.EventLog.Actions,System.String)">
+            <summary>
+            Registra una acción básica como Add, Remove, Update
+            </summary>
+            <param name="action">Acción</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.EventLog.Action(System.String)">
+            <summary>
+            Registra una acción personalizada
+            </summary>
+            <param name="action">Acción</param>
+        </member>
+        <member name="T:SFSdotNet.Framework.My.EventLog.Actions">
+            <summary>
+            Tipos de acción
+            </summary>
+        </member>
+        <member name="F:SFSdotNet.Framework.My.EventLog.Actions.Add">
+            <summary>
+            Agregar
+            </summary>
+        </member>
+        <member name="F:SFSdotNet.Framework.My.EventLog.Actions.Remove">
+            <summary>
+            Eliminar
+            </summary>
+        </member>
+        <member name="F:SFSdotNet.Framework.My.EventLog.Actions.Update">
+            <summary>
+            Actualizar
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Resources.GlobalMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.ACCEPTED">
+            <summary>
+              Looks up a localized string similar to Accepted.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.ADMINISTRATION">
+            <summary>
+              Looks up a localized string similar to Administration.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.CONFIGURATION_AND_PREFERENCES">
+            <summary>
+              Looks up a localized string similar to Configurations and preferences.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.EMAIL_SUBJECT_INVITATION_USER_COMPANY">
+            <summary>
+              Looks up a localized string similar to {USERFROM} added you with the {ROLENAME} role to the company {COMPANYNAME}. You can now use the app {APPNAME}..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.ErrorMessage">
+            <summary>
+              Looks up a localized string similar to Ha habido un error en el sistema, por favor contáctanos para poder ayudarte con esta operación..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.ErrorTitle">
+            <summary>
+              Looks up a localized string similar to Error del sistema.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.OkTitle">
+            <summary>
+              Looks up a localized string similar to Hecho.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.PERMISSIONS">
+            <summary>
+              Looks up a localized string similar to Permissions.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.REJECTED">
+            <summary>
+              Looks up a localized string similar to Rejected.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.UNDEFINED">
+            <summary>
+              Looks up a localized string similar to Undefined.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.USERS_AND_ROLES">
+            <summary>
+              Looks up a localized string similar to Users and roles.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.Expression_TooFewParameters">
+            <summary>
+              Looks up a localized string similar to Too few parameters: {0}. Must provide a resource assembly name, resource type and resource key in the format &apos;[AssemblyName]|[ResourceType], ResourceKey&apos;..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.Expression_TooManyParameters">
+            <summary>
+              Looks up a localized string similar to Too many parameters: {0}. Must provide a resource assembly name, resource type and resouce key in the format &apos;[AssemblyName]|[ResourceType], ResourceKey&apos;..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.Provider_InvalidConstructor">
+            <summary>
+              Looks up a localized string similar to Parameter invalid: {0}. Must provide a resource assembly name and resource type in the format &apos;[AssemblyName]|[ResourceType]&apos;..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.Provider_LocalResourcesNotSupported">
+            <summary>
+              Looks up a localized string similar to {0} does not support local resources..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.RM_DefaultResourceNotFound">
+            <summary>
+              Looks up a localized string similar to Unable to find a default resource for {0}..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.RM_DuplicateResourceFound">
+            <summary>
+              Looks up a localized string similar to An internal data error has occurred. A duplicate resource entry was found for {0}..
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Properties.Resources.RM_ResourceNotFound">
+            <summary>
+              Looks up a localized string similar to Resource not found: {0}.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.SinglentonContext.RenewInstance">
+            <summary>
+            Re-new the singlenton instance
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.Security.BR.SinglentonContext.NewInstance">
+            <summary>
+            Get a new instance
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secBusinessObjectsBR.AddIfNotExist(System.String,System.String)">
+            <summary>
+            Agrega un objeto de negocio si este mo existe en la base de datos
+            </summary>
+            <param name="moduleKey"></param>
+            <param name="businessObjectKey"></param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secRolesBR.CanDeleteRole(SFSdotNet.Framework.Security.BusinessObjects.secRole)">
+            <summary>
+            Identifica si se puede eliminar un rol (true) o no (false)
+            </summary>
+            <param name="rol">Rol a eliminar</param>
+            <returns>Bandera que identifica si se puede (true) o no (false) borrar un rol</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secRolesBR.GetRoleModulePermissions(System.Guid,System.Guid)">
+            <summary>
+            Gets all the permissions for a role, as allowed and denied
+            </summary>
+            <param name="idRole"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secUsersBR.OnCreating(System.Object,SFSdotNet.Framework.BR.BusinessRulesEventArgs{SFSdotNet.Framework.Security.BusinessObjects.secUser})">
+            <summary>
+            Antes de que se cree el registro
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secUsersBR.OnCreated(System.Object,SFSdotNet.Framework.BR.BusinessRulesEventArgs{SFSdotNet.Framework.Security.BusinessObjects.secUser})">
+            <summary>
+            Cuando el registro ya ha sido creado
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secUsersBR.ValidateLoginProvider(System.Guid,System.Guid,System.Boolean)">
+            <summary>
+            Verifica la propiedad de un proveedor de autentificación tercero
+            </summary>
+            <param name="keyRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secUsersBR.CanRegisterUser(SFSdotNet.Framework.Security.BusinessObjects.secUser,SFSdotNet.Framework.Security.BusinessObjects.secUser_LoginProviders,System.String@)">
+            <summary>
+            Verifica si es posible registrar un usuario como NUEVO
+            </summary>
+            <param name="user"></param>
+            <param name="userProvider"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secUsersBR.GetUserFromOtherProviders(SFSdotNet.Framework.Security.BusinessObjects.secUser,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Obtiene el registro de login tercero del repositorio si es que ya existe.
+            </summary>
+            <param name="identifier"></param>
+            <param name="email"></param>
+            <param name="providerName"></param>
+            <param name="username"></param>
+            <param name="displayName"></param>
+            <param name="urlProfile"></param>
+            <returns>devuelve nulo solamente si no encuentra relación con una cuenta en el catálogo de usuarios</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.secGeoCitiesBR.GetCitiesByCity(System.Guid)">
+            <summary>
+            Level 2
+            </summary>
+            <param name="guidState"></param>
+            <returns></returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.Security.BR.Custom.InstanceClass`1.IsDisposed">
+            <summary>
+            Gets a value indicating whether this instance is disposed.
+            </summary>
+            <value>
+                <c>true</c> if this instance is disposed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.Custom.InstanceClass`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="!:Disposable"/> class.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.Custom.InstanceClass`1.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the
+            <see cref="!:Disposable"/> is reclaimed by garbage collection.
+            </summary>
+        </member>
+        <member name="E:SFSdotNet.Framework.Security.BR.Custom.InstanceClass`1.Disposed">
+            <summary>
+            Occurs when this instance is disposed.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.Custom.InstanceClass`1.Dispose">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.Custom.InstanceClass`1.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.BR.Custom.InstanceClass`1.CheckDisposed">
+            <summary>
+               <para>
+                   Checks if the instance has been disposed of, and if it has, throws an <see cref="T:System.ObjectDisposedException"/>; otherwise, does nothing.
+               </para>
+            </summary>
+            <exception cref="T:System.ObjectDisposedException">
+               The instance has been disposed of.
+               </exception>
+               <remarks>
+               <para>
+                   Derived classes should call this method at the start of all methods and properties that should not be accessed after a call to <see cref="M:SFSdotNet.Framework.Security.BR.Custom.InstanceClass`1.Dispose"/>.
+               </para>
+            </remarks>
+        </member>
+        <member name="T:SFSdotNet.Framework.Security.BR.LocalResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Security.BR.LocalResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Security.BR.LocalResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Security.BR.LocalResources.EMAIL_VERIFICATION_SUBJECT">
+            <summary>
+              Looks up a localized string similar to Verificación de correo electrónico.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Security.BR.Resources.AccountMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Security.BR.Resources.AccountMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Security.BR.Resources.AccountMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Security.BR.Resources.AccountMessages.PASSWORD_REMEMBER">
+            <summary>
+              Looks up a localized string similar to Recordatorio de contraseña.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Security.SiteMapBuilder.AddModuleIfNotExist(System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="pathModule"></param>
+            <param name="parentIdModule"></param>
+            <returns>Devuelve el id del módulo agregado</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Mvc.Security.NodeMapVisibilityProvider.IsVisible(MvcSiteMapProvider.ISiteMapNode,System.Web.HttpContext,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Determines whether the node is visible.
+            </summary>
+            <param name="node">The node.</param>
+            <param name="context">The context.</param>
+            <param name="sourceMetadata">The source metadata.</param>
+            <returns>
+            	<c>true</c> if the specified node is visible; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:SFSdotNet.Framework.Web.Mvc.MetaDataGridModel`1">
+            <summary>
+            Class to auto generate columns based on the ModelMetadata
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Mvc.MetaDataGridModel`1.#ctor(System.Action{MvcContrib.UI.Grid.ColumnBuilder{`0}})">
+            <summary>
+            Enumerates through the ModelMetadata for a given type and
+            adds columns to the Grid
+            </summary>
+            <param name="insertColumns"></param>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Mvc.MyModelMetaDataProvider.CreateMetadata(System.Collections.Generic.IEnumerable{System.Attribute},System.Type,System.Func{System.Object},System.Type,System.String)">
+            <summary>
+            Custom ModelMedataProvider used to store the SearchFilterAttribute and OrderByAttribute
+            in ModelMetadata AdditionValues
+            ref: http://bradwilson.typepad.com/blog/2010/01/why-you-dont-need-modelmetadataattributes.html
+            </summary>
+            <param name="attributes"></param>
+            <param name="containerType"></param>
+            <param name="modelAccessor"></param>
+            <param name="modelType"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Mvc.PagingSorting.ExtensionMethods.AsFiltered``1(System.Linq.IQueryable{``0},``0)">
+            <summary>
+            Adds filter criteria to the IQueryable based on the properties of the 
+            filter of type T.
+            For a filter to be applied, the field has to be decorated with 
+            [SearchFilter()] and the value passed in should not be null
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="queryable"></param>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Mvc.PagingSorting.ExtensionMethods.AsPagination``1(System.Linq.IQueryable{``0},SFSdotNet.Framework.Web.Mvc.PagingSorting.PageSortOptions)">
+            <summary>
+            Converts an IQueryable into an IPagination using the PageSortOptions.
+            Sorting will be done on the sortField passed in the PageSortOptions
+            if that field has the attribute [OrderBy()]. If not the field that 
+            has [OrderBy(IsDefault=true)] is used.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="paged"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Mvc.PagingSorting.ExtensionMethods.GetModelMetadataForOrderByField(System.String,System.Type)">
+            <summary>
+            Gets the ModelMedataData for the field being sorted on. 
+            If the field being sorted on does not have the OrderBy attribute,
+            we return the ModelMetaData for the field that has IsDefault set to true.
+            [OrderBy(IsDefault = true)]
+            </summary>
+            <param name="sortField"></param>
+            <param name="iqueryableType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Mvc.PagingSorting.ExtensionMethods.GetModelMetadataByAdditionalValueKey(System.Type,System.String)">
+            <summary>
+            Find all ModelMetaData that have AdditionalValues with the given key
+            </summary>
+            <param name="model"></param>
+            <param name="modelType"></param>
+            <param name="attributeKey"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SFSdotNet.Framework.Web.Mvc.PagingSorting.PageSortOptions">
+            <summary>
+            Container for holding Paging/Sorting information
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Web.Controls.MyListView.SelectItem">
+            <summary>
+            Posterior al load
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage">
+            <summary>
+            To use this class, simply call the RedirectSavingPageState(string url) method instead of
+            Response.Redirect to call a page and have this page keep its state.
+            You must also replace Request.Form with PostData throughout the existing code in your page.
+            
+            The substitution of Request.Form in existing code is necessary because the .NET framework doesn't
+            let us replace or modify the Request.Form collection.
+            </summary>
+        </member>
+        <member name="F:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.pageState">
+            <summary>
+            The persisted PageState.
+            This is non-null if a postback is being emulated from the persisted PageState.
+            </summary>
+        </member>
+        <member name="F:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.redirectSavingPageStateURL">
+            <summary>
+            Contains the URL to redirect to
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.IsRestoredPageState">
+            <summary>
+            Indicates whether the current page is being or has been restored from a persisted state
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.PostData">
+            <summary>
+            Returns the post data from the persisted PageState if it exists, otherwise the actual post data from Request.Form
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.PassBackData">
+            <summary>
+            Returns the data passed back from the sub-page which can be used to make changes to the saved page state.
+            This data is passed back via the query string.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.RedirectSavingPageState(System.String)">
+            <summary>
+            Call this method instead of Response.Redirect(url) to cause this page to restore its current state when it is next displayed.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.RedirectToSavedPage(System.String,System.Boolean)">
+            <summary>
+            Call this method to redirect to the specified relative URL,
+            specifying whether to restore the page's saved state
+            (assuming its state was saved when it was last shown).
+            The specified URL is relative to that of the current request.
+            This method is usually called from a "sub-page", which doesn't extend this class. 
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.RemoveSavedPageState(System.String)">
+            <summary>
+            Call this method to clear the saved PageState of the page with the specified relative URL.
+            This ensures that the next redirect to the specified page will not revert to the saved state.
+            The specified URL is relative to that of the current request.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.DeterminePostBackMode">
+            <summary>
+            This method is called by the framework after the Init event to determine whether a postback is being performed.
+            The Page.IsPostBack property returns true iff this method returns a non-null.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.LoadPageStateFromPersistenceMedium">
+            <summary>
+            This method is called by the framework after DeterminePostBackMode(), but before custom event handling.
+            It returns the view state that the framework uses to restore the state of the controls.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.OnLoad(System.EventArgs)">
+            <summary>
+            This method is called by the framework after LoadPageStateFromPersistenceMedium() to raise the Load event.
+            Controls are populated with data from PostData here because it has to happen after
+            the framework has loaded the view state, which happens after the execution of the
+            LoadPageStateFromPersistenceMedium() method.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.LoadPostData(System.Web.UI.Control,System.Collections.ArrayList)">
+            <summary>
+            This method performs depth-first recursion on all controls contained in the specified control,
+            calling the framework's LoadPostData on each and adding those modified to the modifiedControls list.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.SavePageStateToPersistenceMedium(System.Object)">
+            <summary>
+            This method is called by the framework between the PreRender and Render events.
+            It is only called if this page is to be redisplayed, not if Response.Redirect has been called.
+            To ensure it is called before we redirect, we must postpone the Response.Redirect call until now.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.LoadPageState(System.Uri)">
+            <summary>
+            Override this method to load the state from a persistence medium other than the Session object.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.SavePageState(System.Uri,SFSdotNet.Framework.Web.Shared.CodeBase.PageState)">
+            <summary>
+            Override this method to save the state to a persistence medium other than the Session object.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.RemoveSavedPageState(System.Uri)">
+            <summary>
+            Override this method to remove the state from a persistence medium other than the Session object.
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.GetPageStateKey(System.Uri)">
+            <summary>
+            Returns a key which will uniquely identify a page in a global namespace based on its URL.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Web.Shared.CodeBase.PageState">
+            <summary>
+            This is the object stored in the persistence medium, containing the view state, post data, and URL.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Web.Shared.CodeBase.SerializableViewState">
+            <summary>
+            This is a simple wrapper around the view state object to make it serializable.
+            </summary>
+        </member>
+        <member name="F:SFSdotNet.Framework.Web.Shared.CustomFields.ForeignKeyField.HyperLink1">
+            <summary>
+            HyperLink1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:SFSdotNet.Framework.WF.Activator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.WF.Activator.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.WF.Activity">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.WF.WorkFlow.NextActivityStart(System.String,System.String,System.String,System.Object,SFSdotNet.Framework.Security.BusinessObjects.secWFActivity,System.Nullable{System.Int32},SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            
+            </summary>
+            <param name="businessObjectKey"></param>
+            <param name="actionKey">C</param>
+            <param name="condition"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EFSecondLevelCache.Contracts.EFCacheDebugInfo">
+            <summary>
+            Stores the debug information of the caching process.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCacheDebugInfo.EFCacheKey">
+            <summary>
+            Stores information of the computed key of the input LINQ query.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCacheDebugInfo.IsCacheHit">
+            <summary>
+            Determines this query is using the 2nd level cache or not.
+            </summary>
+        </member>
+        <member name="T:EFSecondLevelCache.Contracts.EFCacheKey">
+            <summary>
+            Stores information of the computed key of the input LINQ query.
+            </summary>
+        </member>
+        <member name="F:EFSecondLevelCache.Contracts.EFCacheKey.KeyHashPrefix">
+            <summary>
+            Its default value is EF_.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCacheKey.Key">
+            <summary>
+            The computed key of the input LINQ query.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCacheKey.KeyHash">
+            <summary>
+            Hash of the input LINQ query's computed key.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCacheKey.CacheDependencies">
+            <summary>
+            Determines which entities are used in this LINQ query.
+            This array will be used to invalidate the related cache of all related queries automatically.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.EFCacheKey.#ctor">
+            <summary>
+            Stores information of the computed key of the input LINQ query.
+            </summary>
+        </member>
+        <member name="T:EFSecondLevelCache.Contracts.EFCachePolicy">
+            <summary>
+            EFCachePolicy determines the AbsoluteExpiration time and Priority of the cache.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCachePolicy.AbsoluteExpiration">
+            <summary>
+            Its deafult value is 20 minutes later.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCachePolicy.KeyHashPrefix">
+            <summary>
+            Its deafult value is EF_.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCachePolicy.SaltKey">
+            <summary>
+            If you think the computed hash of the query is not enough, set this value.
+            Its deafult value is string.Empty.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.EFCachePolicy.Priority">
+            <summary>
+            Its deafult value is CacheItemPriority.Normal.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.EFCachePolicy.#ctor">
+            <summary>
+            EFCachePolicy determines the AbsoluteExpiration time and Priority of the cache.
+            </summary>
+        </member>
+        <member name="T:EFSecondLevelCache.Contracts.IEFCacheKeyHashProvider">
+            <summary>
+            The CacheKey Hash Provider Contract.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.IEFCacheKeyHashProvider.ComputeHash(System.String)">
+            <summary>
+            Computes the unique hash of the input.
+            </summary>
+            <param name="data">the input data to hash</param>
+            <returns>Hashed data</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.Contracts.IEFCacheKeyProvider">
+            <summary>
+            CacheKeyProvider Contract.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.IEFCacheKeyProvider.GetEFCacheKey``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression,System.String,System.String)">
+            <summary>
+            Gets an EF query and returns its hash to store in the cache.
+            </summary>
+            <typeparam name="T">Type of the entity</typeparam>
+            <param name="query">The EF query.</param>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <param name="keyHashPrefix">Its default value is EF_.</param>
+            <param name="saltKey">If you think the computed hash of the query is not enough, set this value.</param>
+            <returns>Information of the computed key of the input LINQ query.</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.Contracts.IEFCacheServiceProvider">
+            <summary>
+            Cache Service Provider Contract.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.Contracts.IEFCacheServiceProvider.AllCachedKeys">
+            <summary>
+            Returns list of the cached keys.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.IEFCacheServiceProvider.ClearAllCachedEntries(System.String)">
+            <summary>
+            Removes the cached entries added by this library.
+            </summary>
+            <param name="keyHashPrefix">Its default value is EF_.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.IEFCacheServiceProvider.GetAllEFCachedKeys(System.String)">
+            <summary>
+            Gets all of the cached keys, added by this library.
+            </summary>
+            <param name="keyHashPrefix">Its default value is EF_.</param>
+            <returns>list of the keys</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.IEFCacheServiceProvider.GetValue(System.String)">
+            <summary>
+            Gets a cached entry by key.
+            </summary>
+            <param name="cacheKey">key to find</param>
+            <returns>cached value</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.IEFCacheServiceProvider.InsertValue(System.String,System.Object,System.String[],System.DateTime,System.Web.Caching.CacheItemPriority)">
+            <summary>
+            Adds a new item to the cache.
+            </summary>
+            <param name="cacheKey">key</param>
+            <param name="value">value</param>
+            <param name="rootCacheKeys">cache dependencies</param>
+            <param name="absoluteExpiration">absolute expiration time</param>
+            <param name="priority">its default value is CacheItemPriority.Normal</param>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.IEFCacheServiceProvider.InvalidateCacheDependencies(System.String[])">
+            <summary>
+            Invalidates all of the cache entries which are dependent on any of the specified root keys.
+            </summary>
+            <param name="rootCacheKeys">cache dependencies</param>
+        </member>
+        <member name="M:EFSecondLevelCache.Contracts.IEFCacheServiceProvider.StoreRootCacheKeys(System.String[])">
+            <summary>
+            The name of the cache keys used to clear the cache. All cached items depend on these keys.
+            </summary>
+            <param name="rootCacheKeys">cache dependencies</param>
+        </member>
+        <member name="T:EFSecondLevelCache.DynamicEqualityComparer`1">
+            <summary>
+            Defines methods to support the comparison of objects for equality.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:EFSecondLevelCache.DynamicEqualityComparer`1.#ctor(System.Func{`0,`0,System.Boolean})">
+            <summary>
+            Defines methods to support the comparison of objects for equality.
+            </summary>
+            <param name="func">The comparison algorithm.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.DynamicEqualityComparer`1.Equals(`0,`0)">
+            <summary>
+            Determines whether the specified objects are equal.
+            </summary>
+            <param name="x">The first object of type T to compare.</param>
+            <param name="y">The second object of type T to compare.</param>
+            <returns>true if the specified objects are equal; otherwise, false.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.DynamicEqualityComparer`1.GetHashCode(`0)">
+            <summary>
+            Returns a hash code for the specified object.
+            </summary>
+            <param name="obj">The System.Object for which a hash code is to be returned.</param>
+            <returns>A hash code for the specified object.</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.EFAsyncEnumerator`1">
+            <summary>
+            Asynchronous version of the IEnumerator of T interface that allows elements to be retrieved asynchronously.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:EFSecondLevelCache.EFAsyncEnumerator`1.#ctor(System.Collections.Generic.IEnumerator{`0})">
+            <summary>
+            Asynchronous version of the IEnumerator of T interface that allows elements to be retrieved asynchronously.
+            </summary>
+            <param name="inner">The inner IEnumerator</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFAsyncEnumerator`1.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFAsyncEnumerator`1.MoveNextAsync(System.Threading.CancellationToken)">
+            <summary>
+            Advances the enumerator to the next element in the sequence, returning the result asynchronously.
+            </summary>
+            <param name="cancellationToken">A System.Threading.CancellationToken to observe while waiting for the task to complete.</param>
+            <returns>A task that represents the asynchronous operation.  The task result contains true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the sequence.</returns>
+        </member>
+        <member name="P:EFSecondLevelCache.EFAsyncEnumerator`1.Current">
+            <summary>
+            Gets the current element in the iteration.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.EFAsyncEnumerator`1.System#Data#Entity#Infrastructure#IDbAsyncEnumerator#Current">
+            <summary>
+            Gets the current element in the iteration.
+            </summary>
+        </member>
+        <member name="T:EFSecondLevelCache.EFCachedQueryable`1">
+            <summary>
+            Provides functionality to evaluate queries against a specific data source.
+            </summary>
+            <typeparam name="TType">Type of the entity.</typeparam>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryable`1.#ctor(System.Linq.IQueryable{`0},EFSecondLevelCache.Contracts.EFCachePolicy,EFSecondLevelCache.Contracts.EFCacheDebugInfo,EFSecondLevelCache.Contracts.IEFCacheKeyProvider,EFSecondLevelCache.Contracts.IEFCacheServiceProvider)">
+            <summary>
+            Provides functionality to evaluate queries against a specific data source.
+            </summary>
+            <param name="query">The input EF query.</param>
+            <param name="efCache">EFCachePolicy determines the AbsoluteExpiration time and Priority of the cache.</param>
+            <param name="debugInfo">Stores the debug information of the caching process.</param>
+            <param name="cacheKeyProvider">Gets an EF query and returns its hash to store in the cache.</param>
+            <param name="cacheServiceProvider">Cache Service Provider.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryable`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>A collections that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryable`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>A collections that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="P:EFSecondLevelCache.EFCachedQueryable`1.ElementType">
+            <summary>
+            Gets the type of the element(s) that are returned when the expression tree associated with this instance of System.Linq.IQueryable is executed.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.EFCachedQueryable`1.Expression">
+            <summary>
+            Gets the expression tree that is associated with the instance of System.Linq.IQueryable.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.EFCachedQueryable`1.Provider">
+            <summary>
+            Gets the query provider that is associated with this data source.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryable`1.GetAsyncEnumerator">
+            <summary>
+            Returns an IDbAsyncEnumerator of TType which when enumerated will execute the query against the database.
+            </summary>
+            <returns>An enumerator for the query</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryable`1.System#Data#Entity#Infrastructure#IDbAsyncEnumerable#GetAsyncEnumerator">
+            <summary>
+            Returns an IDbAsyncEnumerator which when enumerated will execute the query against the database.
+            </summary>
+        </member>
+        <member name="T:EFSecondLevelCache.EFCachedQueryExtension">
+            <summary>
+            Returns a new cached query.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryExtension.Cacheable``1(System.Linq.IQueryable{``0},EFSecondLevelCache.Contracts.EFCachePolicy,EFSecondLevelCache.Contracts.EFCacheDebugInfo,EFSecondLevelCache.Contracts.IEFCacheKeyProvider,EFSecondLevelCache.Contracts.IEFCacheServiceProvider)">
+            <summary>
+            Returns a new query where the entities returned will be cached in the IEFCacheServiceProvider.
+            </summary>
+            <typeparam name="TType">Entity type.</typeparam>
+            <param name="query">The input EF query.</param>
+            <param name="efCachePolicy">Determines the AbsoluteExpiration time and Priority of the cache.</param>
+            <param name="debugInfo">Stores the debug information of the caching process.</param>
+            <param name="cacheKeyProvider">Gets an EF query and returns its hash to store in the cache.</param>
+            <param name="cacheServiceProvider">Cache Service Provider.</param>
+            <returns></returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryExtension.Cacheable``1(System.Linq.IQueryable{``0},EFSecondLevelCache.Contracts.EFCachePolicy,EFSecondLevelCache.Contracts.EFCacheDebugInfo)">
+             <summary>
+            Returns a new query where the entities returned will be cached in the IEFCacheServiceProvider.
+             </summary>
+             <typeparam name="TType">Entity type.</typeparam>
+             <param name="query">The input EF query.</param>
+             <param name="efCachePolicy">Determines the AbsoluteExpiration time and Priority of the cache.</param>
+            <param name="debugInfo">Stores the debug information of the caching process.</param>
+            <returns>Provides functionality to evaluate queries against a specific data source.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryExtension.Cacheable``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Returns a new query where the entities returned will be cached in the IEFCacheServiceProvider.
+            </summary>
+            <typeparam name="TType">Entity type.</typeparam>
+            <param name="query">The input EF query.</param>
+            <returns>Provides functionality to evaluate queries against a specific data source.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryExtension.Cacheable``1(System.Linq.IQueryable{``0},EFSecondLevelCache.Contracts.EFCacheDebugInfo)">
+             <summary>
+            Returns a new query where the entities returned will be cached in the IEFCacheServiceProvider.
+             </summary>
+             <typeparam name="TType">Entity type.</typeparam>
+             <param name="query">The input EF query.</param>
+            <param name="debugInfo">Stores the debug information of the caching process.</param>
+            <returns>Provides functionality to evaluate queries against a specific data source.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryExtension.Cacheable``1(System.Linq.IQueryable{``0},EFSecondLevelCache.Contracts.EFCachePolicy)">
+             <summary>
+            Returns a new query where the entities returned will be cached in the IEFCacheServiceProvider.
+             </summary>
+             <typeparam name="TType">Entity type.</typeparam>
+             <param name="query">The input EF query.</param>
+             <param name="efCachePolicy">Determines the AbsoluteExpiration time and Priority of the cache.</param>
+            <returns>Provides functionality to evaluate queries against a specific data source.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryExtension.toAsNoTrackingQuery``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Returns a new query where the entities returned will not be cached in the DbContext.
+            </summary>
+        </member>
+        <member name="T:EFSecondLevelCache.EFCachedQueryProvider`1">
+            <summary>
+            Defines methods to create and execute queries that are described by an System.Linq.IQueryable object.
+            </summary>
+            <typeparam name="TType">Type of the entity.</typeparam>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryProvider`1.#ctor(System.Linq.IQueryable{`0},EFSecondLevelCache.Contracts.EFCachePolicy,EFSecondLevelCache.Contracts.EFCacheDebugInfo,EFSecondLevelCache.Contracts.IEFCacheKeyProvider,EFSecondLevelCache.Contracts.IEFCacheServiceProvider)">
+            <summary>
+            Defines methods to create and execute queries that are described by an System.Linq.IQueryable object.
+            </summary>
+            <param name="query">The input EF query.</param>
+            <param name="efCachePolicy">Determines the AbsoluteExpiration time and Priority of the cache.</param>
+            <param name="debugInfo">Stores the debug information of the caching process.</param>
+            <param name="cacheKeyProvider">Gets an EF query and returns its hash to store in the cache.</param>
+            <param name="cacheServiceProvider">The Cache Service Provider.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)">
+            <summary>
+            Constructs an System.Linq.IQueryable of T object that can evaluate the query represented by a specified expression tree.
+            </summary>
+            <typeparam name="TElement">The type of the elements that is returned.</typeparam>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <returns>An System.Linq.IQueryable of T that can evaluate the query represented by the specified expression tree.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryProvider`1.CreateQuery(System.Linq.Expressions.Expression)">
+            <summary>
+            Constructs an System.Linq.IQueryable object that can evaluate the query represented by a specified expression tree.
+            </summary>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <returns>An System.Linq.IQueryable that can evaluate the query represented by the specified expression tree.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryProvider`1.Execute``1(System.Linq.Expressions.Expression)">
+            <summary>
+            Executes the strongly-typed query represented by a specified expression tree.
+            </summary>
+            <typeparam name="TResult">The type of the value that results from executing the query.</typeparam>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <returns>The value that results from executing the specified query.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryProvider`1.Execute(System.Linq.Expressions.Expression)">
+            <summary>
+            Executes the query represented by a specified expression tree.
+            </summary>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <returns>The value that results from executing the specified query.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryProvider`1.Materialize(System.Linq.Expressions.Expression,System.Func{System.Object})">
+            <summary>
+            Executes the query represented by a specified expression tree to cache its results.
+            </summary>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <param name="materializer">How to run the query.</param>
+            <returns>The value that results from executing the specified query.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryProvider`1.ExecuteAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously executes the strongly-typed query represented by a specified expression tree.
+            </summary>
+            <typeparam name="TResult">The type of the value that results from executing the query.</typeparam>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
+            <returns>A task that represents the asynchronous operation.  The task result contains the value that results from executing the specified query.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCachedQueryProvider`1.ExecuteAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously executes the query represented by a specified expression tree.
+            </summary>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
+            <returns>A task that represents the asynchronous operation.  The task result contains the value that results from executing the specified query.</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.EFCacheKeyHashProvider">
+            <summary>
+            Computes the unique hash of the input, using the xxHash algorithm.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheKeyHashProvider.ComputeHash(System.String)">
+            <summary>
+            Computes the unique hash of the input.
+            </summary>
+            <param name="data">the input data to hash</param>
+            <returns>Hashed data using the xxHash algorithm</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.EFCacheKeyProvider">
+            <summary>
+            A custom cache key provider for EF queries.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheKeyProvider.#ctor(EFSecondLevelCache.Contracts.IEFCacheKeyHashProvider)">
+            <summary>
+            A custom cache key provider for EF queries.
+            </summary>
+            <param name="cacheKeyHashProvider">Provides the custom hashing algorithm.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheKeyProvider.GetEFCacheKey``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression,System.String,System.String)">
+            <summary>
+            Gets an EF query and returns its hashed key to store in the cache.
+            </summary>
+            <typeparam name="T">Type of the entity</typeparam>
+            <param name="query">The EF query.</param>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <param name="keyHashPrefix">Its default value is EF_.</param>
+            <param name="saltKey">If you think the computed hash of the query is not enough, set this value.</param>
+            <returns>Information of the computed key of the input LINQ query.</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.EFCacheServiceProvider">
+            <summary>
+            Using HttpRuntime.Cache as a cache service. It works with both desktop and web applications.
+            </summary>
+        </member>
+        <member name="P:EFSecondLevelCache.EFCacheServiceProvider.AllCachedKeys">
+            <summary>
+            Returns list of the cached keys.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheServiceProvider.ClearAllCachedEntries(System.String)">
+            <summary>
+            Removes the cached entries added by this library.
+            </summary>
+            <param name="keyHashPrefix">Its default value is EF_.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheServiceProvider.GetAllEFCachedKeys(System.String)">
+            <summary>
+            Gets all of the cached keys, added by this library.
+            </summary>
+            <param name="keyHashPrefix">Its default value is EF_.</param>
+            <returns>list of the keys</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheServiceProvider.GetValue(System.String)">
+            <summary>
+            Gets a cached entry by key.
+            </summary>
+            <param name="cacheKey">key to find</param>
+            <returns>cached value</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheServiceProvider.InsertValue(System.String,System.Object,System.String[],System.DateTime,System.Web.Caching.CacheItemPriority)">
+            <summary>
+            Adds a new item to the cache.
+            </summary>
+            <param name="cacheKey">key</param>
+            <param name="value">value</param>
+            <param name="rootCacheKeys">cache dependencies</param>
+            <param name="absoluteExpiration">absolute expiration time</param>
+            <param name="priority">its default value is CacheItemPriority.Normal</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheServiceProvider.InvalidateCacheDependencies(System.String[])">
+            <summary>
+            Invalidates all of the cache entries which are dependent on any of the specified root keys.
+            </summary>
+            <param name="rootCacheKeys">cache dependencies</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCacheServiceProvider.StoreRootCacheKeys(System.String[])">
+            <summary>
+            The name of the cache keys used to clear the cache. All cached items depend on these keys.
+            </summary>
+        </member>
+        <member name="T:EFSecondLevelCache.EFCommandTreeCollector">
+            <summary>
+            Receives notifications when Entity Framework creates a DbCommandTree.
+            It collects only DbQueryCommandTrees.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCommandTreeCollector.#ctor(System.Data.Entity.Core.Objects.ObjectContext)">
+            <summary>
+            Receives notifications when Entity Framework creates a DbCommandTree.
+            </summary>
+            <param name="objectContext">The associated objectContext of the collected DbQueryCommandTree.</param>
+        </member>
+        <member name="P:EFSecondLevelCache.EFCommandTreeCollector.DbQueryCommandTree">
+            <summary>
+            The associated DbQueryCommandTree of the given ObjectContext.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCommandTreeCollector.TreeCreated(System.Data.Entity.Infrastructure.Interception.DbCommandTreeInterceptionContext)">
+            <summary>
+            This method is called after a new DbCommandTree has been created.
+            It collects only DbQueryCommandTrees.
+            </summary>
+            <param name="interceptionContext">Represents contextual information associated with calls into IDbCommandTreeInterceptor implementations.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCommandTreeCollector.Dispose">
+            <summary>
+            Removes the registered IDbInterceptor so that it will no longer receive notifications.
+            </summary>
+        </member>
+        <member name="T:EFSecondLevelCache.EFCommandTreeVisitor">
+            <summary>
+            Determines the cache dependencies of a given query.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCommandTreeVisitor.#ctor(System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace)">
+            <summary>
+            Determines the cache dependencies of a given query.
+            </summary>
+            <param name="metadata">Runtime Metadata Workspace</param>
+        </member>
+        <member name="P:EFSecondLevelCache.EFCommandTreeVisitor.EntityClrTypes">
+            <summary>
+            Returns the cache dependencies of a given query.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCommandTreeVisitor.Visit(System.Data.Entity.Core.Common.CommandTrees.DbScanExpression)">
+            <summary>
+            Implements the visitor pattern for the command tree.
+            </summary>
+            <param name="expression">Represents a scan of all elements of a given entity set.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.EFCommandTreeVisitor.isEntityFrameworkInternalTable(System.Data.Entity.Core.Metadata.Edm.EntitySetBase)">
+            <summary>
+            Finds if the table is an entity framework specific table.
+            </summary>
+            <param name="setBase">The set base</param>
+            <returns>True if it's an EF internal table</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.EnumerableExtentions">
+            <summary>
+            Enumerable Extentions.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.EnumerableExtentions.Contains``1(System.Collections.Generic.IEnumerable{``0},``0,System.Func{``0,``0,System.Boolean})">
+            <summary>
+            Determines whether a sequence contains a specified element by using the DynamicEqualityComparer of T.
+            </summary>
+            <typeparam name="T"> The type of the elements of source.</typeparam>
+            <param name="source">A sequence in which to locate a value.</param>
+            <param name="value">The value to locate in the sequence.</param>
+            <param name="func">The comparison algorithm.</param>
+            <returns>true if the source sequence contains an element that has the specified value; otherwise, false.</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.FastReflectionUtils">
+            <summary>
+            Fast reflection, using compiled property getters.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.FastReflectionUtils.GetPropertyGetterDelegate(System.Type,System.String,System.Reflection.BindingFlags)">
+            <summary>
+            Gets a compiled property getter delegate for the underlying type.
+            </summary>
+            <param name="type"></param>
+            <param name="propertyName"></param>
+            <param name="bindingFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EFSecondLevelCache.FastReflectionUtils.GetPropertyGetterDelegateFromCache(System.Type,System.String,System.Reflection.BindingFlags)">
+            <summary>
+            Gets a compiled property getter delegate for the underlying type.
+            </summary>
+            <param name="type"></param>
+            <param name="propertyName"></param>
+            <param name="bindingFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EFSecondLevelCache.LinqToObjectsCacheKeyProvider">
+            <summary>
+            A custom cache key provider for normal LINQ to objects queries, results of a Mocking process.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.LinqToObjectsCacheKeyProvider.#ctor(EFSecondLevelCache.Contracts.IEFCacheKeyHashProvider)">
+            <summary>
+            A custom cache key provider for normal LINQ to objects queries.
+            </summary>
+            <param name="cacheKeyHashProvider">Provides the custom hashing algorithm.</param>
+        </member>
+        <member name="M:EFSecondLevelCache.LinqToObjectsCacheKeyProvider.GetEFCacheKey``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression,System.String,System.String)">
+            <summary>
+            Gets a LINQ to objects query and returns its hashed key to store in the cache.
+            </summary>
+            <typeparam name="T">Type of the entity</typeparam>
+            <param name="query">The input query.</param>
+            <param name="expression">An expression tree that represents a LINQ query.</param>
+            <param name="keyHashPrefix">Its default value is EF_.</param>
+            <param name="saltKey">If you think the computed hash of the query is not enough, set this value.</param>
+            <returns>Information of the computed key of the input LINQ query.</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.LinqToObjectsCacheKeyProvider.GetDebugView(System.Linq.Expressions.Expression)">
+            <summary>
+            Gets the string representation of an Expression.
+            </summary>
+            <param name="expression">the input expression</param>
+            <returns>The string representation of the Expression</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.ObjectQueryExtensions">
+            <summary>
+            Extension methods for ObjectQuery.
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.ObjectQueryExtensions.GetObjectQuery``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Converts the query into an ObjectQuery.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <param name="query">The query to convert.</param>
+            <returns>The converted ObjectQuery</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.ObjectQueryExtensions.GetObjectQuery``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression)">
+            <summary>
+            Creates an ObjectQuery from an expression.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <param name="query">The input query.</param>
+            <param name="expression">The input expression.</param>
+            <returns>An ObjectQuery created from the expression.</returns>
+        </member>
+        <member name="T:EFSecondLevelCache.XxHashUnsafe">
+            <summary>
+            xxHash is an extremely fast non-cryptographic Hash algorithm, working at speeds close to RAM limits.
+            http://code.google.com/p/xxhash/
+            </summary>
+        </member>
+        <member name="M:EFSecondLevelCache.XxHashUnsafe.ComputeHash(System.String)">
+            <summary>
+            Computes the xxHash of the input string. xxHash is an extremely fast non-cryptographic Hash algorithm.
+            </summary>
+            <param name="data">the input string</param>
+            <returns>xxHash</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.XxHashUnsafe.ComputeHash(System.Byte[])">
+            <summary>
+            Computes the xxHash of the input byte array. xxHash is an extremely fast non-cryptographic Hash algorithm.
+            </summary>
+            <param name="data">the input byte array</param>
+            <returns>xxHash</returns>
+        </member>
+        <member name="M:EFSecondLevelCache.XxHashUnsafe.ComputeHash(System.Byte[],System.Int32,System.UInt32,System.UInt32)">
+            <summary>
+            Computes the xxHash of the input byte array. xxHash is an extremely fast non-cryptographic Hash algorithm.
+            </summary>
+            <param name="data">the input byte array</param>
+            <param name="offset">start offset</param>
+            <param name="len">length</param>
+            <param name="seed">initial seed</param>
+            <returns>xxHash</returns>
+        </member>
+        <member name="T:Arebis.Reflection.ReflectionExtensions">
+            <summary>
+            Extension methods using reflection.
+            </summary>
+        </member>
+        <member name="M:Arebis.Reflection.ReflectionExtensions.PublicInvokeMethod(System.Object,System.String,System.Object[])">
+            <summary>
+            Invokes a public method by reflection.
+            </summary>
+        </member>
+        <member name="M:Arebis.Reflection.ReflectionExtensions.PublicGetProperty(System.Object,System.String)">
+            <summary>
+            Gets a public property by reflection.
+            </summary>
+        </member>
+        <member name="M:Arebis.Reflection.ReflectionExtensions.PublicSetProperty(System.Object,System.String,System.Object)">
+            <summary>
+            Sets a public property by reflection.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Linq.Translations.CompiledExpression">
+            <summary>
+            Provides the common boxed version of get.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Linq.Translations.CompiledExpression`2">
+            <summary>
+            Represents an expression and its compiled function.
+            </summary>
+            <typeparam name="TClass">Class the expression relates to.</typeparam>
+            <typeparam name="TProperty">Return type of the expression.</typeparam>
+        </member>
+        <member name="T:Microsoft.Linq.Translations.DefaultTranslationOf`1">
+            <summary>
+            Simple fluent way to access the default translation map.
+            </summary>
+            <typeparam name="T">Class the expression uses.</typeparam>
+        </member>
+        <member name="T:Microsoft.Linq.Translations.ExpressiveExtensions">
+            <summary>
+            Extension methods over IQueryable to turn on expression translation via a
+            specified or default TranslationMap.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Linq.Translations.ExpressiveExtensions.TranslatingVisitor">
+            <summary>
+            Extends the expression visitor to translate properties to expressions
+            according to the provided translation map.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Linq.Translations.TranslationMap">
+            <summary>
+            Maintains a list of mappings between properties and their compiled expressions.
+            </summary>
+        </member>
+        <member name="T:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a">
+            <summary>
+            Implements a mapping view cache.
+            </summary>
+        </member>
+        <member name="P:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.MappingHashValue">
+            <summary>
+            Gets a hash value computed over the mapping closure.
+            </summary>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView(System.Data.Entity.Core.Metadata.Edm.EntitySetBase)">
+            <summary>
+            Gets a view corresponding to the specified extent.
+            </summary>
+            <param name="extent">The extent.</param>
+            <returns>The mapping view, or null if the extent is not associated with a mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView0">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secBusinessObject.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView1">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secCompanyConfigurations.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView2">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secCompanyExtraData.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView3">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secCompanyType.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView4">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secContentMenus.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView5">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secContentRelations.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView6">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secContentType.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView7">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secDataColumn.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView8">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secFiles.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView9">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secLoginProviders.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView10">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMembershipLevel.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView11">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMembershipModule.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView12">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMenuForms.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView13">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMessageNotifications.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView14">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMessageNotificationTemplates.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView15">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMessages.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView16">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMessageToUsers.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView17">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secModule.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView18">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secModuleObjectPermission.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView19">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMoneyMovementTypes.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView20">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secPaymentMethods.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView21">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secPermission.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView22">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secReusableCatalog.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView23">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secReusableCatalogValues.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView24">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secRoleDataPermission.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView25">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secRoleModuleObjectPermission.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView26">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secRoleModulePermissions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView27">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secTags.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView28">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secUser_LoginProviders.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView29">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secUserConfigurations.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView30">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secUserPayments.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView31">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMemberModuleComp.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView32">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secAudit.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView33">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secAuditProperties.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView34">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secRoles.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView35">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secBizPartner.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView36">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secCoupon.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView37">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMoneyMovements.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView38">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secUsers.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView39">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secUserCompanies.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView40">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secFilterQueries.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView41">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secModComOptions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView42">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secModuleOptions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView43">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secCompanies.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView44">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secEventApp.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView45">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secEventNotify.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView46">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secEventNotifyTos.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView47">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secFeaurePrices.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView48">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMemLevelFeatures.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView49">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secFeatureConcepts.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView50">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secContents.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView51">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secIssues.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView52">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secIssueVotes.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView53">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secIssueRelation.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView54">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secBizObjProperty.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView55">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secEventLog.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView56">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secSyncMatchProperty.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView57">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secSyncItems.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView58">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secSyncMatchDefObjects.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView59">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secSyncMatchDefProps.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView60">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secSyncIntegrator.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView61">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secSyncMatchDef.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView62">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secWFActivity.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView63">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secWFProcess.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView64">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secWFStates.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView65">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secWFActivityUsers.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView66">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secWFActivityUserLog.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView67">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secBizPropertyDescriptions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView68">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secModulePermissions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView69">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secCompanyModules.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView70">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secCompanyRoles.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView71">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secContentBusinessObjects.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView72">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secContentTags.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView73">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secBusinessObjects.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView74">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secCompanyConfigurations.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView75">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secCompanyExtraDatas.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView76">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secCompanyTypes.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView77">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secContentMenus.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView78">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secContentRelations.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView79">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secContentTypes.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView80">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secDataColumns.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView81">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secFiles.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView82">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secLoginProviders.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView83">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMembershipLevels.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView84">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMembershipModules.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView85">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMenuForms.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView86">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMessageNotifications.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView87">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMessageNotificationTemplates.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView88">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMessages.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView89">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMessageToUsers.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView90">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secModules.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView91">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secModuleObjectPermissions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView92">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMoneyMovementTypes.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView93">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secPaymentMethods.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView94">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secPermissions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView95">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secReusableCatalogs.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView96">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secReusableCatalogValues.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView97">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secRoleDataPermissions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView98">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secRoleModuleObjectPermissions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView99">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secRoleModulePermissions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView100">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secTags.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView101">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secUser_LoginProviders.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView102">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secUserConfigurations.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView103">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secUserPayments.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView104">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMemberModuleComps.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView105">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secAudits.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView106">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secAuditProperties.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView107">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secRoles.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView108">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secBizPartners.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView109">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secCoupons.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView110">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMoneyMovements.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView111">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secUsers.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView112">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secUserCompanies.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView113">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secFilterQueries.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView114">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secModComOptions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView115">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secModuleOptions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView116">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secCompanies.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView117">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secEventApps.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView118">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secEventNotifies.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView119">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secEventNotifyTos.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView120">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secFeaurePrices.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView121">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMemLevelFeatures.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView122">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secFeatureConcepts.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView123">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secContents.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView124">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secIssues.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView125">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secIssueVotes.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView126">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secIssueRelations.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView127">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secBizObjProperties.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView128">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secEventLogs.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView129">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secSyncMatchProperties.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView130">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secSyncItems.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView131">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secSyncMatchDefObjects.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView132">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secSyncMatchDefProps.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView133">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secSyncIntegrators.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView134">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secSyncMatchDefs.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView135">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secWFActivities.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView136">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secWFProcesses.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView137">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secWFStates.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView138">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secWFActivityUsers.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView139">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secWFActivityUserLogs.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView140">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secBizPropertyDescriptions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView141">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secModulePermissions.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView142">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secCompanyModules.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView143">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secCompanyRoles.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView144">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secContentBusinessObjects.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView145">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secContentTags.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView146">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secGeoCountries.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView147">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secProfile.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView148">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secGeoCities.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView149">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secGeoStates.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView150">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secGeoCountries.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView151">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secProfiles.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView152">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secGeoCities.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView153">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secGeoStates.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView154">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMoneyPayments.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView155">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMoneyPayments.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView156">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secMemberModuleCompCover.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView157">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secMemberModuleCompCovers.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView158">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityModelStoreContainer.secProcessQueue.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets94d7181a1f1d4c36cf4f08ba0605d97532b6a40c3cd6dec5487a641f2098ad7a.GetView159">
+            <summary>
+            Gets the view for SFSdotNetFrameworkSecurityContext.secProcessQueues.
+            </summary>
+            <returns>The mapping view.</returns>
+        </member>
+        <member name="M:CSSFriendly.ChangePasswordAdapter.OnInit(System.EventArgs)">
+            ///////////////////////////////////////////////////////////////////////////////
+            PROTECTED        
+        </member>
+        <member name="M:CSSFriendly.ChangePasswordAdapter.RegisterScripts">
+            ///////////////////////////////////////////////////////////////////////////////
+            PRIVATE        
+        </member>
+        <member name="M:CSSFriendly.CompositeDataBoundControlAdapter.OnInit(System.EventArgs)">
+            ///////////////////////////////////////////////////////////////////////////////
+            METHODS
+        </member>
+        <member name="M:CSSFriendly.CreateUserWizardAdapter.OnInit(System.EventArgs)">
+            ///////////////////////////////////////////////////////////////////////////////
+            PROTECTED        
+        </member>
+        <member name="M:CSSFriendly.CreateUserWizardAdapter.RegisterScripts">
+            ///////////////////////////////////////////////////////////////////////////////
+            PRIVATE        
+        </member>
+        <member name="M:CSSFriendly.DataListAdapter.OnInit(System.EventArgs)">
+            ///////////////////////////////////////////////////////////////////////////////
+            PROTECTED        
+        </member>
+        <member name="M:CSSFriendly.DataListAdapter.RegisterScripts">
+            ///////////////////////////////////////////////////////////////////////////////
+            PRIVATE        
+        </member>
+        <member name="M:CSSFriendly.GridViewAdapter.OnInit(System.EventArgs)">
+            ///////////////////////////////////////////////////////////////////////////////
+            PROTECTED        
+        </member>
+        <member name="M:CSSFriendly.GridViewAdapter.RegisterScripts">
+            ///////////////////////////////////////////////////////////////////////////////
+            PRIVATE        
+        </member>
+        <member name="M:CSSFriendly.LoginAdapter.OnInit(System.EventArgs)">
+            ///////////////////////////////////////////////////////////////////////////////
+            PROTECTED        
+        </member>
+        <member name="M:CSSFriendly.LoginAdapter.RegisterScripts">
+            ///////////////////////////////////////////////////////////////////////////////
+            PRIVATE        
+        </member>
+        <member name="M:CSSFriendly.LoginStatusAdapter.RegisterScripts">
+            ///////////////////////////////////////////////////////////////////////////////
+            PRIVATE        
+        </member>
+        <member name="M:CSSFriendly.PasswordRecoveryAdapter.OnInit(System.EventArgs)">
+            ///////////////////////////////////////////////////////////////////////////////
+            PROTECTED        
+        </member>
+        <member name="M:CSSFriendly.PasswordRecoveryAdapter.RegisterScripts">
+            ///////////////////////////////////////////////////////////////////////////////
+            PRIVATE        
+        </member>
+    </members>
+</doc>

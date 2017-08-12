@@ -1,0 +1,52 @@
+﻿@{
+    var property = (SFSdotNet.Framework.Web.Mvc.PropertyDefinition)ViewData["currentProperty"];
+    var customProp = property.CustomProperties.FirstOrDefault(p=>p.Name == "PreventHtmlDecode");
+    bool preventHtmlDecode = false;
+    if (customProp != null ){
+        if (customProp.Value == "true")
+        {
+            preventHtmlDecode = true;
+        }
+    }
+
+    bool collapsable = false;
+    if (ViewData.TemplateInfo.FormattedModelValue.ToString().Length > 3000)
+    {
+        collapsable = true;   
+    }
+}
+@if (property.MaxLength > 0 || property.TypeName  != "String"){   
+    if (!preventHtmlDecode) { 
+        
+    @Html.Raw(HttpUtility.HtmlDecode( ViewData.TemplateInfo.FormattedModelValue.ToString()) + "&nbsp;") 
+    }else{ 
+        @Html.Raw(ViewData.TemplateInfo.FormattedModelValue.ToString() + "&nbsp;")
+    }
+}else{  
+ <div class="crop" style="@(collapsable?"max-height:200px;":"")overflow-y:hidden;font-size:medium;font-weight:normal; color:black;">
+    @if (!preventHtmlDecode) { 
+        @Html.Raw(HttpUtility.HtmlDecode( ViewData.TemplateInfo.FormattedModelValue.ToString()) + "&nbsp;")
+    }else{
+        @Html.Raw(ViewData.TemplateInfo.FormattedModelValue.ToString() + "&nbsp;")
+    } 
+    </div>
+    if (collapsable)
+    {     
+
+<div class=" text-center">
+<a href="#" id="viewmore@(property.PropertyName)" class="btn  btn-small"><i class="icon-chevron-down"> </i> </a>
+        <script>
+            $(document).ready(function () {
+                $("#viewmore@(property.PropertyName)").click(function (e) {
+                    e.preventDefault();
+                    $("#dc@(property.PropertyName) .crop").css("max-height", "none");
+                    $("#dc@(property.PropertyName) .crop").css("overflow-y", "auto");
+
+                });
+            });
+
+        </script>
+        </div>
+
+    }
+}  

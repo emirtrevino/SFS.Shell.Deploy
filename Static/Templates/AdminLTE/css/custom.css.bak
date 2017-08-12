@@ -1,0 +1,239 @@
+﻿.content-header  h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.pagination {
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+    border-radius: 4px;
+}
+.pagination  > div > a, .pagination > div  > span {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    color: inherit;
+    float: left;
+    line-height: 1.4285;
+    margin-left: -1px;
+    padding: 4px 10px;
+    position: relative;
+    text-decoration: none;
+}
+.pagination > div  > a:hover, .pagination > div  > span:hover, .pagination > div  > a:focus, .pagination > div  > span:focus {
+    color: #2a6496;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > div > a.current, .pagination > div > span.current {
+   background-color:#f4f4f4;
+}
+.pagination{
+    margin:0px;
+}
+.simple-list tr.sover td {
+    background-color: #f5f5f5;/*#FFE27F*/
+}
+.simple-list td.hover, tr.hover
+{
+    background-color: #f5f5f5;/*#FFE27F*/
+}
+
+ .validation-summary-valid{
+     display:none;
+ }
+ 
+.row.search{
+    margin-bottom:20px;
+
+}
+.modal-backdrop, .in.fade.modal-backdrop {
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    background: #000;
+}
+
+.modal-body .hr-line-dashed:last-child {
+  display:none;
+}
+.simple-list td {
+    white-space: nowrap;
+}
+.max100percent {
+    width: 100%;
+}
+.fieldFilter{
+    max-width: 220px;
+}
+.filter.compare{
+    width:125px;        
+
+}
+.filter.form-control{
+    padding-top:3px;
+    font-size:90%;
+
+}
+.content-header h2{
+    margin-top:0px;
+}
+
+div.editor-field select.geocity:first-child{
+    float:left;
+    width:50%;
+}
+div.editor-field select.geocity:last-child{
+    float:right;
+    width:50%;
+}
+.modal-footer {
+    padding: 15px;
+    text-align: left;
+    border-top: 1px solid #e5e5e5;
+}
+
+
+.list-warning {
+    background-color: #FFE1C4;
+}
+.list-error {
+    background-color: #FFD5D5;
+}
+.list-ok {
+    background-color: rgba(56, 204, 204, 0.25);
+}
+.list-deleted {
+    background-color: #CCCCCC;
+    text-decoration: line-through;
+}
+.list-mark {
+    background-color: #FFFFCC;
+}
+.list-disabled {
+    background-color: #D8D8D8;
+}
+
+.icosort {
+   font-weight:900;
+}
+form.list .ibox {
+   
+    position: relative;
+    background: #ffffff;
+    width: 100%;
+
+
+}
+.form.list .ibox-content {
+    background: #ffffff;
+    border: 1px solid #f4f4f4;   
+    padding: 10px;
+}
+
+.details .list .page-heading  {
+    background-color:transparent;
+}
+
+  
+   
+    #chartjs-tooltip {
+        opacity: 1;
+        position: absolute;
+        background: rgba(0, 0, 0, .7);
+        color: white;
+        padding: 3px;
+        border-radius: 3px;
+        -webkit-transition: all .1s ease;
+        transition: all .1s ease;
+        pointer-events: none;
+        -webkit-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+    }
+   	.chartjs-tooltip-key{
+   		display:inline-block;
+   		width:10px;
+   		height:10px;
+   	}
+
+.dashboard-item .results-add
+{
+    display:none;
+}
+.margins-h-10{
+    margin-left:10px;
+    margin-right:10px;
+}
+tr.headers th {
+    white-space:nowrap;
+}
+.tab-pane .list h3{
+    margin-top:0px;
+}
+
+.ui-pnotify .alert, .alert h4, ui-pnotify-title {
+ color:white;
+}
+.ui-pnotify-text {
+    padding-bottom:15px;
+    padding-top:15px;
+    padding-left:20px;
+}
+.list-in-details .content{
+    min-height:0px;
+}
+.list-in-details .table{
+    margin-bottom:0px;
+}
+.list-in-details .list {
+    border-style:solid;
+    border-color:rgba(204, 204, 204, 0.5);
+    border-width:1px;
+}
+
+.display-field{
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    border-bottom-color:rgba(204, 204, 204, 0.5);
+}
+
+.form-horizontal .control-label label{
+    text-align:right;
+}
+.editor-field .files .preview img{
+        width:80px;
+}
+
+
+.list-warning {
+    background-color: #FFE1C4;
+}
+
+.list-warning {
+    color: #f0ad4e;
+}
+.list-error {
+    background-color: #FFD5D5;
+}
+.text-error {
+    color: #a94442;
+}
+
+.list-ok {
+    background-color: #D9FFD9;
+}
+.list-deleted {
+    background-color: #CCCCCC;
+    text-decoration: line-through;
+}
+.list-mark {
+    background-color: #FFFFCC;
+}
+.list-disabled {
+    background-color: #D8D8D8;
+}
+
+.rowform{
+    margin-bottom:15px;
+}

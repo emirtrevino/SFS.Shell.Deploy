@@ -1,0 +1,62 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.MenuHelperModel
+@using MvcSiteMapProvider.Web.Html.Models
+@{
+    var currentnode = MvcSiteMapProvider.SiteMaps.Current.CurrentNode;
+   string classCurrent = "";
+   System.Web.SiteMapNode proxyNode = null;
+   //SFSdotNet.Framework.Navigation.MenuItem menuItemModule = new SFSdotNet.Framework.Navigation.MenuItem();
+   //menuItemModule.Key = nodeModule.Key;
+   //foreach (var nodeAttr in nodeModule.Attributes)
+   //{
+   //    menuItemModule.Attributes.Add(new KeyValuePair<string, string>(nodeAttr.Key, nodeAttr.Value.ToString()));
+
+   //}
+   List<SFSdotNet.Framework.Navigation.MenuItem> menus = new List<SFSdotNet.Framework.Navigation.MenuItem>();
+                      
+   foreach (var node in Model.Nodes)
+   {
+       SFSdotNet.Framework.Navigation.MenuItem menuItem = new SFSdotNet.Framework.Navigation.MenuItem();
+       foreach (var nodeAttr in node.Attributes)
+       {
+           menuItem.Attributes.Add(new KeyValuePair<string, string>(nodeAttr.Key, nodeAttr.Value.ToString()));
+
+       }
+       System.Collections.Generic.KeyValuePair<string, string> bo = menuItem.Attributes.FirstOrDefault(p => p.Key == "businessObjectKey");
+
+       if ((string.IsNullOrEmpty(bo.Key) || node.RouteValues.ContainsKey("usemode")) && (node.Attributes.ContainsKey("moduleKey") || !string.IsNullOrEmpty(node.Area)))
+       {
+           if (node.Attributes["moduleKey"] == null)
+           {
+               node.Attributes.Add("moduleKey", node.Area);
+           }
+           SFSdotNet.Framework.Globalization.TextUI textUI = new SFSdotNet.Framework.Globalization.TextUI(node.Attributes["moduleKey"].ToString(), null);
+           
+           menuItem.Title = textUI.GetTextFrom(node.Attributes, "Title");
+
+       }
+       else
+       {
+           var uiText = this.ViewContext.HttpContext.GetGlobalResourceObject(menuItem.Attributes.FirstOrDefault(p => p.Key == "moduleKey").Value + "." + menuItem.Attributes.FirstOrDefault(p => p.Key == "businessObjectKey").Value, "__entity__") as SFSdotNet.Framework.Globalization.UITexts;
+           menuItem.Title = uiText.PluralName;
+       }
+       menuItem.Key = node.Key;
+       menus.Add(menuItem);
+   }
+    foreach (var node in Model.Nodes) {
+        var menuItemFinded = menus.FirstOrDefault(p => p.Key == node.Key);
+        if (menuItemFinded != null) { 
+       
+            <H1>@(!string.IsNullOrEmpty(menuItemFinded.Title) ? menuItemFinded.Title : menuItemFinded.Key)</H1>
+        }
+        else
+        {
+    <H1>@(node.Title )</H1>
+    
+            
+        }
+        if (node.Children.Any()) {
+            @Html.DisplayFor(m => node.Children, "SiteMapNodeNavigationView")
+         } 
+   
+} 
+}

@@ -1,0 +1,60 @@
+﻿@Html.Raw(Html.MvcSiteMap().Menu("MenuHelperModelNavigationView", MvcSiteMapProvider.SiteMaps.Current.CurrentNode, false, true, 2));
+
+    <div class="details">
+@{ 	
+    SFSdotNet.Framework.Web.Mvc.Models.MenuTabModel model = new SFSdotNet.Framework.Web.Mvc.Models.MenuTabModel();
+    string moduleKey = "";
+   
+    string objectKey = "";
+    string menuKey = "";
+    MvcSiteMapProvider.ISiteMapNode currentNode = null;
+    if (this.ViewContext.RouteData.Values["area"] == null && this.ViewContext.RouteData.Values["controller"].ToString() == "Navigation")
+    {
+        currentNode = MvcSiteMapProvider.SiteMaps.Current.CurrentNode;
+        if (currentNode != null)
+        {
+            if (currentNode.Attributes.ContainsKey("moduleKey")) { 
+                moduleKey = currentNode.Attributes["moduleKey"].ToString();
+            }
+            if (currentNode.Attributes.ContainsKey("businessObjectKey")) { 
+                objectKey = currentNode.Attributes["businessObjectKey"].ToString();
+            }
+            menuKey = currentNode.Key;
+        }
+    }
+    else
+    {
+        if (this.ViewContext.RouteData.Values["area"] != null) { 
+            moduleKey = this.ViewContext.RouteData.Values["area"].ToString();
+        
+        
+        }
+    }
+            
+    //model.TabId = "tabs";
+    //SFSdotNet.Framework.Web.Mvc.Models.MenuTabItemModel menuItem = null;
+
+        
+    //    menuItem = new MenuTabItemModel();
+    
+    //    menuItem = new SFSdotNet.Framework.Web.Mvc.Models.MenuTabItemModel();
+    //    menuItem.Text = GlobalMessages.NEWS;
+    //    menuItem.Link = VirtualPathUtility.ToAbsolute("~/") + "Contents/News/?moduleKey="  + moduleKey + "&objectKey=" + objectKey  + "&menuKey=" + menuKey;
+    //    menuItem.Index = 0;
+    //    model.Items.Add(menuItem);
+    //    menuItem = new MenuTabItemModel();
+    
+    //    menuItem = new SFSdotNet.Framework.Web.Mvc.Models.MenuTabItemModel();
+    //    menuItem.Text = GlobalMessages.HELP;
+    //    menuItem.Link = VirtualPathUtility.ToAbsolute("~/") + "Contents/Helps/?moduleKey=" + moduleKey + "&objectKey=" + objectKey + "&menuKey=" + menuKey;
+    //    menuItem.Index = 1;
+    //    model.Items.Add(menuItem);
+
+  
+  
+	
+	
+    //Html.RenderPartial("MenuTabs", model); 
+ 
+    }
+</div>

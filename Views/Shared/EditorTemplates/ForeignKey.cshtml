@@ -1,0 +1,72 @@
+﻿@{
+    
+    var propertyName = ViewData.ModelMetadata.PropertyName;
+    var propertyValue = ViewData.ModelMetadata.Model;
+    var id = Guid.NewGuid().ToString();
+    RouteValueDictionary result =
+        (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "result").Single().Value;
+    string resultPropertyText = "";
+    string resultPropertyValue = "";
+    if (result != null) {
+        resultPropertyText = result.FirstOrDefault(p => p.Key == "propertyText").Value.ToString();
+
+        resultPropertyValue = result.FirstOrDefault(p => p.Key == "propertyValue").Value.ToString();
+        
+    }
+    
+    RouteValueDictionary urlData = 
+        (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "AutoCompleteUrlData").Single().Value;
+
+    var url = SFSdotNet.Framework.Web.Mvc.Extensions.RouteHelper.GetUrl(this.ViewContext.RequestContext, urlData);
+    }
+<input type="hidden" name="@( propertyName )" value="@( propertyValue )" id="@( propertyName )" />
+<input type="text" name="@( propertyName )Text" value="@( propertyValue )" id="@( propertyName )Text" class="autoComplete field text " />
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#@( propertyName )Text").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+
+                    url: "@( url )" + request.term,
+                    dataType: "json",
+                    success: function (data) {
+                        response(data)
+
+                    }
+
+                });
+            },
+            minLength: 2
+            @if (!string.IsNullOrEmpty(resultPropertyText) && !string.IsNullOrEmpty(resultPropertyValue))
+{
+    <text>
+            ,
+            select: function( event, ui ) {
+                $( "#@( propertyName )" ).val( ui.item.@( resultPropertyValue ) );
+                $( "#@( propertyName )Text" ).val( ui.item.@( resultPropertyText ) );
+                return false;
+            }
+
+        }).data( "autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+				.data( "item.autocomplete", item )
+				.append( "<a>" + item.@( resultPropertyText ) + "</a>" )
+				.appendTo( ul );
+        };
+
+        </text>
+} else{
+    <text>
+    });
+    </text>
+    }
+        $("#@( propertyName )").addClass("field text medium");
+    });
+    function autoComplete@( propertyName )(ui) {
+        //$("#@( propertyName )").val(data.SafeKey);
+        alert(ui);
+    }
+</script>

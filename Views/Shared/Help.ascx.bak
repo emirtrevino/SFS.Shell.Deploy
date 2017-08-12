@@ -1,0 +1,5 @@
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<SFSdotNet.Framework.Web.Mvc.Models.Features.HelpModel>" %>
+<span class="help"><a class="helpa" href="<%= Model.TooltipUrl %>" auxid="<%=Guid.NewGuid().ToString().Replace("-","").Substring(0,8) %>" title="<%= GlobalMessages.HELP %>" tabindex="-1">?</a></span> 
+
+ 
+

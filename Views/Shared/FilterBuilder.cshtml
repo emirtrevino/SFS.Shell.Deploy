@@ -1,0 +1,189 @@
+﻿@using SFSdotNet.Framework.Web.Mvc.Helpers
+@{ bool isSubFilter = false;
+    string idTab = "";
+    string id = "";
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+    //UIModel uiModel = (UIModel)ViewData["uiModel"];
+    if (ViewData["idTab"] != null)
+    {
+        
+        idTab = ViewData["idTab"].ToString();
+        id = idTab;
+    }
+   if (ViewData["subfilter"] != null) {
+       isSubFilter = (bool)ViewData["subfilter"];
+    }
+   Html.Raw(Html.HeaderResources("datetimepicker"));
+Html.Raw(Html.HeaderResources("timepicker")); 
+Html.Raw(Html.HeaderResources("autocomplete"));
+
+string classContainer = "";
+string classHeader = "modal-header";
+string classBody = "modal-body";
+string rowClass = "row-fluid";
+string classFooter = "modal-footer";
+string btnClass = "btn-small";
+string colName = "span";
+string iconClose = "icon-remove";
+string iconSave = "ok";
+string iconRefresh = "icon-refresh";
+string iconPlus = "icon-plus";
+if (uiModel == null)
+{
+    uiModel = new UIModel();
+    uiModel.UIVersion = 1;
+}
+if ( uiModel.UIVersion == 2)
+{
+    iconPlus = "fa fa-plus-circle";
+    iconRefresh = "fa fa-refresh";
+    iconClose = "fa fa-times";
+    iconSave = "fa fa-floppy-o";
+    rowClass = "row";
+    colName = "col-md-";
+    btnClass = "btn-sm";
+    classContainer = "panel panel-default";
+    classHeader = "panel-heading";
+    classBody = "panel-body";
+    classFooter = "panel-footer";
+}
+
+}
+<script>
+
+    loadJS("@(VirtualPathUtility.ToAbsolute("~/"))Scripts/jquery.cascadingDropDown.js");
+</script>
+<script>
+    function switchDateTypeInput(jqElement) {
+        if (jqElement.hasClass("relative")) {
+            // esconder datepicker y mostrar numero de días y hora
+
+            jqElement.closest('tr').find("div.datetimeinput").css("display", "none");
+            jqElement.closest('tr').find("input.datetime").removeClass("value");
+
+            jqElement.closest('tr').find("div.ndays").css("display", "inline");
+            jqElement.closest('tr').find("input.ndays").addClass("value");
+            //jqElement.closest('tr').find("input.timevalue").addClass("value");
+           
+            if (typeof(setTimeFunctions) != "undefined"){
+                setTimeFunctions();
+            
+            }
+
+        } else {
+            jqElement.closest('tr').find("div.datetimeinput").css("display", "inline");
+            jqElement.closest('tr').find("input.datetime").addClass("value");
+
+            jqElement.closest('tr').find("div.ndays").css("display", "none");
+            jqElement.closest('tr').find("input.ndays").removeClass("value");
+            //jqElement.closest('tr').find("input.timevalue").removeClass("value");
+        }
+    }
+    function switchRelativeDay(jqElement) {
+        jqElement.closest('tr').find("span.relativeday").text(jqElement.text());
+        jqElement.closest('tr').find("span.relativeday").attr("relday", jqElement.attr("relday"));
+    }
+    function switchNdaysDirection(jqElement) {
+        if(jqElement.text() == "+"){
+            jqElement.text("-");
+        }else{
+            jqElement.text("+");
+        }
+    }
+
+    function showTextOfRelativeDate(jqElement) {
+        var text = "";
+
+        var text = jqElement.closest('tr').find("input.ndays").val();
+        var ndays = parseInt(text);
+        var date = new Date(@(DateTime.UtcNow.Year), @(DateTime.UtcNow.Year), @(DateTime.UtcNow.Year));
+        date = date.addDays(ndays);
+        var time = "";
+        var timeval = jqElement.closest('tr').find(".timevalue").val();
+        if (jqElement.closest('tr').find(".timevalue").val().split(":").length > 2 ){
+            time = timeval.substring(0, timeval.length - 3);
+        }else{
+            time = timeval;
+        }
+        text = " (" + date.toLocaleDateString() + " " + time + ") ";
+       // jqElement.closest('tr').find(".daterelativetext").text(text);
+    }
+
+
+
+
+</script>
+<div class="@(classHeader)">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <i class="fa fa-filter"></i> @( GlobalMessages.CREATE_A_NEW_FILTER )
+</div>
+<div class="@(classBody)">
+    <form class="form-inline">
+<div id="filterTparent@(ViewData["idTab"])" class="specificfilterT@(ViewData["idTab"] )">
+<table border="0" style="margin-bottom:0px;margin-top:0px;" class="table  table-striped" id="filterT@(ViewData["idTab"])">
+    <tbody class="rline"></tbody>
+</table>
+</div>
+        </form>
+<a style="margin-top:10px" href="javascript: AddQueryLine@(ViewData["idTab"])();" id="addfilterLine@(ViewData["idTab"])" class="add btn @(uiModel.UIVersion == 2? "btn-success btn-xs": "btn-mini")"><i class="@(iconPlus)"></i> @Html.Raw( GlobalMessages.ADD_FILTER)</a> 
+</div>
+<div class="@(classFooter)">
+    <div class="@(rowClass)">
+        <div class="@(colName)6 text-left"><a href="javascript: applyFilter@(ViewData["idTab"])();" class="btn btn-primary apply @(btnClass) "><i class='@(iconRefresh) icon-white '></i> @Html.Raw( GlobalMessages.APPLY_FILTER)</a></div>
+        <div class="@(colName)6 text-right">
+
+            @{
+                var btn = ButtonLinkModel.GetForPopUp("saveFilter" + idTab, GlobalMessages.SAVE_FILTER, 2, "ok", VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secFilterQueries/CreateViewGen?usemode=filterbuilder&popup=1&htmlFilterId=filterTparent" + ViewData["idTab"] + "&bo=" + ViewData["entityKey"] + "&boUseMode=" + Request.QueryString["usemode"] + "&idFilter=filterT" + ViewData["idTab"], "refreshFilters" + ViewData["idTab"]);
+                //btn.BtnClass = btnClass;
+                Html.RenderPartial("ButtonLink", btn);
+
+
+                Html.RenderPartial("ButtonLink", ButtonLinkModel.GetForPopUp("filterDel" + idTab, "" + GlobalMessages.DELETE, 2, "delete", VirtualPathUtility.ToAbsolute("~/") + "Messages/Delete?usemode=filterbuilder&controllerName=secFilterQueries&actionName=DeleteGen&objectKey=", "deleteClose" + ViewData["idTab"]));
+            }
+            &nbsp;&nbsp;&nbsp;<a href="javascript:closeFB@(ViewData["idTab"])()" id="closeFilter@(id)" style=" display:none" class="closeup btn btn-default  @(btnClass)"><i class=" @(iconClose)"></i> @Html.Raw(GlobalMessages.CLOSE_FILTER)</a>
+
+        </div>
+
+</div>
+</div>
+
+<script>
+    $("#saveFilter@(idTab)").addClass("@(btnClass)");
+    $("#saveFilter@(idTab) i").addClass("@(iconSave)");
+    $("#filterDel@(idTab)").addClass("@(btnClass)");
+    //$("#filterDel@(idTab) i").addClass("@(iconClose)");
+
+    function getFilterB@(ViewData["idTab"])() {
+        return queryB@(ViewData["idTab"]);
+    }
+    function applyFilter@(ViewData["idTab"])() {
+        refreshList@(ViewData["idTab"])(); ;
+    }
+
+
+    var nFilters@(ViewData["idTab"]) = 0;
+    function removeFQ(id) {
+        $("#" + id).remove();
+    }
+    function AddQueryLine@(ViewData["idTab"])() {
+        $("#filterT@( idTab) tbody.rline").append("<tr id='trAdding@(ViewData["idTab"])'><td colspan=''>" + loadingInline("@(GlobalMessages.PROCESSING_PLEASE_WAIT)...") + "</td></tr>");
+        var withConcat = "";
+        if (nFilters@(ViewData["idTab"]) == 0) {
+            withConcat = "&withConcat=false";
+        } else {
+            withConcat = "&withConcat=true";
+        }
+        var idFilter = '&idFilter=filterT@(ViewData["idTab"])';
+        callServerGetHtml('@Html.Raw( VirtualPathUtility.ToAbsolute("~/") )@(Request.QueryString["moduleKey"])/@(Request.QueryString["entitySet"])/AddQueryItem?uiv=@(Request.QueryString["uiv"])&overrideModule=@(Request.QueryString["overrideModule"])&moduleNS=@( ViewData["moduleNS"] )&type=@(Request.QueryString["type"] )&controller=@( Request.QueryString["controller"] )' + withConcat + idFilter, AddQueryLineDone@(ViewData["idTab"]));
+
+    }
+
+    function AddQueryLineDone@(ViewData["idTab"])(data) {
+        $("#trAdding@(ViewData["idTab"])").remove();
+        $("#filterT@( idTab) tbody.rline").append(data);
+        nFilters@(ViewData["idTab"]) = nFilters@(ViewData["idTab"]) + 1;
+
+    }
+
+</script>

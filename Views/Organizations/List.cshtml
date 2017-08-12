@@ -1,0 +1,35 @@
+﻿@{
+    List<SFSdotNet.Framework.Security.BusinessObjects.secCompany> companies = (List<SFSdotNet.Framework.Security.BusinessObjects.secCompany>)ViewData["companies"];
+    
+}
+
+
+<div class="row-fluid">
+    <div class="page-header">
+        <h1>Organizaciones y empresas en la plataforma</h1>
+    </div>
+</div>
+
+@foreach (var company in companies)
+{
+    if (!company.ExistImage)
+    {
+        company.GuidFileLogo = Guid.Empty;
+    }
+    string urlLogo =  SFSdotNet.Framework.ImageUtils.GetImageUrl("secFiles", "SFSdotNet.Framework.Security", "GuidFile", "FileData", "FileType", "FileSize", company.GuidFileLogo.ToString(), "secFiles.secFileModel", 120, 120);
+
+
+   
+    <div class="row-fluid">
+        <div class="span2">
+            <img src="@(urlLogo)" />
+        </div>
+        <div class="span10">
+            <h2>@(company.Name)</h2>
+            <p>
+                Usuarios: @(company.QtyUsers)
+            </p>
+        </div>
+    </div>
+    
+}

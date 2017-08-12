@@ -1,0 +1,61 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.WikiContent
+@{
+    Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+
+    string lang = ViewBag.Lang;
+    
+}
+
+<div class="row-fluid">
+
+<div id="breadcrumb">  
+    <ul class="crumbs">  
+        <li class="first"><a href="@VirtualPathUtility.ToAbsolute("~/")Wiki/lang/@(lang)/all" style="z-index:9;"><span></span>@GlobalMessages.WIKI_HOME</a></li>
+@{  
+    if (ViewData["moduleParent"] != null ){
+        var moduleParent = (SFSdotNet.Framework.Security.BusinessObjects.secContent)ViewData["moduleParent"]; 
+        <text>
+        <li><a href="@VirtualPathUtility.ToAbsolute("~/")Wiki/lang/@(lang)/@(moduleParent.Slug)" style="z-index:8;">@moduleParent.Title</a></li>
+
+        </text>
+    }
+}
+    </ul>
+</div>
+    </div>
+<div class="row-fluid">
+    <div class=" span12">
+<h2> @Model.Title</h2>
+@Html.Raw(Model.Content)
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@ViewBag.ElementName</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var field in Model.Fields)
+    {
+        if (field.TypeItem == "module" || field.TypeItem == "object")
+        {
+        <text>
+        <tr>
+            <td><a href="@VirtualPathUtility.ToAbsolute("~/")Wiki/lang/@(lang)/@(field.Slug)">@(field.Title)</a></td>
+            <td>@Html.Raw(field.Content)</td>
+        </tr>
+        </text>  
+    }else{
+        <text>
+        <tr>
+            <td>@(field.Title)</td>
+            <td>@Html.Raw(field.Content)</td>
+        </tr>
+        </text>  
+        }
+    }
+        </tbody>
+</table>
+        </div>
+    </div>

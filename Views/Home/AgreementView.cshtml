@@ -1,0 +1,29 @@
+﻿
+     <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+    <h2 >@GlobalMessages.SERVICE_AGREEMENT</h2>
+  </div>
+
+ <div class="modal-body">
+     <strong>@GlobalMessages.PLEASE_ACCEPT_SERVICE_AGREEMENT</strong>
+<iframe width="95%" height="250px" src="@ViewBag.Url"></iframe>
+     <p><input type="checkbox" id="agreementAccept" checked="checked" /> <strong> @GlobalMessages.I_ACCEPT_THE_SERVICE_AGREEMENT</strong></p>
+<script>
+    $(document).ready(function () {
+        $("#agreementAccept").change(function () {
+            $("#acceptFromMembership").click();
+            if ($(this).is(':checked')) {
+
+                $("#btnAcceptAgreement").removeAttr("disabled");
+            } else {
+                $("#btnAcceptAgreement").attr("disabled", "disabled");
+            }
+        });
+    });
+
+</script>
+     </div>
+    <div class="modal-footer">
+    <button class="btn btn-primary" id="btnAcceptAgreement">@GlobalMessages.I_ACCEPT_THE_SERVICE_AGREEMENT</button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">@GlobalMessages.CANCEL </button>
+  </div>

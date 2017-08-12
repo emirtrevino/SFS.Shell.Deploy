@@ -1,0 +1,10 @@
+﻿tr.headers td {
+    background-color: #999999;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+
+table { page-break-inside:avoid; }
+tr { page-break-inside:avoid; }
+

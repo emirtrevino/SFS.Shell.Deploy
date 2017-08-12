@@ -1,0 +1,839 @@
+﻿@using SFSdotNet.Framework.Web.Mvc.Extensions
+@using SFSdotNet.Framework.Web.Mvc.Helpers
+@using SFSdotNet.Framework.Web.Mvc.Models
+@using System.Linq
+@using System.Collections
+@using System.Collections.Generic
+@{
+    bool isPopup = false;
+    string requiredIndicator = "";
+    bool isReadOnlyEdit = false;
+
+    if (!string.IsNullOrEmpty(Request.QueryString["popup"]))
+    {
+        isPopup = true;
+    }
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    PropertyDefinition property = (PropertyDefinition)ViewData["currentProperty"];
+    if (property.ContextType == null)
+    {
+        property.ContextType = uiModel.ContextType;
+    }
+    if (property.IsRequired == true && property.ContextType == UIModelContextTypes.EditForm)
+    {
+        requiredIndicator = "<span class=\"reqsymb error\">*</span>";
+    }
+    string typeField = "string";
+    bool withLayout = true;
+
+    bool withLabel = true;
+    string _safename = property.PropertyName;
+    bool requireProxyWithoutFk = false;
+    if (property.IsNavigationProperty && !property.IsNavigationPropertyMany)
+    {
+        _safename = "Fk" + property.PropertyName;
+        if (Model.GetType().GetProperty(_safename) == null)
+        {
+            requireProxyWithoutFk = true;
+
+        }
+    }
+    string hsize = "";
+    if (ViewData["hsize"] != null)
+    {
+        hsize = ViewData["hsize"].ToString();
+    }
+    bool withContainerDC = true;
+    if (ViewData["withContainer"] != null)
+    {
+        withContainerDC = (bool)ViewData["withContainer"];
+    }
+    string labelText = "&nbsp;";
+    string fromFK = "";
+    if (ViewData["fk"] != null)
+    {
+        fromFK = ViewData["fk"].ToString();
+    }
+    string idField = property.PropertyName;
+    string extraClass = "";
+    string filterAttributes = "";
+    string dataTypeValue = "";
+    if (property.ContextType == UIModelContextTypes.FilterFields)
+    {
+        idField = idField + "-" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
+        extraClass = " filter filterT value";
+        filterAttributes = " dataTypeValue=\"" + property.TypeName + "\"";
+    }
+    else
+    {
+        idField = _safename;
+    }
+    string classSize = "";
+    string classId = "";
+    string col_12 = " span12 ";
+    string col_8 = " span8 ";
+    string form_group = "control-group";
+    if (uiModel.UIVersion == 2)
+    {
+        //extraClass = extraClass + " form-control ";
+        form_group = "form-group";
+        col_12 = " col-md-12 ";
+        col_8 = " col-md-8 ";
+
+    }
+
+    if (property.ContextType != UIModelContextTypes.FilterFields)
+    {
+        classSize = (uiModel.IsMultiColumn ? col_12 : col_8);
+    }
+    else
+    {
+        if (property.IsNavigationProperty == true && property.IsNavigationPropertyMany == false)
+        {
+            classId = "Fk" + property.PropertyName;
+
+        }
+        else
+        {
+            classId = property.PropertyName;
+        }
+    }
+
+    string fkValue = "";
+    if (ViewData["fkValue"] != null)
+    {
+        fkValue = ViewData["fkValue"].ToString();
+    }
+    bool hideLayout = false;
+    bool convertToHiddenField = false;
+
+    if (fromFK == property.PropertyName && isPopup)
+    {
+        //hideLayout = true;
+        //convertToHiddenField = true;
+    }
+    if ((property.IsHidden || property.SystemProperty == SystemProperties.Identifier) && property.TypeName.ToLower() != "include")
+    {
+        withLayout = false;
+        convertToHiddenField = true;
+    }
+    else if ((property.TypeName != null && property.TypeName.ToLower() == "include" && property.CustomProperties.FirstOrDefault(p => p.Name == "FormLayout") != null) || property.RemoveLayout)
+    {
+        withLayout = false;
+    }
+
+    if (property.IsNavigationProperty && (property.ContextType == UIModelContextTypes.EditForm || property.ContextType == UIModelContextTypes.FilterFields))
+    {
+        typeField = property.TypeName.ToLower();
+        if (property.IsNavigationPropertyMany == false)
+        {
+            dataTypeValue = "Guid";
+        }
+
+        if (property.NavigationPropertyType == NavigationPropertyTypes.SimpleDropDown)
+        {
+            typeField = "relation-dropdown";
+        }
+        else if (property.NavigationPropertyType == NavigationPropertyTypes.LookUp || property.NavigationPropertyType == NavigationPropertyTypes.Autocomplete)
+        {
+            typeField = "relation-lookup-autocomplete";
+
+        }
+        else if (property.NavigationPropertyType == NavigationPropertyTypes.Tags)
+        {
+            typeField = "relation-tags";
+        }
+    }
+    else if (property.TypeName != null && property.TypeName.ToLower() != "string")
+    {
+
+        typeField = property.TypeName.ToLower();
+    }
+
+    if (property.ContextType == UIModelContextTypes.DisplayForm && uiModel.ContextType == UIModelContextTypes.EditForm)
+    {
+        property.IsReadOnly = true;
+        isReadOnlyEdit = true;
+    }
+    //if (property.RemoveLayout) {
+    //    typeField = "remove-layout";
+    //}
+
+    labelText = property.PropertyDisplayName;
+    string classContainerField = "";
+    string containerSpace = " display-space-multicol ";
+    if (property.ContextType == UIModelContextTypes.DisplayForm && uiModel.ContextType == UIModelContextTypes.EditForm)
+    {
+        ViewData["classContainerField"] = "display-field";
+    }
+    if (property.ContextType == UIModelContextTypes.EditForm)
+    {
+        containerSpace = " edit-space-multicol ";
+    }
+    if (ViewData["classContainerField"] != null)
+    {
+        classContainerField = ViewData["classContainerField"].ToString();
+    }
+
+    string labelClass = " control-label ";
+    string controlsClass = " controls ";
+
+    string separatorLine = "";
+
+    if (uiModel.UIVersion == 2 && uiModel.IsMultiColumn == false)
+    {
+        labelClass = " control-label col-md-3 ";
+        controlsClass = " controls col-md-9";
+        if (uiModel.ContextType != UIModelContextTypes.FilterFields)
+        {
+            separatorLine = "<div class=\"hr-line-dashed\"></div>";
+
+        }
+
+    }
+}
+
+@if (withLayout)
+{
+    if (uiModel.UIVersion == 2 && uiModel.IsMultiColumn == true)
+    {
+        @Html.Raw("<div  class=\"" + hsize + "\"><!-- container 926-->");
+        hsize = "";
+    }
+    @Html.Raw("<div id=\"dc" + _safename + "\" class=\"li " + form_group + " focushl " + hsize + containerSpace + "\">");
+    if (property.RemoveLabel == false)
+    {
+            @Html.Raw(@"<div class=""" + labelClass + @"""><Label style=""display:inline;"" class=""""  property=""" + _safename + @""" lang="""">
+                    " + labelText + @"
+				</Label>");@Html.Raw(requiredIndicator);
+
+        if (property.ContextType == UIModelContextTypes.EditForm || property.ContextType == UIModelContextTypes.FilterFields)
+        {
+            if (property.IsNavigationProperty && !property.IsNavigationPropertyMany)
+            {
+                if ((uiModel.IsMultiColumn || uiModel.UIVersion == 2) && !string.IsNullOrEmpty(property.GetMethodDisplayValue))
+                {
+                    Html.RenderPartial("ActionsForeignKey", new ViewDataDictionary { { "model", Model }, { "uiModel", uiModel }, { "property", property } });
+                }
+            }
+        }
+    @Html.Raw(@"</div>");
+    }
+    @Html.Raw(@"<div class=""" + controlsClass + @""">
+        <div class="" omega " + classContainerField + @""">");
+}
+else
+{
+    if (withContainerDC)
+    {
+        @Html.Raw("<div id=\"dc" + _safename + "\" class=\"control-group " + hsize + "\">");
+    }
+}
+@if (property.ContextType == UIModelContextTypes.EditForm || property.IsNavigationPropertyMany || property.IsImage || (property.IsNavigationProperty && property.ContextType == UIModelContextTypes.DisplayForm && uiModel.ContextType == UIModelContextTypes.DisplayForm))
+{
+    if (convertToHiddenField)
+    {
+        if (property.IsNavigationProperty)
+        {
+            <input type="hidden" name="Fk@(fromFK)" id="Fk@(fromFK)" value="@(fkValue)" />
+        }
+        else
+        {
+            @Html.Hidden(_safename);
+        }
+
+    }
+    else
+    {
+        if (property.ContextType == UIModelContextTypes.DisplayForm)
+        {
+            if (property.IsNavigationPropertyMany)
+            {
+                Html.RenderPartial("DisplayListView", SFSdotNet.Framework.Web.Mvc.Models.DetailsRelationManydItem.CreateForList(property));
+
+            }
+            else {
+                if (property.IsImage || property.CustomProperties.FirstOrDefault(p => p.Name == "IsImage" && p.Value == "true") != null)
+                {
+                    if (property.IsLocalizableField)
+                    {
+                        @Html.WrapLocalizationTabs(property, uiModel, true);
+                    }
+                    else
+                    {
+                        @Html.Display(_safename, "FileFk");
+                    }
+
+                }
+                else
+                {
+                    if (typeField == "include")
+                    {
+                        string preIncludeText = "Display";
+                        if (uiModel.ContextType == UIModelContextTypes.EditForm || uiModel.ContextType == UIModelContextTypes.FilterFields)
+                        {
+                            preIncludeText = "Edit";
+                        }
+                        if (!string.IsNullOrEmpty(property.PartialViewName))
+                        {
+
+                            if (!string.IsNullOrEmpty(uiModel.ModuleKey))
+                            {
+                                @Html.Partial("~/Areas/" + uiModel.ModuleKey + "/Views/" + uiModel.ControllerName + "/" + property.PartialViewName + ".cshtml");
+
+                            }
+                            else
+                            {
+                                @Html.Partial("" + uiModel.HeaderPartialView + "");
+
+                            }
+                        }
+                        else
+                        {
+
+                            //Html.RenderPartialIfExist(preIncludeText + property.PropertyName);
+
+                        }
+                    }
+                    else
+                    {
+                        if (property.IsNavigationProperty)
+                        {
+                            bool isRelAuto = true;
+                            System.Reflection.PropertyInfo propFinded = null;
+
+                            object valueProp = null;
+                            if (property.IsDynamic == false)
+                            {
+                                propFinded = Model.GetType().GetProperty(_safename);
+                            }else
+                            {
+                                //propFinded = Model.GetType().GetProperty(property.PropertyName);
+                                isRelAuto   = true;
+                            }
+                            if (property.IsDynamic == false)
+                            {
+                                if (propFinded != null)
+                                {
+                                    valueProp = propFinded.GetValue(Model, null);
+                                }
+                                else
+                                {
+                                    isRelAuto = false;
+                                    propFinded = Model.GetType().GetProperty(property.PropertyName);
+                                    if (propFinded != null)
+                                    {
+                                        valueProp = propFinded.GetValue(Model, null);
+
+                                    }
+                                    else
+                                    {
+                                        valueProp = property.Value;
+
+                                    }
+                                }
+                            }
+
+                            if ((!string.IsNullOrEmpty(property.PathName)  || property.IsNavigationProperty == true  && property.IsDynamic == true   ) && (valueProp != null || property.IsDynamic == true ) && isRelAuto == true)
+                            {
+                                object valuePropText = null;
+                                if (property.IsDynamic == false)
+                                {
+                                    valuePropText =  Model.GetType().GetProperty(_safename + "Text").GetValue(Model, null);
+                                }else
+                                {
+                                    var customProp = property.CustomProperties.FirstOrDefault(p=> p.Name == "Text");
+                                    if (customProp != null)
+                                    {
+                                        valuePropText = customProp.Value;
+
+
+                                    }
+                                }
+                                int maxChars = 6;
+                                if (property.HorizontalSize > 1)
+                                {
+                                    maxChars = (maxChars * property.HorizontalSize.Value);
+                                }
+                                if (valuePropText != null && property.HorizontalSize != null && valuePropText.ToString().Length > maxChars)
+                                {
+                                    Model.GetType().GetProperty(_safename + "Text").SetValue(Model, valuePropText.ToString().Substring(0, maxChars) + "...");
+                                }
+                                if (!property.PreventNavigation && property.IsDynamic == false)
+                                {
+                                    <a class="popuplink" title="@(valuePropText.ToString())" id="plink_@(uiModel.Id)_@(property.PropertyName)" href="@(VirtualPathUtility.ToAbsolute("~/") + property.PathName)/DetailsViewGen/@(valueProp.ToString())?dec=true">
+                                        @Html.Display(_safename + "Text", new { property.AditionalViewData, currentProperty = property })
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (property.IsDynamic == false)
+                                    {
+                                    @Html.Display(_safename + "Text", new { property.AditionalViewData, currentProperty = property })
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(valuePropText)
+
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (isRelAuto == true)
+                                {
+                                    @Html.Display(_safename + "Text", new { property.AditionalViewData, currentProperty = property })
+                                }
+                                else
+                                {
+                                    ExtraData extraData = uiModel.ExtraData.FirstOrDefault(p => p.PropertyName == property.PropertyName);
+                                    if (extraData != null && ((SelectList)extraData.Data).Count() == 1)
+                                    {
+                                        @Html.Raw(((SelectList)extraData.Data).FirstOrDefault().Text);
+                                    }
+                                    else
+                                    {
+                                        if (requireProxyWithoutFk == true)
+                                        {
+                                            System.Reflection.PropertyInfo propFindedText = null;
+
+                                            //object textProp = null;
+
+                                            propFindedText = Model.GetType().GetProperty(_safename + "Text");
+
+                                            if (propFindedText != null)
+                                            {
+                                                //textProp = propFindedText.GetValue(Model, null);
+                                                @Html.Display(_safename + "Text", new { property.AditionalViewData, currentProperty = property })
+                                            }
+
+                                        }
+                                        else
+                                        {
+
+                                            @Html.Display(property.PropertyName, new { property.AditionalViewData, currentProperty = property })
+
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (typeField == "decimal" || typeField.Contains("int"))
+                            {
+
+                                string text = "";
+
+                                var propText = Model.GetType().GetProperty(property.PropertyName + "Text");
+                                if (propText != null)
+                                {
+                                    text = propText.GetValue(Model);
+                                }
+                                else
+                                {
+                                    var propVal = Model.GetType().GetProperty(property.PropertyName);
+                                    if (propVal != null)
+                                    {
+                                        text = propVal.ToString();
+                                    }
+                                }
+                                @Html.Raw(text);
+
+                            }
+                            else
+                            {
+                                @Html.Display(_safename, new { property.AditionalViewData, currentProperty = property });
+
+
+                                if (uiModel.ContextType == UIModelContextTypes.EditForm)
+                                {
+                                    Html.Hidden(_safename);
+
+                                }
+                            }
+                        }
+
+                        @Html.Raw("<script> $(function(){  });</script>");
+
+                    }
+                }
+            }
+        }
+        else
+        {
+            //ContextType = Edit
+            // edición
+
+            switch (typeField)
+            {
+                case "string":
+                case "int32":
+                case "integer":
+                case "decimal":
+                case "boolean":
+                case "timespan":
+                case "datetime":
+
+                    if (property.IsDynamic == true)
+                    {
+                        if (property.TypeName.ToLower() == "boolean")
+                        {
+                            @Html.Editor(_safename, "Boolean", new { currentProperty = property, uiMask = property.Mask, maxlength = (property.MaxLength != null ? (property.MaxLength.Value != 0 ? property.MaxLength.Value.ToString() : "") : "") });
+                        }
+                        else if (property.TypeName.ToLower() == "string")
+                        {
+                            @Html.Editor(_safename, new { currentProperty = property, uiMask = property.Mask, maxlength = (property.MaxLength != null ? (property.MaxLength.Value != 0 ? property.MaxLength.Value.ToString() : "") : "") });
+
+                        }
+                        else if (property.TypeName.ToLower() == "integer")
+                        {
+                            @Html.Editor(_safename, "Integer", new { currentProperty = property, uiMask = property.Mask, maxlength = (property.MaxLength != null ? (property.MaxLength.Value != 0 ? property.MaxLength.Value.ToString() : "") : "") });
+
+                        }
+                        else if (property.TypeName.ToLower() == "decimal")
+                        {
+                            @Html.Editor(_safename, "Decimal", new { currentProperty = property, uiMask = property.Mask, maxlength = (property.MaxLength != null ? (property.MaxLength.Value != 0 ? property.MaxLength.Value.ToString() : "") : "") });
+
+                        }
+
+                    }
+                    else {
+
+                        if (!property.IsLocalizableField)
+                        {
+                            //if (firstPropertyFocus == null)
+                            //{
+                            //    firstPropertyFocus = "#" + _safename;
+                            //}
+                            if (property.PropertyName.ToLower() == "captcha")
+                            {
+                                @Html.reCaptcha()
+
+                                @*@Html.Raw(Html.GenerateCaptcha());*@
+                            }
+                            else {
+                                @Html.Editor(_safename, new { currentProperty = property, uiMask = property.Mask, maxlength = (property.MaxLength != null ? (property.MaxLength.Value != 0 ? property.MaxLength.Value.ToString() : "") : "") })
+
+                            }
+                        }
+                        else
+                        {
+
+                            @Html.WrapLocalizationTabs(property, uiModel);
+
+                        }
+
+                    }
+                    break;
+                case "relation-dropdown":
+
+                    ExtraData extraData = null;
+                    if (uiModel.ExtraData != null)
+                    {
+
+                        extraData = uiModel.ExtraData.FirstOrDefault(p => p.PropertyName == property.PropertyName);
+
+                    }
+                    else
+                    {
+                        extraData = new ExtraData() { Data = new SelectList(new List<SelectListItem>()), PropertyName = property.PropertyName };
+                    }
+                    string nullableSelect = "";
+                    if (property.Nullable)
+                    {
+                        if (property.RemoveLabel == false)
+                        {
+                            nullableSelect = @"-- " + GlobalMessages.SELECT + " --";
+                        }else
+                        {
+                            nullableSelect = @"-- " + property.PropertyDisplayName + " --";
+                        }
+                    }
+                    //if (firstPropertyFocus == null){
+                    //    firstPropertyFocus = "#" + _safename;
+                    //}
+                    if (property.CustomProperties.Count(p => p.Name == "customRel") == 0)
+                    {
+                        if (uiModel.UIVersion == 2)
+                        {
+                            extraClass = extraClass + " form-control " + (uiModel.ContextType != UIModelContextTypes.FilterFields ? "m-b" : " input-sm");
+                        }
+                        if (extraData != null)
+                        {
+                            @Html.DropDownList(_safename, (SelectList)extraData.Data, nullableSelect, new { dataTypeValue = dataTypeValue, @id = idField, tabIndex = property.Order, @class = classId + classSize + extraClass });
+                        }
+                        if (!uiModel.IsMultiColumn && uiModel.UIVersion != 2 && !string.IsNullOrEmpty(property.GetMethodDisplayValue))
+                        {
+                            Html.RenderPartial("ActionsForeignKey", new ViewDataDictionary { { "model", Model }, { "uiModel", uiModel }, { "property", property } });
+                        }
+                    }
+                    else
+                    {
+                        if (uiModel.UIVersion == 2)
+                        {
+                            extraClass = extraClass + " form-control " + (uiModel.ContextType != UIModelContextTypes.FilterFields ? "m-b" : " input-sm");
+                        }
+
+                        @Html.DropDownList(_safename, (SelectList)extraData.Data, nullableSelect, new { name = idField, @id = idField, tabIndex = property.Order, @class = classId + classSize + extraClass });
+                        if (property.IsDynamic == false)
+                        {
+                            if (requireProxyWithoutFk == true)
+                            {
+                                string propValue = "";
+                                var propInfo = Model.GetType().GetProperty(property.PropertyName);
+                                if (propInfo != null)
+                                {
+                                    var propValueObj = propInfo.GetValue(Model, null);
+                                    if (propValueObj != null)
+                                    {
+                                        propValue = propValueObj.ToString();
+                                    }
+                                }
+                            <text>
+                                <input type="hidden" value="@(propValue)" id="@(property.PropertyName)" name="@(property.PropertyName)" />
+                                
+                                <script>
+                                $("#@(_safename)").change(function() {
+                                    $("#@(property.PropertyName)").val($(this).val());
+
+                            });
+                            if ("@(propValue)".length > 0) {
+                                        $("#@(_safename)").val("@(propValue)");
+                            }
+                                </script>
+                            </text>
+                            }
+                        }else
+                        {
+                            
+                            <text>
+                            <script>
+                                $(document).ready(function () {
+                                    $("#Fk@(property.PropertyName)").val("@(property.Value)");
+                                });
+                            </script>
+                            </text>
+                        }
+                    }
+                    Html.RenderPartial("DropDownOptions"); break;
+                case "relation-lookup-autocomplete":
+                    if (property.IsLocalizableField)
+                    {
+                        @Html.WrapLocalizationTabs(property, uiModel)
+                    }
+                    else
+                    {
+                        //ViewData["DisplayText"] =
+                        var propInfo = Model.GetType().GetProperty(_safename + "Text");
+                        if (propInfo != null)
+                        {
+                            @Html.Editor(_safename, new { DisplayText = (propInfo.GetValue(Model, null) != null ? propInfo.GetValue(Model, null).ToString() : "") });
+                        }
+                        else {
+                            propInfo = Model.GetType().GetProperty(property.PropertyName);
+                            @Html.Editor(property.PropertyName, new { DisplayText = (propInfo.GetValue(Model, null) != null ? propInfo.GetValue(Model, null).ToString() : "") });
+
+                        }
+                    }
+
+                    if (!uiModel.IsMultiColumn && !string.IsNullOrEmpty(property.GetMethodDisplayValue))
+                    {
+                        // Html.RenderPartial("ActionsForeignKey", new ViewDataDictionary { { "model", Model }, { "uiModel", uiModel }, { "property", property } });
+                    }
+
+                    break;
+                case "relation-tags":
+                    Html.RenderAction("ListViewGen", property.CustomProperties.First(p => p.Name == "EntitySetName").Value, new { listMode = SFSdotNet.Framework.Web.Mvc.ListModes.SelectTags, parentRelationProperty = property, parentRelationPropertyValue = Model.GetType().GetProperty("Ch" + _safename + "Text").GetValue(Model, null) });
+
+                    break;
+                case "captcha":
+                    @Html.reCaptcha()
+                    @*@Html.Raw(Html.GenerateCaptcha());*@
+                    break;
+                case "include":
+
+                    string preIncludeText = "Display";
+                    if (uiModel.ContextType == UIModelContextTypes.EditForm || uiModel.ContextType == UIModelContextTypes.FilterFields)
+                    {
+                        preIncludeText = "Edit";
+                    }
+                    if (string.IsNullOrEmpty(property.PartialViewName))
+                    {
+                        property.PartialViewName = preIncludeText + property.PropertyName;
+                    }
+
+                    Html.RenderPartialIfExist(property.PartialViewName, uiModel);
+
+                    break;
+                case "remove-layout":
+
+                    if (!string.IsNullOrEmpty(property.PartialViewName))
+                    {
+                        Html.RenderPartialIfExist(property.PartialViewName);
+                    }
+
+                    else if (property.RemoveLayout) // ? para que se usa?
+                    {
+                        @Html.Display(_safename, new { property.AditionalViewData, currentProperty = property })
+
+                    }
+                    else
+                    { // Se trata de una vista que sustituye todo el campo incluyendo el label
+                        Html.RenderPartialIfExist(property.PartialViewName);
+                    }
+                    // termina la propiedad que trae vista externa
+                    break;
+                case "binary":
+
+                    break;
+                default:
+
+                    @Html.Editor(_safename, new { currentProperty = property, uiMask = property.Mask, maxlength = (property.MaxLength != null ? (property.MaxLength.Value != 0 ? property.MaxLength.Value.ToString() : "") : "") })
+
+                    break;
+            }
+
+            if (property.IsReadOnly == true)
+            {
+                <text>
+                    <script>
+                    setDisabled($("#@(_safename)"));
+                    </script>
+                </text>
+            }
+        }
+    }
+}
+else {
+    // correccion Display
+    // es readonly solo lectura
+    string _safenameForDisplayMode = _safename;
+    if (property.IsNavigationProperty)
+    {
+        _safenameForDisplayMode = _safename + "Text";
+    }
+    if (typeField == "decimal" || typeField.Contains("int"))
+    {
+        if (property.IsDynamic == true)
+        {
+            @Html.Raw(property.Value)
+        }
+        else
+        {
+            @Html.Display(_safename + "Text", new { property.AditionalViewData, currentProperty = property });
+
+        }
+    }
+    else
+    {
+        if (typeField == "include")
+        {
+            string preIncludeText = "Display";
+            if (uiModel.ContextType == UIModelContextTypes.EditForm || uiModel.ContextType == UIModelContextTypes.FilterFields)
+            {
+                preIncludeText = "Edit";
+            }
+            if (!string.IsNullOrEmpty(property.PartialViewName))
+            {
+
+                if (!string.IsNullOrEmpty(uiModel.ModuleKey))
+                {
+                    @Html.Partial("~/Areas/" + uiModel.ModuleKey + "/Views/" + uiModel.ControllerName + "/" + property.PartialViewName + ".cshtml");
+
+                }
+                else
+                {
+                    @Html.Partial("" + uiModel.HeaderPartialView + "");
+
+                }
+            }
+            else
+            {
+
+                //Html.RenderPartialIfExist(preIncludeText + property.PropertyName);
+
+            }
+        }
+        else
+        {
+            if (property.IsDynamic == true)
+            {
+            @Html.Raw(property.Value)
+            }
+            else
+            {
+            @Html.Display(_safenameForDisplayMode);
+
+            }
+
+        }
+
+    }
+    if (requireProxyWithoutFk == true)
+    {
+        if (uiModel.ContextType == UIModelContextTypes.EditForm)
+        {
+            @Html.Hidden(property.PropertyName);
+        }
+    }
+    else
+    {
+        if (uiModel.ContextType == UIModelContextTypes.EditForm)
+        {
+            string text = "";
+            var propFinded = Model.GetType().GetProperty(_safename);
+            if (propFinded != null)
+            {
+                var objValue = propFinded.GetValue(Model);
+                if (objValue != null)
+                {
+                    text = objValue.ToString();
+                }
+            }
+
+            @Html.Raw("<input type=\"hidden\" Value=\"" + text + "\" id=\"" + _safename + "\" name=\"" + _safename + "\" />");
+        }
+    }
+
+
+}
+@if (withLayout)
+{
+    @Html.Raw("</div>");
+    if (property.ContextType == UIModelContextTypes.EditForm || uiModel.ContextType == UIModelContextTypes.FilterFields)
+    {
+        <div class="errorMessage">@Html.ValidationMessage(_safename)</div>
+
+    }
+    @Html.Raw("</div>");
+    @*<div class="errorMessage">@Html.ValidationMessage(_safename)</div>*@
+if (uiModel.UIVersion == 2 && uiModel.IsMultiColumn == true)
+{
+    @Html.Raw("</div>");
+
+}
+    @Html.Raw("</div>");
+
+}
+else
+{
+    if (withContainerDC)
+    {
+        @Html.Raw("</div>");
+    }
+}
+
+@if (hideLayout)
+{
+    <script> $("#dc@(property.PropertyName)").hide(); </script>
+
+}
+
+@Html.Raw(separatorLine)
+
+<script>
+
+    </script>

@@ -1,0 +1,33 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<asp:placeholder runat="server" visible="false"><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></asp:placeholder>
+<asp:placeholder runat="server" visible="false"><asp:ContentPlaceHolder ID="CustomScript" runat="server" /></asp:placeholder>
+<asp:placeholder runat="server" visible="false"><asp:ContentPlaceHolder ID="MainContent" runat="server"  /></asp:placeholder>
+<asp:placeholder runat="server" visible="false"><asp:ContentPlaceHolder ID="RightContent" runat="server" /></asp:placeholder>
+<asp:placeholder runat="server"  visible="false"><asp:ContentPlaceHolder ID="LeftContent" runat="server" /></asp:placeholder>
+
+
+<%    
+    var buildTitle = new StringBuilder();
+    var buildMain = new StringBuilder();
+    var buildCustomScript = new StringBuilder();
+    var buildRight = new StringBuilder();
+    var buildLeft = new StringBuilder();
+    
+    TitleContent.RenderControl(new HtmlTextWriter(new System.IO.StringWriter(buildTitle)));
+    ViewBag.Title = buildTitle.ToString().Trim();
+
+    CustomScript.RenderControl(new HtmlTextWriter(new System.IO.StringWriter(buildCustomScript)));
+    ViewBag.CustomScript = buildCustomScript.ToString();
+
+    MainContent.RenderControl(new HtmlTextWriter(new System.IO.StringWriter(buildMain)));
+    ViewBag.MainContent = buildMain.ToString();
+
+    RightContent.RenderControl(new HtmlTextWriter(new System.IO.StringWriter(buildRight)));
+    ViewBag.RightContent = buildRight.ToString();
+
+
+
+    LeftContent.RenderControl(new HtmlTextWriter(new System.IO.StringWriter(buildLeft)));
+    ViewBag.LeftContent = buildLeft.ToString();
+%>
+<%= Html.Partial("RazorProxy", viewData: ViewData)%>

@@ -1,0 +1,176 @@
+﻿@{
+    string classExtra = "";
+    string wsize = "span8";
+    bool multiline = false;
+    PropertyDefinition property = null;
+    if (ViewData["currentProperty"] != null)
+    {
+        property = (PropertyDefinition)ViewData["currentProperty"];
+        //if (ViewData["fieldMultiLine"] != null)
+        //{
+        multiline = property.IsMultiline;
+        if (property.HorizontalSize != null)
+        {
+            wsize = "span12";
+        }
+        //}
+    }
+    var uiModel = (UIModel)ViewData["uiModel"];
+    if (ViewData["class"] != null){
+        classExtra = ViewData["class"].ToString();
+    }
+    else{
+        ViewData.Add("class", "field text " + wsize + " " + classExtra);
+    }
+    string sffAttr = "";
+    if (ViewData["sff"] != null){
+        sffAttr = ViewData["sff"].ToString();
+    }else{
+        ViewData.Add("sff",  sffAttr);
+    }
+
+    if (property.Order != null)
+    {
+
+        ViewData.Add("tabIndex", property.Order.ToString());
+    }
+    string requiredAttributes = "";
+    string regExAttributes = "";
+    string remoteAttributes = "";
+    string controlInputClass = "";
+    if (uiModel.UIVersion == 2)
+    {
+        controlInputClass = "form-control";
+    }
+    System.Text.StringBuilder sbVal = new System.Text.StringBuilder();
+    var atts = Html.GetUnobtrusiveValidationAttributes(property.PropertyName, this.ViewData.ModelMetadata);
+    bool isRequiredAtt = false;
+    if (property != null) {
+        foreach (var att in atts)
+        {
+            if (att.Key == "data-val-required=")
+            {
+                isRequiredAtt = true;
+            }
+            sbVal.Append(att.Key + "=\"" + HttpUtility.HtmlEncode( att.Value ) + "\"");
+        }
+
+
+        if (property.IsRequired == true && isRequiredAtt == false)
+        {
+            requiredAttributes = "data-val=\"true\" data-val-required=\"" + string.Format(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.THE_FIELD_IS_REQUIRED, property.PropertyDisplayName) + "\"";
+
+        }
+    }
+    string maxLength = "";
+    if (property.MaxLength != null)
+    {
+        maxLength = " MaxLength =\"" + property.MaxLength.ToString() + "\"";
+    }
+    string idField = property.PropertyName;
+    if (property.ContextType == UIModelContextTypes.FilterFields)
+    {
+        idField = idField + "-" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
+    }
+    //if (property != null && !string.IsNullOrEmpty(property.RegularExpression))
+    //{
+    //    regExAttributes = "data-val-regex-pattern=\"" + HttpUtility.HtmlEncode(property.RegularExpression) + "\"";
+    //}
+
+    //if (property != null && property.Remote != null )
+    //{
+    //    var remoteAtt = property.Remote;
+
+    //    var vasss = Html.GetUnobtrusiveValidationAttributes(property.PropertyName, this.ViewData.ModelMetadata);
+
+    //    remoteAttributes = "";
+    //}
+
+    string urlJs = SFSdotNet.Framework.Web.Urls.Tag("~/Static/Templates/AdminLTE/plugins/colorpicker/bootstrap-colorpicker.js");
+    string value = "";
+    if (property.RemoveLabel == true && string.IsNullOrEmpty(property.PlaceHolder) && property.UIText  == null || (property.UIText != null && string.IsNullOrEmpty(property.UIText.PlaceHolder )))
+    {
+        property.PlaceHolder = property.PropertyDisplayName;
+    }
+    if (ViewData.TemplateInfo.FormattedModelValue != null)
+    {
+        value = ViewData.TemplateInfo.FormattedModelValue.ToString();
+
+    }
+    if (property.IsDynamic == true && property.Value != null )
+    {
+        value = property.Value.ToString();
+    }
+    string placeHolderRaw = "";
+    if(!string.IsNullOrWhiteSpace(property.PlaceHolder))
+    {
+
+        placeHolderRaw = " placeholder=\"" + property.PlaceHolder + "\" ";
+
+    }else if (property.UIText != null && !string.IsNullOrEmpty(property.UIText.PlaceHolder))
+    {
+        placeHolderRaw = " placeholder=\"" + property.UIText.PlaceHolder + "\" ";
+    }
+
+
+}
+@if (!multiline)
+{
+    if (property != null)
+    {
+
+        if (property.FieldType == FieldType.Color)
+        {
+             @Html.Raw("<div id=\"color-" + idField + "\" class=\"input-group  \">")
+        }
+
+            <input @Html.Raw(placeHolderRaw) @Html.Raw(maxLength)  tabindex="@(property.Order != null ? property.Order.ToString() : "")" name="@(idField )" sff="@( ViewData[" sff"] )" class="@( ViewData["class"]  ) @(controlInputClass)" id="@(idField)" @Html.Raw(requiredAttributes) @Html.Raw(sbVal.ToString()) type="text" value="@(value)" />
+
+        if (property.FieldType == FieldType.Color)
+        {
+            @Html.Raw("<div  class=\"input-group-addon\"><i></i></div>")
+
+            @Html.Raw("</div>")
+            <text>
+<script type="text/javascript">
+
+
+    $(function() {
+
+        if (jQuery().colorpicker == undefined) {
+            $.ajax({
+                url: "@(urlJs)",
+                dataType: "script",
+                async: false
+            });
+        }
+
+        $("#color-@(idField)").colorpicker();
+
+    });
+    </script>
+        </text>
+        }
+
+    }
+    else
+    {
+
+        ViewData.Add("@id", idField);
+        @Html.TextBox("", value, ViewData)
+    }
+}
+else
+{
+    if (property != null )
+    {
+        <textarea @Html.Raw(maxLength)   @Html.Raw(placeHolderRaw)  tabindex="@(property.Order != null ? property.Order.ToString() : "")" name="@(idField )" sff="@(ViewData["sff"] )" class="@(ViewData["class"] ) @(controlInputClass)" id="@(idField)" rows="5" cols="0" @Html.Raw(requiredAttributes) @Html.Raw(sbVal.ToString())>@(value)</textarea>
+
+    }
+    else
+    {
+        ViewData.Add("@id", idField);
+        @Html.TextArea("", value,5,0, ViewData)
+
+    }
+} 

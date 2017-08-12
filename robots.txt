@@ -1,0 +1,9 @@
+User-Agent: *
+Disallow: 
+
+User-Agent: *
+Disallow: /Issues/*?type=error-system
+Disallow: /Issues/*type=error-system*
+Disallow: /Issues/Id/*type=error-system*
+Disallow: /Issues/Id/*?type=error-system
+Disallow: /SFSdotNetFrameworkSecurity/Public/*

@@ -1,0 +1,41 @@
+﻿
+<script>
+    var selectRows@(ViewData["idTab"]) = [];
+    var allSelected@( ViewData["idTab"] ) = false;
+    function selectAllRealResults@( ViewData["idTab"] )() {
+        allSelected@( ViewData["idTab"] ) = true;
+        selectRows@( ViewData["idTab"] ) = [];
+    }
+    function unSelectAllRealResults@( ViewData["idTab"] )() {
+        allSelected@( ViewData["idTab"] ) = false;
+    }
+    function selectRow@( ViewData["idTab"] )(value) {
+        if (allSelected@( ViewData["idTab"] ) == false) {
+            selectRows@( ViewData["idTab"] ).push(value);
+        } else {
+            selectRows@( ViewData["idTab"] ).splice(selectRows@( ViewData["idTab"] ).indexOf(value), 1);
+        }
+    }
+    function unSelectRow@( ViewData["idTab"] )(value) {
+        if (allSelected@( ViewData["idTab"] ) == false) {
+            selectRows@( ViewData["idTab"] ).splice(selectRows@( ViewData["idTab"] ).indexOf(value), 1);
+            //        } else {
+            //            $("#seln").text(parseInt($("#seln").text())-1);
+        } else {
+            selectRows@( ViewData["idTab"] ).push(value);
+        }
+    }
+</script>
+<div class="btn-group">
+
+<a  href="#" class=" dropdown-toggle" data-toggle="dropdown"><input type="checkbox" class="selectpage" onclick="javascript: selectAll(this, 'page', '@( ViewData["idTab"] )');"/> <span class="caret"></span></a>
+
+    
+    <ul id="sub_menu_select@( ViewData["idTab"] )" class="dropdown-menu jeegoocontext cm_default">
+     <li class="icon"><input type="checkbox" class="selectpage" onclick="javascript: selectAll(this, 'page', '@( ViewData["idTab"] )');" id="checkPage"/>&nbsp;&nbsp; <label for="checkPage"> @(GlobalMessages.PAGE )</label></li>
+     <li class="icon"><input class="selectall" type="checkbox" onclick="javascript: selectAll(this, 'all', '@( ViewData["idTab"] )'); " id="checkall"/>&nbsp;&nbsp; <label for="checkall">@( GlobalMessages.ALL_RESULTS)</label></li>
+    </ul>
+
+
+    </div>
+       

@@ -1,0 +1,26 @@
+﻿
+          
+Limitar desde @Html.Editor("DateFrom")
+
+     
+                    Hasta
+          @Html.Editor("DateTo")
+
+       
+
+        <div class="" style="vertical-align:middle;display:inline-block;margin-bottom:10px;">  
+        <a href="#" id="refreshDashboard" class="btn">Actualizar</a>
+
+    </div>
+<script>
+    $(document).ready(function () {
+        $("#refreshDashboard").click(function (e) {
+            e.preventDefault();
+            EventManager.Publish('dashboardRefresh');
+        });
+        
+    });
+    
+
+
+</script>

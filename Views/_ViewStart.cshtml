@@ -1,0 +1,68 @@
+﻿@{
+    bool clean = false;
+    string _layout = null;
+    if (ViewContext.ViewData["uiModel"] != null ){
+        if (((SFSdotNet.Framework.Web.Mvc.Models.UIModel)ViewContext.ViewData["uiModel"]).CleanLayout){
+            clean = true;
+        }
+    }
+    if (ViewContext.ViewData["uiv"] != null && ViewContext.ViewData["uiv"].ToString() == "2")
+    {
+        if (ViewContext.ViewData["uilayout"] != null)
+        {
+            Layout = ViewContext.ViewData["uilayout"].ToString();
+
+        }
+        else
+        {
+            Layout = SFSdotNet.Framework.My.Context.OverrideApplication.GetLayout(clean);
+
+        }
+    }
+    else
+    {
+        if (ViewContext.ViewData["uilayout"] != null)
+        {
+            Layout = ViewContext.ViewData["uilayout"].ToString();
+
+        }
+        else
+        {
+            UIModel uiModel = null;
+            if ( ViewContext.ViewData["uiModel"]  != null)
+            {
+                uiModel = (UIModel)ViewContext.ViewData["uiModel"];
+            }
+            if (uiModel == null || string.IsNullOrEmpty(uiModel.UILayoutFile))
+            {
+
+
+                SFSdotNet.Framework.Web.Mvc.ControllerBase controller = new SFSdotNet.Framework.Web.Mvc.ControllerBase();
+                _layout = controller.GetLayout(this.Request, clean);
+
+                if (string.IsNullOrEmpty(_layout))
+                {
+                    Layout = SFSdotNet.Framework.My.Context.OverrideApplication.GetLayout(clean);
+                }
+                else
+                {
+                    Layout = _layout;
+                }
+            }else
+            {
+                if (clean == true)
+                {
+                    Layout = uiModel.UILayoutFile.Replace(".cshtml","") + "-Clean.cshtml";
+
+                }
+                else
+                {
+                    Layout = uiModel.UILayoutFile;
+
+                }
+            }
+        }
+
+    }
+
+}

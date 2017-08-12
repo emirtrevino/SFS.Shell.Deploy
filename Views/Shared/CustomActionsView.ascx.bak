@@ -1,0 +1,86 @@
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
+<% string idTab = "";
+   string classButtons = "onlysel";
+   string key = "";
+
+   string onCloseFunction = "onUpdateListData";
+   if (ViewData["idTab"] != null)
+       idTab = ViewData["idTab"].ToString();
+    string selectedN = "<span id='cusact" + idTab+ "'></span>";
+    if (ViewData["UIModel"] != null)
+   {
+       if (((UIModel)ViewData["UIModel"]).ContextType == UIModelContextTypes.DisplayForm) {
+           classButtons = "";
+           selectedN = "";
+           if (ViewData["onCloseActionWindow"] != null)
+               onCloseFunction = (string)ViewData["onCloseActionWindow"];
+           if (ViewData["ObjectKey"] != null )
+                key = (string)ViewData["ObjectKey"];
+       }
+       if (
+           (((UIModel)ViewData["UIModel"]).Actions.Count > 0 && ((UIModel)ViewData["UIModel"]).ContextType == UIModelContextTypes.DisplayForm) ||
+           (((UIModel)ViewData["UIModel"]).Actions.Where(p => string.IsNullOrEmpty(p.Condition)).Count() > 0 && ((UIModel)ViewData["UIModel"]).ContextType == UIModelContextTypes.ListForm) 
+           )
+       { %>
+<div class="btn-group dropup" style=""> 
+<%--<ul id="customAction<%: idTab %>" class="dropmenu" name="customAction<%:idTab %>">--%>
+    <a href="#" class="<%: classButtons %> btn dropdown-toggle btn-inverse"  data-toggle="dropdown"> <i class="icon-cog"></i>  <%: GlobalMessages.ACTIONS %> <%= selectedN %>  <b class="caret"></b></a>
+  <ul class="dropdown-menu text-left" role="menu" aria-labelledby="customAction<%: idTab %>">
+
+      <% string controllerName = ((UIModel)ViewData["UIModel"]).ControllerName;
+    foreach (var action in ((UIModel)ViewData["UIModel"]).Actions)
+   {
+       string url = ResolveUrl("~/") + "Messages/Confirm";
+       if (!string.IsNullOrEmpty(action.Url)) {
+           if (action.Url.StartsWith("~/"))
+           {
+               url = ResolveUrl("~/") + action.Url.Replace("~/", "");
+           }
+           else {
+               url = action.Url ;
+           }
+           if (!url.Contains("?"))
+           {
+               url = url + "?";
+           }
+           if (!url.Contains("popup")) {
+               url = url + "&popup=true";
+           }
+           if (!url.Contains("actionId"))
+               url = url + "&actionId=" + action.ActionKey + idTab;
+           //string lastActionExecutedJsVar = action.ActionKey + idTab + "IsExecuted";
+
+           //url = url + "&lastActionExecuted=" + lastActionExecutedJsVar;
+       }
+        
+       %>
+       
+        			 <li class="icon" id="li<%: idTab %><%: action.ActionKey %>"><a href="javascript: void(0);" confirmMessage="" id="action<%:action.ActionKey %><%: idTab %>" onclick="CustomAction(this, '<%: url %>','<%:idTab %>','<%: key %>');" class="<%: classButtons %>" controllerName="<%: controllerName %>" isBackground="<%= action.IsBackground %>"  actionKey="<%: action.ActionKey %>" ><img src="<%= ResolveUrl("~/") %>Content/icons/enginedoc.png" /> &nbsp;&nbsp;<%: action.Title %></a></li>
+<%   } %>
+
+    </ul>
+</div>
+<script>
+    function proxyRefreshAfterAction<%: idTab %>(actionKey) {
+        if (isActionComplete(actionKey + "<%: idTab %>")){
+            //la acción se ejecutó
+            // limpiar lo seleccionado
+            
+            if (typeof(<%= onCloseFunction + idTab %>) == "function")
+                <%= onCloseFunction + idTab %>();
+        }
+    }
+</script>
+	<%
+    
+     
+           Html.RenderPartial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "actionConfirm" + idTab, OnCloseFunction = "proxyRefreshAfterAction" + idTab, TargetClassName = "list-delete", ProxyId = "customAction" + idTab, Message = GlobalMessages.CONFIRM_QUESTION_ACTION_MESSAGE_MANY }); %>
+
+<%      }
+   }%>
+
+
+  
+  <%--  <ul id="sub_menu_action" class="jeegoocontext cm_default">--%>
+
+   

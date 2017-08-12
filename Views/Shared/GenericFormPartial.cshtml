@@ -1,0 +1,798 @@
+﻿@using SFSdotNet.Framework.Web.Mvc.Extensions
+@using SFSdotNet.Framework.Web.Mvc.Helpers
+
+@{
+    string pathview = ViewData["viewpath"] != null ? (string)ViewData["viewpath"] : "";
+    string extensionview = ViewData["viewpath"] != null ? ".ascx" : "";
+    string classcancel = @"";
+    string idTab = Request.QueryString["idTab"];
+    SFSdotNet.Framework.Web.Mvc.Models.Features.HelpModel help = new SFSdotNet.Framework.Web.Mvc.Models.Features.HelpModel("SFSdotNetFrameworkSecurity", "Login");
+
+    SFSdotNet.Framework.Web.Mvc.Models.UIModel uiModel = null;
+    if (ViewData["uiModel"] != null)
+    {
+        uiModel = (SFSdotNet.Framework.Web.Mvc.Models.UIModel)ViewData["uiModel"];
+    }
+    else
+    {
+        uiModel = new SFSdotNet.Framework.Web.Mvc.Models.UIModel();
+        uiModel.TitleForm = ""; //TODO: Titulo de la forma
+
+    }
+
+    if (!string.IsNullOrEmpty(uiModel.ModuleKey) && !string.IsNullOrEmpty(uiModel.EntityKey) && uiModel.ContextRequest != null ) {
+        SFSdotNet.Framework.My.Audit.AuditTrailFactory(uiModel.EntityKey, null, SFSdotNet.Framework.My.Audit.AuditActions.R, uiModel.ModuleKey, uiModel.ContextRequest);
+    }
+
+    string prefix_col = "span";
+    string classRow = "row-fluid";
+    if (uiModel.UIVersion == 2)
+    {
+        classRow = "row";
+        prefix_col = "col-sm-";
+    }
+    bool isPopup = false;
+    if (!string.IsNullOrEmpty(Request.QueryString["popup"]))
+    {
+        isPopup = true;
+    }
+
+    if (!string.IsNullOrEmpty(Request.QueryString["idTab"]))
+    {
+        uiModel.IsPartialView = true;
+    }
+
+    string idWindow = uiModel.Id; //TODO:  Id de la forma
+    if (isPopup)
+    {
+        classcancel = @"data-dismiss=""modal"" aria-hidden=""true""";
+        idWindow = "popup_" + idWindow + idTab;
+        ViewData["idModal"] = idWindow + idTab;
+    }
+    ViewData["idWindow"] = idWindow;
+    if (!string.IsNullOrEmpty(Request.QueryString["wid"]))
+    {
+        // idWindow = "popup_" + Request.QueryString["wid"];
+        if (isPopup)
+        {
+            idWindow = "popup_" + Request.QueryString["wid"];
+        }
+        else
+        {
+            idWindow = Request.QueryString["wid"];
+        }
+    }
+
+    string fromFK = "";
+    if (ViewData["fk"] != null)
+    {
+        fromFK = ViewData["fk"].ToString();
+    }
+
+    string fkValue = "";
+    if (ViewData["fkValue"] != null)
+    {
+        fkValue = ViewData["fkValue"].ToString();
+    }
+    System.Text.StringBuilder sbExtraQs = new System.Text.StringBuilder();
+    string UIGridFormColumns = "16";
+    string UILabelColumns = "6";
+    if (!string.IsNullOrEmpty(Request.QueryString["popup"]))
+    {
+
+        UIGridFormColumns = "12";
+        UILabelColumns = "4";
+    }
+    string onSuccess = "";
+    if (!string.IsNullOrEmpty(Request.QueryString["onSuccess"]))
+    {
+        onSuccess = Request.QueryString["onSuccess"];
+    }
+
+    List<KeyValuePair<string, string>> extraparams = new List<KeyValuePair<string, string>>();
+
+    foreach (var qs in Request.QueryString.AllKeys)
+    {
+        if (!string.IsNullOrEmpty(Request.QueryString[qs]))
+        {
+            if (sbExtraQs.Length > 0)
+            {
+                sbExtraQs.Append("&");
+            }
+
+            sbExtraQs.Append(qs + "=" + HttpUtility.UrlEncode(Request.QueryString[qs]));
+
+        }
+    }
+
+    Html.EnableClientValidation();
+
+
+
+    System.Text.StringBuilder sbUrlAction = new System.Text.StringBuilder();
+    sbUrlAction.Append(VirtualPathUtility.ToAbsolute("~/"));
+    if (!string.IsNullOrEmpty(uiModel.AreaAction))
+    {
+        sbUrlAction.Append(uiModel.AreaAction + "/");
+    }
+    if (!string.IsNullOrEmpty(uiModel.ControllerAction))
+    {
+        sbUrlAction.Append(uiModel.ControllerAction + "/");
+    }
+    if (!string.IsNullOrEmpty(uiModel.UseMode))
+    {
+        sbUrlAction.Append("usemode/" + uiModel.UseMode + "/");
+
+    }
+    if (!string.IsNullOrEmpty(uiModel.OverrideApp))
+    {
+        sbUrlAction.Append("overrideModule/" + uiModel.OverrideApp + "/");
+
+    }
+    if (!string.IsNullOrEmpty(uiModel.ActionName))
+    {
+        sbUrlAction.Append(uiModel.ActionName);
+    }
+    if (uiModel.ContextType == UIModelContextTypes.EditForm)
+    {
+        string id = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(Request.RequestContext, "id");
+        if (!string.IsNullOrEmpty(id))
+        {
+            sbUrlAction.Append("/" + id);
+
+        }
+    }
+    //Incluir header de vista externa y abrir div contenedor con id de ventana o forma
+    if (isPopup || uiModel.IsPartialView == true)
+    {
+        <text>
+            @{
+                if (uiModel.UIHeaderInclude)
+                {
+                    var area = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "area");
+
+                    if (!string.IsNullOrEmpty(area))
+                    {
+                        @Html.Partial("~/Areas/" + area + "/Views/" + uiModel.ControllerName + "/" + uiModel.HeaderPartialView + ".cshtml");
+
+                    }
+                    else
+                    {
+                        @Html.Partial("" + uiModel.HeaderPartialView + "");
+
+                    }
+                }
+                @Html.Raw(uiModel.HeaderScript)
+            }
+            @Html.Raw("<div class=\"popup\" id=\"" + idWindow + "\">")
+            @*@Html.Raw("<div class=\"container_16\">")*@
+
+
+        </text>
+                }
+                else
+                { // no es popup AMBOS casos edit y details
+                  /*  if (uiModel.UIHeaderInclude)
+                    {
+                        Html.RenderPartialIfExist(uiModel.HeaderPartialView);
+                    }*/
+
+                    <text>
+                        <!--Start No modal window--><div id="@idWindow" class="nomodal generic ibox-content box-body">
+                    </text>
+                }
+
+
+
+                if (uiModel.ContextType == UIModelContextTypes.EditForm)
+                {
+                    if (isPopup || uiModel.IsPartialView == true)
+                    {
+                        <text>
+                            <form action="@(sbUrlAction.ToString())?@Html.Raw(sbExtraQs.ToString())" data-ajax="true" data-ajax-failure="showErrorFromMvc" data-ajax-mode="replace" data-ajax-success="onMessageSuccess" data-ajax-update="#@(idWindow)" id="form_@(idWindow)" method="post">
+                        </text>
+                    }
+                    else
+                    {
+                        <text>
+                            <form id="form_@idWindow" action="@(sbUrlAction.ToString())?@Html.Raw(sbExtraQs.ToString())" method="post">
+                        </text>
+                    }
+
+                }
+                else
+                { // no se trata de edición sino solo detalles
+                    @Html.Raw("<form class=\"" + (uiModel.IsMultiColumn == false ? "form-horizontal" : "") + " display\">");
+
+                    //Html.HiddenFor(m=>m.IdLogin) //TODO: hidden key
+                }
+                string classNoMulticolumn = "form-horizontal";
+                string classMulticolumn = "form-vertical";
+                string hTitle = "h2";
+                if (uiModel.UIVersion == 2)
+                {
+                    hTitle = "h4";
+                    classMulticolumn = "form-vertical";
+                    classNoMulticolumn = "form-horizontal";
+                }
+
+                if (isPopup || uiModel.IsPartialView == true)
+                {
+                    if (isPopup == true)
+                    {
+                        <text>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon icon-remove fa fa-times "></i></button>
+
+                                <div class="frmTitle" id="frmTitle-@(uiModel.Id)"><@(hTitle) class="modal-title" lang=''>@uiModel.TitleForm  </@(hTitle)>			</div>
+                            </div>
+
+                            <div class="modal-body form @(uiModel.IsMultiColumn == false ? (classNoMulticolumn + " " + (uiModel.UIVersion == 2 ? "" : classRow)) : classMulticolumn  ) ">
+                                @if (!string.IsNullOrEmpty(uiModel.Comments))
+                                {
+                                    <p>@Html.Raw(uiModel.Comments)</p>
+                                }
+
+                                <div id="frmSummaryErrors">
+                                    @Html.ValidationSummary(GlobalMessages.VAL_FIX_ERROR_PLEASE, new { @class = "alert alert-error alert-block" })
+                                </div>
+                        </text>
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(uiModel.TitleForm) && uiModel.ShowTitleInPartialView == true )
+                        {
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon icon-remove fa fa-times "></i></button>
+
+                                <div class="frmTitle" id="frmTitle-@(uiModel.Id)"><@(hTitle) class="modal-title" lang=''>@uiModel.TitleForm  </@(hTitle)>			</div>
+                            </div>
+                        }
+
+                        @Html.Raw("<div class=\"nomodal-body form " + (uiModel.IsMultiColumn == false ? (classNoMulticolumn + " " + (uiModel.UIVersion == 2 ? "" : classRow)) : classMulticolumn  ) +"\">");
+                         
+                        if (!string.IsNullOrEmpty(uiModel.Comments))
+                        {
+                            <p>@Html.Raw(uiModel.Comments)</p>
+                        }
+                        <div id="frmSummaryErrors">
+                            @Html.ValidationSummary(GlobalMessages.VAL_FIX_ERROR_PLEASE, new { @class = "alert alert-error alert-block" })
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    <text>
+                        <!--Start No modal body--><div class="form nomodal-body @(uiModel.IsMultiColumn == false ? (classNoMulticolumn + " " + (uiModel.UIVersion == 2 ? "" : classRow)) : classMulticolumn) ">
+                            @if (!string.IsNullOrEmpty(uiModel.Comments))
+                            {
+                                <p>@Html.Raw(uiModel.Comments)</p>
+                            }
+                            @if (uiModel.ContextType == UIModelContextTypes.EditForm)
+                            {
+                                <div id="frmSummaryErrors">
+                                    @Html.ValidationSummary(GlobalMessages.VAL_FIX_ERROR_PLEASE, new { @class = "alert alert-error alert-block" })
+                                </div>
+                            }
+                    </text>
+                }
+
+
+}
+
+@{
+
+
+
+    ViewData["classContainerField"] = "editor-field";
+    if (uiModel.ContextType == SFSdotNet.Framework.Web.Mvc.Models.UIModelContextTypes.DisplayForm)
+    {
+        ViewData["classContainerField"] = "display-field";
+    }
+    int rowN = 0;
+    string startRow = "<div class='" + classRow + " row" + rowN + "'>";
+
+
+
+    string endRow = "</div><!--end row multicol-->";
+    if (uiModel.UIVersion == 2)
+    {
+        //endRow = endRow + "<div class=\"hr-line-dashed\"></div>";
+    }
+    //string hsize = "";
+    int totalSize = 12;
+    int rowSize = 0;
+    string hsize = "";
+
+    bool rowIsOpen = false;
+    bool openFielset = false;
+    string focusclassinput = "focushl";
+    SFSdotNet.Framework.Globals.Security.Permission permission = new SFSdotNet.Framework.Globals.Security.Permission();
+
+
+
+    IEnumerable<PropertyDefinition> propertiesForRender = null;
+    if (!string.IsNullOrEmpty(uiModel.BodyPartialView) || !string.IsNullOrEmpty(uiModel.BodyContent))
+    {
+        if (!string.IsNullOrEmpty(uiModel.BodyPartialView))
+        {
+            Html.RenderPartial(uiModel.BodyPartialView);
+
+        }
+        else
+        {
+             @Html.Raw(uiModel.BodyContent);
+            
+        }
+
+    }
+    else
+    {
+        if (uiModel.ContextType == UIModelContextTypes.DisplayForm)
+        {
+            propertiesForRender = uiModel.Properties.Where(p => (!p.IsNavigationPropertyMany || (p.IsNavigationPropertyMany && p.ChildsInDetails)) && !p.IsLocalizableDataField).OrderBy(p => p.Order);
+        }
+        else
+        {
+            propertiesForRender = uiModel.Properties.Where(p => (!p.IsNavigationPropertyMany || (p.IsNavigationPropertyMany && p.NavigationPropertyType == NavigationPropertyTypes.Tags)) && !p.IsLocalizableDataField).OrderBy(p => p.Order);
+        }
+
+        foreach (var property in propertiesForRender)
+        {
+
+            string entityKeyWithUseMode = null;
+            if ((!string.IsNullOrEmpty(uiModel.UseMode) && property.PropagateUseMode ) || property.UseMode != null )
+            {
+                if (property.UseMode != null)
+                {
+                    entityKeyWithUseMode = property.BusinessObjectKey + "_" + property.UseMode;
+                }
+                else
+                {
+                    entityKeyWithUseMode = property.BusinessObjectKey + "_" + uiModel.UseMode;
+                }
+
+            }
+            else
+            {
+                entityKeyWithUseMode = property.BusinessObjectKey;
+
+            }
+            bool renderProperty = true;
+
+            if (property.IsNavigationPropertyMany == true && property.SkipSecurity == false)
+            {
+
+                renderProperty = permission.IsAllowed("r", entityKeyWithUseMode, uiModel.ModuleKey);
+
+            }
+            if (renderProperty)
+            {
+                rowN++;
+                startRow = "<div  class='" + classRow + " rowform row" + rowN + "'><!--container 321-->";
+                if (uiModel.IsMultiColumn)
+                {
+                    if (property.HorizontalSize == null)
+                    {
+                        property.HorizontalSize = 12;
+                    }
+                }
+                int propSize = 12;
+                if (property.HorizontalSize != null)
+                {
+                    propSize = property.HorizontalSize.Value;
+                }
+                bool hideLayout = false;
+
+
+                ViewData["hsize"] = "";
+                string _safename = property.PropertyName;
+                if (property.IsNavigationProperty && !property.IsNavigationPropertyMany)
+                {
+                    _safename = "Fk" + property.PropertyName;
+
+                }
+                if (property.HorizontalSize != null)
+                {
+                    ViewData["hsize"] = prefix_col + propSize.ToString();
+                }
+                if (property.HorizontalSize != null)
+                {
+                    hsize = prefix_col + propSize.ToString();
+                }
+                ViewData["currentProperty"] = property;
+                if (uiModel.IsMultiColumn && property.IsHidden == false)
+                {
+                    rowSize += propSize;
+                }
+                if (!string.IsNullOrEmpty(property.StartGroupTitle))
+                {
+                    openFielset = true;
+                    focusclassinput = "";
+                @Html.Raw("<fieldset class='focushl '><legend>" + property.StartGroupTitle + "</legend>");
+                }
+                if ((property.IsHidden || property.SystemProperty == SystemProperties.Identifier) && property.TypeName.ToLower() != "include")
+                { // es una propiedad que debe ser hidden
+                    object __valueHidden = null;
+                    if (fromFK == property.PropertyName && !string.IsNullOrEmpty(fkValue))
+                    {
+                        __valueHidden = fkValue;
+                    }
+                    else
+                    {
+                        if (Model.GetType().GetProperty(_safename) != null)
+                        {
+                            __valueHidden = Model.GetType().GetProperty(_safename).GetValue(Model, null);
+                        }
+                    }
+
+                @Html.Raw("<input type=\"hidden\" value=\"" + (__valueHidden != null ? __valueHidden.ToString() : "") + "\" id=\"" + _safename + "\" name=\"" + _safename + "\" />");
+
+                }
+                else
+                {
+
+
+                    if (uiModel.IsMultiColumn)
+                    {
+                        if (rowSize > 0 && !rowIsOpen)
+                        {
+                        @Html.Raw(startRow)
+                            rowIsOpen = true;
+                        }
+                    }
+
+
+                    Html.RenderPartial("GenericField");
+
+
+                    if (uiModel.IsMultiColumn)
+                    {
+                        if (rowSize >= totalSize)
+                        {
+                        @Html.Raw(endRow)
+                            rowIsOpen = false;
+                            rowSize = 0;
+                        }
+                    }
+
+                    if (property.EndGroup)
+                    {
+                        openFielset = false;
+                    @Html.Raw("</fieldset><div class='closefieldset'></div>");
+                            focusclassinput = "focushl";
+                        }
+
+                    }
+                }
+
+            } //End foreach properties
+
+
+        }
+    }
+
+
+
+@Html.Raw((rowIsOpen ? endRow : ""))
+
+@if (uiModel.ShowDetailsAfterSave)
+{
+    <input type="hidden" name="__continue_details" id="__continue_details" value="1" />
+}
+
+
+<div class="ident-data">
+    @{
+        SFSdotNet.Framework.Security.BusinessObjects.secUser userFinded = null;
+        System.Text.StringBuilder sbInfo = new System.Text.StringBuilder();
+        var propUserCreated = uiModel.Properties.FirstOrDefault(p => p.SystemProperty == SystemProperties.CreatedUser);
+        if (propUserCreated != null)
+        {
+            var propCreated = Model.GetType().GetProperty(propUserCreated.PropertyName);
+            if (propCreated != null)
+            {
+                var objValueCreatedBy = propCreated.GetValue(Model, null);
+                if (objValueCreatedBy != null)
+                {
+                    try
+                    {
+                        userFinded = SFSdotNet.Framework.Security.BR.secUsersBR.Instance.GetBy((Guid)objValueCreatedBy);
+                        if (userFinded != null)
+                        {
+                            sbInfo.Append("Creado por <strong>" + userFinded.FirstName + " " + userFinded.LastName + "</strong> ");
+
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+
+        }
+        var propDateCreated = uiModel.Properties.FirstOrDefault(p => p.SystemProperty == SystemProperties.CreatedDate);
+        if (propDateCreated != null)
+        {
+            var propCreatedDate = Model.GetType().GetProperty(propDateCreated.PropertyName);
+            if (propCreatedDate != null)
+            {
+                var objValueCreatedDate = propCreatedDate.GetValue(Model, null);
+                if (objValueCreatedDate != null)
+                {
+
+
+                    sbInfo.Append(" (" + SFSdotNet.Framework.Globalization.DateAndTime.ConvertUtcToLocal(((DateTime)objValueCreatedDate), SFSdotNet.Framework.Globalization.LocalContexts.Company).ToString() + ")");
+
+                }
+            }
+
+        }
+
+        var propUserUpdated = uiModel.Properties.FirstOrDefault(p => p.SystemProperty == SystemProperties.UpdatedUser);
+        bool updated = false;
+
+        if (propUserUpdated != null)
+        {
+            var propUpdated = Model.GetType().GetProperty(propUserUpdated.PropertyName);
+            if (propUpdated != null)
+            {
+                var objValueUpdatedBy = propUpdated.GetValue(Model, null);
+                if (objValueUpdatedBy != null)
+                {
+                    userFinded = SFSdotNet.Framework.Security.BR.secUsersBR.Instance.GetBy((Guid)objValueUpdatedBy);
+                    if (userFinded != null)
+                    {
+                        updated = true;
+                        string userUpdatedName = "";
+                        if (!string.IsNullOrEmpty(userFinded.FirstName) && !string.IsNullOrEmpty(userFinded.LastName)) {
+                            userUpdatedName = userFinded.UserName;
+                        }else
+                        {
+                            userUpdatedName = userFinded.FirstName + " " + userFinded.LastName;
+                        }
+                        sbInfo.Append("Modificado por <strong>" + userUpdatedName + "</strong>");
+
+                    }
+                }
+            }
+
+        }
+        var propDateUpdated = uiModel.Properties.FirstOrDefault(p => p.SystemProperty == SystemProperties.UpdatedDate);
+        if (propDateUpdated != null && updated == true)
+        {
+            var propUpdatedDate = Model.GetType().GetProperty(propDateUpdated.PropertyName);
+            if (propUpdatedDate != null)
+            {
+                var objValueUpdatedDate = propUpdatedDate.GetValue(Model, null);
+                if (objValueUpdatedDate != null)
+                {
+
+
+                    sbInfo.Append("(" + SFSdotNet.Framework.Globalization.DateAndTime.ConvertUtcToLocal(((DateTime)objValueUpdatedDate), SFSdotNet.Framework.Globalization.LocalContexts.Company).ToString() + ")");
+
+                }
+            }
+
+        }
+    }
+    @Html.Raw(sbInfo.ToString())
+</div>
+@{
+    PropertyDefinition firstFocus = null;
+    if (uiModel.FirstFocus != null)
+    {
+        firstFocus = uiModel.FirstFocus;
+    }else
+    {
+        firstFocus = uiModel.Properties.Where(p => p.Order != null && p.ContextType == UIModelContextTypes.EditForm && p.IsHidden == false && p.IsNavigationPropertyMany == false && p.IsReadOnly == false).OrderBy(p => p.Order).FirstOrDefault();
+
+    }
+
+
+
+    if (uiModel.ActionButtons.Count > 0)
+    {
+        //Si existe más de un boton, entonces se podrá mostrar el container de footer
+        // en una pagina custom, eliminarlos significa que se quiere un layout absolutamente limpio de esa zona
+        if (isPopup || uiModel.IsPartialView)
+        {
+            if (isPopup == true)
+            {
+                @Html.Raw("</div>");
+            }
+            else
+            {
+                @Html.Raw("</div>");
+            }
+            @Html.Raw("<div class=\" modal-footer " + (!uiModel.IsMultiColumn ? "form-horizontal" : "") + " buttons control-group\"><!--modal footer container-->");
+
+        }
+        else
+        {
+            @Html.Raw("<div class=\"nomodal-footer " + (!uiModel.IsMultiColumn ? "form-horizontal" : "") + " text-left\"><!--No modal footer container-->");
+
+        }
+
+        if (!uiModel.IsMultiColumn)
+        {
+            @Html.Raw("<div class=\"control-group\">");
+            @Html.Raw("<label class=\"control-label\">&nbsp;</label>");
+            @Html.Raw("<div class=\"controls\">");
+            @Html.Raw("<div class=\"display-field\">");
+        }
+        else
+        {
+            @Html.Raw("<div class=\"text-center\"><!-- con x 1-->");
+        }
+
+        if (Model != null)
+        {
+            ViewData["safeKey"] = Model.SafeKey;
+            ViewData["isNew"] = Model.IsNew;
+
+        }
+        ViewData["idWindow"] = idWindow;
+        @Html.Raw("<!-- start specific buttons -->");
+        Html.RenderPartial("FormButtons", uiModel);
+        @Html.Raw("<!-- end specific buttons -->");
+
+        if (!uiModel.IsMultiColumn)
+        {
+            @Html.Raw("</div><!--uno f-->");
+            @Html.Raw("</div><!--dos f-->");
+
+            @Html.Raw("</div><!--tres f-->");
+            @Html.Raw("</div><!--No modal or modal footer container-->");
+        }
+        else
+        {
+            @Html.Raw("</div><!-- End con x 1-->");
+            @Html.Raw("</div><!--End No modal footer container-->");
+
+        } //Ednd multicolumn
+    }
+
+    foreach (var q in extraparams)
+    {
+        <input type="hidden" value="@(q.Value )" id="@(q.Key )" name="@(q.Key )" />
+    }
+    if (!string.IsNullOrEmpty(Request.Form["postData"]))
+    {
+        <input type='hidden' value='@(Request.Form["postData"] )' id='postData' name='postData' />
+    }
+
+
+
+    @Html.Raw("</div><!--End No modal body-->");
+    @Html.Raw("</form>");
+
+
+
+    @Html.Raw("</div><!--End No modal window-->");
+}
+
+<script>
+                    @if (Request.QueryString["fk"] != null && Request.QueryString["fkValue"] != null)
+                     {
+                         <text>
+                    $(document).ready(function () {
+                        $("#@idWindow #Fk@(Request.QueryString["fk"])").val("@(Request.QueryString["fkValue"])");
+
+                    });
+                        </text>
+                     }
+</script>
+@{
+    string idForRefresh = "";
+    string idWindowSelect = "";
+    if (!string.IsNullOrEmpty(idWindow))
+    {
+        idForRefresh = "\"#" + idWindow + "\"";
+        idWindowSelect = "#" + idWindow + " ";
+    }
+}
+@if (isPopup || uiModel.IsPartialView == true)
+{
+    
+
+    <script>
+        $(document).ready(function () {
+
+            refreshForm(@Html.Raw(idForRefresh));
+
+
+            @if (firstFocus != null)
+            {
+                string _safename = firstFocus.PropertyName;
+                if (firstFocus.IsNavigationProperty)
+                {
+                    _safename = "Fk" + firstFocus.PropertyName;
+                }
+                <text>
+            setFocus($('@(idWindowSelect) #@_safename'));
+            //$('#@(idWindow) #@_safename').select();
+                </text>
+            }
+            //$('#popup_secUser #UserName').focus();
+            //$('#popup_secUser #UserName').select();
+            var $form = $("@(idWindowSelect) form");
+
+            $form.removeData('validator');
+            $form.removeData('unobtrusiveValidation');
+            //$.validator.unobtrusive.parseDynamicContent(form);
+            $.validator.setDefaults({
+                focusCleanup: true,
+                focusInvalid: true
+            });
+            $.validator.unobtrusive.parse($form);
+
+        });
+    </script>
+
+}
+else {
+    <script>
+        $(document).ready(function () {
+            refreshForm(@Html.Raw(idForRefresh));
+
+            @if (firstFocus != null)
+            {
+                string _safename = firstFocus.PropertyName;
+                if (firstFocus.IsNavigationProperty)
+                {
+                    _safename = "Fk" + firstFocus.PropertyName;
+                }
+                <text>
+            $('#@(idWindow) #@_safename').focus();
+            </text>
+            if (firstFocus.IsNavigationProperty == false) {
+                <text>
+
+            $('#@(idWindow) #@_safename').select();
+            </text>
+            }
+
+            }
+
+         
+
+            @*//$('#popup_secUser #UserName').focus();
+            //$('#popup_secUser #UserName').select();
+            var $form = $("#@idWindow form");
+            $form.removeData('validator');
+            $form.removeData('unobtrusiveValidation');
+            //$.validator.unobtrusive.parseDynamicContent(form);
+            $.validator.unobtrusive.parse($form);*@
+
+        });
+    </script>
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    <script>
+                        $(document).ready(function () {
+                            $("#@idWindow form").valid();
+
+                        });
+    </script>
+}
+@if (System.Web.HttpContext.Current.User != null && System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true && SFSdotNet.Framework.My.Context.CurrentContext != null && (SFSdotNet.Framework.My.Context.CurrentContext.IsSuperAdmin() || SFSdotNet.Framework.My.Context.CurrentContext.IsModuleAdmin(uiModel.ModuleKey, SFSdotNet.Framework.My.Context.CurrentContext.Company)))
+{
+
+    <script>
+    @if (!string.IsNullOrEmpty(idWindow)) {
+        <text>
+        $(document).ready(function () {
+            enableFocusFX("#@(idWindow)");
+            enableChangeTextUI("#@(idWindow)", "@(uiModel.ModuleKey)", "@(uiModel.EntityKey)", "@(uiModel.EntitySetName)", "@(System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName )", "@(uiModel.UseMode)");
+        });
+        </text>
+    }
+    </script>
+
+}
+
+

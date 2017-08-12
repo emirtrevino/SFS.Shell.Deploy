@@ -1,0 +1,220 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.VisualContentPage
+@{
+    Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+
+    bool viewEdit = false;
+    bool canEdit = (bool)ViewData["canEdit"];
+    bool showItem = true;
+    if (Request.QueryString["viewEdit"] == "true" && canEdit)
+    {
+        viewEdit = true;
+    }
+    string createoredit = GlobalMessages.MODIFY_CONTENT;
+    string actionCreateOrEdit = "Edit";
+    string extraparams = "";
+}
+@{
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+}
+@section Title{
+	@Model.Title 
+}
+
+<div class="row-fluid">
+<div class="page-header">
+<h1> @Model.Title</h1>
+</div>
+    </div>
+
+@{
+    int from = 0;
+
+    int to = 0;
+
+    int page = (int)ViewData["page"];
+    int pageSize = (int)ViewData["pageSize"];
+    int nResults = (int)ViewData["nResults"];
+    //to = (page * (nResults / pageSize));
+    int totalPages = (nResults / pageSize);
+
+    int lastResultsAfterLastPage = (nResults - (totalPages * pageSize));
+    if (lastResultsAfterLastPage > 0)
+    {
+        totalPages += 1;
+    }
+    to = page * pageSize;
+    if (to > nResults)
+    {
+        to = nResults;
+    }
+    if (page > 1){
+        from = (pageSize * page) - (pageSize - 1);
+    }else{
+        from = 1;
+        to = 1 + (pageSize - 1);
+    }
+    
+    int? prev = null;
+    int? next = null;
+    
+    if (page == 1){
+        prev = null ;
+    }else{
+        prev = page -1;
+    }
+  
+    if (page >= totalPages){
+        next = null ;
+    }else{
+        next = page + 1;
+    }
+   
+    string type = "blog";
+    
+    
+    }
+@if (viewEdit)
+{
+<div class="row-fluid">
+    <div class="span12">
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Create?ReturnAfter=@(HttpUtility.UrlEncode(Request.Url.ToString()))&moduleKey=@(module!=null?module.ModuleKey:"")&contentType=@(Request.QueryString["type"])">Agregar nuevo contenido</a>
+    </div>
+</div>
+}        
+@if (page > 1 ){
+<div class="row-fluid paging">
+    <div class="span4 ">
+       
+    @if (prev  != null ){
+    <text>
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/SFSTravelSystem?type=@(type)&page=@(prev)" class="btn "> <i class="icon-flip-horizontal icon-share-alt "></i> @GlobalMessages.PREVIEW_PAGE </a>
+    </text>
+    }
+    </div>
+    <div class="span4 text-center" style="color:#CCCCCC;">
+        @(string.Format(GlobalMessages.FROM_TO_OF_RESULTS, from, to, nResults)) 
+    </div>
+    <div class="span4 text-right">
+        @if (next != null ){
+            <text>
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Blog?type=@(type)&page=@(next)" class="btn btn-primary">@GlobalMessages.NEXT_PAGE <i class="icon-white icon-chevron-right"></i></a>
+            </text>
+        }
+        
+    </div>
+</div>
+}
+<div class="row-fluid">
+
+    <div class="span12 blog">
+@foreach (var content in Model.Contents)
+{
+    var draftText = "";
+    if (viewEdit) {
+        if (!content.Published)
+        {
+            draftText = "(Borrador)";
+        }
+      
+        
+    }
+    
+<table style="width:100%">
+    <tr><td style="width:80px; vertical-align:top;padding-right:20px;">
+
+    <table class="date">
+        <tr>
+            <td class="head">@(content.PublishedDate !=null ?content.PublishedDate.Value.ToString("MMM", System.Globalization.CultureInfo.InvariantCulture):"") @(content.PublishedDate !=null ?content.PublishedDate.Value.Year.ToString() :"")</td>
+        </tr>
+        <tr>
+            <td class="day">@(content.PublishedDate !=null ?content.PublishedDate.Value.Day.ToString() :"")</td>
+        </tr>
+    </table>
+
+</td>
+<td>
+      
+    <div class="media">
+   
+  <div class="media-body">
+    <h2>
+        
+        <span class="label">@draftText</span><a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content.Slug)_@(content.IdContent)"> @content.Title</a></h2>
+        <div class="publish-data text-right">@GlobalMessages.BY @*<a href="@(VirtualPathUtility.ToAbsolute("~/"))Get/User/@(content.GuidUser)">*@@content.UserDisplayName@*</a>*@</div>
+      <div>
+ @if (!string.IsNullOrEmpty(content.ImageUrl)){     
+      <a class="pull-left" href="#"> 
+    <img class="media-object" data-src="@content.ImageUrl" src="@content.ImageUrl" />
+  </a>
+ }
+     <p>
+             @(content.Description)...
+      </p>
+          <p class="text-right">
+       <a class="btn btn-primary" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content.Slug)_@(content.IdContent)">@GlobalMessages.VIEW_MORE </a>
+          </p>
+              </div>
+
+@if (viewEdit)
+{
+        <p>
+    @if (content.PublishedDate != null && content.PublishedDate.Value > DateTime.UtcNow ){ //localizar fecha
+            <span><i class="icon-calendar"></i> Programado @(content.PublishedDate.Value.ToShortDateString()) ( en @(SFSdotNet.Framework.Globals.DateAndTime.DateDiff(SFSdotNet.Framework.Globals.DateInterval.Day, DateTime.UtcNow, content.PublishedDate.Value)) días</span> 
+    }
+
+
+        </p>
+    
+}
+            </div>
+        </div>
+   </td></tr>
+    </table>
+    
+    
+      <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line"></hr>
+
+        </div>
+         </div>
+    
+    
+}
+</div>
+    </div>
+
+<div class="row-fluid paging" >
+    <div class="span4 ">
+       
+         @if (prev  != null ){
+            <text>
+                <a href="@(VirtualPathUtility.ToAbsolute("~/"))Blog?type=@(type)&page=@(prev)" class="btn "> <i class="icon-flip-horizontal icon-share-alt "></i> @GlobalMessages.PREVIEW_PAGE </a>
+        </text>
+        }
+    </div>
+    <div class="span4 text-center" style="color:#CCCCCC;">
+        @(string.Format(GlobalMessages.FROM_TO_OF_RESULTS, from, to, nResults)) 
+    </div>
+    <div class="span4 text-right">
+        @if (next != null ){
+            <text>
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Blog?type=@(type)&page=@(next)" class="btn btn-primary">@GlobalMessages.NEXT_PAGE <i class="icon-white icon-chevron-right"></i>
+            </text>
+        }
+        </a>
+</div>
+</div>
+@if (canEdit ){
+    <div class="row-fluid">
+        <div class="span12 text-center">
+@if (Request.QueryString["viewEdit"] == "true") {
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Blog/@(module != null? module.ModuleKey:"")?type=@(type)"> <i class="icon-pencil "></i> Salir de modo edición </a>
+
+}else{
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Blog/@(module != null? module.ModuleKey:"")?type=@(type)&viewEdit=true"> <i class="icon-pencil "></i> Ver modo edición</a>
+
+}
+            </div>
+        </div>
+}    

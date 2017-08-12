@@ -1,0 +1,276 @@
+﻿@{
+    string wsize = "";
+    bool multiline = false;
+    PropertyDefinition propDef = null;
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+    if (ViewData["currentProperty"] != null)
+    {
+        propDef = (PropertyDefinition)ViewData["currentProperty"];
+
+        multiline = propDef.IsMultiline;
+        if (propDef.HorizontalSize != null)
+        {
+            wsize = "span12";
+        }
+
+    }
+    string controlId = this.ViewData.ModelMetadata.PropertyName;
+    if (ViewData["cusprop"] != null ){
+        controlId = ViewData["cusprop"].ToString();
+    }
+    bool includeTime = false;
+    bool includeDate = true;
+    bool freeMinutes = true;
+    string customMinutes = "";
+    string classExtra = "";
+    if (ViewData["class"] != null) {
+        classExtra = ViewData["class"].ToString();
+    }
+    classExtra = classExtra + " " + wsize;
+    if (uiModel != null && uiModel.ContextType == UIModelContextTypes.FilterFields)
+    {
+        classExtra = classExtra + " input-sm ";
+    }
+    if (ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "DateTime").Count() > 0)
+    {
+        RouteValueDictionary props = (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "DateTime").FirstOrDefault().Value;
+
+        if (props.FirstOrDefault(p => p.Key == "ShowTime").Value != null || ViewData["fromfilter"] != null)
+        {
+            includeTime = (bool)props.FirstOrDefault(p => p.Key == "ShowTime").Value;
+            if (ViewData["fromfilter"] != null) {
+                includeTime = true;
+            }
+        }
+
+
+
+        if (props.FirstOrDefault(p => p.Key == "ShowDate").Value != null  )
+        {
+            includeDate = (bool)props.FirstOrDefault(p => p.Key == "ShowDate").Value;
+        }
+
+        if (props.FirstOrDefault(p => p.Key == "CustomMinutes").Value != null)
+        {
+            customMinutes = (string)props.FirstOrDefault(p => p.Key == "CustomMinutes").Value;
+            if (!string.IsNullOrEmpty(customMinutes)) {
+                freeMinutes = false;
+            }
+        }
+
+    }
+    DateTime?  ModelValue = null;
+    if (ViewData.ModelMetadata.Model != null)
+    {
+        if (((DateTime)ViewData.ModelMetadata.Model).Year == 0001)
+        {
+            ModelValue = null;
+        }
+        else
+        {
+            ModelValue = (DateTime)ViewData.ModelMetadata.Model;
+        }
+    }
+    else {
+        ModelValue = null;
+    }
+    if (ViewData["dataValue"] != null) {
+        ModelValue = (DateTime)ViewData["dataValue"];
+    }
+
+
+    //if (ViewData["class"] != null)
+    //    classExtra = ViewData["class"].ToString();
+    string sffAttr = "";
+    if (ViewData["sff"] != null) {
+        sffAttr = ViewData["sff"].ToString();
+    }
+    Html.ValidationMessageFor(model => model);
+    System.Globalization.CultureInfo current = System.Globalization.CultureInfo.CurrentCulture;
+    string methodName = "datepicker";
+    string idInput = controlId;
+    if (includeTime)
+    {
+        //idInput = "div-con-" + controlId;
+        methodName = "datetimepicker";
+
+    }
+    string dataTypeValue = "";
+    if (propDef != null) {
+        if (propDef.ContextType == UIModelContextTypes.FilterFields)
+        {
+            dataTypeValue = "DateTime";
+        }
+    }
+    string dataFormat =  current.DateTimeFormat.ShortDatePattern.ToString().ToLower().Replace("m", "mm").Replace("d","dd").Replace("mmmm", "mm").Replace("dddd","dd");
+    string dataFormatForMask = current.DateTimeFormat.ShortDatePattern.ToString().ToLower().Replace("yyyy", "Y").Replace("mm", "O").Replace("dd", "D");
+
+    if (includeTime) {
+        if (uiModel.UIVersion == 1)
+        {
+            dataFormat = current.DateTimeFormat.ShortDatePattern.ToString().ToLower().Replace("m", "MM").Replace("d", "dd").Replace("MMMM", "MM").Replace("dddd", "dd");
+        }
+        else
+        {
+            dataFormat = current.DateTimeFormat.ShortDatePattern.ToString().ToLower().Replace("mm", "MM").Replace("dd", "DD").Replace("yyyy", "YYYY");
+
+        }
+    }
+    if (includeTime)
+    {
+        if (uiModel.UIVersion == 1)
+        {
+            dataFormat = dataFormat + " hh:mm ";
+        }
+        else
+        {
+            dataFormat = dataFormat + " HH:mm ";
+
+        }
+        dataFormatForMask = dataFormatForMask + " H:M";
+    }
+    string fromDate = "";
+    string toMaxDate = "";
+
+    string minDateRangeForMask = "";
+    string maxDateRangeForMask = "";
+
+    if (propDef != null) {
+        var fromDateProp = propDef.CustomProperties.FirstOrDefault(p=> p.Name == "from-date");
+        if (fromDateProp != null)
+        {
+            fromDate = fromDateProp.Value;
+            DateTime fromDateTyped = DateTime.Parse(fromDate);
+            minDateRangeForMask = ", minDatetime: new Date(" + fromDateTyped.Year +", " + fromDateTyped.Month.ToString() + " - 1, " + fromDateTyped.Day + ", 9, 0, 0)";
+        }
+        var toDateProp = propDef.CustomProperties.FirstOrDefault(p => p.Name == "to-date");
+        if (toDateProp != null)
+        {
+            toMaxDate = toDateProp.Value;
+            DateTime toDateTyped = DateTime.Parse(toMaxDate);
+            maxDateRangeForMask = ", maxDatetime: new Date(" + toDateTyped.Year + ", " + toDateTyped.Month.ToString() + " - 1, " + toDateTyped.Day + ", 9, 0, 0)";
+        }
+    }
+
+    string urlJs =  SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/datetime/bootstrap-" + methodName + ".js");
+    string urlJsMask = SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/jquerydatetimeentry/jquery.datetimeentry.js");
+    string urlJsPlugin = SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/jquerydatetimeentry/jquery.plugin.js");
+
+
+    if (uiModel != null && uiModel.UIVersion == 2)
+    {
+        urlJs = SFSdotNet.Framework.Web.Urls.Tag("~/Static/v2/" + methodName + "/js/bootstrap-" + methodName + ".js");
+
+    }
+
+    string requiredAttributes = "";
+    System.Text.StringBuilder sbVal = new System.Text.StringBuilder();
+    var atts = Html.GetUnobtrusiveValidationAttributes(propDef.PropertyName, this.ViewData.ModelMetadata);
+    bool isRequiredAtt = false;
+    if (propDef != null)
+    {
+        foreach (var att in atts)
+        {
+            if (att.Key == "data-val-required=")
+            {
+                isRequiredAtt = true;
+            }
+            sbVal.Append(att.Key + "=\"" + HttpUtility.HtmlEncode(att.Value) + "\"");
+        }
+
+
+        if (propDef.IsRequired == true && isRequiredAtt == false)
+        {
+            requiredAttributes = "data-val=\"true\" data-val-required=\"" + string.Format(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.THE_FIELD_IS_REQUIRED, propDef.PropertyDisplayName) + "\"";
+
+        }
+    }
+
+    string idForm = uiModel.Id;
+    if (ViewData["idWindow"] != null)
+    {
+        idForm = (string)ViewData["idWindow"];
+    }
+
+}
+@if (uiModel != null && uiModel.UIVersion == 2)
+{
+    <div class="input-group date" id="div-con-@( controlId )" data-lang="@(System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName )" data-date="@(ModelValue != null ? ModelValue.Value.ToShortDateString() :" " )" data-format="@(dataFormat )" data-date-format="@(dataFormat )">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input @Html.Raw(requiredAttributes) uiVersion="2" type="text" form-container="@(idForm)" datatypevalue="@(dataTypeValue)" from-date="@(fromDate)" tabindex="@(propDef != null ? (propDef.Order != null ? propDef.Order.ToString() : "") : "" )" showtime="@(includeTime.ToString().ToLower() )" data-lang="@(System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName )" showdate="@(includeDate.ToString().ToLower() )" data-format="@(dataFormat )" sff="@(sffAttr )" id="@(controlId )" name="@(controlId )" class=" form-control datetime @(classExtra )" >
+    </div>
+
+
+}
+else
+{
+    <text>
+<div id="div-con-@( controlId )" class="input-append date" data-lang="@(System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName )" data-date="@(ModelValue != null ? ModelValue.Value.ToShortDateString() :" " )" data-format="@(dataFormat )" data-date-format="@(dataFormat )">
+    <input uiVersion="1" form-container="@(idForm)" type="text" @Html.Raw(requiredAttributes) datatypevalue="@(dataTypeValue)" from-date="@(fromDate)" to-date="@(toMaxDate)" tabindex="@(propDef != null ? (propDef.Order != null ? propDef.Order.ToString() : "") : "" )" showtime="@(includeTime.ToString().ToLower() )" data-lang="@(System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName )" showdate="@(includeDate.ToString().ToLower() )" data-format="@(dataFormat )" sff="@(sffAttr )" id="@(controlId )" name="@(controlId )" class="field text datetime small @(classExtra ) " style="text-align: left;" />
+    <span class="add-on" style="z-index: 5;
+    right:20px;
+    position: relative;">
+        <i class="icon-calendar">
+        </i>
+    </span>
+</div>
+
+    </text>
+}
+   
+
+
+    <script type="text/javascript">
+
+
+      $(function() {
+
+          if (jQuery().@(methodName) == undefined) {
+              $.ajax({
+                  url: "@(urlJs)",
+                  dataType: "script",
+                  async: false/*,
+                  success: function () {
+                      setDate($("#<%: controlId %>"), new Date(<%: ModelValue.Value.Year %>,<%: (ModelValue.Value.Month -1 ) %>,<%: (ModelValue.Value.Day) %>), "<%=methodName%>");
+                  }*/
+              });
+        }
+          cleanDateConfig($("#@(idForm) #@( controlId )"), "@(methodName)");
+          setDateConfig($("#@(idForm) #@( controlId )"), "@(methodName)");
+@if (ModelValue  != null && ModelValue.Value.Year > 1) {
+    <text>
+          setDate($("#@(idForm) #@(controlId )"), new Date(@(ModelValue.Value.Year ),@( (ModelValue.Value.Month -1 ) ),@( (ModelValue.Value.Day) ), @( (ModelValue.Value.Hour) ), @( (ModelValue.Value.Minute) ), @((ModelValue.Value.Second) ), @( (ModelValue.Value.Millisecond) )), "@(methodName)");
+    </text>
+}
+
+
+      });
+
+        $(function() {
+
+            if (jQuery().datetimeEntry == undefined) {
+                $.ajax({
+                    url: "@(urlJsPlugin)",
+                    dataType: "script",
+                    async: false
+
+                });
+            }
+
+            if (jQuery().datetimeEntry == undefined) {
+                $.ajax({
+                    url: "@(urlJsMask)",
+                    dataType: "script",
+                    async: false
+
+                });
+            }
+
+
+
+            $("#@(idForm) #@(controlId )").datetimeEntry({ spinnerImage: '', datetimeFormat: '@(dataFormatForMask)'@Html.Raw(minDateRangeForMask) @Html.Raw(maxDateRangeForMask) } );
+
+        });
+
+    </script>
+

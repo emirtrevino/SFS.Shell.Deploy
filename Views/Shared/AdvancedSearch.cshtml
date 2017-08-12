@@ -1,0 +1,172 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.AdvancedSearchModel
+@{  
+    string id = (string)ViewData["idTab"];
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+
+    string entityKeyUsemode = uiModel.EntityKey;
+    if (!string.IsNullOrEmpty(uiModel.UseMode) && entityKeyUsemode.Contains(uiModel.UseMode))
+    {
+        entityKeyUsemode = uiModel.EntityKey + "_" + uiModel.UseMode;
+    }
+    string idTab = id;
+
+    string classContainer = "";
+    string classHeader = "";
+    string classFooter = "";
+
+    if (uiModel.UIVersion == 2)
+    {
+        classContainer = "panel panel-default";
+    }
+    }
+
+<div class="btn-group">
+ <a id="lnkFilter@(id)" class="linkbtn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">@GlobalMessages.CREATE_OR_OPEN_FILTERS <span class="caret"></span>
+</a>
+
+<ul id="sub_filter@(ViewData["idTab"])" class="dropdown-menu">
+
+    <li ><a href="#" style=" display: block; margin:0px;" id="addnewfilter@(id)">  @GlobalMessages.CREATE_A_NEW_FILTER</a></li>
+
+</ul>
+    </div>
+ <script>
+
+    function refreshFilters@(ViewData["idTab"] )() {
+        callServerGet('@(VirtualPathUtility.ToAbsolute("~/"))Features/GetFiltersJson?overrideModule=@(uiModel.ModuleKey)&moduleKey=@( ViewData["moduleKey"] )&entityKey=@( entityKeyUsemode )&type=@( entityKeyUsemode )', refreshFilters@(ViewData["idTab"] )Done);
+    }
+    function setMenuFilters@( ViewData["idTab"] )(){
+
+        $("#addnewfilter@(id )").click(
+            function (event) {
+
+                event.preventDefault();
+                showFB@(ViewData["idTab"] )();
+            }
+        );
+        $(".filter_sel").click(
+            function (event) {
+                event.preventDefault();
+
+                var idFilter@(id ) =$(this).attr("val");
+                callServerGetHtml('@(VirtualPathUtility.ToAbsolute("~/"))Features/ShowAdvancedSearch?overrideModule=@(uiModel.ModuleKey)&uiv@(uiModel.UIVersion)&moduleKey=@(ViewData["moduleKey"] )&moduleNS=@( ViewData["moduleNS"] )&type=@( ViewData["entityKey"])&controllerNamespace=@( ViewData["controllerNamespace"])&idTab=@(ViewData["idTab"] )', function (data) {
+                    $('#spaceFilter@(id)').html('<div id="filter@( ViewData["idTab"] )">' + data + '</div>');
+                    $('#spaceFilter@(id)').show();
+                    $("#closeFilter@(id)").show();
+                    callServerGet("@(VirtualPathUtility.ToAbsolute("~/"))Features/GetFilter?overrideModule=@(uiModel.ModuleKey)&uiv@(uiModel.UIVersion)&idFilter=" + idFilter@(id),  AddSavedFilterDone@(ViewData["idTab"] ));
+                });
+
+                // callServerGet("<%= ResolveUrl("~/") %>Features/GetFilter?idFilter=" + $(this).attr("val"),  AddSavedFilterDone<%:ViewData["idTab"] %>);
+
+            });
+    }
+    function deleteClose@( ViewData["idTab"] )() {
+        if (lastAction == "DeleteGen" && lastActionExecuted){
+            refreshFilters@(ViewData["idTab"] )();
+            $("#spaceFilter@(id)").html("");
+            $("#closeFilter@(id)").hide();
+        }
+    }
+    function refreshFilters@( ViewData["idTab"] )Done(data){
+        //var d = new Date();
+        //alert(d.getDate().toString() + "--" +data.length);
+        var sharedico = "";
+        data = $.map(data, function(item, a) {
+            if(item.Text.contains("_shared_")){
+                sharedico ="shared";
+                item.Text = item.Text.replace("_shared_","");
+            }else{
+                sharedico ="private";
+                item.Text = item.Text.replace("_private_","");
+            }
+            //return "<option value=" + item.Value + ">" + item.Text + "</option>";
+            return "<li class='icon' style='white-space:nowrap; width: auto;' ><a href='#' style='display: block; margin:0px;' class='filter_sel' id='filter@(id)_" + item.Value +  "' val='" + item.Value + "'> <span class='icon " + sharedico + "'></span> "  + item.Text + "</a></li>"
+        });
+
+        $("#sub_filter@(idTab )").html("<li class='icon' style='white-space:nowrap; width: auto;'><a href='#' style='display: block; margin:0px;' id='addnewfilter@(id )'><span class='icon add'></span>@(GlobalMessages.CREATE_NEW_FILTER )</a></li>" + data.join(""));
+        //$("#dlQuery<%:idTab %>").val("");
+        setMenuFilters@( ViewData["idTab"] )();
+
+
+    }
+    $(document).ready(function () {
+
+
+
+        refreshFilters@(ViewData["idTab"] )();
+
+    });
+
+
+    function showFB@(ViewData["idTab"] )() {
+        $("#spaceFilter@(id)").html( loadingInline("@(GlobalMessages.PROCESSING_PLEASE_WAIT)...") );
+        callServerGetHtml('@(VirtualPathUtility.ToAbsolute("~/"))Features/ShowAdvancedSearch?overrideModule=@(uiModel.ModuleKey)&uiv=@(uiModel.UIVersion)&moduleKey=@( ViewData["moduleKey"] )&entitySet=@( ViewData["controller"])&entityName=@( ViewData["entityName"] )&moduleNS=@( ViewData["moduleNS"] )&type=@( ViewData["entityKey"])&controllerNamespace=@( ViewData["controllerNamespace"])&idTab=@(ViewData["idTab"] )', showFB@(ViewData["idTab"] )Done);
+    }
+    function closeFB@(ViewData["idTab"] )() {
+        //$('#filter<%:ViewData["idTab"] %>').replaceWith('<div id="filter<%: ViewData["idTab"] %>"><a href="javascript:showFB<%:ViewData["idTab"] %>()" class="showdown">Abrir busqueda avanzada</a></div>');
+        $("#spaceFilter@(id)").fadeOut('slow', function() {
+            $(this).html("");
+        });
+        $("#closeFilter@(id)").hide();
+    }
+    function showFB@(ViewData["idTab"] )Done(data) {
+        //$('#filter<%:ViewData["idTab"] %>').replaceWith('<div id="filter<%: ViewData["idTab"] %>">' + data + '</div>');
+        //$('#filterDel<%:ViewData["idTab"] %>').hide();
+        $("#spaceFilter@(id)").fadeIn('slow', function() {
+            $(this).show();
+
+            $(this).html('<div id="filter@( ViewData["idTab"] )" class="inline-window @(classContainer)"  >' + data + '</div>');
+            $('#filterDel@(ViewData["idTab"] )').hide();
+            $("#addfilterLine@(ViewData["idTab"] )")[0].click();
+
+        });
+
+        $("#closeFilter@(id )").show();
+    }
+
+</script>
+
+ @*   <br />
+ 
+   <img src="<%= ResolveUrl("~/") %>Content/icons/search_find.png" />&nbsp; Filtros guardados: <%: Html.DropDownList("dlQuery" + ViewData["idTab"], Model.Queries)%>
+   <br />
+ *@ 
+    <script>
+    var lastAction = "";
+    var usingSavedFilter@(ViewData["idTab"] ) = false;
+    function AddSavedFilterDone@(ViewData["idTab"] )(data) {
+             queryB@( ViewData["idTab"] ) = data.QueryLinq;
+            usingSavedFilter@( ViewData["idTab"] ) = true;
+            $("#filterTparent@(ViewData["idTab"] )" ).html("" + decode(data.HtmlContent) + "");
+            $('#filterDel@(ViewData["idTab"] )').show();
+            lastAction = "DeleteGen";
+            $('#filterDel@(ViewData["idTab"] )').attr("href", '@(VirtualPathUtility.ToAbsolute("~/"))Messages/Delete?uiv@(uiModel.UIVersion)&usemode=filterbuilder&title=' + encode(data.Title) + 'areaName=SFSdotNetFrameworkSecurity&controllerName=secFilterQueries&actionName=DeleteGen&objectKey=' + data.SafeKey);
+
+            $(" " ).children().attr("disabled", "disabled");
+            $("#filterTparent@(ViewData["idTab"] ) a").hide();
+            $("#filterTparent@(ViewData["idTab"] ) .inputproxy" ).each(function  (){
+                $(this).after("<input id='" + $(this).attr("id") + "' value='" + $(this).text() + "' >");
+            });
+        $("#filterTparent@(ViewData["idTab"]) .inputproxy" ).remove();
+        $("#spaceFilter@(id )").find("h3").text(data.Title);
+        $("#addfilterLine@(id )").hide();
+        $("#spaceFilter@(id )").find("a.ok").hide();
+
+        }
+        $("#dlQuery@(ViewData["idTab"] )").change(
+            function () {
+                if ($(this).val()  != "" ){
+                    callServerGet("@(VirtualPathUtility.ToAbsolute("~/"))Features/GetFilter?uiv@(uiModel.UIVersion)&idFilter=" + $(this).val(),  AddSavedFilterDone@(ViewData["idTab"] ));
+
+                }else{
+
+                }
+                    $("#filterT@(ViewData["idTab"] )" ).replaceWith("<table border='0' style='margin-bottom:0px;margin-top:0px;' id='filterT@(ViewData["idTab"] )'></table>");
+
+            }
+        );
+
+    </script>
+ @*   
+<div id="spaceFilter<%:id %>" class="filterarea" ></div>*@
+

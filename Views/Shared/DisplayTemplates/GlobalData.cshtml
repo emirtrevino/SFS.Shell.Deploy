@@ -1,0 +1,58 @@
+﻿
+@{
+    string controlId = this.ViewData.ModelMetadata.PropertyName;
+    if (ViewData["cusprop"] != null)
+    {
+        controlId = ViewData["cusprop"].ToString();
+    }
+
+    Guid ? propertyValue = null;
+    if (ViewData.ModelMetadata.Model!= null ){
+        propertyValue = (Guid)ViewData.ModelMetadata.Model;
+    }
+    
+    var displayText = "";
+    if (ViewData["DisplayText"] != null){
+        displayText = ViewData["DisplayText"].ToString();
+    }
+        
+    RouteValueDictionary lu =
+       (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "GlobalData").Single().Value;
+
+    SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes globalDataType = ((SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes)lu.FirstOrDefault(p => p.Key == "GlobalDataType").Value);
+
+
+    string urlLoad = "";
+    }
+
+@{ if (propertyValue != null ){
+    if (globalDataType == SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes.GeoCountry){
+        
+        var country = SFSdotNet.Framework.Security.BR.secGeoCountriesBR.Instance.GetBy(p=>p.GuidCountry == propertyValue).FirstOrDefault();
+        if (country != null ){
+            displayText = country.Name;
+        }
+    
+    }else if (globalDataType == SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes.GeoState){
+        var state = SFSdotNet.Framework.Security.BR.secGeoStatesBR.Instance.GetBy(p => p.GuidState == propertyValue).FirstOrDefault();
+        if (state != null)
+        {
+            displayText = state.Name;
+        }
+    }else if(globalDataType == SFSdotNet.Framework.Web.Mvc.Extensions.GlobalDataTypes.GeoCity ){
+        var city = SFSdotNet.Framework.Security.BR.secGeoCitiesBR.Instance.GetBy(p => p.GuidCity == propertyValue).FirstOrDefault();
+        if (city != null)
+        {
+            displayText = city.Name;
+        }
+    }
+   }else{
+       displayText = GlobalMessages.NOT_DEFINED;
+   }
+    
+     <text>
+       
+@(displayText)
+    </text>
+    
+}

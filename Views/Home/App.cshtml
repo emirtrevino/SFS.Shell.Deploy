@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+    bool viewEdit =false;
+    bool canEdit = false;
+    bool showItem = true;
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null ){
+      canEdit = (new SFSdotNet.Framework.Security.Permissions()).IsAllowed(SFSdotNet.Framework.My.Context.CurrentContext.User, "SFSdotNetFrameworkSecurity", "secContent", "u");
+      
+    }
+    if (Request.QueryString["viewEdit"] == "true" && canEdit){
+        viewEdit = true;
+    }
+}
+
+@{
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+    var contents = (List<SFSdotNet.Framework.Web.Mvc.Models.ContentBaseModel>)ViewBag.Contents;
+    string createoredit = GlobalMessages.MODIFY_CONTENT;
+    string actionCreateOrEdit = "Edit";
+    string extraparams = "";
+
+    string templateHTML = "<strong>{TEXT}</strong>";
+    string htmlContent = templateHTML.Replace("{CONTENT-ER2234SWW}", "prueba");
+    var contentTemplate = contents.FirstOrDefault(p=> p.TitleKey == "landing-crememeetings");
+
+    if (contentTemplate != null) {
+        htmlContent = contentTemplate.LargeContent;
+    }
+
+
+}
+
+
+
+@Html.Raw(htmlContent)

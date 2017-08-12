@@ -1,0 +1,84 @@
+﻿
+
+@{ string idTab = "";
+    bool IsPopUp = false;
+    if (!string.IsNullOrEmpty(Request.QueryString["popup"])){
+        IsPopUp = true;
+    }
+    if (ViewData["idTab"] != null){
+        idTab = ViewData["idTab"].ToString();
+    }
+    UIModel model = (UIModel)ViewData["UIModel"];
+    int nmenu = 0;
+
+    bool useWindow = false;
+    
+    }
+    @if (model != null)
+    {
+     
+   <div class="btn-group dropup">
+
+        <a href="#" id="menuExpTo@( idTab )" data-toggle="dropdown" class="@( (model.IsMiniContainer? "btn btn-mini":"btn") ) dropdown-toggle"><i class="icon-share-alt"></i> @(( IsPopUp ? "" : GlobalMessages.EXPORT))<span id="expn@( idTab )" resultsText="" selectedText=""></span> <span class="caret"></span> </a>
+    
+
+
+
+       <ul id="sub_menu_export" class="dropdown-menu text-left dropdown-menu-right">
+           <li><a href="#" id="print@( idTab )"><img src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/icon-32-print.png" /> &nbsp;&nbsp; Imprimir lista simple</a></li>
+           @foreach (var menu in model.ExportActions)
+           {
+               <li class="icon ">
+                   <a id="expmen@( idTab )@( menu.Format )@( nmenu )" titleexport="@Html.Raw(HttpUtility.UrlEncode(model.TitleForm))" usemode="@(model.UseMode)" format="@( menu.Format )" href="javascript: void(0)" onclick="ExportDownload(this,'@(VirtualPathUtility.ToAbsolute("~/"))@(model.ControllerName )/Download','@( idTab )');"><img src="@(VirtualPathUtility.ToAbsolute("~/"))Content/icons/icon-32-@(menu.Format ).png" /> &nbsp;&nbsp;@( menu.Title)</a>
+
+                   @if (menu.Childs.Count > 0)
+                   {
+                       <ul>
+                           @foreach (var submenu in menu.Childs)
+                           {
+                               <li class="icon"><a id="expmen@( idTab )@( submenu.Format )@( nmenu )" usemode="@(model.UseMode)" format="@( menu.Format )" href="javascript: void(0)" onclick="ExportDownload(this,'@(VirtualPathUtility.ToAbsolute("~/"))@(model.ControllerName )/Download','@( idTab )');">@( submenu.Title)</a></li>
+                           }
+                       </ul>
+                   }
+               </li>
+                   nmenu++;
+           }
+
+
+           @if (model.ExportCustomActions.Count > 0)
+           {
+               nmenu++;
+
+               <li role="presentation" class="divider"></li>
+
+               foreach (var item in model.ExportCustomActions)
+               {
+                   nmenu++;
+
+                   <li class="icon "><a actionkey="@( item.ActionKey )" titleexport="@Html.Raw(HttpUtility.UrlEncode(model.TitleForm))" usemode="@(model.UseMode)" id="expmen@( idTab )@( item.Format )@( nmenu )" format="@( item.Format )" href="javascript: void(0)" onclick="ExportDownload(this,'@( VirtualPathUtility.ToAbsolute("~/") )@(model.ControllerName )/Download','@( idTab )');"><img src="@( VirtualPathUtility.ToAbsolute("~/") )Content/icons/icon-32-@( item.Format ).png" />&nbsp;&nbsp; @(item.Title)</a></li>
+               }
+
+
+           }
+
+       </ul>
+      
+ </div>
+} 
+
+<script>
+    $(document).ready(function () {
+        $("#print@( idTab )").click(function (e) {
+            e.preventDefault();
+            var cloneList = $("#tableSearchresult@( idTab )").clone(true);
+            cloneList.find("a").each(function () {
+                $(this).removeAttr("href");
+            });
+            cloneList.printThis({
+                importCSS: true, printDelay: 1000,
+                loadCSS: "@(VirtualPathUtility.ToAbsolute("~/"))Content/forPrint.css"
+            });
+        });
+    });
+</script>
+ 

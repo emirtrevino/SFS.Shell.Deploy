@@ -1,0 +1,334 @@
+﻿@using SFSdotNet.Framework.Web.Mvc
+@{
+    
+    TemplateData ui = SFSdotNet.Framework.Web.Mvc.UIApp.GetUIData(this.ViewContext);
+    
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>@RenderSection("Title", false)</title>
+
+    <link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/css/bootstrap.min.css"))" rel="stylesheet">
+    @*<link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/font-awesome/css/font-awesome.css"))" rel="stylesheet">*@
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+
+    <!-- Toastr style -->
+    <link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/css/plugins/toastr/toastr.min.css"))" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/gritter/jquery.gritter.css"))" rel="stylesheet">
+    <link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/css/plugins/datapicker/datepicker3.css"))" rel="stylesheet" />
+    
+    
+    <link href="@(ui.UrlStatic("~/Static/v2/bootstrap-modal-bs3patch.css"))" rel="stylesheet" />
+    <link href="@(ui.UrlStatic("~/Static/v2/bootstrap-modal.css"))" rel="stylesheet" />
+   
+    <link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/css/plugins/iCheck/custom.css"))" rel="stylesheet" />
+
+    <link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/css/animate.css"))" rel="stylesheet">
+    <link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/css/style.css"))" rel="stylesheet">
+    
+
+    <link href="@(ui.UrlStatic("~/Scripts/select2/select2.css"))" rel="stylesheet">
+    <link href="@(ui.UrlStatic("~/Scripts/select2/select2-bootstrap.css"))" rel="stylesheet">
+    
+    <link href="@(ui.UrlStatic("~/Static/v2/clockpicker/bootstrap-clockpicker.min.css"))" rel="stylesheet" />
+
+    <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/jquery-2.1.1.js"))"></script>
+    @*<script src="@(ui.UrlStatic("~/Static/v2/jquery-1.11.3.min.js"))"></script>*@
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/bootstrap.min.js"))"></script>
+
+        
+        <script src="@(ui.UrlStatic("~/Static/v2/bootstrap-modalmanager.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Static/v2/bootstrap-modal.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Scripts/jquery.validate.js"))"></script>
+
+        <script src="@(ui.UrlStatic("~/Scripts/jquery.validate.unobtrusive.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Scripts/Jquery.Numeric.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Scripts/jquery.pagination.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Scripts/jquery.tablehover.min.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Scripts/jsrender.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Scripts/timeago.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Scripts/SFS.Web.Mvc.js"))"></script>
+
+
+        <link href="@(ui.UrlStatic("~/Static/Templates/Inspinia/css/custom.css"))" rel="stylesheet">
+        <script>
+            
+            @Html.Raw(ui.RenderJavascriptStart())
+        </script>
+
+        @RenderSection("CustomScript", false)
+
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+
+
+
+                    <ul class="nav" id="side-menu">
+                        <li class="nav-header">
+                            <div class="dropdown profile-element">
+                                <span>
+                                    <img alt="image" class="img-circle" src="@(ui.UrlImageProfileUser)" />
+                                </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                    <span class="clear">
+                                        <span class="block m-t-xs">
+                                            <strong class="font-bold">@(ui.UserDispalyName)</strong>
+                                        </span> <span class="text-muted text-xs block">@(ui.CompanyName)<b class="caret"></b></span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="@(ui.UrlAccountProfileUser)">Profile</a></li>
+                                    <li><a href="contacts.html">Contacts</a></li>
+                                    <li><a href="mailbox.html">Mailbox</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="login.html">Logout</a></li>
+                                </ul>
+                            </div>
+                            <div class="logo-element">
+                                IN+
+                            </div>
+                        </li>
+    @foreach(var menu in ui.MenuItems){
+        <li>
+            <a href="@menu.Url"><i class="@(menu.IconClass)"></i><span class="nav-label">@menu.Title</span> <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+        @foreach (var subMenu in menu.Children)
+        {
+            if (subMenu.MenuItemKey.Contains("File"))
+            {
+                subMenu.IconClass = "fa fa-files-o";
+            }
+            if (string.IsNullOrEmpty(subMenu.IconClass))
+            {
+                subMenu.IconClass = "fa fa-circle-o";
+            }
+            <li><a href="@subMenu.Url"><i class="@(subMenu.IconClass)"></i> @subMenu.Title</a></li>
+        }
+            </ul>
+    </li>
+    }
+
+                    </ul>
+
+
+
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="gray-bg ">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0px;">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                            <form class="navbar-form-custom" role="search" action="search_results.html" method="post">
+                                <div class="form-group">
+                                    <input name="top-search" class="form-control" id="top-search" type="text" placeholder="Search for something...">
+                                </div>
+                            </form>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" href="#" data-toggle="dropdown">
+                                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-messages">
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a class="pull-left" href="profile.html">
+                                                <img class="img-circle" alt="image" src="img/a7.jpg">
+                                            </a>
+                                            <div class="media-body">
+                                                <small class="pull-right">46h ago</small>
+                                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a class="pull-left" href="profile.html">
+                                                <img class="img-circle" alt="image" src="img/a4.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right text-navy">5h ago</small>
+                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a class="pull-left" href="profile.html">
+                                                <img class="img-circle" alt="image" src="img/profile.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right">23h ago</small>
+                                                <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                                <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="text-center link-block">
+                                            <a href="mailbox.html">
+                                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                           
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" href="#" data-toggle="dropdown">
+                                    <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-alerts">
+                                    <li>
+                                        <a href="mailbox.html">
+                                            <div>
+                                                <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="profile.html">
+                                            <div>
+                                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                                <span class="pull-right text-muted small">12 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="grid_options.html">
+                                            <div>
+                                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="text-center link-block">
+                                            <a href="notifications.html">
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                         <a href="mailbox.html">
+                                             <i class="fa fa-home"></i> <span>Empresa actual</span>
+                                         </a>
+                                    </li>
+                                    <li>
+                                        <a href="mailbox.html">
+                                           <i class="fa fa-retweet"></i> Cambiar empresa
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="@(ui.UrlChangeCurrentTheme)" class="@(ui.ClassModalElement)">
+                                            <i class="fa fa-eye"></i> Cambiar plantilla (UI)
+                                        </a>
+                                    </li>
+
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="mailbox.html">
+                                            <i class="fa fa-user"></i> Mi cuenta
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="mailbox.html">
+                                            <i class="fa fa-sign-out"></i> Salir
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="login.html">
+                                    <i class="fa fa-sign-out"></i> Log out
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                @RenderBody()
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- Mainly scripts -->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/metisMenu/jquery.metisMenu.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"))"></script>
+
+
+       <!-- Peity -->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/peity/jquery.peity.min.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/demo/peity-demo.js"))"></script>
+
+        <!-- Custom and plugin javascript -->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/inspinia.js"))"></script>
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/pace/pace.min.js"))"></script>
+
+        <!-- jQuery UI -->
+        @*<script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/jquery-ui/jquery-ui.min.js"))"></script>*@
+
+        <!-- GITTER -->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/gritter/jquery.gritter.min.js"))"></script>
+
+        <!-- Sparkline -->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/sparkline/jquery.sparkline.min.js"))"></script>
+
+        <!-- Sparkline demo data  -->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/demo/sparkline-demo.js"))"></script>
+
+        <!-- ChartJS-->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/chartJs/Chart.min.js"))"></script>
+
+        <!-- iCheck-->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/iCheck/icheck.min.js"))"></script>
+
+        <!-- Toastr -->
+        <script src="@(ui.UrlStatic("~/Static/Templates/Inspinia/js/plugins/toastr/toastr.min.js"))"></script>
+
+    </body>
+
+    </html>

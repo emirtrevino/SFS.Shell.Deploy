@@ -1,0 +1,388 @@
+﻿@{
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    string idTab = "";
+    string classButtons = "onlysel";
+    bool manyToMany = false;
+    if (!string.IsNullOrEmpty(Request.QueryString["isManyToMany"]))
+    {
+        manyToMany = bool.Parse(Request.QueryString["isManyToMany"]);
+    }
+    string key = "";
+    string modalEntityId = "";
+    if (ViewData["modalEntityId"] != null)
+    {
+        modalEntityId = ViewData["modalEntityId"].ToString();
+    }
+
+    string onCloseFunction = "onUpdateListData";
+    if (ViewData["idTab"] != null)
+    {
+        idTab = ViewData["idTab"].ToString();
+    }
+    string selectedN = "<span id='cusact" + idTab + "'></span>";
+    classButtons = "";
+    selectedN = "";
+    if (ViewData["onCloseActionWindow"] != null)
+    {
+        onCloseFunction = (string)ViewData["onCloseActionWindow"];
+    }
+    if (ViewData["ObjectKey"] != null)
+    {
+        key = (string)ViewData["ObjectKey"];
+    }
+    System.Text.StringBuilder extraParams = (System.Text.StringBuilder)ViewData["extraParams"];
+    ButtonLinkModel btn = null; }
+
+@if (((ButtonPosition)ViewData["list-button-position"]) == ButtonPosition.Top)
+{
+
+    foreach (var action in uiModel.ActionButtons.Where(p => p.Position == ButtonPosition.Top && p.VisibleOrder > 0 && p.Enabled == true ))
+    {
+        string btnType = "";
+        if (action.ActionKey == "c")
+        {
+            btnType = "add";
+        }
+        if (uiModel.CanAction(action.ActionKey))
+        {
+            if (!string.IsNullOrEmpty(action.ClientFunction))
+            {
+                Html.RenderPartial("ButtonLink", ButtonLinkModel.GetCustomScript(action.Title, uiModel.IsMiniContainer ? 0 : 1, btnType, action.ClientFunction));
+            }
+            else if (action.IsPopUp == true || uiModel.ForcePopUp)
+            {
+                if (!action.Url.Contains("popup"))
+                {
+                    action.Url = action.Url + "&popup=1";
+                }
+                if (string.IsNullOrEmpty(action.PopupDialogId))
+                {
+                    action.PopupDialogId = modalEntityId;
+                }
+                if (string.IsNullOrEmpty(action.ClientFunctionForUpdate))
+                {
+                    action.ClientFunctionForUpdate = "onUpdateListData" + idTab;
+                }
+                btn = ButtonLinkModel.GetForPopUp(action.Title, uiModel.IsMiniContainer ? 2 : 1, btnType, action.Url, action.ClientFunctionForUpdate, action.PopupDialogId);
+                if (uiModel.IsMiniContainer)
+                {
+                    btn.ExtraClass = "btn-mini btn-sm";
+                }
+
+                if (!string.IsNullOrEmpty(action.IconType))
+                {
+                    btn.Icon = action.IconType;
+                }
+                Html.RenderPartial("ButtonLink", btn);
+
+            }else if (action.Url.Contains("ListViewGen")){
+                if (string.IsNullOrEmpty(action.PopupDialogId))
+                {
+                    action.PopupDialogId = "modal" + action.ActionKey + idTab;
+                }
+                if (!action.Url.Contains("dialogId"))
+                {
+                    action.Url = action.Url + "&dialogId=" + action.PopupDialogId;
+                }
+                if (string.IsNullOrEmpty(action.ClientFunctionForUpdate) && action.Url.Contains("ListViewGen"))
+                {
+                    action.ClientFunctionForUpdate = "refreshList" + idTab;
+                }
+                btn = ButtonLinkModel.GetForPopUp(action.Title, uiModel.IsMiniContainer ? 2 : 1, btnType, action.Url, action.ClientFunctionForUpdate, action.PopupDialogId);
+                btn.Id = action.ActionKey;
+
+                if (uiModel.IsMiniContainer)
+                {
+                    btn.ExtraClass = "btn-mini btn-sm";
+                }
+                if (!string.IsNullOrEmpty(action.IconType))
+                {
+                    btn.Icon = action.IconType;
+                }
+
+                Html.RenderPartial("ButtonLink", btn);
+            }
+            else
+            {
+                btn = ButtonLinkModel.GetCustom(action.Title, uiModel.IsMiniContainer ? 2 : 1, btnType, action.Url);
+
+                btn.Id = action.ActionKey;
+
+                if (uiModel.IsMiniContainer)
+                {
+                    btn.ExtraClass = "btn-mini btn-sm";
+                }
+                if (!string.IsNullOrEmpty(action.IconType))
+                {
+                    btn.Icon = action.IconType;
+                }
+
+                Html.RenderPartial("ButtonLink", btn);
+            }
+        }
+    }
+
+
+    if (uiModel.ActionButtons.Count(p => p.Position == ButtonPosition.Top && p.VisibleOrder < 0) > 0)
+    {
+
+        <div class="btn-group dropdown" style="">
+            
+               <a href="#" class="@classButtons btn @(uiModel.IsMiniContainer ? "btn-mini btn-sm" : "") dropdown-toggle " data-toggle="dropdown"> <i class=""></i>  @GlobalMessages.MORE  @Html.Raw(selectedN)  <b class="caret"></b></a>
+            
+             <ul class="dropdown-menu text-left" role="menu" aria-labelledby="customActionTop@(idTab)">
+                @foreach (var action in uiModel.ActionButtons.Where(p => p.Position == ButtonPosition.Top && p.VisibleOrder < 0 && p.Enabled == true ))
+                {
+                    <li class="icon" id="li@(idTab)@(action.ActionKey)">
+                        @{
+                    string btnType = "";
+                    if (action.ActionKey == "c")
+                    {
+                        btnType = "add";
+                    }
+                        }
+                        @if (uiModel.CanAction(action.ActionKey))
+                        {
+                            //ButtonLinkModel btnF = null;
+                            if (!string.IsNullOrEmpty(action.ClientFunction))
+                            {
+                                btn = ButtonLinkModel.GetCustomScript(action.Title, 3, btnType, action.ClientFunction);
+
+                                Html.RenderPartial("ButtonLink", btn);
+                            }
+                            else if (action.IsPopUp == true)
+                            {
+
+                                btn = ButtonLinkModel.GetForPopUp(action.Title, 3, btnType, action.Url, action.ClientFunctionForUpdate, action.PopupDialogId);
+                                //btn.ExtraClass = "btn-mini";
+                                if (!string.IsNullOrEmpty(action.IconType))
+                                {
+                                    btn.Icon = action.IconType;
+                                }
+                                Html.RenderPartial("ButtonLink", btn);
+
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(action.PopupDialogId))
+                                {
+                                    action.PopupDialogId = "modal" + action.ActionKey + idTab;
+                                }
+                                if (!action.Url.Contains("dialogId"))
+                                {
+                                    action.Url = action.Url + "&dialogId=" + action.PopupDialogId;
+                                }
+                                if (string.IsNullOrEmpty(action.ClientFunctionForUpdate) && action.Url.Contains("ListViewGen"))
+                                {
+                                    action.ClientFunctionForUpdate = "refreshList" + idTab;
+                                }
+                                btn = ButtonLinkModel.GetForPopUp(action.Title,  3, btnType, action.Url, action.ClientFunctionForUpdate, action.PopupDialogId);
+                                if (uiModel.IsMiniContainer)
+                                {
+                                    //btn.ExtraClass = "btn-mini";
+                                }
+                                if (!string.IsNullOrEmpty(action.IconType))
+                                {
+                                    btn.Icon = action.IconType;
+                                }
+
+                                Html.RenderPartial("ButtonLink", btn);
+                            }
+
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+
+                                }
+
+
+                            }
+                            else
+                            {
+                                if (Request.QueryString["forSelect"] == null)
+                                {
+
+                                    foreach (var action in uiModel.Actions)
+                                    {
+                                        action.Position = ButtonPosition.Foot;
+                                        uiModel.ActionButtons.Add(action);
+                                    }
+
+                                    foreach (var actionbtn in uiModel.ActionButtons.Where(p => p.Enabled == true && p.VisibleOrder > 0 && (p.ActionKey != "return" && p.ActionKey != "export-list" && p.ActionKey != "c" && p.ActionKey != "cancel" && p.ActionKey != "d" && p.ActionKey != "u")))
+                                    {
+                                        
+                                        if (actionbtn.Priority == 1)
+                                        {
+                                            classButtons = "btn btn-primary ";
+                                        }
+                                        else if (actionbtn.Priority == 2)
+                                        {
+                                            classButtons = "btn btn-default ";
+
+                                        }
+                                        classButtons = classButtons + " onlysel";
+                                        string url = VirtualPathUtility.ToAbsolute("~/") + "Messages/Confirm";
+                                        if (!string.IsNullOrEmpty(actionbtn.Url))
+                                        {
+                                            if (actionbtn.Url.StartsWith("~/"))
+                                            {
+                                                url = VirtualPathUtility.ToAbsolute("~/") + actionbtn.Url.Replace("~/", "");
+                                            }
+                                            else
+                                            {
+                                                url = actionbtn.Url;
+                                            }
+                                            if (!url.Contains("?"))
+                                            {
+                                                url = url + "?";
+                                            }
+                                            if (!url.Contains("popup"))
+                                            {
+                                                url = url + "&popup=true";
+                                            }
+                                            //  if (!string.IsNullOrEmpty(usemode))
+                                            //{
+                                            //    url = url + "&usemode=" + usemode;
+                                            //}
+                                            if (!url.Contains("actionId"))
+                                            {
+                                                url = url + "&actionId=" + actionbtn.ActionKey + idTab;
+                                            }
+                                            //string lastActionExecutedJsVar = action.ActionKey + idTab + "IsExecuted";
+
+                                            //url = url + "&lastActionExecuted=" + lastActionExecutedJsVar;
+                                        }
+
+                                        System.Text.StringBuilder sbParams = new System.Text.StringBuilder();
+                                        foreach (var qParam in actionbtn.QueryStringParams)
+                                        {
+                                            if (sbParams.Length > 0)
+                                            {
+                                                sbParams.Append(" ");
+                                            }
+                                            sbParams.Append("data-param-" + qParam + "=" + Request.QueryString[qParam]);
+                                        }
+
+
+
+                                        string simpleLink = "";
+                                        if (actionbtn.IsPopUp == false && actionbtn.PreventAjax == true)
+                                        {
+                                            simpleLink = " withConfirm=\"false\"  ajax=\"false\" ";
+                                        }
+
+                                        @Html.Raw("&nbsp; &nbsp; &nbsp;") <a @Html.Raw(simpleLink) @(sbParams.ToString()) href="javascript: void(0);" confirmmessage="" id="action@(actionbtn.ActionKey)@(idTab)" onclick="CustomAction(this, '@url','@idTab','@key');" class="@(classButtons)  @(uiModel.IsMiniContainer? "btn-mini":"") item-custom-action @(actionbtn.ActionKey)" controllername="@uiModel.ControllerName" clientFuntionOnFinish="@(actionbtn.ClientFunctionOnFinish)" isbackground="@(actionbtn.IsBackground.ToString().ToLower())" usemode="@(uiModel.UseMode)" actionkey="@(actionbtn.ActionKey)"><i class="@(actionbtn.IconType)"></i> @actionbtn.Title </a>
+                                    }
+
+
+                                    foreach (var action in uiModel.Actions.Where(p => (p.VisibleOrder < 0 || p.VisibleOrder == null) && (p.Position == ButtonPosition.Foot || p.Position == null)))
+                                    {
+                                        if (uiModel.CanAction(action.ActionKey))
+                                        {
+                                            if (action.VisibleOrder == null)
+                                            {
+                                                action.VisibleOrder = -1;
+
+                                            }
+                                            if (action.Position == null)
+                                            {
+                                                action.Position = ButtonPosition.Foot;
+                                            }
+                                            uiModel.ActionButtons.Add(action);
+                                        }
+                                    }
+
+                                    foreach (var action in uiModel.ActionButtons.Where(p => p.VisibleOrder > 0 && p.Position == ButtonPosition.Foot))
+                                    {
+                                        if (uiModel.CanAction(action.ActionKey))
+                                        {
+
+                                            if (action.ActionKey == "export-list" && uiModel.RemoveExport == false)
+                                            {
+                                                Html.RenderPartial("ExportView");
+                                            }
+                                            else if (action.ActionKey == "d")
+                                            {
+                                                if (uiModel.CanAction("d"))
+                                                {
+
+                                                    if (Request.QueryString["deleted"] == "1")
+                                                    {
+                                                        <a href="javascript: void(0);" onclick="CustomAction(this, '@(VirtualPathUtility.ToAbsolute("~/"))Messages/Confirm','', '@(idTab )');" controllername="@(uiModel.ControllerName)" id="lnkRestore" class="onlysel  @(uiModel.IsMiniContainer ? "btn-mini" : "") btn disabled" actionkey="restore"><i class=" icon-reply"></i> Restaurar (<span id='selnd@(idTab )'></span>)</a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        string overrideAppString = "";
+                                                        if (!string.IsNullOrEmpty(Request.QueryString["overrideModule"]))
+                                                        {
+                                                            overrideAppString = " overrideApp =\"" + Request.QueryString["overrideModule"] + "\"";
+                                                        }
+                                                        <a href="javascript: void(0);" @Html.Raw(overrideAppString) onclick="deleteAction(this, null,true, '@(idTab )');" id="lnkdelmany" class="onlysel delete  @(uiModel.IsMiniContainer ? "btn-mini btn-sm" : "") btn disabled" actionkey="@(manyToMany ? "deleterelmany" : "deletemany")"><i class=" icon-trash"></i>@( action.Title ) (<span id='selnd@(idTab )'></span>)</a>
+
+                                                    }
+
+
+
+
+
+                                                }
+
+                                            }
+                                            else
+                                            {
+
+
+
+                                            }
+
+                                        }
+                                    }
+                                    if (uiModel.ActionButtons.Count(p => (p.VisibleOrder > 0 || p.VisibleOrder == null) && (p.Position == ButtonPosition.Foot || p.Position == null)) > 0)
+                                    {
+                                        ViewData["FootActionsVisible"] = true;
+                                        uiModel.Actions.Where(p => p.VisibleOrder == null).ToList().ForEach(p => p.VisibleOrder = -1);
+                                        Html.RenderPartial("CustomActionsView");
+                                    }
+
+                                    if (uiModel.ActionButtons.Count(p => (p.VisibleOrder < 0 || p.VisibleOrder == null) && (p.Position == ButtonPosition.Foot || p.Position == null)) > 0)
+                                    {
+                                        ViewData["FootActionsVisible"] = false;
+                                        Html.RenderPartial("CustomActionsView");
+
+                                    }
+                                }
+
+
+        if (uiModel.PropertyForActions != null)
+        {
+        <script>
+            function setRowMenu@(idTab)() {
+                if ($("#tableSearchresult@(idTab ) tbody tr").length > 0) {
+                    $("#tableSearchresult@(idTab ) tbody tr td.cel@(uiModel.PropertyForActions.PropertyName)").each(function () {
+
+                        $(this).addClass("dropdown");
+                        $(this).append("<a class=\"btn btn-default btn-sm actionButton@(idTab)\" data-toggle=\"dropdown\" href=\"#\"> Acciones <span class=\"caret\"></span></a>");
+                    });
+
+                    $dropdown = $("#customActions@(idTab)");
+                    $(".actionButton@(idTab)").click(function () {
+                        var id = $(this).closest("tr").children().first().html();
+                        $(this).after($dropdown);
+                        $(this).dropdown();
+                    });
+
+                }
+            }
+
+        </script>
+                                }
+                            }
+
+
+
+
+
+

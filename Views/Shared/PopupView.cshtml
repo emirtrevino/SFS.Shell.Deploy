@@ -1,0 +1,70 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.PopupModel
+@{
+    string target = "";
+    string prefix = "";
+    string closeFunc = "null";
+    if (!string.IsNullOrEmpty(Model.OnCloseFunction)) {
+        closeFunc = Model.OnCloseFunction;
+    }
+    if (!string.IsNullOrEmpty(Model.TargetClassName))
+    {
+
+        if (!Model.TargetClassName.StartsWith(".")) { 
+            prefix = ".";
+        }
+            
+        target = prefix + Model.TargetClassName;
+            
+    }
+    if (!string.IsNullOrEmpty(Model.TargetId))
+    {
+
+        if (!Model.TargetId.StartsWith("#")) { 
+            prefix = "#";
+        }
+
+        target = prefix + Model.TargetId;
+
+    }
+    if (Model != null)
+    {
+        if (!string.IsNullOrEmpty(Model.StartUrl))
+        {
+            if (!Model.StartUrl.Contains("popup"))
+            {
+                Model.StartUrl = Model.StartUrl + "&popup=1";
+            }
+        }
+    }
+ }
+ @{ string jqueryTarget = "";
+     if (!string.IsNullOrEmpty(Model.ProxyId))  {
+        jqueryTarget = "#" + Model.ProxyId;
+         
+         <a href="" popupId="modal@(Model.ProxyId)" startUrl="@Model.StartUrl" id="@Model.ProxyId" name="@Model.ProxyId" messageConfirm="@HttpUtility.UrlEncode( Model.Message)"></a>
+ }
+     if (!string.IsNullOrEmpty(jqueryTarget)) { 
+         target = jqueryTarget;
+     }
+   }
+<script>
+function @( Model.FunctionName )(){
+    $("a@( target )").click(function (e){
+        e.preventDefault();
+
+        openModal($(this),  @(closeFunc ));
+    });
+ 
+
+}
+    $(document).ready(function () {
+        $("a@( target )").click(function (e){
+            e.preventDefault();
+
+            openModal($(this),  @(closeFunc ));
+            });
+
+    });
+
+</script>
+

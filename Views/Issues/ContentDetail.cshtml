@@ -1,0 +1,443 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.ContentBaseModel
+
+@{
+    
+    
+    Layout = "~/Views/Shared/_LayoutVisualContents.cshtml";
+    bool viewEdit = false;
+    bool canEdit = false;
+
+    bool isAuthenticated = false;
+    string messageAnonymous = "Identificate para poder participar";
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null)
+    {
+        isAuthenticated = true;
+    }
+
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null)
+    {
+        canEdit = (new SFSdotNet.Framework.Security.Permissions()).IsAllowed(SFSdotNet.Framework.My.Context.CurrentContext.User, "SFSdotNetFrameworkSecurity", "secContent", "u");
+
+    }
+    if (Request.QueryString["viewEdit"] == "true" && canEdit)
+    {
+        viewEdit = true;
+    }
+
+    System.Text.StringBuilder sbReturnAfterDelete = new System.Text.StringBuilder();
+    sbReturnAfterDelete.Append(VirtualPathUtility.ToAbsolute("~/"));
+
+    if (ViewData["module"] != null)
+    {
+        SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+        sbReturnAfterDelete.Append("Updates/App/" + module.ModuleKey);
+        if (!string.IsNullOrEmpty(Model.ContentTypeKey))
+        {
+            sbReturnAfterDelete.Append("?type=" + Model.ContentTypeKey);
+        }
+    }
+
+    var draftText = "";
+    if (viewEdit)
+    {
+        if (!Model.Published)
+        {
+            draftText = "<span class='label'>(Borrador)</span>";
+        }
+    }
+    string typeLabel = "Mejora o cambio";
+    System.Text.StringBuilder sbDate = new System.Text.StringBuilder();
+    if (Model.PublishedDate != null)
+    {
+        sbDate.Append(Model.PublishedDate.Value.ToShortDateString());
+    }
+    System.Text.StringBuilder sbExtraData = new System.Text.StringBuilder();
+    if (Model.ContentTypeKey == "error-system")
+    {
+        var issueDetails = (SFSdotNet.Framework.Security.BusinessObjects.secIssue)ViewData["extraData"];
+
+
+        if (issueDetails.ErrorStartMethod != null)
+        {
+            sbExtraData.Append(" Método: <strong>" + issueDetails.ErrorStartMethod + "</strong>");
+        }
+        if (issueDetails.ErrorStartLine != null)
+        {
+            sbExtraData.Append(" Línea: <strong>" + issueDetails.ErrorStartLine.Value.ToString() + "</strong>");
+        }
+        if (issueDetails.ErrorStartFile != null)
+        {
+            sbExtraData.Append(" Archivo: <strong>" + issueDetails.ErrorStartFile.Split(char.Parse("\\")).Last() + "</strong>");
+        }
+        if (sbExtraData.Length > 0)
+        {
+            sbExtraData.Insert(0, "<strong>Comenzó</strong>: ");
+        }
+
+        sbExtraData.Append("<br /><strong>Terminó</strong>: ");
+
+        if (issueDetails.ErrorEndMethod != null)
+        {
+            sbExtraData.Append("Método: <strong>" + issueDetails.ErrorEndMethod + "</strong>");
+        }
+        if (issueDetails.ErrorEndLine != null)
+        {
+            sbExtraData.Append(" Línea: <strong>" + issueDetails.ErrorEndLine.Value.ToString() + "</strong>");
+        }
+        if (issueDetails.ErrorEndFile != null)
+        {
+            sbExtraData.Append(" Archivo: <strong>" + issueDetails.ErrorEndFile.Split(char.Parse("\\")).Last() + "</strong>");
+        }
+
+
+
+
+    }
+    if (Model.PublishedDate.Value < Model.LastChange)
+    {
+        if (sbDate.Length > 0)
+        {
+            sbDate.Append(" - ");
+        }
+        sbDate.Append(Model.LastChange.ToShortDateString());
+    }
+    if (Model.ContentTypeKey == "error-system")
+    {
+        typeLabel = "Error autoadministrado";
+    }
+    else if (Model.ContentTypeKey == "error-system")
+    {
+        typeLabel = "Error reportado";
+    }
+
+    string ModuleName = GlobalMessages.ECOSYSTEM;
+    if (ViewData["module"] != null)
+    {
+        ModuleName = ((SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"]).Name;
+    }
+    string styleDefaulImage = "";
+    string styleDefaultContainerImage = "";
+
+}
+@section CustomScript{
+    @Html.Raw(Model.HeaderScript)
+    
+    <style>
+        .quote {
+
+         font-size:150px;
+         float:left;
+            color:#E7E7E7;
+        }
+    </style>
+}
+
+
+@section Title{
+    @Model.Title
+}
+
+
+<div class="blog issue ">
+    <div class="page-header" style="@(Model.ContentTypeKey == "update" ? "margin:20px 0 10px;" : "")" >
+        <h1>@Model.Title</h1>
+    </div>
+
+    @if (Model.ContentTypeKey == "update")
+    {
+        <div style="float: left;"><span class="badge badge-success">@GlobalMessages.UPDATE_TYPE #@Model.IdContent </span></div>   <div class="publish-data text-right">@GlobalMessages.PUBLISHED @(Model.PublishedDate != null ? Model.PublishedDate.Value.ToLongDateString() : "") </div>
+    }
+    else
+    {
+        if (Model.ContentTypeKey != "error-system")
+        {
+            <div class="publish-data text-right issue-labels" style="width:100%">
+                App: @ModuleName &nbsp;&nbsp; @GlobalMessages.PUBLISHED <time class='timeago' title='@(Model.PublishedDate.Value.ToString("s"))Z' datetime='@(Model.PublishedDate.Value.ToString("s"))'></time> @GlobalMessages.BY  <strong> @Model.UserDisplayName</strong>   &nbsp;&nbsp;   <span style="margin-left:0px;" class=" @Model.ContentTypeKey ">@typeLabel</span> <span class="level-medium">@Model.LevelName</span>
+            </div>
+        }
+        else
+        {
+            <div class="publish-data text-right issue-labels" style="width:100%">
+                App: @ModuleName &nbsp;&nbsp; @GlobalMessages.PUBLISHED <time class='timeago' title='@(Model.PublishedDate.Value.ToString("s"))Z' datetime='@(Model.PublishedDate.Value.ToString("s"))'></time>   Generado automáticamente &nbsp;&nbsp;   <span style="margin-left:0px;" class=" @Model.ContentTypeKey ">@typeLabel</span> <span class="level-medium"> @Model.LevelName </span>
+            </div>
+        }
+    }
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    @*  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53aec9a97c32caa8"></script>*@
+    <script>
+        function verifyMyVotesDone(data) {
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].VoteOption != null) {
+                    var idtd = "priority-" + data[i].GuidIssue;
+                    if (data[i].VoteOption == "less") {
+                        $("#" + idtd + ".votes .btn.less").addClass("yes");
+                        $("#" + idtd + ".votes .btn.less").attr("title", "Quitar voto");
+                    } else {
+                        $("#" + idtd + ".votes .btn.plus").addClass("yes");
+                        $("#" + idtd + ".votes .btn.plus").attr("title", "Quitar voto");
+
+                    }
+                }
+            }
+
+           
+        }
+        function verifyMyVotes() {
+            @if (isAuthenticated)
+            {
+                <text>
+                    var url = "@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/"))Issues/MyVotes?idIssue=@(Model.GuidContent)";
+                    callServerGet(url, verifyMyVotesDone, null);
+                </text>
+            }
+        }
+        function prepareButtonsForVote(idIssue) {
+            var idtd = "priority-" + idIssue;
+            $("#" + idtd + " .btn.no").click(function (e) {
+                e.preventDefault();
+                var actionVote = "plus";
+                if ($(this).hasClass("less")) {
+                    actionVote = "less";
+                }
+                var url = "@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/"))Issues/AddVote?idIssue=" + idIssue + "&value=" + actionVote;
+
+            callServerSend(url, null, voteDone, $(this));
+
+            });
+        }
+    $(document).ready(function () {
+        
+        prepareButtonsForVote("@(Model.GuidContent)");
+        
+    });
+    function voteDone(data) {
+        if (data.ResultOk == true) {
+            var otherTypeVote = "less";
+            var removingVote = false;
+            var idtd = "priority-" + data.IdIssue;
+            if ($("#" + idtd  + ".votes .btn." + data.TypeVote).hasClass("yes")) {
+                removingVote = true;
+            }
+            if (removingVote == false) {
+                if (data.TypeVote == "less") {
+                    otherTypeVote = "plus";
+                }
+
+                $("#" + idtd + ".votes .btn." + data.TypeVote).removeClass("no");
+                $("#" + idtd + ".votes .btn." + data.TypeVote).addClass("yes");
+                //$(".votes .btn." + data.TypeVote).prop('disabled', true);
+
+                $("#" + idtd + ".votes .btn." + otherTypeVote).removeClass("yes");
+                $("#" + idtd + ".votes .btn." + otherTypeVote).addClass("no");
+                //$(".votes .btn." + otherTypeVote).prop('disabled', false);
+
+            } else {
+                $("#" + idtd + ".votes .btn." + data.TypeVote).removeClass("yes");
+                $("#" + idtd + ".votes .btn." + data.TypeVote).addClass("no");
+            }
+
+            $("#" + idtd + ".votes .amount").text(data.TotalVotes);
+
+            $("#" + idtd + ".votes .amount").removeClass("cero");
+            $("#" + idtd + ".votes .amount").removeClass("less");
+            $("#" + idtd + ".votes .amount").removeClass("plus");
+
+            if (data.TotalVotes < 0) {
+
+                $("#" + idtd + ".votes .amount").addClass("less");
+            } else if (data.TotalVotes == 0) {
+                $("#" + idtd + ".votes .amount").addClass("cero");
+            } else {
+                $("#" + idtd + ".votes .amount").addClass("plus");
+            }
+
+        }
+    }
+
+    </script>
+    @{
+        
+        string classValue = "cero";
+        if (Model.Priority < 0)
+        {
+            classValue = "less";
+        }
+        else if (Model.Priority > 0)
+        {
+            classValue = "plus";
+        }
+        }
+    <div class="page-issue @Model.ContentTypeKey">
+        <table id="issue-detail" style="width:100%">
+            <tr>
+        @if (Model.Closed == true)
+            {
+    <td class="issue-weight-value  votes" style="padding-top: 13px;border-bottom-width:0px;border-bottom-style:none">
+        <div class="amount @classValue" style="color:#339966">&#10004;</div></td>
+
+            }
+            else
+            {
+                <td class="votes" style="padding-top: 13px;" id="priority-@Model.GuidContent">
+                    <div class="amount @classValue">
+                        @Model.Priority
+
+                    </div>
+                    <div>
+                        <a href="#" @(isAuthenticated ? "" : "disabled='disabled'") data-loading-text="..." title="@(isAuthenticated ? "Sí es muy importante para mí" : messageAnonymous)" class="plus no btn btn-small">+ </a>
+                        <a href="#" @(isAuthenticated ? "" : "disabled='disabled'") data-loading-text="..." title="@(isAuthenticated ? "No es importante para mí" : messageAnonymous)" class="less no btn btn-small">&minus; </a>
+                    </div>
+                </td>
+    
+}
+                <td id="issue-detail-content">
+                    <div class="body-issue" >
+                       
+                    @if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.IsSuperAdmin())
+                    {
+                        if (Model.ContentTypeKey == "error-system")
+                        { 
+                        <div class="">
+                            <div class="well" style="font-size: 80%; padding-top: 3px; padding-bottom: 3px;">@Html.Raw(sbExtraData.ToString())</div>
+                            <p class=" text-center"><a href="@SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/")SFSdotNetFrameworkSecurity/secIssues/DetailsGen/@(Model.GuidContent)?dec=true">Ir al detalle del error</a>   </p>
+                            <p>@Html.Raw(Model.LargeContent)   </p>
+                        </div>
+    
+                        }
+                        else
+                        {
+                        <div class="">@Html.Raw(Model.LargeContent)</div>
+                          
+                        }
+                    }
+                    else
+                    {
+                        if (Model.ContentTypeKey == "error-system")
+                        {
+                        <div class="">
+                            <div class="well" style="font-size: 80%; padding-top: 3px; padding-bottom: 3px;">@Html.Raw(sbExtraData.ToString())</div>
+                            <p>Este error ha sido reportado de forma automática por el sistema, es administrado  y priorizado  por el ecosistema automáticamente. Para saber más acerca de nuestra tecnología de tratamiento de errores <a href="#">lea aquí</a> </p>
+                        </div>
+                        }
+                        else
+                        {
+                        <p>@Html.Raw(Model.LargeContent)</p>
+                        }
+                    }
+                         
+                    </div>
+                      @if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null && (SFSdotNet.Framework.My.Context.CurrentContext.User.GuidUser == Model.GuidUser || SFSdotNet.Framework.My.Context.CurrentContext.IsSuperAdmin()))
+                      {
+                                <div class="text-right">
+                                    <a popupid="popup-close-@(Model.IdContent)" class="btn close-issue btn-mini" href="@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/SFSdotNetFrameworkSecurity/secIssueRelations/CreateViewGen/?fk=secIssue&fkValue=" + Model.GuidContent.ToString() + "&popup=true"))"><i class="icon  icon-off"></i> Cerrar pendiente</a>
+                                    <a popupId="popup-@(Model.IdContent)" href="@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/SFSdotNetFrameworkSecurity/secIssues/EditViewGen/" + Model.GuidContent.ToString() + "?type=" + Model.ContentTypeKey + "&popup=true&actionId=EditIssueDone&dec=true"))" class="btn edit-issue btn-mini"><i class="icon  icon-pencil"></i> </a>
+
+                            </div>
+                      }
+                    <div id="comments">
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+
+
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <div class="row-fluid">
+        <div class="span12 text-right">
+            <a @(isAuthenticated ? "" : "disabled='disabled'") id="add-comment" class="btn btn-primary" href="@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/SFSdotNetFrameworkSecurity/secIssues/CreateViewGen?popup=true&actionId=addComment&type=comment&CommentOfIssue=" + Model.GuidContent.ToString()))"><i class="icon-comment icon-white"></i>@(isAuthenticated ? " Agregar opinión a este tema" : messageAnonymous) </a>
+
+            <script>
+                $("#add-comment").click(function (e) {
+                    e.preventDefault();
+                    waitActionComplete("addComment");
+                    openModal($(this), addCommentDone);
+                });
+                function addCommentDone() {
+                    if (isActionComplete("addComment")) {
+                        getComments();
+                    }
+                }
+                function editIssueDone() {
+                    if (isActionComplete("EditIssueDone")) {
+                        window.location.href = "@(Request.Url.ToString())";
+                    }
+                }
+                function closeIssueDone() {
+                    if (isActionComplete("CloseIssueDone")) {
+                        window.location.href = "@(Request.Url.ToString())";
+                    }
+                }
+                $(document).ready(function () {
+                    $(".edit-issue").click(function (e) {
+                        e.preventDefault();
+                        waitActionComplete("EditIssueDone");
+                        openModal($(this), editIssueDone);
+
+                    });
+                    $(".close-issue").click(function (e) {
+                        e.preventDefault();
+                        waitActionComplete("CloseIssueDone");
+                        openModal($(this), closeIssueDone);
+
+                    });
+
+                    prepareDeleteComments();
+                    getComments();
+
+                    $(".publish-data .timeago").each(function (e) {
+                        $(this).attr("title", ParseISO8601($(this).attr("title")));
+
+                    });
+
+                    $('.timeago').timeago();
+
+                });
+                function getComments() {
+                    var url = "@(SFSdotNet.Framework.Web.Urls.GetUrlForAction("~/Issues/GetComments/" + Model.GuidContent.ToString()) + "?")";
+                    callServerGetHtml(url, getCommentsDone, null);
+                }
+                function getCommentsDone(data) {
+                    //html
+                    
+                    $("#comments").html(data);
+                    verifyMyVotes();
+                    
+                }
+
+                function editCommentDone() {
+
+                    if (isActionComplete("EditDone")) {
+                        getComments();
+                    }
+
+                }
+                function onDeleteContentDone() {
+                    getComments();
+                }
+                function prepareDeleteComments() {
+                    $(".delete-comment").click(function (e) {
+                        e.preventDefault();
+                        deleteAction($(this), $(this)[0], false, "", $(this).attr("idIssue"), onDeleteContentDone);
+                    });
+
+                }
+            </script>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+
+
+</div>

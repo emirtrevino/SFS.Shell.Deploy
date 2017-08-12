@@ -1,0 +1,585 @@
+﻿@using System.Web.Mvc
+@using SFSdotNet.Framework.Web.Mvc
+@using SFSdotNet.Framework.Web.Mvc.Models
+
+
+@{
+
+    bool allowUnregisteredUsers = true;
+
+
+    PropertyDefinition property = (PropertyDefinition)ViewData["currentProperty"];
+
+    if (property.CustomProperties.Count(p => p.Name == "AllowUnregisteredUser" && p.Value == "false") > 0)
+    {
+        allowUnregisteredUsers = false;
+    }
+    bool removePlaceHolder = true;
+    if (property.CustomProperties.Count(p => p.Name == "preventPlaceHolder" && p.Value == "true") > 0)
+    {
+        removePlaceHolder = true;
+    }
+
+
+
+    string classExtra = "";
+    string idTab = "";
+    if (!string.IsNullOrEmpty(Request.QueryString["idTab"]))
+    {
+        idTab = Request.QueryString["idTab"];
+    }
+
+    string extraParam = "";
+    if (!string.IsNullOrEmpty(property.UseMode))
+    {
+        extraParam = "&usemode=" + property.UseMode;
+    }
+    if (ViewData["class"] != null)
+    {
+        classExtra = ViewData["class"].ToString();
+    }
+    UIModel uiModel = (UIModel)ViewData["uiModel"];
+    var propertyName = ViewData.ModelMetadata.PropertyName;
+    string controlInputClass = "";
+    string controlsGroupClassSelect = ".control-group";
+    string resultsPropertyName = "results";
+    var extraData = uiModel.ExtraData.FirstOrDefault(p => p.PropertyName == propertyName);
+    string controllerAndActionGet = "";
+    
+    if (uiModel.UIVersion == 2)
+    {
+        resultsPropertyName = "processResults";
+        controlsGroupClassSelect = ".form-group";
+        if (uiModel.IsMultiColumn == true)
+        {
+            controlInputClass = " form-control ";
+        }
+        else
+        {
+            controlInputClass = " form-control ";
+        }
+    }
+    else
+    {
+        if (uiModel.IsMultiColumn == true)
+        {
+            controlInputClass = " span12 ";
+        }
+        else
+        {
+            controlInputClass = " span8 ";
+        }
+    }
+
+    if (uiModel.IsMultiColumn)
+    {
+        classExtra = classExtra + controlInputClass;
+    }
+    else
+    {
+        classExtra = classExtra + controlInputClass;
+
+    }
+    string selector = "#" + propertyName;
+
+    string filtrablePropertyPathName = propertyName;
+    var propertyValue = ViewData.ModelMetadata.Model;
+    var displayText = "";
+    string dataTypeValue = "";
+    if (ViewData.ModelMetadata.ModelType.FullName.Contains("Nullable"))
+    {
+        var nullableTypes = ViewData.ModelMetadata.ModelType.GetGenericArguments();
+        if (nullableTypes.Count() == 1)
+        {
+            if (nullableTypes[0].Name.Contains("Guid"))
+            {
+                dataTypeValue = "Guid";
+            }
+        }
+    }
+    if (ViewData["DisplayText"] != null)
+    {
+        displayText = ViewData["DisplayText"].ToString();
+    }
+    var id = Guid.NewGuid().ToString();
+
+    RouteValueDictionary result =
+        (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "result").Single().Value;
+    string resultPropertyText = "";
+    string resultPropertyValue = "";
+    if (result != null)
+    {
+        if (string.IsNullOrEmpty(property.PropertyNavigationText))
+        {
+            resultPropertyText = result.FirstOrDefault(p => p.Key == "propertyText").Value.ToString();
+        }
+        else
+        {
+            resultPropertyText = property.PropertyNavigationText;
+        }
+        resultPropertyValue = result.FirstOrDefault(p => p.Key == "propertyValue").Value.ToString();
+
+    }
+
+    RouteValueDictionary urlData =
+        (RouteValueDictionary)ViewData.ModelMetadata.AdditionalValues.Where(x => x.Key == "AutoCompleteUrlData").Single().Value;
+
+
+    var url = SFSdotNet.Framework.Web.Mvc.Extensions.RouteHelper.GetUrl(this.ViewContext.RequestContext, urlData);
+    if (!string.IsNullOrEmpty(uiModel.Id))
+    {
+        extraParam = extraParam + "&ui=" + uiModel.Id;
+
+    }
+
+    if (ViewData["filtrablePropertyPathName"] != null)
+    {
+        filtrablePropertyPathName = ViewData["filtrablePropertyPathName"].ToString();
+    }
+    string sizeClass = "";
+    if (ViewData["fromfilter"] != null)
+    {
+
+    }
+    if (property.RemoveLabel == true && string.IsNullOrEmpty(property.PlaceHolder) && property.UIText == null || (property.UIText != null && string.IsNullOrEmpty(property.UIText.PlaceHolder)))
+    {
+        property.PlaceHolder = property.PropertyDisplayName;
+    }
+
+    string placeHolderText = "";
+    if (!string.IsNullOrWhiteSpace(property.PlaceHolder))
+    {
+        placeHolderText = "" + property.PlaceHolder + "";
+
+    }
+    else if (property.UIText != null && !string.IsNullOrEmpty(property.UIText.PlaceHolder))
+    {
+        placeHolderText = "" + property.UIText.PlaceHolder + "";
+    }
+    string requiredAttributes = "";
+    bool isRequiredAtt = false;
+    if (property != null)
+    {
+
+        if (property.IsRequired == true && isRequiredAtt == false)
+        {
+            requiredAttributes = "data-val=\"true\" data-val-required=\"" + string.Format(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.THE_FIELD_IS_REQUIRED, property.PropertyDisplayName) + "\"";
+
+        }
+    }
+    bool isIntegrated = false;
+    string queryForGlobals = "";
+    System.Text.StringBuilder sbExtraParams = new System.Text.StringBuilder();
+
+    if (property.CustomProperties.Exists(p => p.Name == "Integrable" && p.Value == "true") && (!property.CustomProperties.Exists(p => p.Name == "GlobalData" && p.Value == "CompanyUser") && !property.CustomProperties.Exists(p => p.Name == "GlobalData" && p.Value == "GlobalUser")))
+    {
+        isIntegrated = true;
+        resultPropertyValue = "Id";
+        resultPropertyText = "Title";
+    }
+    else
+    {
+        if (property.CustomProperties.Exists(p => p.Name == "Integrable" && p.Value == "true"))
+        {
+            isIntegrated = true;
+            resultPropertyValue = "Id";
+            resultPropertyText = "Title";
+        }
+        // es user a través de un proxy
+        if ((property.CustomProperties.Exists(p => p.Name == "GlobalData" && p.Value == "CompanyUser") || property.CustomProperties.Exists(p => p.Name == "GlobalData" && p.Value == "GlobalUser")) && property.IsNavigationProperty)
+        {
+
+            queryForGlobals = "&fmode=" + property.CustomProperties.FirstOrDefault(p => p.Name == "GlobalData").Value;
+            resultPropertyText = "UserName";
+            if (string.IsNullOrEmpty(uiModel.AreaAction) && this.ViewContext.RouteData.DataTokens["area"] != null)
+            {
+                uiModel.AreaAction = this.ViewContext.RouteData.DataTokens["area"].ToString();
+            }
+            url = url.Replace(property.PathName, "SFSdotNetFrameworkSecurity/secUsers");//.Replace(uiModel.AreaAction, "SFSdotNetFrameworkSecurity").Replace("agrProxyUsers", "secUsers").Replace("accProxyUsers", "secUsers");
+
+            extraParam = extraParam + queryForGlobals;
+
+        }else
+        {
+            if (extraData != null && !string.IsNullOrEmpty(extraData.ActionMethod))
+            {
+                url = url.Replace(property.PathName, uiModel.ControllerName +  "/" + extraData.ActionMethod);//.Replace(uiModel.AreaAction, "SFSdotNetFrameworkSecurity").Replace("agrProxyUsers", "secUsers").Replace("accProxyUsers", "secUsers");
+                foreach (var extraParameter in extraData.ExtraParameters)
+                {
+                    var propFinded = uiModel.Properties.FirstOrDefault(p=> p.PropertyName == extraParameter);
+                    if (propFinded != null )
+                    {
+                        
+                            sbExtraParams.Append("&");
+                        
+                        if (propFinded.IsNavigationProperty)
+                        {
+                            sbExtraParams.Append("\"Fk" + propFinded.PropertyName + "=\" + $(\"#Fk" + propFinded.PropertyName + "\").val()");
+
+                        }
+                        else
+                        {
+                            sbExtraParams.Append("\"" + propFinded.PropertyName + "=\" + $(\"#" + propFinded.PropertyName + "\")");
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    string minChars = "4";
+    string minCharsMessage = GlobalMessages.WRITE_MIN_CHARS;
+
+    var customPropMinChars = property.CustomProperties.FirstOrDefault(p => p.Name == "MinChars");
+    if (customPropMinChars != null)
+    {
+        minChars = customPropMinChars.Value;
+    }
+    if (!string.IsNullOrEmpty(property.PlaceHolder))
+    {
+        minCharsMessage = property.PlaceHolder;
+    }
+
+    string urlUsers = VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secUsers/GetByKeyJson?id=" + propertyValue + "&dec=true" + extraParam;
+    var customPropUrl = property.CustomProperties.FirstOrDefault(p => p.Name == "url");
+    if (customPropUrl != null)
+    {
+        urlUsers = customPropUrl.Value;
+        url = urlUsers;
+
+    }else
+    {
+        url = url + "|";
+    }
+
+    string idForm = uiModel.Id;
+    if (ViewData["idWindow"] != null)
+    {
+        idForm = (string)ViewData["idWindow"];
+    }
+}
+
+@{ 
+
+    if (property.SystemProperty == SystemProperties.GlobalUser || property.SystemProperty == SystemProperties.CompanyUser )
+    {
+        <text>
+        <style>
+        .select2-container .select2-choice {
+            height: auto;
+            min-height:30px;
+        }
+        </style>
+        </text>
+    }
+}
+
+    <script>
+        if ($.validator != undefined && $.validator.setDefaults != undefined){
+            $.validator.setDefaults({ ignore: [] });
+        }
+    </script>
+    <input type="hidden" @Html.Raw(requiredAttributes) name="@(propertyName )" value="@(propertyValue)" id="@(propertyName)" datatypevalue="@(dataTypeValue )" class="autocomplete  @(classExtra)" propertykeyname="@(resultPropertyValue)" filtrablepathname="@(filtrablePropertyPathName )" />
+@if (uiModel.UIVersion == 2)
+{
+        <input type="text" tabindex="@(property.Order != null ? property.Order.ToString() : "")" name="@(propertyName)Text" value="@( displayText )" id="@(propertyName )Text" class="autocomplete noquery  form-control  field text @( classExtra  )" />
+}
+else
+{
+    <input type="text" tabindex="@(property.Order != null ? property.Order.ToString() : "")" name="@(propertyName)Text" value="@( displayText )" id="@(propertyName )Text" class="autocomplete noquery  form-control  field text @( classExtra  )" />
+}
+
+    <script type="text/javascript">
+        function FormatSelection(item) {
+            return item.FullName;
+        }
+        $(document).ready(function () {
+            @if (property.SystemProperty != SystemProperties.GlobalUser || property.SystemProperty == SystemProperties.CompanyUser)
+        {
+        <text>
+            $('#@(idForm)  #@(propertyName)Text').change(function () {
+                //alert($(this).val())
+                $("#@(idForm)  #@(propertyName)").val($(this).val());
+            });
+            </text>
+        }
+            if (jQuery().select2 == undefined) {
+                @if (uiModel.UIVersion == 2)
+{
+    <text>
+                // loadCSS("@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/select2/select2.css"))");
+                //loadCSS("@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/select2/select2-bootstrap.css"))");
+
+                </text>
+
+}
+else
+{
+    <text>
+                //  loadCSS("@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/select2/select2.css"))");
+                // loadCSS("@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/select2/select2-bootstrap.css"))");
+
+                </text>
+}
+
+                $.ajax({
+                    url: "@(SFSdotNet.Framework.Web.Urls.Tag("~/Scripts/select2/select2.min.js"))",
+                    dataType: "script",
+                    async: false
+                });
+            }
+            var @( propertyName )_text_search = "";
+            var @( propertyName )_text_finded = false;
+            $('#@(idForm) #@( propertyName )Text').select2({
+                closeOnSelect: true,
+                @if (uiModel.UIVersion == 2)
+                {
+                    <text>
+                theme: "bootstrap",
+                </text>
+                }
+                width: 'resolve',
+                dropdownAutoWidth : true,
+                @if (removePlaceHolder == false) {
+                <text>
+                placeholder: "@(string.Format(minCharsMessage, minChars))",
+                </text>
+                }else if (!string.IsNullOrEmpty(placeHolderText)) {
+                    <text>
+                placeholder: "@Html.Raw(placeHolderText)",
+                </text>
+                }else
+                {
+                                <text>
+                placeholder: " ",
+                </text>
+
+                }
+                minimumInputLength: @(minChars),
+                formatInputTooShort:function (input, min) {
+                    return "";
+                    // return "Please enter " + (min - input.length) + " more characters";
+                },
+                @if (property.SystemProperty == SystemProperties.GlobalUser || property.SystemProperty == SystemProperties.CompanyUser )
+{
+    if (propertyValue != null ) {
+        <text>
+                initSelection : function (element, callback) {
+                    var url = "@Html.Raw(urlUsers)";
+                    $.ajax({
+                        cache: false,
+                        url: url,
+                        dataType: 'json',
+                        data: null,
+                        success: function (data) {
+                            var data= { idFile: data.GuidSecFile, id: data.@(resultPropertyValue ),  img: data.UrlImage, email: data.Email , img:"@(SFSdotNet.Framework.Web.Urls.Tag("~/Content/images/no_image.jpg"))", text: data.@( resultPropertyText ), textHtml: data.@( resultPropertyText ) };
+                            callback(data);
+
+                        }
+                });
+            //var data = [];
+            //$(element.val().split(",")).each(function () {
+            var data= {id: "@(propertyValue)", email:"", img:"@(SFSdotNet.Framework.Web.Urls.Tag("~/Content/images/no_image.jpg"))", text: "@(GlobalMessages.PROCESSING_PLEASE_WAIT)...", textHtml: "@(GlobalMessages.PROCESSING_PLEASE_WAIT)..."};
+            //});
+            callback(data);
+        },
+                </text>
+    }
+}else{
+    if (propertyValue != null ) {
+    <text>
+            initSelection : function (element, callback) {
+                @if (!isIntegrated ) {
+           <text>
+                var data= {id: "@(propertyValue)", text: "@Html.Raw(displayText)"};
+                callback(data);
+                </text>
+         }else{
+            <text>
+                var data= {id: "@(propertyValue)", text: "@Html.Raw(displayText)"};
+                callback(data);
+                </text>
+         }
+            },
+        </text>
+  }
+
+
+  }
+
+        allowClear: true,
+        @if ((property.SystemProperty == SystemProperties.GlobalUser || property.SystemProperty == SystemProperties.CompanyUser) && allowUnregisteredUsers == true)
+{
+    <text>
+            createSearchChoice: function(term) {
+                if (@( propertyName )_text_finded == false){
+                    var xtranew = "";
+                    //if (item.id == "00000000-0000-0000-0000-000000000000"){
+                    xtranew = "<span class='label label-warning'>@(GlobalMessages.NEW)</span><br/>(@(GlobalMessages.MUST_BE_AN_EMAIL))";
+                    //}
+                    return {
+                        id: "00000000-0000-0000-0000-000000000000|" + term,
+                        text: term,
+                        idFile: "00000000-0000-0000-0000-000000000000",
+                        img: "@(SFSdotNet.Framework.Web.Urls.Tag("~/Content/images/no_image.jpg"))",
+                        email: "",
+                        textHtml : term + " " + xtranew
+                    };
+                }
+            },
+        </text>
+}
+        //tags: true,
+        ajax: {
+            @if (!string.IsNullOrEmpty(urlUsers))
+                    {
+                        <text>
+            url: "@Html.Raw( url )" + "@Html.Raw(extraParam)" + @Html.Raw(sbExtraParams.ToString()),
+
+            </text>
+                    }else
+                    {
+                        <text>
+            url: "@Html.Raw( url )"  + "@Html.Raw(extraParam)" + @Html.Raw(sbExtraParams.ToString()),
+
+            </text>
+                    }
+
+                cache:false,
+                dataType: 'json',
+                data: function (term, page) {
+                    @( propertyName )_text_search = term;
+                    return {
+                        q: term
+                    };
+                },
+            //formatSelection :FormatSelection,
+
+                results:
+                function (data, page) {
+                    if (data.length == 0){
+                        @( propertyName )_text_finded = false;
+                    }
+                    return {
+                        @if (!string.IsNullOrEmpty(resultPropertyText) && !string.IsNullOrEmpty(resultPropertyValue))
+{
+<text>
+                        results: $.map(data, function (item) {
+                            if (@( propertyName )_text_search == item.Email){
+                                @( propertyName )_text_finded = true;
+                            }else{
+                                @( propertyName )_text_finded = false;
+                            }
+                            return {
+                                isInvited: item.IsInvited,
+                                id: item.@( resultPropertyValue ),
+                                @if (!isIntegrated) {
+                               <text>
+                                text: item.@(resultPropertyText )
+                                </text>
+                            }else{
+                             <text>
+                                    text: getHtmlAutocompleteIntegrations(item) + "<strong>" + item.@(resultPropertyText) + "</strong>"
+                                </text>
+                            }
+                                @if (property.SystemProperty == SystemProperties.GlobalUser || property.SystemProperty == SystemProperties.CompanyUser)
+                            {
+                            <text>
+                                ,
+                                img: item.UrlImage,
+                            email: item.Email,
+                            idFile: item.GuidSecFile,
+                            textHtml:  item.@(resultPropertyText )
+                            </text>
+                          }
+
+                        };
+                })
+            //results: data
+            </text>
+}
+                        };
+        }
+        },
+        formatSelection: function(term) {
+            @if (property.SystemProperty == SystemProperties.GlobalUser || property.SystemProperty == SystemProperties.CompanyUser)
+{
+            <text>
+            return "<div class='select2-user-result'><table><tr><td><img width='40' email='" + term.email + "'   idFile='" + term.idFile + "' height='40' style='width:40px;height:40px' src='" + term.img + "' /></td><td><strong>" + term.textHtml + "</strong><br /> " + term.email + "</td></tr></table></div>";
+            </text>
+}else{
+            <text>
+            return term.text;
+            </text>
+}
+        },
+        formatResult: function(term) {
+            @if (property.SystemProperty == SystemProperties.GlobalUser || property.SystemProperty == SystemProperties.CompanyUser)
+{
+ <text>
+            var isinvitedHtml ="";
+            if (term.isInvited == true){
+                isinvitedHtml =  "<span class='label'>Ha sido invitado pero no se ha registrado</span>";
+            }
+            return "<div class='select2-user-result'><table><tr><td><img width='40' height='40' idFile='" + term.idFile + "' style='width:40px;height:40px'  src='" + term.img + "' /></td><td><strong>" + term.textHtml + "</strong><br /> " + term.email +  isinvitedHtml + "</td></tr></table></div>";
+            </text>
+}else{
+    <text>
+            return "<div class='select2-user-result'>" + term.text + "</div>";
+            </text>
+}
+
+
+        }
+        @if (property.SystemProperty == SystemProperties.GlobalUser || property.SystemProperty == SystemProperties.CompanyUser)
+{
+    <text>
+        }).on("change", function(e){
+            //if (e.removed != null){
+            var data = $("#@(idForm) #" + $(e.currentTarget).attr("id")).select2("data");
+            if (data == null ){
+                $(e.currentTarget).parents("@(controlsGroupClassSelect)").find("#@(idForm) #@( propertyName )").attr("value", "");
+                $(e.currentTarget).parents("@(controlsGroupClassSelect)").find("#@(idForm) #@( propertyName )Text").attr("value", "");
+                $("#@(idForm) #@( propertyName )").trigger("change");
+            }else{
+                // setTimeout(function () {
+                if (data.id.contains("|")){
+                    data.id = data.id.split("|")[0];
+                }
+                $(e.currentTarget).parents("@(controlsGroupClassSelect)").find("#@( propertyName )").attr("value", data.id);
+
+                // }, 1000);
+                // setTimeout(function () {
+
+                $(e.currentTarget).parents("@(controlsGroupClassSelect)").find("#@( propertyName )Text").attr("value", data.text);
+
+                //}, 1000);
+                $("#@(idForm) #@( propertyName )").trigger("change");
+            }
+            //}
+
+        });
+
+        </text>
+} else{
+    <text>
+        }).on("change", function(e){
+            var data = $("#@(idForm) #" + $(e.currentTarget).attr("id")).select2("data");
+            if (data == null ){
+                $(e.currentTarget).parents("@(controlsGroupClassSelect)").find("#@( propertyName )").attr("value", "");
+                $(e.currentTarget).parents("@(controlsGroupClassSelect)").find("#@( propertyName )Text").attr("value", "");
+
+            }else{
+                // setTimeout(function () {
+
+                $(e.currentTarget).parents("@(controlsGroupClassSelect)").find("#@( propertyName )").attr("value", data.id);
+
+            }
+            $("#@(idForm) #@( propertyName )").trigger("change");
+        });
+        </text>
+}
+
+        });
+
+</script>

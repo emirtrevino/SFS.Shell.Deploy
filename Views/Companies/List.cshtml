@@ -1,0 +1,76 @@
+﻿@{
+    List<SFSdotNet.Framework.Security.BusinessObjects.secCompany> companies = (List<SFSdotNet.Framework.Security.BusinessObjects.secCompany>)ViewData["companies"];
+    int currentPage = 1;
+    if (!string.IsNullOrEmpty(Request.QueryString["page"])){
+        currentPage = int.Parse(Request.QueryString["page"]);
+    }
+}
+
+
+<div class="row-fluid">
+    <div class="page-header">
+        <h1>Organizaciones y empresas en la plataforma</h1>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12 text-right">
+        @if (currentPage > 1)
+        {
+
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Companies?"))&q=@(Request.QueryString["q"])&page=@(currentPage - 1)">< Anterior </a>
+        }
+         | 
+        @if (ViewBag.MorePages == true)
+        {
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Companies?"))&q=@(Request.QueryString["q"])&page=@(currentPage + 1)">Siguiente ></a>
+
+        }
+       
+    </div>
+</div>
+@foreach (var company in companies)
+{
+    if (!company.ExistImage)
+    {
+        company.GuidFileLogo = Guid.Empty;
+    }
+    string urlLogo =  SFSdotNet.Framework.ImageUtils.GetImageUrl("secFiles", "SFSdotNet.Framework.Security", "GuidFile", "FileData", "FileType", "FileSize", company.GuidFileLogo.ToString(), "secFiles.secFileModel", 120, 120);
+
+
+   
+    <div class="row-fluid">
+        <div class="span2">
+            <img src="@(urlLogo)" />
+        </div>
+        <div class="span10">
+            <h2><a href="@(VirtualPathUtility.ToAbsolute("~/"))Companies/Id/@(company.GuidCompany)"> @(company.Name) </a></h2>
+            <p>
+                Usuarios: @(company.QtyUsers)
+            </p>
+        </div>
+    </div>
+    
+}
+
+
+<div class="row-fluid">
+    <div class="span12 text-right">
+        @if (currentPage > 1)
+        {
+
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Companies?"))&q=@(Request.QueryString["q"])&page=@(currentPage - 1)">< Anterior </a>
+        }
+        |
+        @if (ViewBag.MorePages == true)
+        {
+            <a href="@(VirtualPathUtility.ToAbsolute("~/Companies?"))&q=@(Request.QueryString["q"])&page=@(currentPage + 1)">Siguiente ></a>
+
+        }
+
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12 space-contents" style=""></div>
+</div>
+

@@ -1,0 +1,142 @@
+﻿@{  
+    object ModelValue = null;
+
+    if (ViewData.TemplateInfo.FormattedModelValue == ViewData.ModelMetadata.Model) {
+        ModelValue= String.Format(System.Globalization.CultureInfo.InvariantCulture,
+                             "{0:0.00}", ViewData.ModelMetadata.Model);
+    }
+    else {
+
+        ModelValue = ViewData.TemplateInfo.FormattedModelValue;
+    }
+
+    string classExtra = "";
+    if (ViewData["class"] != null){
+        classExtra = ViewData["class"].ToString();
+    }
+    string sffAttr = "";
+    if (ViewData["sff"] != null){
+        sffAttr = ViewData["sff"].ToString();
+    }
+    PropertyDefinition property = null;
+    var uiModel = (UIModel)ViewData["uiModel"];
+    string classSize = "small ";
+
+    var idPrevFullWindow = uiModel.Id;
+
+    if (ViewData["currentProperty"] != null)
+    {
+        property = (PropertyDefinition)ViewData["currentProperty"];
+        if (property.HorizontalSize != null)
+        {
+            classSize = "span12 ";
+        }
+    }
+
+    if (property.IsDynamic == true)
+    {
+        ModelValue = property.Value;
+    }
+    string propertyname = ViewData.ModelMetadata.PropertyName;
+    if (string.IsNullOrEmpty(propertyname))
+    {
+        if (property != null)
+        {
+
+            propertyname = property.PropertyName;
+        }
+        else
+        {
+            propertyname = ViewData["id"].ToString();
+
+        }
+    }
+
+    string rangeValidationAtts = "";
+    if (property != null)
+    {
+        var fromAmountProp = property.CustomProperties.FirstOrDefault(p => p.Name == "from-amount");
+        var toAmountProp = property.CustomProperties.FirstOrDefault(p => p.Name == "to-amount");
+        if (fromAmountProp != null && toAmountProp != null )
+        {
+            rangeValidationAtts = "data-val-range-min=\"" + fromAmountProp.Value.ToString() + "\" data-val-range-max=\"" + toAmountProp.Value.ToString() + "\" data-val-range=\"" + string.Format("El valor debe ser entre {0} y {1}", fromAmountProp.Value, toAmountProp.Value) + "\" ";
+        }
+    }
+    string idField = property.PropertyName;
+    if (property.ContextType == UIModelContextTypes.FilterFields)
+    {
+        idField = idField + "-" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
+    }
+    string controlInputClass = "";
+
+    string value = "";
+    if (ModelValue != null)
+    {
+        value = ModelValue.ToString();
+
+    }
+    if (property.IsDynamic == true && property.Value != null )
+    {
+        value = property.Value.ToString();
+    }
+    if (uiModel.UIVersion == 2)
+    {
+        if (uiModel.ContextType == UIModelContextTypes.FilterFields)
+        {
+            controlInputClass = "form-control input-sm";
+
+        }
+        else
+        {
+            controlInputClass = "form-control";
+
+        }
+    }
+    if (ViewData["uiMask"] == null)
+    {
+        if (property != null && property.IsRequired == true ) {
+            <text>
+            <input @Html.Raw(rangeValidationAtts) typeData="decimal" tabindex="@(property.Order != null ? property.Order.ToString() : "")" name="@(property.PropertyName )" id="@(property.PropertyName )" class="field   text  @(classSize)  @(classExtra) @(controlInputClass)" type="text" data-val="true" data-val-required="@(string.Format(SFSdotNet.Framework.Web.Mvc.Resources.GlobalMessages.THE_FIELD_IS_REQUIRED, property.PropertyDisplayName ) )" value="@(value )" />
+            </text>
+        }
+        else if (property != null && !string.IsNullOrEmpty(rangeValidationAtts))
+        {
+            <input @Html.Raw(rangeValidationAtts) typeData="decimal" tabindex="@(property.Order != null ? property.Order.ToString() : "")" name="@(property.PropertyName )" id="@(property.PropertyName )" class="field  text  @(classSize)  @(classExtra) @(controlInputClass)" type="text" data-val="true" value="@(value )" />
+
+        }
+        else
+        {
+            @Html.TextBox("", value, new { tabIndex = property.Order, sff = sffAttr, @class = "field text " + classSize + classExtra + controlInputClass, style = "" })
+        }
+    } else { 
+        <text>
+    <input typeData="decimal" name='@(idField )' @(sffAttr) id='@(idField)' type='hidden' value='' />
+    <input  typeData="decimal" tabindex='@(property.Order != null ? property.Order.ToString() : "")'  name='mask@(idField)' @(sffAttr) id='mask@(idField)' type='text' class=' k-input k-textbox field text @(classSize) @(classExtra) ' style=' ' value=' @(value) ' />
+
+        </text>
+    }
+
+    //Html.ValidationMessageFor(model =>model );
+
+}
+    <script>
+@if (ViewData["uiMask"] == null)
+{ 
+    <text>
+        $(document).ready(function () {
+           
+            $("#dc@( idField  ) #@( idField  )").numeric();
+
+           
+        });
+
+    </text>
+}else{ 
+   <text>
+    $("#mask@( idField  )").mask('@(ViewData["uiMask"] )');
+    $("#mask@(idField  )").change(function () {
+            $("#@(idField  )").val($(this).mask());
+    });
+</text>
+} 
+    </script>

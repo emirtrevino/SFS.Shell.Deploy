@@ -1,0 +1,26 @@
+﻿
+@{
+    string overrideAppend = "";
+    string overrideModule = Request.QueryString["overrideModule"];
+    if (!string.IsNullOrEmpty(overrideModule))
+    {
+        overrideAppend = "&overrideModule=" + overrideModule;
+    }
+    else
+    {
+        if (this.ViewContext.RouteData.DataTokens["area"] != null)
+        {
+            if (this.ViewContext.RouteData.DataTokens["area"].ToString() != "SFSdotNetFrameworkSecurity")
+            {
+                overrideAppend = "&overrideModule=" + this.ViewContext.RouteData.DataTokens["area"].ToString();
+            }
+        }
+    }
+        
+    
+    }
+    <li id="sfs-top-messages" >
+        <a href="@VirtualPathUtility.ToAbsolute("~/")Go/MyMessages?usemode=myall@(overrideAppend)" class=""><i class="icon-envelope icon-white"></i><span class="badge badge-important" id="unreadedmessages"></span></a>
+    </li>
+
+
