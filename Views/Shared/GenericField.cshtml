@@ -599,9 +599,11 @@ else
                                 $("#@(_safename)").change(function() {
                                     $("#@(property.PropertyName)").val($(this).val());
 
+
                             });
                             if ("@(propValue)".length > 0) {
-                                        $("#@(_safename)").val("@(propValue)");
+                                $("#@(_safename)").val("@(propValue)");
+                                $("#@(_safename)").change();
                             }
                                 </script>
                             </text>

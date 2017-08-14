@@ -1,0 +1,486 @@
+﻿@{
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+    bool viewEdit =false;
+    bool canEdit = false;
+    bool showItem = true;
+    if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.User != null ){
+        canEdit = (new SFSdotNet.Framework.Security.Permissions()).IsAllowed(SFSdotNet.Framework.My.Context.CurrentContext.User, "SFSdotNetFrameworkSecurity", "secContent", "u");
+
+    }
+    if (Request.QueryString["viewEdit"] == "true" && canEdit){
+        viewEdit = true;
+    }
+}
+
+@{
+    SFSdotNet.Framework.Security.BusinessObjects.secModule module = (SFSdotNet.Framework.Security.BusinessObjects.secModule)ViewData["module"];
+    var contents = (List<SFSdotNet.Framework.Web.Mvc.Models.ContentBaseModel>)ViewBag.Contents;
+    string createoredit = GlobalMessages.MODIFY_CONTENT;
+    string actionCreateOrEdit = "Edit";
+    string extraparams = "";
+}
+@section Title{
+	@Model.Title 
+}
+
+<div class="visual-page">
+  <!--Section 1-->  
+    <div class="container">
+    <div id="myCarousel" class="carousel slide" >
+                      <ol class="carousel-indicators">
+
+@{
+
+    int index = "<strong>{TEXT}</strong>";
+    <text>
+                        <li data-target="#myCarousel@(content.Order)" data-slide-to="@(index - 1)" class="@(index < 2? "active":"")"></li>
+    </text>       
+        index++;
+    }
+}
+                      </ol>
+                      <!-- Carousel items -->
+
+                      <div class="carousel-inner">
+@{
+     index = 1;
+     foreach (var content in contents.OrderBy(p => p.Order).Take(4))
+     {
+         
+        if (content.GuidContent != Guid.Empty ){
+            createoredit = GlobalMessages.MODIFY_CONTENT;
+            extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+            actionCreateOrEdit = "Edit";
+            showItem = true;
+        }else{
+            actionCreateOrEdit = "Create";
+            extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+            createoredit = GlobalMessages.CREATE_CONTENT;
+            showItem = false;
+        }    
+    <text>
+@if (showItem || viewEdit ){
+                        <div class="@(index < 2? "active":"") item">
+                        
+                        <div class="image-div span6"><img src="@(content.ImageUrl)" /></div>
+                        <div class="caption-r span6">
+                       <h1>@content.Title</h1>
+                        <p>@content.Description </p>
+                        <p>&nbsp;</p>
+@{
+    if (viewEdit){      
+            <div class="text-center"><a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content.GuidContent)&@Html.Raw(extraparams)@(index)&ReturnAfter=@(Request.Url.ToString())"> <i class="icon-pencil "></i> @createoredit </a></div>
+   
+     }
+ }
+                             <p>&nbsp;</p>
+@if (content.GuidContent != Guid.Empty ){
+                        <p class="text-center">
+                             <a class="btn btn-primary btn-large " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content.Slug)_@(content.IdContent)">@(GlobalMessages.VIEW_MORE)...</a>
+                        </p>
+}
+                        </div>
+                          
+                        </div>
+}
+  </text>       
+        index++;
+    }
+}
+          
+                      </div>
+                      <!-- Carousel nav -->
+                      <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                      <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    
+
+
+
+    </div>
+</div>
+     <div class="row-fluid">
+        <div class="span12 ">
+
+
+        </div>
+    </div>
+<script>
+    @{
+        Random random = contents.FirstOrDefault(p=> p.TitleKey == "landing-crememeetings");
+     }
+    $(document).ready(function () {
+        
+        $("#myCarousel").carousel({
+            interval: 6000
+        });
+        $("#myCarousel").carousel(@(Html.Raw(htmlContent)));
+        
+    });
+</script>
+        <div class="container">
+
+<div class="row-fluid bigbuttons">
+    <div class="span3 text-center faq">
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=faq" class="faq">FAQs</a>
+    </div>
+    <div class="span3 text-center feature">
+        <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=feature" class="feature"> Funciones</a>
+    </div>
+    <div class="span3 text-center advantages">
+      <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=advantage" class="advantages" > Ventajas</a>
+    </div>
+    <div class="span3 text-center goapp">
+       <a href="@(VirtualPathUtility.ToAbsolute("~/"))@(module.ModuleKey)" class=" ">  Usar app &#10140;</a>
+    </div>
+</div>
+</div>
+     <div class="row-fluid">
+        <div class="span12 ">
+
+
+        </div>
+    </div>
+  <!--Section 2, content 5-->  
+@{
+    var content5 = contents.OrderBy(p => p.Order).Skip(4).Take(1).FirstOrDefault();
+    if (content5.GuidContent != Guid.Empty)
+    {
+        createoredit = GlobalMessages.MODIFY_CONTENT;
+        actionCreateOrEdit = "Edit";
+        showItem = true;
+        extraparams = "ReturnAfter=" +  HttpUtility.UrlEncode(Request.Url.ToString())  + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+
+    }
+
+
+}    
+@if (showItem || viewEdit)
+    <div class="grey-light-min">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="visual-content-section grey-light-min text-center">
+                        <h1>@content5.Title</h1>
+                        <img src="@content5.ImageUrl" />
+                        <div class="description">
+                            @content5.Description
+                        </div>
+                        @{
+    if (viewEdit)
+    {
+        <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content5.GuidContent)&@Html.Raw(extraparams)5"> <i class="icon-pencil "></i> @createoredit </a>
+
+    }
+                        }
+                        @if (content5.GuidContent != Guid.Empty)
+                        {
+
+                            <p>
+                                <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content5.Slug)_@(content5.IdContent)">@(GlobalMessages.VIEW_MORE)... </a>
+                            </p>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+     <div class="row-fluid">
+        <div class="span12 space-contents">
+
+             <hr class="fancy-line spaceline"></hr>
+        </div>
+    </div>
+}
+<!--Section 3-->  
+@{
+    var content6 = contents.OrderBy(p => p.Order).Skip(5).Take(1).FirstOrDefault();
+    if (content6.GuidContent != Guid.Empty)
+    {
+        createoredit = GlobalMessages.MODIFY_CONTENT;
+        actionCreateOrEdit = "Edit";
+        showItem = true;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+    }
+    else
+    {
+        showItem = false;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+        actionCreateOrEdit = "Create";
+        createoredit = GlobalMessages.CREATE_CONTENT;
+        content6.Title = GlobalMessages.NOT_DEFINED;
+        content6.Description = GlobalMessages.NOT_DEFINED;
+    }      
+}    
+ @if (showItem || viewEdit ){ 
+     <div class="container">
+<div class="row-fluid">
+   
+       <div class="visual-content-section span12">
+       <div class="span6 text-center ">
+       
+        <img src="@content6.ImageUrl" />
+        </div>
+       <div class="span6 ">
+        
+        <div class="text" style="">
+           <h1>@content6.Title</h1>
+
+            <div class="description">
+                @content6.Description
+            </div>            
+        </div>
+@{
+    if (viewEdit){  
+        <p>    
+            <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content6.GuidContent)&@Html.Raw(extraparams)6"> <i class="icon-pencil "></i> @(createoredit) </a>
+        </p>
+     }
+ }
+@if (content6.GuidContent != Guid.Empty ){
+
+        <p class="text-right">
+             <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content6.Slug)_@(content6.IdContent)">@(GlobalMessages.VIEW_MORE)...</a>
+        </p>
+}    
+        </div>   
+   
+   </div>
+</div>
+         </div>
+         <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line spaceline"></hr>
+
+        </div>
+    </div>
+
+ }
+    
+
+  <!--Section 4-->  
+@{
+    var content7 = contents.OrderBy(p => p.Order).Skip(6).Take(1).FirstOrDefault();
+    if (content7.GuidContent != Guid.Empty)
+    {
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+        createoredit = GlobalMessages.MODIFY_CONTENT;
+        actionCreateOrEdit = "Edit";
+        showItem = true;
+    }
+    else
+    {
+        showItem = false;
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+        actionCreateOrEdit = "Create";
+        createoredit = GlobalMessages.CREATE_CONTENT;
+        content7.Title = GlobalMessages.NOT_DEFINED;
+        content7.Description = GlobalMessages.NOT_DEFINED;
+    }      
+}  
+@if (showItem || viewEdit ){
+    <div class="container">
+<div class="row-fluid">
+   
+       <div class="visual-content-section span12">
+     
+       <div class="span6 ">
+        
+        <div class="text" style="">
+           <h1>@content7.Title</h1>
+             <div class="description">
+           @content7.Description
+       </div>
+@{
+    if (viewEdit){  
+        <p>    
+            <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content7.GuidContent)&@Html.Raw(extraparams)7"> <i class="icon-pencil "></i> @(createoredit) </a>
+        </p>
+     }
+ }
+        </div>
+@if (content7.GuidContent != Guid.Empty ){
+
+        <p class="text-right">
+             <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content7.Slug)_@(content7.IdContent)">@(GlobalMessages.VIEW_MORE)...</a>
+        </p>
+}    
+        </div>   
+     <div class="span6 text-center ">
+       
+        <img src="@content7.ImageUrl" />
+        </div>
+   </div>
+</div>
+        </div>
+    <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line spaceline"></hr>
+
+        </div>
+    </div>
+}
+    
+<!--Section 5-->  
+@{
+    var content8 = contents.OrderBy(p => p.Order).Skip(7).Take(1).FirstOrDefault();
+    if (content8.GuidContent != Guid.Empty)
+    {
+        showItem = true;
+        actionCreateOrEdit = "Edit";
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+        createoredit = GlobalMessages.MODIFY_CONTENT;
+    }
+    else
+    {
+        showItem = false;
+        actionCreateOrEdit = "Create";
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+        createoredit = GlobalMessages.CREATE_CONTENT;
+        content8.Title = GlobalMessages.NOT_DEFINED;
+        content8.Description = GlobalMessages.NOT_DEFINED;
+    }      
+}    
+ 
+@if (showItem || viewEdit ){ 
+    <div class="container">
+<div class="row-fluid">
+   
+       <div class="visual-content-section span12">
+       <div class="span6 text-center ">
+       
+        <img src="@content8.ImageUrl" />
+        </div>
+       <div class="span6 ">
+        
+        <div class="text" style="">
+           <h1>@content8.Title</h1>
+
+            <div class="description">
+                @content8.Description
+            </div>            
+        </div>
+@{
+    if (viewEdit){  
+        <p>    
+            <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content8.GuidContent)&@Html.Raw(extraparams)8"> <i class="icon-pencil "></i>@createoredit </a>
+        </p>
+     }
+ }
+@if (content8.GuidContent != Guid.Empty ){
+
+        <p class="text-right">
+             <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content8.Slug)_@(content8.IdContent)">@(GlobalMessages.VIEW_MORE)... </a>
+        </p>
+}   
+        </div>   
+   
+   </div>
+</div>
+    </div>
+        <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line spaceline"></hr>
+
+        </div>
+    </div>
+
+}
+
+    
+
+  <!--Section 4-->  
+@{
+    var content9 = contents.OrderBy(p => p.Order).Skip(8).Take(1).FirstOrDefault();
+    if (content9.GuidContent != Guid.Empty)
+    {
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+        createoredit = GlobalMessages.MODIFY_CONTENT;
+        actionCreateOrEdit = "Edit";
+        showItem = true;
+    }
+    else
+    {
+        showItem = false;
+        actionCreateOrEdit = "Create";
+        extraparams = "ReturnAfter=" + HttpUtility.UrlEncode(Request.Url.ToString()) + "&contentType=home&moduleKey=" + module.ModuleKey + "&index=";
+        createoredit = GlobalMessages.CREATE_CONTENT;
+        content9.Title = GlobalMessages.NOT_DEFINED;
+        content9.Description = GlobalMessages.NOT_DEFINED;
+    }      
+}  
+@if (showItem || viewEdit ){ 
+    <div class="container">
+<div class="row-fluid">
+   
+       <div class="visual-content-section span12">
+     
+       <div class="span6 ">
+        
+        <div class="text" style="">
+           <h1>@content9.Title</h1>
+             <div class="description">
+           @content9.Description
+       </div>
+@{
+    if (viewEdit){  
+        <p>    
+            <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/@(actionCreateOrEdit)/?id=@(content9.GuidContent)&@Html.Raw(extraparams)9"> <i class="icon-pencil "></i> @createoredit </a>
+        </p>
+     }
+ }
+        </div>
+        <p class="text-right">
+@if (content9.GuidContent != Guid.Empty ){
+             <a class="btn btn-primary " href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/Id/@(content9.Slug)_@(content9.IdContent)">@(GlobalMessages.VIEW_MORE)... </a>
+}        
+        </p>
+        </div>   
+     <div class="span6 text-center ">
+       
+        <img src="@content9.ImageUrl" />
+        </div>
+   </div>
+
+
+
+
+
+    </div>
+    </div>
+        <div class="row-fluid">
+        <div class="span12 space-contents">
+            <hr class="fancy-line"></hr>
+
+        </div>
+    </div>
+
+}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="visual-content-section text-center">
+            <a href="@(VirtualPathUtility.ToAbsolute("~/"))Contents/App/@(module.ModuleKey)?type=feature" class="btn btn-primary">@(GlobalMessages.VIEW_MORE_FEATURES)...</a>
+                </div>
+        </div>
+        <div class="span6">
+            <div class="visual-content-section goapp text-center">
+               
+            <a href="@(VirtualPathUtility.ToAbsolute("~/"))@(module.ModuleKey)" class="">@(GlobalMessages.USE_APPLICATION) &#10140;</a>
+
+                </div>
+        </div>
+    </div>
+@if (canEdit ){
+    <div class="row-fluid">
+        <div class="span12 text-center">
+@if (Request.QueryString["viewEdit"] == "true") { 
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Home/App/@(module.ModuleKey)"> <i class="icon-pencil "></i> Salir de modo edición </a>
+
+}else{
+                <a class="" href="@(VirtualPathUtility.ToAbsolute("~/"))Home/App/@(module.ModuleKey)?viewEdit=true"> <i class="icon-pencil "></i> Ver modo edición</a>
+
+}
+            </div>
+        </div>
+}    
+ </div>   

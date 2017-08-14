@@ -462,6 +462,9 @@ td.select.hover, tr.sover td.select{
     if (!string.IsNullOrEmpty(ui.BodyClasses))
     {
         bodyClasses = ui.BodyClasses;
+    }else
+    {
+        bodyClasses = "sidebar-mini";
     }
 
     object collapsedClass = SFSdotNet.Framework.Cache.UserSession.Get(System.Web.HttpContext.Current, "collapsed-menu");
