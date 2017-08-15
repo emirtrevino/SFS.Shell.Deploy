@@ -405,7 +405,7 @@ if (SFSdotNet.Framework.My.Context.CurrentContext.Language == "es"){
         if (uiModel.UIHeaderInclude)
         {
             var area = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "area");
-            if (!string.IsNullOrEmpty(area))
+            if (!string.IsNullOrEmpty(area) && uiModel.HeaderPartialView  != null && !uiModel.HeaderPartialView.StartsWith("~/Areas"))
             {
                 @Html.Partial("~/Areas/" + area + "/Views/" + uiModel.ControllerName + "/" + uiModel.HeaderPartialView + ".cshtml");
 
