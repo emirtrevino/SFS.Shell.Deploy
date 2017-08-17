@@ -499,6 +499,8 @@ else
 
                         }
 
+                        <div>aaa</div>
+
                     }
                     else {
 
@@ -807,8 +809,13 @@ else {
     @Html.Raw("</div>");
     if (property.ContextType == UIModelContextTypes.EditForm || uiModel.ContextType == UIModelContextTypes.FilterFields)
     {
+        string comments = property.UIText.ShortDescription;
+        if (!string.IsNullOrEmpty(property.Comments))
+        {
+            comments = property.Comments;
+        }
         <div class="errorMessage">@Html.ValidationMessage(_safename)</div>
-
+        <div class="field-comments">@Html.Raw(comments)</div>
     }
     @Html.Raw("</div>");
     @*<div class="errorMessage">@Html.ValidationMessage(_safename)</div>*@

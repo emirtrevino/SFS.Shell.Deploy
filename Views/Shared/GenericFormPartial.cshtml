@@ -230,7 +230,7 @@
                             <div class="modal-body form @(uiModel.IsMultiColumn == false ? (classNoMulticolumn + " " + (uiModel.UIVersion == 2 ? "" : classRow)) : classMulticolumn  ) ">
                                 @if (!string.IsNullOrEmpty(uiModel.Comments))
                                 {
-                                    <p>@Html.Raw(uiModel.Comments)</p>
+                                    <div class="form-comments">@Html.Raw(uiModel.Comments)</div>
                                 }
 
                                 <div id="frmSummaryErrors">

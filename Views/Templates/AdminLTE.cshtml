@@ -94,14 +94,7 @@
 
     <link href="@(ui.UrlStatic("~/Static/v2/bootstrap-modal-bs3patch.css"))" rel="stylesheet" />
     <link href="@(ui.UrlStatic("~/Static/v2/bootstrap-modal.css"))" rel="stylesheet" />
-    @if (ui.UIModel != null)
-    {
-        foreach (var cssFile in ui.UIModel.CssFiles)
-        {
-            <link href="@(ui.UrlStatic(cssFile))" rel="stylesheet" />
-
-        }
-    }
+   
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -206,6 +199,8 @@
       @Html.Raw(ui.CssCustom)
         </style>
     }
+
+   
 
     @RenderSection("CustomScript", false)
 
@@ -448,6 +443,14 @@ td.select.hover, tr.sover td.select{
 
         </text>
 
+    }
+    @if (ui.UIModel != null)
+    {
+        foreach (var cssFile in ui.UIModel.CssFiles)
+        {
+            <link href="@(ui.UrlStatic(cssFile))" rel="stylesheet" />
+
+        }
     }
 
     @if (ViewData["HeaderScript"] != null)
