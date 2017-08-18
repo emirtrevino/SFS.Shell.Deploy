@@ -808,14 +808,21 @@ else {
     @Html.Raw("</div>");
     if (property.ContextType == UIModelContextTypes.EditForm || uiModel.ContextType == UIModelContextTypes.FilterFields)
     {
-        string comments = property.UIText.ShortDescription;
-        if (!string.IsNullOrEmpty(property.Comments))
+        string comments = null;
+        if (property.UIText != null)
         {
-            comments = property.Comments;
+            comments = property.UIText.ShortDescription;
+            if (!string.IsNullOrEmpty(property.Comments))
+            {
+                comments = property.Comments;
+            }
         }
         <div class="errorMessage">@Html.ValidationMessage(_safename)</div>
+        if (comments != null)
+        {
         <div class="field-comments">@Html.Raw(comments)</div>
-    }
+            }
+        }
     @Html.Raw("</div>");
     @*<div class="errorMessage">@Html.ValidationMessage(_safename)</div>*@
 if (uiModel.UIVersion == 2 && uiModel.IsMultiColumn == true)
