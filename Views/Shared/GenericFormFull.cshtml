@@ -166,7 +166,24 @@
         if (uiModel.RemoveTitleSpace == false)
         {
         <div class="row border-bottom white-bg @(classWrap)">
-            <div class="col-lg-10">
+            <div class="col-lg-8 title-container" >
+                <div class="bread-container">
+                    @if (uiModel.NewUILayoutTool == true)
+                    {
+                        if (ViewData["breadcrumb"] != null)
+                        {
+                            @Html.Raw(ViewData["breadcrumb"].ToString())
+                        }
+                        else
+                        {
+                            @Html.MvcSiteMap().SiteMapPath("SiteMapTemplate")
+
+                        }
+                        <script>
+                                    $("#ulbread").attr("class", "breadcrumb");
+                        </script>
+                    }
+                </div>
                 @Html.Raw(titleFormHtml)
                 @if (uiModel.NewUILayoutTool == false)
                 {
@@ -184,22 +201,11 @@
                     </script>
                 }
             </div>
-            
-            @if (uiModel.NewUILayoutTool == true)
-            {
-                if (ViewData["breadcrumb"] != null)
-                {
-                @Html.Raw(ViewData["breadcrumb"].ToString())
-                }
-                else
-                {
-                @Html.MvcSiteMap().SiteMapPath("SiteMapTemplate")
+            <div class="col-lg-4">
 
-                }
-                <script>
-                                    $("#ulbread").attr("class", "breadcrumb");
-                </script>
-            }
+                @Html.Partial("FormButtonsContainer")
+            </div>
+            
 
             @*<div class="col-lg-2">
             </div>*@

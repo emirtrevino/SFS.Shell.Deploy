@@ -591,69 +591,8 @@
 
     }
 
+@Html.Partial("FormButtonsContainer")
 
-
-    if (uiModel.ActionButtons.Count > 0)
-    {
-        //Si existe más de un boton, entonces se podrá mostrar el container de footer
-        // en una pagina custom, eliminarlos significa que se quiere un layout absolutamente limpio de esa zona
-        if (isPopup || uiModel.IsPartialView)
-        {
-            if (isPopup == true)
-            {
-                @Html.Raw("</div>");
-            }
-            else
-            {
-                @Html.Raw("</div>");
-            }
-            @Html.Raw("<div class=\" modal-footer " + (!uiModel.IsMultiColumn ? "form-horizontal" : "") + " buttons control-group\"><!--modal footer container-->");
-
-        }
-        else
-        {
-            @Html.Raw("<div class=\"nomodal-footer " + (!uiModel.IsMultiColumn ? "form-horizontal" : "") + " text-left\"><!--No modal footer container-->");
-
-        }
-
-        if (!uiModel.IsMultiColumn)
-        {
-            @Html.Raw("<div class=\"control-group\">");
-            @Html.Raw("<label class=\"control-label\">&nbsp;</label>");
-            @Html.Raw("<div class=\"controls\">");
-            @Html.Raw("<div class=\"display-field\">");
-        }
-        else
-        {
-            @Html.Raw("<div class=\"text-center\"><!-- con x 1-->");
-        }
-
-        if (Model != null)
-        {
-            ViewData["safeKey"] = Model.SafeKey;
-            ViewData["isNew"] = Model.IsNew;
-
-        }
-        ViewData["idWindow"] = idWindow;
-        @Html.Raw("<!-- start specific buttons -->");
-        Html.RenderPartial("FormButtons", uiModel);
-        @Html.Raw("<!-- end specific buttons -->");
-
-        if (!uiModel.IsMultiColumn)
-        {
-            @Html.Raw("</div><!--uno f-->");
-            @Html.Raw("</div><!--dos f-->");
-
-            @Html.Raw("</div><!--tres f-->");
-            @Html.Raw("</div><!--No modal or modal footer container-->");
-        }
-        else
-        {
-            @Html.Raw("</div><!-- End con x 1-->");
-            @Html.Raw("</div><!--End No modal footer container-->");
-
-        } //Ednd multicolumn
-    }
 
     foreach (var q in extraparams)
     {
