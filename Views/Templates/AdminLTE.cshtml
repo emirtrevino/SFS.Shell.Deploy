@@ -732,7 +732,7 @@ td.select.hover, tr.sover td.select{
                         }
                         <li class="treeview">
                             <a href="#" bo="@(menu.MenuItemKey)"><i class="@(menu.IconClass)"></i> <span>@(menu.Title) </span> <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="treeview-menu">
+                            <ul class="treeview-menu" id="ul@(menu.MenuItemKey)">
                                 @foreach (var submenu in menu.Children)
                                 {
                                     if (submenu.MenuItemKey.Contains("File"))
@@ -744,7 +744,7 @@ td.select.hover, tr.sover td.select{
                                         submenu.IconClass = "fa fa-circle-o";
                                     }
 
-                                    <li><a bo="@(submenu.MenuItemKey)" href="@(submenu.Url)"><i class="@(submenu.IconClass)"></i>  @(submenu.Title)</a></li>
+                                    <li id="li@(submenu.MenuItemKey)"><a bo="@(submenu.MenuItemKey)" href="@(submenu.Url)"><i class="@(submenu.IconClass)"></i>  @(submenu.Title)</a></li>
                                 }
                             </ul>
                         </li>

@@ -585,13 +585,16 @@
     if (uiModel.FirstFocus != null)
     {
         firstFocus = uiModel.FirstFocus;
-    }else
+    }
+    else
     {
         firstFocus = uiModel.Properties.Where(p => p.Order != null && p.ContextType == UIModelContextTypes.EditForm && p.IsHidden == false && p.IsNavigationPropertyMany == false && p.IsReadOnly == false).OrderBy(p => p.Order).FirstOrDefault();
 
     }
-
-@Html.Partial("FormButtonsContainer")
+    if (uiModel.DetailsAndEditButtonsPlace == DetailsAndEditButtonsPlaces.Bottom || uiModel.DetailsAndEditButtonsPlace == DetailsAndEditButtonsPlaces.TopAndBottom)
+    {
+        @Html.Partial("FormButtonsContainer")
+    }
 
 
     foreach (var q in extraparams)

@@ -202,8 +202,10 @@
                 }
             </div>
             <div class="col-lg-4">
-
-                @Html.Partial("FormButtonsContainer")
+                @if (uiModel.DetailsAndEditButtonsPlace == DetailsAndEditButtonsPlaces.Top || uiModel.DetailsAndEditButtonsPlace == DetailsAndEditButtonsPlaces.TopAndBottom)
+                {
+                    @Html.Partial("FormButtonsContainer")
+                }
             </div>
             
 
