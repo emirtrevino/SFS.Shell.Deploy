@@ -198,7 +198,7 @@
                     </div>
                 </div>
 
-                            @Html.Raw("</div>");
+                @Html.Raw("</div>");
                 @Html.Raw("</div>");
 
 
@@ -659,7 +659,7 @@
                             {
                                 if (!string.IsNullOrEmpty(uiModel.DefaultFilterView))
                                 {
-                                    var filterView = uiModel.FilterViews.FirstOrDefault(p=> p.FilterKey == uiModel.DefaultFilterView);
+                                    var filterView = uiModel.FilterViews.FirstOrDefault(p => p.FilterKey == uiModel.DefaultFilterView);
                                     if (filterView != null)
                                     {
                                         <span class="filterview currentFilterview@(idTab)" query="@WebUtility.UrlEncode( filterView.Query)" style="display:none"></span>
@@ -750,7 +750,7 @@
                 </script>
                 @{
                     System.Text.StringBuilder sbBooleans = new System.Text.StringBuilder();
-                string tagCol = "td";
+                    string tagCol = "td";
                     if (uiModel.UIVersion == 2)
                     {
                         tagCol = "th";
@@ -765,12 +765,12 @@
                             <td class="select"><input type="checkbox" name="@(idTab )sel_{{>@(uiModel.PropertyKeyName)}}" list="list@(idTab)" class="select" id="@(idTab)sel_{{>@(uiModel.PropertyKeyName)}}" value="{{>@(uiModel.PropertyKeyName)}}" /></td>
                             @if (uiModel.Integrations.Count > 0 || Request.QueryString["int"] == "1")
                 {
-                    @Html.Raw("<td class=\"integrationMark\">");
-                    @Html.Raw("</td>");
+                                @Html.Raw("<td class=\"integrationMark\">");
+                                @Html.Raw("</td>");
                 }
                             @{
                                 string propText = "";
-                string extra2 = "";
+                                string extra2 = "";
                                 if (!string.IsNullOrEmpty(Request.QueryString["usemode"]))
                                 {
 
@@ -827,6 +827,7 @@
                                     if (item.IsImage)
                                     {
                                         <td>
+                                            ccc
                                             {{if GuidFile}}
                                             <a class="filethumb {{>~getExtension(FileName)}}" href="@(VirtualPathUtility.ToAbsolute("~/"))image.ashx?controller=@(uiModel.EntitySetName)&comp=@(SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany)&ns=@(uiModel.ModuleNamespace)&idc=@(item.FileIdField)&datac=@(item.FileDataField)&typec=@(item.FileTypeField)&sizec=@(item.FileSizeField)&filenamec=@(item.FileNameField)&SafeKey={{>SafeKey}}&id={{>GuidFile}}&filename={{>FileName}}&model=@(uiModel.EntitySetName).@(uiModel.EntityKey)Model&type={{>FileType}}&w=&h="><img width="@(sizeThumb)" style="width:@(sizeThumb)px;height:@(sizeThumb)px" height="@(sizeThumb)" src="@(VirtualPathUtility.ToAbsolute("~/"))image.ashx?controller=@(uiModel.EntitySetName)&comp=@(SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany)&ns=@(uiModel.ModuleNamespace)&idc=@(item.FileIdField)&datac=@(item.FileDataField)&typec=@(item.FileTypeField)&sizec=@(item.FileSizeField)&filenamec=@(item.FileNameField)&SafeKey={{>SafeKey}}&id={{>GuidFile}}&filename={{>FileName}}&model=@(uiModel.EntitySetName).@(uiModel.EntityKey)Model&type={{>FileType}}&w=@(sizeThumb)&h=@(sizeThumb)"></a>
                                             {{else}}
@@ -837,7 +838,7 @@
                                     }
                                     else
                                     {
-                                        if (item.TypeName.ToString().ToLower().Contains("bool")  || item.TypeName.ToString().ToLower().Contains("int") || item.TypeName.ToString().ToLower().Contains("datetime") || item.TypeName.ToString().ToLower().Contains("timespan") || item.TypeName.ToString().ToLower().Contains("decimal") || item.TypeName.ToString().ToLower().Contains("float"))
+                                        if (item.TypeName.ToString().ToLower().Contains("bool") || item.TypeName.ToString().ToLower().Contains("int") || item.TypeName.ToString().ToLower().Contains("datetime") || item.TypeName.ToString().ToLower().Contains("timespan") || item.TypeName.ToString().ToLower().Contains("decimal") || item.TypeName.ToString().ToLower().Contains("float"))
                                         {
                                             propText = item.PropertyName + "Text";
                                         }
@@ -923,10 +924,17 @@
                                     if (item.IsImage)
                                     {
                                         string filetypeModel = item.CustomProperties.Find(p => p.Name == "FileTypeModelName").Value;
-                string fileGuidField = item.CustomProperties.Find(p => p.Name == "IdentifierFileField").Value;
-                string FileControllerName = item.CustomProperties.Find(p => p.Name == "FileControllerName").Value;
+                                        string fileGuidField = item.CustomProperties.Find(p => p.Name == "IdentifierFileField").Value;
+                                        string FileControllerName = item.CustomProperties.Find(p => p.Name == "FileControllerName").Value;
 
-                @Html.Raw(@"<td> {{if GuidFile}} <a class=""filethumb {{>~getExtension(FileName)}}""  href=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany.ToString() + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=&h=""><img  width=""" + sizeThumb + @""" height=""" + sizeThumb + @""" style=""width:" + sizeThumb + @"px;height:" + sizeThumb + @"px"" src=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=" + sizeThumb + @"&h=" + sizeThumb + @"""></a> {{else}} {{/if}} </td>");
+                            @Html.Raw(@"<td>
+                            {{if UrlFile}}
+                              <a class=""filethumb {{>~getExtension(FileName)}}""  href=""{{>UrlFile}}""><img  width=""" + sizeThumb + @""" height=""" + sizeThumb + @""" style=""width:" + sizeThumb + @"px;height:" + sizeThumb + @"px"" src=""{{>UrlThumbFile}}""></a>
+                            {{else GuidFile}}
+                              <a class=""filethumb {{>~getExtension(FileName)}}""  href=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany.ToString() + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=&h=""><img  width=""" + sizeThumb + @""" height=""" + sizeThumb + @""" style=""width:" + sizeThumb + @"px;height:" + sizeThumb + @"px"" src=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=" + sizeThumb + @"&h=" + sizeThumb + @"""></a>
+                            {{/if}}
+                            </td>");
+
                                     }
                                     else
                                     {
@@ -1523,40 +1531,40 @@
     {
         <!--<div id="Searchresult@(idTab )" data-toggle="modal-gallery" data-target="#modal-gallery"></div>-->
         <div class="" id="Searchresult@(idTab )"></div>
-        }
-    </div><!-- /listContainer-->
+    }
+                    </div><!-- /listContainer-->
 
 
-    <div class="noResults" id="noresults@(idTab )" style="display:none">
-        <p>@( GlobalMessages.NO_RESULTS)</p>
-    </div>
-</div><!-- /resultsAll-->
+                    <div class="noResults" id="noresults@(idTab )" style="display:none">
+                        <p>@( GlobalMessages.NO_RESULTS)</p>
+                    </div>
+                </div><!-- /resultsAll-->
 
 
 
-<div class="@(classRow) list-foot">
-    <div class="@((((isPopUp || uiModel.IsMiniContainer) && uiModel.UIVersion == 1)?"": colName + "7")  )">
-        <div id="pagination@(idTab )" style=" display:none" class="@(paginationContainer)"></div>
+                <div class="@(classRow) list-foot">
+                    <div class="@((((isPopUp || uiModel.IsMiniContainer) && uiModel.UIVersion == 1)?"": colName + "7")  )">
+                        <div id="pagination@(idTab )" style=" display:none" class="@(paginationContainer)"></div>
 
-    </div>
+                    </div>
 
-    <div class="@(((uiModel.IsMiniContainer && uiModel.UIVersion == 1)? "": colName + "5" ) )  text-right actions">
-        @{
-            ViewData["list-button-position"] = ButtonPosition.Foot;
-            Html.RenderPartial("ListButtons");
-        }
+                    <div class="@(((uiModel.IsMiniContainer && uiModel.UIVersion == 1)? "": colName + "5" ) )  text-right actions">
+                        @{
+                            ViewData["list-button-position"] = ButtonPosition.Foot;
+                            Html.RenderPartial("ListButtons");
+                        }
 
 
-    </div>
+                    </div>
 
-</div><!--list-foot-->
+                </div><!--list-foot-->
 
-@Html.Raw(divsContainerEnd)
+                @Html.Raw(divsContainerEnd)
 
-</div><!--current-->
-</div>
+            </div><!--current-->
+        </div>
 
-<script type="text/javascript">
+        <script type="text/javascript">
             @if (Request.QueryString["isLookUp"] == "true"){
                 <text>
             function readyForSelectFromLookUp@(idTab )() {
@@ -1584,40 +1592,40 @@
                 $('#@( dialogId)').modal("hide");
             }
 
-</script>
+        </script>
 
 
 
-@{     string extraParamsDel = "";
-    if (manyToMany)
+        @{     string extraParamsDel = "";
+            if (manyToMany)
+            {
+                extraParamsDel += "&ExtraParams=relationship:" + fromFk + "|relationshipValue:" + fkValue;
+            }
+            string message = GlobalMessages.CONFIRM_DELETE_MANY_QUESTION;
+
+            if (manyToMany)
+            {
+                message = GlobalMessages.CONFIRM_DELETE_RELATIONS;
+            }
+
+            Html.RenderPartial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "actionDeleteMany" + idTab, OnCloseFunction = "onUpdateListData" + idTab, ProxyId = "deleteProxyMany" + idTab, Message = message, StartUrl = VirtualPathUtility.ToAbsolute("~/") + "Messages/Confirm?areaName=" + uiModel.ModuleKey + "&controllerName=" + uiModel.EntitySetName + "&actionName=CustomActionExecute" + extraParamsDel });
+        }
+    </div>
+    @if (isPopUp)
     {
-        extraParamsDel += "&ExtraParams=relationship:" + fromFk + "|relationshipValue:" + fkValue;
+        @Html.Raw("</div>");
     }
-    string message = GlobalMessages.CONFIRM_DELETE_MANY_QUESTION;
 
-    if (manyToMany)
+    @if ((!string.IsNullOrEmpty(Request.QueryString["isLookUp"]) && !string.IsNullOrEmpty(Request.QueryString["propReturn"])) || manyToMany)
     {
-        message = GlobalMessages.CONFIRM_DELETE_RELATIONS;
-    }
+        if (isPopUp)
+        {
+            <div class="modal-footer list">
+                @{ Html.RenderPartial("ButtonLink", ButtonLinkModel.GetCancel()); }
+            </div>
 
-    Html.RenderPartial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "actionDeleteMany" + idTab, OnCloseFunction = "onUpdateListData" + idTab, ProxyId = "deleteProxyMany" + idTab, Message = message, StartUrl = VirtualPathUtility.ToAbsolute("~/") + "Messages/Confirm?areaName=" + uiModel.ModuleKey + "&controllerName=" + uiModel.EntitySetName + "&actionName=CustomActionExecute" + extraParamsDel });
-}
-</div>
-@if (isPopUp)
-{
-    @Html.Raw("</div>");
-}
-
-@if ((!string.IsNullOrEmpty(Request.QueryString["isLookUp"]) && !string.IsNullOrEmpty(Request.QueryString["propReturn"])) || manyToMany)
-{
-    if (isPopUp)
-    {
-        <div class="modal-footer list">
-            @{ Html.RenderPartial("ButtonLink", ButtonLinkModel.GetCancel()); }
-        </div>
-
+                        }
                     }
-                }
 </div>
 <script>
     $(document).ready(function () {

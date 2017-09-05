@@ -204,7 +204,8 @@
             <div class="col-lg-4">
                 @if (uiModel.DetailsAndEditButtonsPlace == DetailsAndEditButtonsPlaces.Top || uiModel.DetailsAndEditButtonsPlace == DetailsAndEditButtonsPlaces.TopAndBottom)
                 {
-                    @Html.Partial("FormButtonsContainer")
+                    ViewData["place"] = "top";
+                    @Html.Partial("FormButtonsContainer");
                 }
             </div>
             

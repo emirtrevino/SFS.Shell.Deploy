@@ -15,6 +15,7 @@
     if (!string.IsNullOrEmpty(Model.SuccessUpdateMethod)){
         oncloseFunc = Model.SuccessUpdateMethod;
     }
+    SFSdotNet.Framework.Web.Mvc.Models.UIModel uiModel = (SFSdotNet.Framework.Web.Mvc.Models.UIModel)ViewData["uiModel"];
     string classNames = "";
     if (Model.AjaxReplaceParentContainer) {
         classNames = " ajax-same ";
@@ -204,10 +205,17 @@
             <script>
       $("#@(id)").click(function (e) {
           var form = $(this).closest("form");
+          var isOther = false;
+          if (form.length  == 0){
+              form = $("#form_@(uiModel.Id)");
+              isOther = true;
+          }
           setCompleteValidations(form);
           form.validate();
           if (form.valid()){
-
+              if (isOther == true){
+                  form.submit();
+              }
               //form.submit();
               $(this).button('loading');
           }else{

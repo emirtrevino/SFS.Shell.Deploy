@@ -593,8 +593,10 @@
     }
     if (uiModel.DetailsAndEditButtonsPlace == DetailsAndEditButtonsPlaces.Bottom || uiModel.DetailsAndEditButtonsPlace == DetailsAndEditButtonsPlaces.TopAndBottom)
     {
-        @Html.Partial("FormButtonsContainer")
-    }
+        ViewData["place"] = "boot";
+        @Html.Partial("FormButtonsContainer");
+
+     }
 
 
     foreach (var q in extraparams)
