@@ -1,0 +1,94 @@
+﻿@model SFSdotNet.Framework.Web.Mvc.Models.UIModel
+
+@{
+    SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel buttonModel = null;
+    SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel buttonReturn = null;
+    var uiModel = Model;
+    bool isNew = false;
+
+    int? indexBtn = null;
+    bool isPopUp = false;
+    if (ViewData["_ispopup"] != null)
+    {
+        isPopUp = (bool)ViewData["_ispopup"];
+    }
+    if (ViewData["NextIndexBtn"] != null)
+    {
+        indexBtn = (int)ViewData["NextIndexBtn"];
+    }
+    if (uiModel.IsNew != null)
+    {
+        isNew = uiModel.IsNew.Value;
+
+    }
+
+}
+
+@if (ViewData["ispopup"] != null)
+{
+    if ((uiModel.CanAction("u") && !isNew) || (uiModel.CanAction("c") && isNew))
+    {
+        string text = isNew ? uiModel.ActionButtons.First(p => p.ActionKey == "c").Title : uiModel.ActionButtons.First(p => p.ActionKey == "u").Title;
+
+        buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetSave();
+        buttonModel.Text = text;
+        buttonModel.TabIndex = indexBtn;
+
+        Html.RenderPartial("ButtonLink", buttonModel);
+
+    }
+    var returnBtn = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "return");
+    if (returnBtn != null && returnBtn.IsButtonReplaced)
+    {
+        Html.RenderPartial("ButtonLink", returnBtn.GetButton());
+    }
+    else
+    {
+
+        if (isNew)
+        {
+            Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
+
+        }
+        else
+        {
+            Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
+
+            // Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(GlobalMessages.CANCEL, 2, "cancel", VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secUsers/DetailsViewGen/" + safeKey + "?popup=1&fk=" + fromFK + "&fkValue=" + fkValue + "", idWindow));
+
+        }
+    }
+}
+else
+{
+    buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetSave();
+    var actionButtonCreate = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "c");
+    var actionButtonUpdate = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "u");
+    if (isNew && actionButtonCreate != null)
+    {
+        buttonModel.Text = actionButtonCreate.Title;
+    }
+    if (isNew == false && actionButtonUpdate != null)
+    {
+
+        buttonModel.Text = actionButtonUpdate.Title;
+    }
+    buttonModel.TabIndex = indexBtn;
+    Html.RenderPartial("ButtonLink", buttonModel);
+
+    var returnBtn = uiModel.ActionButtons.Find(p => p.ActionKey == "return");
+    if (returnBtn != null && returnBtn.Enabled == true)
+    {
+        if (isPopUp == true)
+        {
+            Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
+
+        }
+        else
+        {
+            Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(GlobalMessages.CANCEL, 2, "cancel", returnBtn.Url, true));
+
+        }
+    }
+}
+

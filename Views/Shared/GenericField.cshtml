@@ -812,10 +812,11 @@ else {
         if (property.UIText != null)
         {
             comments = property.UIText.ShortDescription;
-            if (!string.IsNullOrEmpty(property.Comments))
-            {
-                comments = property.Comments;
-            }
+
+        }
+        if (!string.IsNullOrEmpty(property.Comments))
+        {
+            comments = property.Comments;
         }
         <div class="errorMessage">@Html.ValidationMessage(_safename)</div>
         if (comments != null)
