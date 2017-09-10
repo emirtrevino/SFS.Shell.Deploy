@@ -74,6 +74,11 @@
     }
 
 }
+<style>
+    .cui-topBar2 {
+        display: none;
+    }
+</style>
 <script>
     function onUpdateListData@(idTab)() {
         var e = new Object();
@@ -827,9 +832,9 @@
                                     if (item.IsImage)
                                     {
                                         <td>
-                                            ccc
+
                                             {{if GuidFile}}
-                                            <a class="filethumb {{>~getExtension(FileName)}}" href="@(VirtualPathUtility.ToAbsolute("~/"))image.ashx?controller=@(uiModel.EntitySetName)&comp=@(SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany)&ns=@(uiModel.ModuleNamespace)&idc=@(item.FileIdField)&datac=@(item.FileDataField)&typec=@(item.FileTypeField)&sizec=@(item.FileSizeField)&filenamec=@(item.FileNameField)&SafeKey={{>SafeKey}}&id={{>GuidFile}}&filename={{>FileName}}&model=@(uiModel.EntitySetName).@(uiModel.EntityKey)Model&type={{>FileType}}&w=&h="><img width="@(sizeThumb)" style="width:@(sizeThumb)px;height:@(sizeThumb)px" height="@(sizeThumb)" src="@(VirtualPathUtility.ToAbsolute("~/"))image.ashx?controller=@(uiModel.EntitySetName)&comp=@(SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany)&ns=@(uiModel.ModuleNamespace)&idc=@(item.FileIdField)&datac=@(item.FileDataField)&typec=@(item.FileTypeField)&sizec=@(item.FileSizeField)&filenamec=@(item.FileNameField)&SafeKey={{>SafeKey}}&id={{>GuidFile}}&filename={{>FileName}}&model=@(uiModel.EntitySetName).@(uiModel.EntityKey)Model&type={{>FileType}}&w=@(sizeThumb)&h=@(sizeThumb)"></a>
+                                            <a class="filethumb {{>~getExtension(FileName)}}" file-name="{{>FileName}}" href="@(VirtualPathUtility.ToAbsolute("~/"))image.ashx?controller=@(uiModel.EntitySetName)&comp=@(SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany)&ns=@(uiModel.ModuleNamespace)&idc=@(item.FileIdField)&datac=@(item.FileDataField)&typec=@(item.FileTypeField)&sizec=@(item.FileSizeField)&filenamec=@(item.FileNameField)&SafeKey={{>SafeKey}}&id={{>GuidFile}}&filename={{>FileName}}&model=@(uiModel.EntitySetName).@(uiModel.EntityKey)Model&type={{>FileType}}&w=&h="><img width="@(sizeThumb)" style="width:@(sizeThumb)px;height:@(sizeThumb)px" height="@(sizeThumb)" src="@(VirtualPathUtility.ToAbsolute("~/"))image.ashx?controller=@(uiModel.EntitySetName)&comp=@(SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany)&ns=@(uiModel.ModuleNamespace)&idc=@(item.FileIdField)&datac=@(item.FileDataField)&typec=@(item.FileTypeField)&sizec=@(item.FileSizeField)&filenamec=@(item.FileNameField)&SafeKey={{>SafeKey}}&id={{>GuidFile}}&filename={{>FileName}}&model=@(uiModel.EntitySetName).@(uiModel.EntityKey)Model&type={{>FileType}}&w=@(sizeThumb)&h=@(sizeThumb)"></a>
                                             {{else}}
                                             {{/if}}
                                         </td>
@@ -927,11 +932,11 @@
                                         string fileGuidField = item.CustomProperties.Find(p => p.Name == "IdentifierFileField").Value;
                                         string FileControllerName = item.CustomProperties.Find(p => p.Name == "FileControllerName").Value;
 
-                            @Html.Raw(@"<td>
+                                        @Html.Raw(@"<td>
                             {{if UrlFile}}
-                              <a class=""filethumb {{>~getExtension(FileName)}}""  href=""{{>UrlFile}}""><img  width=""" + sizeThumb + @""" height=""" + sizeThumb + @""" style=""width:" + sizeThumb + @"px;height:" + sizeThumb + @"px"" src=""{{>UrlThumbFile}}""></a>
+                              <a class=""filethumb {{>~getExtension(FileName)}}"" file-name=""{{>FileName}}""  href=""{{>UrlFile}}""><img  width=""" + sizeThumb + @""" height=""" + sizeThumb + @""" style=""width:" + sizeThumb + @"px;height:" + sizeThumb + @"px"" src=""{{>UrlThumbFile}}""></a>
                             {{else GuidFile}}
-                              <a class=""filethumb {{>~getExtension(FileName)}}""  href=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany.ToString() + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=&h=""><img  width=""" + sizeThumb + @""" height=""" + sizeThumb + @""" style=""width:" + sizeThumb + @"px;height:" + sizeThumb + @"px"" src=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=" + sizeThumb + @"&h=" + sizeThumb + @"""></a>
+                              <a class=""filethumb {{>~getExtension(FileName)}}"" file-name=""{{>FileName}}""  href=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany.ToString() + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=&h=""><img  width=""" + sizeThumb + @""" height=""" + sizeThumb + @""" style=""width:" + sizeThumb + @"px;height:" + sizeThumb + @"px"" src=""" + VirtualPathUtility.ToAbsolute("~/") + @"image.ashx?controller=" + FileControllerName + @"&ns=" + uiModel.ModuleNamespace + "&comp=" + SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany + "&idc=GuidFile&datac=FileData&typec=FileType&sizec=FileSize&filenamec=FileName&SafeKey=&id={{>" + fileGuidField + @"}}&filename={{>FileName}}&model=" + filetypeModel + @"&type={{>FileType}}&w=" + sizeThumb + @"&h=" + sizeThumb + @"""></a>
                             {{/if}}
                             </td>");
 
@@ -1129,183 +1134,12 @@
 
                 }
                         @if (uiModel.Properties.Count(p=>p.IsImage) > 0)
-        {
-            <text>
-                        'use strict';
-
-                        $(function () {
-
-                    if (typeof (jQuery().magnificPopup) == "undefined") {
-                                @{
-                            var helper = (new UrlHelper(ViewContext.RequestContext));
-                        }
-                        //alert("leyendo");
-
-                        Utilities.requireFiles([
-                            "@(helper.Content("~/Static/v2/magnificPopup/jquery.magnific-popup.min.js"))"], function () {
-
-                            @if (includeViewer == true) {
-                            <text>
-                                        $('#tableSearchresult@(idTab ) .filethumb.unk, #tableSearchresult@(idTab ) .filethumb.jpg, #tableSearchresult@(idTab ) .filethumb.png, #tableSearchresult@(idTab ) .filethumb.gif').magnificPopup({
-                                    type: 'image',
-                                            //delegate: 'a.filethumb',
-                                            //gallery: {
-                                            //    enabled:true
-                                            //},
-                                            image: {
-                                        tError: '<p><a target="_blank" href="%url%&down=1"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a  target="_blank" href="%url%&down=1">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> ' // Error message
-                                            }
-                                });
-
-                                        $('#tableSearchresult@(idTab ) .filethumb.pdf').each(function(){
-                                    var url = $(this).attr("href");
-                                            $(this).attr("href", "@(VirtualPathUtility.ToAbsolute("~/"))Static/v2/pdf/web/viewer.html?file=" + encodeURIComponent(url + "&down=1"));
-                                });
-                                        $('#tableSearchresult@(idTab ) .filethumb.pdf').magnificPopup({
-                                    type: 'iframe',
-                                            //delegate: 'a.filethumb',
-                                            //gallery: {
-                                            //    enabled:true
-                                            //},
-                                        });
-                                        </text>
-                        }
-                        else
                         {
-                            <text>
-                                        $('#tableSearchresult@(idTab ) .filethumb').magnificPopup({
-                                    type: 'image',
+                                <text>
+                    setPopup($('#tableSearchresult@(idTab ) .filethumb'));
 
-                                            //delegate: 'a.filethumb',
-                                            //gallery: {
-                                            //    enabled:true
-                                            //},
-                                            image: {
-                                        tError: '<p><a target="_blank" href="%url%&down=1"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a  target="_blank" href="%url%&down=1">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> ' // Error message
-                                            }
-                                });
-                                        </text>
-                        }
-                        });
-
-                    } else {
-                        @if (includeViewer == true)
-                 {
-                     <text>
-
-                                $('#tableSearchresult@(idTab ) .filethumb.unk, #tableSearchresult@(idTab ) .filethumb.jpg, #tableSearchresult@(idTab ) .filethumb.png, #tableSearchresult@(idTab ) .filethumb.gif').magnificPopup({
-                                type: 'image',
-                                    //delegate: 'a.filethumb',
-                                    //gallery: {
-                                    //    enabled:true
-                                    //},
-                                    image: {
-                                    tError: '<p><a target="_blank" href="%url%&down=1"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a  target="_blank" href="%url%&down=1">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> ' // Error message
-                                    }
-                            });
-                                $('#tableSearchresult@(idTab ) .filethumb.pdf').each(function(){
-                                var url = $(this).attr("href");
-                                    $(this).attr("href", "@(VirtualPathUtility.ToAbsolute("~/"))Static/v2/pdf/web/viewer.html?file=" + encodeURIComponent(url + "&down=1"));
-                            });
-                                $('#tableSearchresult@(idTab ) .filethumb.pdf').magnificPopup({
-                                type: 'iframe',
-                                    //delegate: 'a.filethumb',
-                                    //gallery: {
-                                    //    enabled:true
-                                    //},
-                                });
                                 </text>
-                 }else
-                 {
-                            <text>
-                        $('#tableSearchresult@(idTab ) .filethumb').magnificPopup({
-                                type: 'image',
-                            callbacks: {
-                                    beforeOpen: function() {
-                                        console.log('Start of popup initialization');
-                                    },
-                                elementParse: function(item) {
-                                        // Function will fire for each target element
-                                        // "item.el" is a target DOM element (if present)
-                                        // "item.src" is a source that you may modify
-
-                                        console.log('Parsing content. Item object that is being parsed:', item);
-                                    },
-                                change: function() {
-                                        console.log('Content changed');
-                                        console.log(this.content); // Direct reference to your popup element
-                                    },
-                                resize: function() {
-                                        console.log('Popup resized');
-                                        // resize event triggers only when height is changed or layout forced
-                                    },
-                                open: function() {
-                                        console.log('Popup is opened');
-                                    },
-
-                                beforeClose: function() {
-                                        // Callback available since v0.9.0
-                                        console.log('Popup close has been initiated');
-                                    },
-                                close: function() {
-                                        console.log('Popup removal initiated (after removalDelay timer finished)');
-                                    },
-                                afterClose: function() {
-                                        console.log('Popup is completely closed');
-                                    },
-
-                                markupParse: function(template, values, item) {
-                                        // Triggers each time when content of popup changes
-                                        // console.log('Parsing:', template, values, item);
-                                    },
-                                updateStatus: function(data) {
-                                        console.log('Status changed', data);
-                                        // "data" is an object that has two properties:
-                                        // "data.status" - current status type, can be "loading", "error", "ready"
-                                        // "data.text" - text that will be displayed (e.g. "Loading...")
-                                        // you may modify this properties to change current status or its text dynamically
-                                    },
-                                imageLoadComplete: function() {
-                                        // fires when image in current popup finished loading
-                                        // avaiable since v0.9.0
-                                        console.log('Image loaded');
-                                    },
-
-
-                                // Only for ajax popup type
-                                parseAjax: function(mfpResponse) {
-                                        // mfpResponse.data is a "data" object from ajax "success" callback
-                                        // for simple HTML file, it will be just String
-                                        // You may modify it to change contents of the popup
-                                        // For example, to show just #some-element:
-                                        // mfpResponse.data = $(mfpResponse.data).find('#some-element');
-
-                                        // mfpResponse.data must be a String or a DOM (jQuery) element
-
-                                        console.log('Ajax content loaded:', mfpResponse);
-                                    },
-                                ajaxContentAdded: function() {
-                                        // Ajax content is loaded and appended to DOM
-                                        console.log(this.content);
-                                    }
-                                },
-                            //delegate: 'a.filethumb',
-                            //gallery: {
-                            //    enabled:true
-                            //},
-                            image: {
-                                    tError: '<p><a target="_blank" href="%url%&down=1"><img style="height:100px;" height="100" src="%url%100" border="0" /></a></p><a  target="_blank" href="%url%&down=1">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> test2' // Error message
-                            }
-                            });
-                            </text>
-
-                 }
-                    }
-                });
-
-
-                        </text>
-		  }
+		                  }
                         @if (ViewData["IsWorkFlowState"] != null && ((bool)ViewData["IsWorkFlowState"]) == true)
         {
 

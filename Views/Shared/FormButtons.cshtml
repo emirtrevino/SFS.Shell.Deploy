@@ -68,6 +68,7 @@
     {
         isPopUp = true;
     }
+    ViewData["_ispopup"] = isPopUp;
     string idTab = "";
     if (ViewData["idTab"] != null)
     {
@@ -281,74 +282,8 @@
         }
 
         buttonModel = null;
-        if (ViewData["ispopup"] != null)
-        {
-            if ((uiModel.CanAction("u") && !isNew) || (uiModel.CanAction("c") && isNew))
-            {
-                string text = isNew ? uiModel.ActionButtons.First(p => p.ActionKey == "c").Title : uiModel.ActionButtons.First(p => p.ActionKey == "u").Title;
-
-                buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetSave();
-                buttonModel.Text = text;
-                buttonModel.TabIndex = indexBtn;
-
-                Html.RenderPartial("ButtonLink", buttonModel);
-
-            }
-
-            if (uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "return").IsButtonReplaced)
-            {
-                Html.RenderPartial("ButtonLink", uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "return").GetButton());
-            }
-            else
-            {
-
-                if (isNew)
-                {
-                    Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
-
-                }
-                else
-                {
-                    Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
-
-                    // Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(GlobalMessages.CANCEL, 2, "cancel", VirtualPathUtility.ToAbsolute("~/") + "SFSdotNetFrameworkSecurity/secUsers/DetailsViewGen/" + safeKey + "?popup=1&fk=" + fromFK + "&fkValue=" + fkValue + "", idWindow));
-
-                }
-            }
-        }
-        else
-        {
-            buttonModel = SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetSave();
-            var actionButtonCreate = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "c");
-            var actionButtonUpdate = uiModel.ActionButtons.FirstOrDefault(p => p.ActionKey == "u");
-            if (isNew && actionButtonCreate != null)
-            {
-                buttonModel.Text = actionButtonCreate.Title;
-            }
-            if (isNew == false && actionButtonUpdate != null)
-            {
-
-                buttonModel.Text = actionButtonUpdate.Title;
-            }
-            buttonModel.TabIndex = indexBtn;
-            Html.RenderPartial("ButtonLink", buttonModel);
-
-            var returnBtn = uiModel.ActionButtons.Find(p => p.ActionKey == "return");
-            if (returnBtn != null && returnBtn.Enabled == true)
-            {
-                if (isPopUp == true)
-                {
-                    Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetClosePopUp());
-
-                }
-                else
-                {
-                    Html.RenderPartial("ButtonLink", SFSdotNet.Framework.Web.Mvc.Models.ButtonLinkModel.GetCustom(GlobalMessages.CANCEL, 2, "cancel", returnBtn.Url, true));
-
-                }
-            }
-        }
-
+        ViewData["NextIndexBtn"] = indexBtn;
+        Html.RenderPartial("CloseAndCancelButton", uiModel);
 
         if (uiModel.ShowAutoSave)
         {
