@@ -1,3 +1,10 @@
 .hg
 *.backup
 /Areas/*
+Static/Temp/*
+Static/App/SFSBlog/default.css
+Static/Templates/AdminLTE-LF/*
+Static/Templates/Inspinia/*
+Static/Templates/Oleose/*
+*.rej
+Views/Shared/*.cshtml.bak

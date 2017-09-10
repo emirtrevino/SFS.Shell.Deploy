@@ -13,6 +13,7 @@ function setCSS(selector, prop, value) {
     var newStyleElement = $("head").children(':last');
     newStyleElement.html(selector + '{ ' + prop + ':' + value + '; }');
 }
+
 function loadJS(file) {
     // DOM: Create the script element
     var jsElm = document.createElement("script");
@@ -361,7 +362,7 @@ function onChangeField(jqElement, eventHandler) {
         $("#div-con-" + jqElement.attr("id")).on("changeDate", function (e) {
             eventHandler(jqElement, e.date);
         });
-    }else  if (jqElement.hasClass("time") == true ) {
+    } else if (jqElement.hasClass("time") == true) {
         // es control de hr
         $('#_' + jqElement.attr("id")).timepicker().on('changeTime.timepicker', function (e) {
             jqElement.attr("sfs-time", e.time.value);
@@ -370,7 +371,7 @@ function onChangeField(jqElement, eventHandler) {
             jqElement.attr("sfs-meridian", e.time.meridian);
             eventHandler(jqElement, e.time);
         });
-       
+
     } else if (jqElement.is("textarea") && jqElement.attr("rows") == "0") {
         //se asume que es text rich editor
         $("#" + jqElement.attr("id") + "_editor").on('summernote.change', function (we, contents, $editable) {
@@ -416,11 +417,11 @@ function setTime(jqElement, hours, minutes, ampm) {
     sbTime.push(":");
     sbTime.push(minutes);
 
-    if (ampm != null && ampm  != undefined) {
+    if (ampm != null && ampm != undefined) {
         sbTime.push(" " + ampm);
     }
 
-    $("#_"+ jqElement.attr("id")).timepicker('setTime', sbTime.join(""));
+    $("#_" + jqElement.attr("id")).timepicker('setTime', sbTime.join(""));
 }
 $(document).ready(function () {
     $(".sidebar-toggle").on("click", function (e) {
@@ -431,10 +432,10 @@ $(document).ready(function () {
                 val = "0";
             }
 
-                var url = rootSfsAppUrl + "Features/SessionSet?name=collapsed-menu&value=" + val;
-                callServerGet(url, function (data) {
-                });
-            
+            var url = rootSfsAppUrl + "Features/SessionSet?name=collapsed-menu&value=" + val;
+            callServerGet(url, function (data) {
+            });
+
         }, 1000);
     });
 
@@ -467,7 +468,7 @@ $(document).ready(function () {
 
         }
 
-       
+
     }
     if (typeof $.views != 'undefined') {
         if (typeof $.views.registerHelpers != 'undefined') {
@@ -573,16 +574,16 @@ function parseDate(string) {
         var millisecond = 0;
 
         if (partsTime.contains(".")) {
-            partsHMS =  partsTime.split(".")[0].split(":");
+            partsHMS = partsTime.split(".")[0].split(":");
             millisecond = parseInt(partsTime.split(".")[1]);
         }
         var year = parseInt(partsA1[0]);
         var month = parseInt(partsA1[1]);
         var day = parseInt(partsA1[2]);
-        var hour = parseInt( partsHMS[0]);
+        var hour = parseInt(partsHMS[0]);
         var minute = parseInt(partsHMS[1]);
         var second = parseInt(partsHMS[2]);
-        
+
         return new Date(year, month - 1, day, hour, minute, second, millisecond);
     } else if (string.contains("Date(")) {
         return new Date(parseInt(string.replace('/Date(', '')));
@@ -756,7 +757,7 @@ function setDateConfig(jqElement, method, options) {
                 }).data('datepicker');
 
             } else if (jqElement.attr("uiVersion") == "2") {
-              
+
                 var optionsForSet = new Object();
                 //optionsForSet.todayBtn = "linked";
                 //optionsForSet.keyboardNavigation = false;
@@ -766,9 +767,9 @@ function setDateConfig(jqElement, method, options) {
                 //if (options.beforeShowDay != null) {
                 //    optionsForSet.beforeShowDay = options.beforeShowDay;
                 //};
-               
 
-                    $(idFormContainer + "#div-con-" + jqElement.attr("id")).datepicker(optionsForSet)
+
+                $(idFormContainer + "#div-con-" + jqElement.attr("id")).datepicker(optionsForSet)
                 //.on("changeDate", function (ev) {
                 //    writeDateOnInput($(idFormContainer + "#" + $(this).attr("id").replace("div-con-", "")), ev.date);
                 //    $(idFormContainer + "#" + $(this).attr("id").replace("div-con-", "")).change();
@@ -792,8 +793,8 @@ function setDateConfig(jqElement, method, options) {
 }
 function cleanDateConfig(jqElement, method) {
     var idFormContainer = jqElement.attr("form-container");
-    if (idFormContainer != null  && idFormContainer != "") {
-        idFormContainer = "#" + idFormContainer +" ";
+    if (idFormContainer != null && idFormContainer != "") {
+        idFormContainer = "#" + idFormContainer + " ";
     } else {
         idFormContainer = "";
     }
@@ -1774,7 +1775,7 @@ function isActionComplete(actionId) {
 function validateFields(jqSelect) {
     var result = false;
     jqSelect.each(function () {
-        
+
     });
     return result;
 
@@ -1801,7 +1802,7 @@ function setWizard(jqForm, jqBackBtn, jqNextBtn) {
         e.preventDefault();
         var nextStep = currentStep + 1;
         $(".wizard-panel.panel-" + currentStep);
-        
+
         $(".wizard-panel").hide();
         $(".wizard-panel.panel-" + nextStep).show();
         $(".wizard-menu .step-" + nextStep).addClass("completed");
@@ -1861,7 +1862,7 @@ function CustomAction(elem, url, id, key, done) {
     var actionName = null;
     var withConfirm = true;
     if ($("a#customAction" + id).length == 0) {
-        jqElem.after("<a href='#'  popupId='modalCustomAction" + id  + "' id='customAction" + id + "' startUrl='" + url +  "' messageConfirm='" + jqElem.attr("messageConfirm") + "' ></a>");
+        jqElem.after("<a href='#'  popupId='modalCustomAction" + id + "' id='customAction" + id + "' startUrl='" + url + "' messageConfirm='" + jqElem.attr("messageConfirm") + "' ></a>");
         actionName = jqElem.attr("actionName");
         $("a#customAction" + id).click(function (e) {
             e.preventDefault();
@@ -1950,7 +1951,7 @@ function CustomAction(elem, url, id, key, done) {
             }
             url = jqElem.attr("href") + "&actionKey=" + actionKey + "&lastActionName=" + actionKey + id + propForUpdate + "&" + uiv;
         } else {
-           
+
             url = url + separator + "controllerName=" + controllerName + "&actionName=" + actionName + "&actionKey=" + actionKey + "&isBackground=" + isbackground + "&query=" + query + "&allSelected=" + selAll + "&selected=" + selItemsArray + "&desc=" + message + "&lastActionName=" + actionKey + id + "&propertyForUpdate=" + jqElem.data("param-fk") + "&" + uiv;
         }
         if (typeof (done) != 'undefined') {
@@ -2080,7 +2081,7 @@ function deleteAction(e, context, many, id, guidItem, onCloseFunction) {
         dataAction.Query = query;
         dataAction.OverrideApp = overrideApp;
         dataAction.uiv = getUIVersion();
-       
+
 
         var dataActionString = Encoder.XmlEncode(JSON.stringify(dataAction));
 
@@ -2224,7 +2225,7 @@ function getFormatted(value, type, symbol) {
         // Establish our default settings
         var settings = $.extend({
             type: 'text',
-            data:null,
+            data: null,
             placeHolder: null,
             allowUnregistered: true,
             id: null,
@@ -2245,21 +2246,20 @@ function getFormatted(value, type, symbol) {
                 placeHolderX = settings.placeHolder;
             }
             var sbHtml = new Array();
-            if (settings.type == "date")
-            {
+            if (settings.type == "date") {
 
                 sbHtml.push("<div id='div-con-" + settings.id + "' class='input-group date " + settings.id + "' data-format='" + settings.format + "' data-date-format='" + settings.format + "'>");
                 sbHtml.push(" <input form-container='" + settings.formContainer + "' class='datetime form-control is-datetimeEntry ' uiVersion='2' typeControl='datepicker' type='" + settings.typeInput + "' name='" + settings.id + "' id='" + settings.id + "' data-format='" + settings.format + "'  />");
                 //sbHtml.push(" <div typeControl='datepicker' type='" + settings.typeInput + "' uiVersion='2' name='" + settings.id + "' id='" + settings.id + "'></div>");
                 sbHtml.push(" <span class='input-group-addon'><i class=\"fa fa-calendar\" aria-hidden=\"true\"></i></span>");
                 sbHtml.push("</div>");
-            }else if(settings.type == "autocomplete"){
+            } else if (settings.type == "autocomplete") {
                 sbHtml.push("<input type=\"text\" id=\"" + settings.id + "Text\" name=\"" + settings.id + "Text\" class=\"autocomplete noquery  form-control  field text\" />");
                 sbHtml.push("<input type=\"hidden\" id=\"" + settings.id + "\" name=\"" + settings.id + "\" class=\"autocomplete\" />");
 
             } else if (settings.type == "text") {
                 sbHtml.push("<input type=\"text\" id=\"" + settings.id + "\" name=\"" + settings.id + "\" class=\"field noquery  form-control  text\" />");
-             
+
             } else if (settings.type == "tags") {
                 sbHtml.push("<input type=\"text\" id=\"" + settings.id + "Text\" name=\"" + settings.id + "Text\" class=\"autocomplete noquery  form-control  field text\" />");
                 sbHtml.push("<input type=\"hidden\" id=\"" + settings.id + "\" name=\"" + settings.id + "\" class=\"autocomplete\" />");
@@ -2315,9 +2315,9 @@ function getFormatted(value, type, symbol) {
                         },
 
                         allowClear: true,
-                                    
+
                         createSearchChoice: function (term, data) {
-                           
+
                             if (text_finded == false) {
                                 if (settings.globaData == "user-global") {
                                     if (settings.allowUnregistered == false) {
@@ -2374,16 +2374,16 @@ function getFormatted(value, type, symbol) {
                                         text_finded = false;
                                     }
                                     return {
-                                        
-                                        results: $.map(data, function (item) {
-                                           
 
-                                                if (text_search == item.Email) {
-                                                    text_finded = true;
-                                                } else {
-                                                    text_finded = false;
-                                                }
-                                                if (settings.globaData == "user-global") {
+                                        results: $.map(data, function (item) {
+
+
+                                            if (text_search == item.Email) {
+                                                text_finded = true;
+                                            } else {
+                                                text_finded = false;
+                                            }
+                                            if (settings.globaData == "user-global") {
                                                 return {
                                                     isInvited: item.IsInvited,
                                                     id: item.Id,
@@ -2402,13 +2402,13 @@ function getFormatted(value, type, symbol) {
 
                                                 };
                                             } else {
-                                                return { id: item.Value , text: item.Text };
+                                                return { id: item.Value, text: item.Text };
 
 
                                             }
 
-                                            })
-                                        
+                                        })
+
                                         //results: data
 
                                     };
@@ -2457,7 +2457,7 @@ function getFormatted(value, type, symbol) {
                         //if (e.removed != null){
                         var data = $("#" + $(e.currentTarget).attr("id")).select2("data");
                         if (data == null) {
-                            $(e.currentTarget).parents("div").find("#" + settings.id ).attr("value", "");
+                            $(e.currentTarget).parents("div").find("#" + settings.id).attr("value", "");
                             $(e.currentTarget).parents("div").find("#" + settings.id + "Text").attr("value", "");
                             $("#" + settings.id).trigger("change");
                         } else {
@@ -2483,7 +2483,7 @@ function getFormatted(value, type, symbol) {
                         //}
 
                     }).on("select2-selecting", function (e) {
-                      //  alert($(document.activeElement).val());
+                        //  alert($(document.activeElement).val());
                         log("loaded (data property omitted for brevity)");
                     });
                     //end autocomplete
@@ -2492,14 +2492,14 @@ function getFormatted(value, type, symbol) {
 
                         $('#' + settings.id + '').listenForEnter()
                             .bind('pressedEnter', function (event) {
-                                
 
-                     
+
+
                                 settings.onEnterKeyPress(event, $(this));
-                           
-                        });
+
+                            });
                     }
-                    
+
                 } else if (settings.type == "tags") {
                     var text_search = "";
                     var text_finded = false;
@@ -2513,15 +2513,15 @@ function getFormatted(value, type, symbol) {
                             async: false
                         });
                     }
-                    
+
                     $('#' + settings.id + 'Text').val(settings.data);
                     $('#' + settings.id + 'Text').select2({
-                       
+
                         tags: true,
-                        formatResult: function(ade) {
+                        formatResult: function (ade) {
                             return "" + ade.text;
                         },
-                        formatSelection: function(ade) {
+                        formatSelection: function (ade) {
                             return "" + ade.text;
                         },
                         escapeMarkup: function (m) {
@@ -2570,7 +2570,7 @@ function getFormatted(value, type, symbol) {
                                     };
                                 }
                         },
-                        
+
                         initSelection: function (element, callback) {
                             //debugger;
                             var data = [];
@@ -2578,7 +2578,7 @@ function getFormatted(value, type, symbol) {
                                 if (typeof (options.data) == "string") {
                                     $("#" + settings.id).attr("value", options.data);
                                     options.data = options.data.split(",");
-                                    
+
                                 } else {
                                     $("#" + settings.id).attr("value", options.data.join(","));
                                 }
@@ -2598,7 +2598,7 @@ function getFormatted(value, type, symbol) {
 
                     }).on("change", function (e) {
                         var data = $("#" + $(e.currentTarget).attr("id")).select2("data");
-                      
+
                         if (data == null) {
                             $(e.currentTarget).parents("div").find("#" + settings.id).attr("value", "");
                             $(e.currentTarget).parents("div").find("#" + settings.id + "Text").attr("value", "");
@@ -2624,7 +2624,7 @@ function getFormatted(value, type, symbol) {
                             $(e.currentTarget).parents("div").find("#" + settings.id).attr("value", dataArray.join(","));
 
 
-                           
+
                             $("#" + settings.id).trigger("change");
                         }
                         console.log(data.length)
@@ -2641,7 +2641,7 @@ function getFormatted(value, type, symbol) {
 
             }
         });
-        
+
     }
 
 }(jQuery));
@@ -3016,13 +3016,13 @@ function setRangeValidation(jqElement, from, to, message) {
     jqElement.each(function () {
         $(this).rules('add', { rangeVal: nameRule });
 
-       // if (highlight == true) {
-            $("#dc" + $(this).attr("id")).addClass("error");
-            $("#dc" + $(this).attr("id")).addClass("has-error");
+        // if (highlight == true) {
+        $("#dc" + $(this).attr("id")).addClass("error");
+        $("#dc" + $(this).attr("id")).addClass("has-error");
         //}
-            $(this).attr("data-val-range-min", from);
-            $(this).attr("data-val-range-max", to);
-            $(this).attr("data-val-range", message);
+        $(this).attr("data-val-range-min", from);
+        $(this).attr("data-val-range-max", to);
+        $(this).attr("data-val-range", message);
 
         //} else {
         //    if (highlight == true)
@@ -3091,21 +3091,21 @@ function setDisabled(jqElements, disabled) {
                 jqElement.off("click");
                 jqElement.attr("disabled", true);
             } else if (jqElement.hasClass("autocomplete")) {
-                
+
                 //setTimeout(function () {
-                    jqElement.closest("div").find("input.autocomplete.field.text").select2("readonly", true);
-                    //try{
-                    //    jqElement.select2().enable(false);
-                    //}catch(e){
-                    //    jqElement
-                    //}
+                jqElement.closest("div").find("input.autocomplete.field.text").select2("readonly", true);
+                //try{
+                //    jqElement.select2().enable(false);
+                //}catch(e){
+                //    jqElement
+                //}
                 //}, 1000);
             } else {
 
                 if (jqElement.hasClass("datetime") == true) {
                     jqElement.closest("div").find("span.add-on").hide();
                     jqElement.closest("div").find("span.input-group-addon").hide();
-                   
+
                 } else if (jqElement.hasClass("autocomplete") == true) {
                     jqElement.closest("div").find("input.autocomplete.field.text").select2("disable");
                 }
@@ -3568,7 +3568,7 @@ function setValue(jqElement, value) {
         $("#" + jqElement.attr("id") + "Text").val(value).trigger('change');
         //jqElement.closest("div").find(".select2-search-choice-close")[0].click();
 
-        
+
     } else {
         jqElement.val(value);
     }
@@ -3722,42 +3722,42 @@ function repositionModal(jqModal, jqElement) {
 
         }
     }
-  /*  if (typeof (jqElement) != "undefined" &&
-        (jqElement.attr("left") != null || jqElement.attr("top") != null || jqElement.attr("width") != null)
-        ) {
-        if (jqElement.attr("top") != null) {
-            jqModal.css("top", jqElement.attr("top") + "px");
-            jqModal.css("margin-top", "auto");
-
-        }
-        if (jqElement.attr("left") != null) {
-            jqModal.css("left", jqElement.attr("left") + "px");
-            //jqModal.css("right", jqElement.attr("right") + "px");
-
-            //jqModal.css("width", "auto");
-
-           
-        }
-        if (jqElement.attr("width") != null) {
-            if (jqElement.attr("width") != "auto") {
-                jqModal.css("width", jqElement.attr("width") + "px");
-                jqModal.css("margin-left", "auto");
-                var left = ($(window).width() - parseInt(jqElement.attr("width"))) / 2;
-                jqModal.css("left", left + "px");
-            } else {
-                jqModal.css("width", "auto");
-            }
-            
-            //jqModal.css("right", jqElement.attr("right") + "px");
-
-            //jqModal.css("width", "auto");
-
-            
-        }
-        //jqModal.modal("layout");
-    } else {
-        jqModal.modal("layout");
-    }*/
+    /*  if (typeof (jqElement) != "undefined" &&
+          (jqElement.attr("left") != null || jqElement.attr("top") != null || jqElement.attr("width") != null)
+          ) {
+          if (jqElement.attr("top") != null) {
+              jqModal.css("top", jqElement.attr("top") + "px");
+              jqModal.css("margin-top", "auto");
+  
+          }
+          if (jqElement.attr("left") != null) {
+              jqModal.css("left", jqElement.attr("left") + "px");
+              //jqModal.css("right", jqElement.attr("right") + "px");
+  
+              //jqModal.css("width", "auto");
+  
+             
+          }
+          if (jqElement.attr("width") != null) {
+              if (jqElement.attr("width") != "auto") {
+                  jqModal.css("width", jqElement.attr("width") + "px");
+                  jqModal.css("margin-left", "auto");
+                  var left = ($(window).width() - parseInt(jqElement.attr("width"))) / 2;
+                  jqModal.css("left", left + "px");
+              } else {
+                  jqModal.css("width", "auto");
+              }
+              
+              //jqModal.css("right", jqElement.attr("right") + "px");
+  
+              //jqModal.css("width", "auto");
+  
+              
+          }
+          //jqModal.modal("layout");
+      } else {
+          jqModal.modal("layout");
+      }*/
 }
 function getLocaleText(key) {
     var lang = lang_sfs();
@@ -3819,12 +3819,12 @@ function getUIVersion() {
 }
 
 function openModalConfirm(settings, onOk) {
-      
+
     //var id = "confirm-modal";
     if (settings.buttonText == null) {
-        
+
     }
-    $("body").append('<div id="' + settings.id + '" style="" class="modal fade " data-width="800"> <div class="modal-dialog modal-lg"> <div class="modal-content">  <div class="modal-body text-left">' + settings.content + '</div> <div class="modal-footer">  <button type="button" data-dismiss="modal" class="btn btn-primary" id="primary-btn-' + settings.id+'">' + settings.buttonText + '</button><button type="button" data-dismiss="modal" class="btn">Cancel</button> </div>  </div></div></div>');
+    $("body").append('<div id="' + settings.id + '" style="" class="modal fade " data-width="800"> <div class="modal-dialog modal-lg"> <div class="modal-content">  <div class="modal-body text-left">' + settings.content + '</div> <div class="modal-footer">  <button type="button" data-dismiss="modal" class="btn btn-primary" id="primary-btn-' + settings.id + '">' + settings.buttonText + '</button><button type="button" data-dismiss="modal" class="btn">Cancel</button> </div>  </div></div></div>');
     $('#' + settings.id).modal()
     .one('click', '#primary-btn-' + settings.id, function (e) {
         //$form.trigger('submit');
@@ -3876,7 +3876,7 @@ function openModal(jqElement, onClose) {
     //$(".modal-scrollable").remove();
     //$(".modal-backdrop").remove();
     if ($("#" + id).length == 0) {
-     
+
 
         if (getUIVersion() == 2) {
             $("body").append('<div id="' + id + '" style="" class="modal inmodal fade " data-width="800"> <div class="modal-dialog modal-lg"> <div class="modal-content">  <div class="modal-body text-left"><div class="preloader-big"></div></div></div></div></div>');
@@ -3902,10 +3902,9 @@ function openModal(jqElement, onClose) {
     });
     $("#" + id).modal({ modalOverflow: true });
     $("#" + id).modal("show");
-   
+
     if (onClose == undefined) {
-        if (jqElement.attr("onCloseMethod") != undefined)
-        {
+        if (jqElement.attr("onCloseMethod") != undefined) {
             onClose = window[jqElement.attr("onCloseMethod")];
         }
     }
@@ -3957,7 +3956,7 @@ function openModal(jqElement, onClose) {
         dataType: "html",
         data: data,
         cache: false,
-        error:function (data) {
+        error: function (data) {
             var x = data;
         },
         success: function (data) {
@@ -4667,4 +4666,119 @@ function setFullBlocks(idContainer, totalBlocks) {
 
     }
     $("head").append('<style id="blocks">' + cssBlocks.join("").toString() + ' </style>');
+}
+function setPopupCore(jqElements) {
+    jqElements.magnificPopup({
+        type: 'image',
+        gallery: {
+            enabled: true
+        },
+        callbacks: {
+            beforeOpen: function () {
+                console.log('Start of popup initialization');
+            },
+            elementParse: function (item) {
+                var href = item.el.attr("href");
+                var v = 1;
+                if (href.contains("image.ashx?")) {
+                    if (href.contains("down=1") == false) {
+                        href = href + "&down=1";
+                    }
+
+                } else {
+                    v = 2;
+                }
+                // Function will fire for each target element
+                // "item.el" is a target DOM element (if present)
+                // "item.src" is a source that you may modify
+                if (v == 1) {
+                    item.el.attr("href", href);
+                    var fileName = item.el.attr("file-name");
+                    if (fileName != null && (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".gif") || fileName.toLowerCase().endsWith(".png") || fileName.toLowerCase().endsWith(".bmp"))) {
+                        item.type = "image";
+                    } else {
+                        item.src = '<div style="position: relative;background: #FFF;padding: 20px;width: auto;max-width: 500px;margin: 20px auto;" class="white-popup"><a href="' + href + '"><img src="' + item.el.find("img").attr("src") + '"> Descargar </a> </div>';
+                        item.type = 'inline';
+                    }
+                } else {
+                    if (href.endsWith(".xlsx") || href.endsWith(".docx") || href.endsWith(".xls") || href.endsWith(".doc") || href.endsWith(".ppt") || href.endsWith(".pptx")) {
+                        item.src = "https://view.officeapps.live.com/op/view.aspx?src=" + escape(href);
+                        item.type = 'iframe';
+
+                    } else if (href.endsWith(".pdf")) {
+
+                        item.src = rootSfsAppUrl + "Static/v2/pdf/web/viewer.html?file=" + escape("http://" + href);
+                        item.type = 'iframe';
+                    } else if (href.toLowerCase().endsWith(".png") || href.toLowerCase().endsWith(".jpg") || href.toLowerCase().endsWith(".gif") || href.toLowerCase().endsWith(".jpg")) {
+
+                        item.type = "image";
+                    }
+                    else {
+                        item.src = '<div style="position: relative;background: #FFF;padding: 20px;width: auto;max-width: 500px;margin: 20px auto;" class="white-popup"><a href="' + href + '"><img src="' + item.el.find("img").attr("src") + '"> Descargar </a> </div>';
+                        item.type = 'inline';
+
+                    }
+                }
+                console.log('Parsing content. Item object that is being parsed:', item);
+            },
+            change: function () {
+                console.log('Content changed');
+                console.log(this.content); // Direct reference to your popup element
+            },
+            resize: function () {
+                console.log('Popup resized');
+                // resize event triggers only when height is changed or layout forced
+            },
+            open: function () {
+                console.log('Popup is opened');
+            },
+
+            beforeClose: function () {
+                // Callback available since v0.9.0
+                console.log('Popup close has been initiated');
+            },
+            close: function () {
+                console.log('Popup removal initiated (after removalDelay timer finished)');
+            },
+            afterClose: function () {
+                console.log('Popup is completely closed');
+            },
+
+            markupParse: function (template, values, item) {
+                // Triggers each time when content of popup changes
+                // console.log('Parsing:', template, values, item);
+            },
+            updateStatus: function (data) {
+                console.log('Status changed', data);
+
+            },
+            imageLoadComplete: function () {
+
+                console.log('Image loaded');
+            },
+
+
+            // Only for ajax popup type
+            parseAjax: function (mfpResponse) {
+                console.log('Ajax content loaded:', mfpResponse);
+            },
+            ajaxContentAdded: function () {
+                // Ajax content is loaded and appended to DOM
+                console.log(this.content);
+            }
+        },
+        image: {
+            tError: '<p><a target="_blank" href="%url%"><img style="height:100px;" height="100" src="%url%" border="0" /></a></p><a  target="_blank" href="%url%">@(GlobalMessages.IMAGE_NOT_DISPLAY_CLICK_DOWNLOAD)</a> ' // Error message
+        }
+    });
+}
+function setPopup(jqElements) {
+    if (typeof (jQuery().magnificPopup) == "undefined") {
+        Utilities.requireFiles([rootSfsAppUrl + "Static/v2/magnificPopup/jquery.magnific-popup.min.js"], function () {
+            setPopupCore(jqElements);
+        });
+    } else {
+        setPopupCore(jqElements);
+    }
+
 }
