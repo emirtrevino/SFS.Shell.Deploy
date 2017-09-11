@@ -4684,7 +4684,7 @@ function setPopupCore(jqElements) {
                     if (href.contains("down=1") == false) {
                         href = href + "&down=1";
                     }
-
+                   
                 } else {
                     v = 2;
                 }
@@ -4694,18 +4694,19 @@ function setPopupCore(jqElements) {
                 if (v == 1) {
                     item.el.attr("href", href);
                     var fileName = item.el.attr("file-name");
-                    if (fileName != null && (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".gif") || fileName.toLowerCase().endsWith(".png") || fileName.toLowerCase().endsWith(".bmp"))) {
+                    if (fileName != null && (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".gif") || fileName.toLowerCase().endsWith(".png") || fileName.toLowerCase().endsWith(".bmp")))
+                    {
                         item.type = "image";
                     } else {
                         item.src = '<div style="position: relative;background: #FFF;padding: 20px;width: auto;max-width: 500px;margin: 20px auto;" class="white-popup"><a href="' + href + '"><img src="' + item.el.find("img").attr("src") + '"> Descargar </a> </div>';
                         item.type = 'inline';
                     }
                 } else {
-                    if (href.endsWith(".xlsx") || href.endsWith(".docx") || href.endsWith(".xls") || href.endsWith(".doc") || href.endsWith(".ppt") || href.endsWith(".pptx")) {
+                    if (href.toLowerCase().endsWith(".xlsx") || href.toLowerCase().endsWith(".docx") || href.toLowerCase().endsWith(".xls") || href.toLowerCase().endsWith(".doc") || href.toLowerCase().endsWith(".ppt") || href.toLowerCase().endsWith(".pptx")) {
                         item.src = "https://view.officeapps.live.com/op/view.aspx?src=" + escape(href);
                         item.type = 'iframe';
 
-                    } else if (href.endsWith(".pdf")) {
+                    } else if (href.toLowerCase().endsWith(".pdf")) {
 
                         item.src = rootSfsAppUrl + "Static/v2/pdf/web/viewer.html?file=" + escape("http://" + href);
                         item.type = 'iframe';

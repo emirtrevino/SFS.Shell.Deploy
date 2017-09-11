@@ -189,20 +189,20 @@
                     if (isPopup || uiModel.IsPartialView == true)
                     {
                         <text>
-                           @Html.Raw("<" + uiModel.TagTypeForm + " action=\"" + sbUrlAction.ToString() + "?" + sbExtraQs.ToString() + "\" data-ajax=\"true\" data-ajax-failure=\"showErrorFromMvc\" data-ajax-mode=\"replace\" data-ajax-success=\"onMessageSuccess\" data-ajax-update=\"" + idWindow + "\" id=\"form_" + idWindow + "\" method=\"post\">");
+                           @Html.Raw("<" + uiModel.TagTypeForm + " action=\"" + sbUrlAction.ToString() + "?" + sbExtraQs.ToString() + "\" data-ajax=\"true\" data-ajax-failure=\"showErrorFromMvc\" data-ajax-mode=\"replace\" data-ajax-success=\"onMessageSuccess\" data-ajax-update=\"#" + idWindow + "\" id=\"form_" + idWindow + "\" method=\"post\">")
                         </text>
                     }
                     else
                     {
                         <text>
-                          @Html.Raw("<" + uiModel.TagTypeForm + " id=\"form_" + idWindow + "\" action=\"" + sbUrlAction.ToString() + "?" + sbExtraQs.ToString() + "\" method=\"post\">");
+                          @Html.Raw("<" + uiModel.TagTypeForm + " id=\"form_" + idWindow + "\" action=\"" + sbUrlAction.ToString() + "?" + sbExtraQs.ToString() + "\" method=\"post\">")
                         </text>
                     }
 
                           }
                           else
                           { // no se trata de edición sino solo detalles
-                              @Html.Raw("<" + uiModel.TagTypeForm + "\" class=\"" + (uiModel.IsMultiColumn == false ? "form-horizontal" : "") + " display\">");
+                              @Html.Raw("<" + uiModel.TagTypeForm + "\" class=\"" + (uiModel.IsMultiColumn == false ? "form-horizontal" : "") + " display\">")
 
                     //Html.HiddenFor(m=>m.IdLogin) //TODO: hidden key
                 }
