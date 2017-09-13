@@ -40,6 +40,17 @@
             <param name="contextRequest"></param>
             <returns></returns>
         </member>
+        <member name="T:SFSdotNet.Framework.Authentication.IdentitySchema.Providers">
+            <summary>
+            Enum to represent the Authentication Providers
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Authentication.IdentitySchema.GetClaims">
+            <summary>
+            Method used to get Claims of Identity
+            </summary>
+            <returns>List of Claims Identity</returns>
+        </member>
         <member name="M:SFSdotNet.Framework.BR.ServiceBase.HandleException(System.Exception)">
             <summary>
             Maneja la excepción de acuerdo al contexto de donde ocurre
@@ -152,6 +163,104 @@
             <summary>
               Looks up a localized string similar to Registro no encontrado.
             </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Data.StaticFile">
+            <summary>
+            Representa los datos de la referencia de una imagen en una entidad de negocio
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Data.StaticFile.UrlThumb">
+            <summary>
+            Url de la imagen miniatura default
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Data.StaticFile.Url">
+            <summary>
+            Url de la imagen original
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Data.StaticFile.Type">
+            <summary>
+            Tipo de imagen (Opcional)
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Data.StaticStorage">
+            <summary>
+            Permite interactuar con el repositorio de archivos estáticos como imágenes o documentos
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Data.StaticStorage.GetTypeFromName(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Data.StaticStorage.getFileExtensionByExtensionIco(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="extension">Extensión del archivo</param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Data.StaticStorage.MoveAndGetUrlFile(System.String,System.String,System.String,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Mueve un archivo de la applicación a un repositorio estático o al container de blob storage de Azure
+            </summary>
+            <param name="originalPath">The original path.</param>
+            <param name="contextRequest">The context request.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Data.StaticStorage.GetFile(System.Nullable{System.Guid},System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,SFSdotNet.Framework.Security.BusinessObjects.secModule,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            
+            </summary>
+            <param name="guidFile">Identificador del archivo</param>
+            <param name="fileName">Nombre del archivo</param>
+            <param name="storeLocation">Ubicación  física del archivo</param>
+            <param name="type"></param>
+            <param name="h">Alto del icono o imagen thumb</param>
+            <param name="w">Ancho de icono o imagen thumb</param>
+            <param name="entityName"></param>
+            <param name="entitySetName"></param>
+            <param name="moduleApp"></param>
+            <param name="contextRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Data.StaticStorage.GetFile(System.Nullable{System.Guid},System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,SFSdotNet.Framework.Security.BusinessObjects.secModule,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Obtiene los datos de imágenes o archivos de una entidad determinada de tipo repositorio y una entidad de uso de dicho repositorio.
+            </summary>
+            <param name="guidFile">Identificador del archivo</param>
+            <param name="fileName">Nombre del archivo</param>
+            <param name="storeLocation">Ubicación  física del archivo</param>
+            <param name="fileThumbSizes">Tamaños existentes del archivo</param>
+            <param name="type">Tipo de archivo</param>
+            <param name="h">Alto del icono o imagen thumb</param>
+            <param name="w">Ancho de icono o imagen thumb</param>
+            <param name="entityName">Nombre de la entidad</param>
+            <param name="entitySetName">Nombre del set de la entidad (Generalmente pluralización)</param>
+            <param name="moduleApp">Entidad de módulo o aplicación</param>
+            <param name="contextRequest">Contexto de petición</param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Data.StaticStorage.GetFile(System.Object,System.Nullable{System.Guid},System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,SFSdotNet.Framework.Security.BusinessObjects.secModule,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Obtiene los datos de imágenes o archivos de una entidad determinada de tipo repositorio y una entidad de uso de dicho repositorio.
+            </summary>
+            <param name="itemFile">Entidad de repositorio (opcional)</param>
+            <param name="guidFile">Identificador del archivo</param>
+            <param name="fileName">Nombre del archivo</param>
+            <param name="storeLocation">Ubicación  física del archivo</param>
+            <param name="fileThumbSizes">Tamaños existentes del archivo</param>
+            <param name="type">Tipo de archivo</param>
+            <param name="h">Alto del icono o imagen thumb</param>
+            <param name="w">Ancho de icono o imagen thumb</param>
+            <param name="entityName">Nombre de la entidad</param>
+            <param name="entitySetName">Nombre del set de la entidad (Generalmente pluralización)</param>
+            <param name="moduleApp">Entidad de módulo o aplicación</param>
+            <param name="contextRequest">Contexto de petición</param>
+            <returns></returns>
         </member>
         <member name="T:SFSdotNet.Framework.Validation.Check">
              <summary>
@@ -762,6 +871,17 @@
             </summary>
             <param name="items">Trackable objects</param>
         </member>
+        <member name="T:SFSdotNet.Framework.Entities.ApiWrapperResponse">
+            <summary>
+            Contiene la estructura del contenedor de respuesta a una petición API
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.Entities.ApiWrapper">
+            <summary>
+            Class ApiWrapper.
+            </summary>
+            <seealso cref="T:SFSdotNet.Framework.Entities.ApiWrapper" />
+        </member>
         <member name="T:SFSdotNet.Framework.Entities.IUISearcherFilter">
             <summary>
             Pantalla de creación del filtro
@@ -782,6 +902,50 @@
             </summary>
             <param name="values">propiedades que representan la llave de la entidad</param>
             <returns>Regresa verdadero si considera que las propiedades no fueron establecidas</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.DateAndTime.ConvertLocalToUtc(System.DateTime,SFSdotNet.Framework.Globalization.LocalContexts,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Convierte una fecha y hora local a UTC con respecto al usuario en contexto
+            </summary>
+            <param name="localDateTime">The local date time.</param>
+            <param name="localContext">The local context.</param>
+            <param name="contextRequest">The context request.</param>
+            <returns>DateTime.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.DateAndTime.ConvertLocalToUtc(System.DateTime,System.String,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Convierte una fecha y hora local a UTC considerando horario de verano
+            </summary>
+            <param name="localDateTime">The local date time.</param>
+            <param name="localTimeZoneId">The local time zone identifier.</param>
+            <param name="contextRequest">The context request.</param>
+            <returns>System.Nullable&lt;DateTime&gt;.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.DateAndTime.ConvertUtcToLocal(System.DateTime,System.String,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Convierte una fecha y hora en UTC a local con respecto al timezone especificado
+            </summary>
+            <param name="utcDateTime">The UTC date time.</param>
+            <param name="localTimeZoneId">The local time zone identifier.</param>
+            <param name="contextRequest">The context request.</param>
+            <returns>System.Nullable&lt;DateTime&gt;.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.DateAndTime.ConvertUtcToLocal(System.DateTime,SFSdotNet.Framework.Globalization.LocalContexts,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Converts the UTC to local.
+            </summary>
+            <param name="utcDateTime">The UTC date time.</param>
+            <param name="localContext">The local context.</param>
+            <param name="contextRequest">The context request.</param>
+            <returns>DateTime.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Globalization.DateAndTime.GetLocalNow(SFSdotNet.Framework.Globalization.LocalContexts,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Obtiene la fecha y hora local por el contexto del usuario
+            </summary>
+            <param name="localContext">Debe ser el contexto del usuario</param>
+            <param name="contextRequest">Contexto de la petición</param>
+            <returns>DateTime.</returns>
         </member>
         <member name="T:SFSdotNet.Framework.Globalization.Provider.DBResourceProvider">
             <summary>
@@ -987,6 +1151,42 @@
             <param name="customAction"></param>
             <returns></returns>
         </member>
+        <member name="M:SFSdotNet.Framework.Images.ImageUtil.GetImageFormat(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Images.ImageUtil.GetImageFormat(System.Drawing.Image)">
+            <summary>
+            Obtiene el formato de la imagen 
+            </summary>
+            <param name="img">Formato de la imagen</param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Images.ImageUtil.CropImage(System.Drawing.Image,System.Int32,System.Int32,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Corta una imagen a determinado tamaño solicitado, uno de los dos tamaños es requerido y el otro opcional
+            </summary>
+            <param name="Image">Imagen a transformar</param>
+            <param name="Height">Altura requerida</param>
+            <param name="Width">Ancho requerido</param>
+            <param name="imageFormat">Formato de la imagen</param>
+            <returns></returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.Images.ImageUtil.CropImage(System.Drawing.Image,System.Int32,System.Int32,System.Int32,System.Int32,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Corta una imagen a un tamaño solicitado, estableciendo punto vertical y horizontal inicial, uno de los dos tamaños es requerido y el otro opcional
+            </summary>
+            <param name="Image">Imagen a cortar</param>
+            <param name="Height">Alto</param>
+            <param name="Width">Ancho</param>
+            <param name="StartAtX">Punto inicial horizontal</param>
+            <param name="StartAtY">Punto inicial vertical</param>
+            <param name="imageFormat">Formato de la imagen</param>
+            <returns></returns>
+        </member>
         <member name="M:SFSdotNet.Framework.Index.Indexer.CanGetForIndex(System.String,System.String)">
             <summary>
             
@@ -1100,6 +1300,86 @@
             <param name="contextRequest">Opciones de paginación y otras</param>
             <returns></returns>
         </member>
+        <member name="T:SFSdotNet.Framework.My.CustomQuery">
+            <summary>
+            Class CustomQuery.
+            </summary>
+        </member>
+        <member name="T:SFSdotNet.Framework.My.ContextRequest">
+            <summary>
+            Contiene toda la información relacionada con la información en contexto de una peticióna a la regla de negocio, ya sea una operación CRUD o método custom.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.ContextRequest.IsApiRequest">
+            <summary>
+            Indica si la petición actual es mediante API REST
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.ContextRequest.ReplaceApiResponse(System.String,System.String,System.String,System.Object)">
+            <summary>
+            Permite reemplazar la respuesta natural de la petición sobreescribiendo cualquier otra
+            </summary>
+            <param name="status">Estado</param>
+            <param name="reason">Descripción corta o identificador</param>
+            <param name="message">Descripción larga o texto del error</param>
+            <param name="data">elemento de negocio</param>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.ContextRequest.PreventInterceptors">
+            <summary>
+            Evita la propagación de los eventos de intercepción en una operación crud
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.ContextRequest.SetParam(System.String,System.Object)">
+            <summary>
+            Permite guardar durante el ciclo de vida del contexto
+            </summary>
+            <param name="name">Identificador del objeto</param>
+            <param name="value">Objeto para guardar en la vida del contexto</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.ContextRequest.GetParam(System.String)">
+            <summary>
+            Obtiene un objeto guardado en el contexto
+            </summary>
+            <param name="name">Identificador del objeto</param>
+            <returns>System.Object.</returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.ContextRequest.EntityNameKey">
+            <summary>
+            Identificador de la entidad a la que se debe el contexto
+            </summary>
+            <value>The entity name key.</value>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.ContextRequest.IsActionExecuting(System.String)">
+            <summary>
+            Determina cuando una acción determinada ha sido ejecutada en el contexto de la solicitud
+            </summary>
+            <param name="actionKey">Identificador de la acción</param>
+            <returns><c>true</c> Si una acción con el identificador proporcionado es el que se está ejecutando; si no, devuelve <c>false</c>.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.ContextRequest.CopySafe">
+            <summary>
+            Copies the safe.
+            </summary>
+            <returns>ContextRequest.</returns>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.ContextRequest.HttpContext">
+            <summary>
+            Gets or sets the HTTP context. 
+            </summary>
+            <value>The HTTP context.</value>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.ContextRequest.CurrentContext">
+            <summary>
+            Gets or sets the current context.
+            </summary>
+            <value>The current context.</value>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.ContextRequest.CustomQuery">
+            <summary>
+            Gets or sets the custom query.
+            </summary>
+            <value>The custom query.</value>
+        </member>
         <member name="P:SFSdotNet.Framework.My.Context.ModuleApplication">
             <summary>
             Entrega información de la aplicación en contexto
@@ -1116,15 +1396,86 @@
             Javascript function for call to end of process
             </summary>
         </member>
+        <member name="T:SFSdotNet.Framework.My.CurrentContextInfo">
+            <summary>
+            Class CurrentContextInfo.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.CurrentContextInfo.ApplicationPath">
+            <summary>
+            Gets or sets the application path.
+            </summary>
+            <value>The application path.</value>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.CurrentContextInfo.CentralRepositoryPath">
+            <summary>
+            Gets or sets the central repository path.
+            </summary>
+            <value>The central repository path.</value>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.CurrentContextInfo.ApplicationHome">
+            <summary>
+            Gets or sets the application home.
+            </summary>
+            <value>The application home.</value>
+        </member>
         <member name="M:SFSdotNet.Framework.My.CurrentContextInfo.BuildCompanies">
             <summary>
             
             </summary>
         </member>
+        <member name="M:SFSdotNet.Framework.My.CurrentContextInfo.#ctor(SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SFSdotNet.Framework.My.CurrentContextInfo"/> class.
+            </summary>
+            <param name="contextRequest">The context request.</param>
+        </member>
         <member name="P:SFSdotNet.Framework.My.CurrentContextInfo.Permission">
             <summary>
             This utility allow share acces to permission engine
             </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.CurrentContextInfo.User">
+            <summary>
+            Usuario en el contexto
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.My.CurrentContextInfo.Module">
+            <summary>
+            Aplicación o modulo en el contexto
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.CurrentContextInfo.ChangeCurrentCompany(System.Guid)">
+            <summary>
+            Cambia la empresa actual
+            </summary>
+            <param name="idCompany">Identificador de la empresa</param>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.CurrentContextInfo.IsModuleUserUnlimited(System.String,SFSdotNet.Framework.Security.BusinessObjects.secCompany)">
+            <summary>
+            Determina si el usuario en contexto es usuario ilimitado (Permisos CRUD en todos los catálogos) en determinada empresa
+            </summary>
+            <param name="moduleKey">Nombre clave de la aplicación</param>
+            <param name="company">Empresa en contexto</param>
+            <returns><c>true</c> if [is module user unlimited] [the specified module key]; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.CurrentContextInfo.IsUserInRole(SFSdotNet.Framework.Security.BusinessObjects.secUser,SFSdotNet.Framework.Security.BusinessObjects.secCompany,System.String,SFSdotNet.Framework.My.ContextRequest)">
+            <summary>
+            Determina si un usuario se encuentra en un rol y una empresa 
+            </summary>
+            <param name="user">El usuario</param>
+            <param name="company">La empresa</param>
+            <param name="roleNameKey">El identificador lógico del rol</param>
+            <param name="contextRequest">The context request.</param>
+            <returns><c>true</c> if [is user in role] [the specified user]; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:SFSdotNet.Framework.My.CurrentContextInfo.IsModuleAdmin(SFSdotNet.Framework.Security.BusinessObjects.secModule,SFSdotNet.Framework.Security.BusinessObjects.secCompany)">
+            <summary>
+            Determines whether [is module admin] [the specified module].
+            </summary>
+            <param name="module">The module.</param>
+            <param name="company">The company.</param>
+            <returns><c>true</c> if [is module admin] [the specified module]; otherwise, <c>false</c>.</returns>
         </member>
         <member name="M:SFSdotNet.Framework.My.EventLog.Exception(System.Exception,SFSdotNet.Framework.My.ContextRequest)">
             <summary>
@@ -1228,9 +1579,19 @@
               Looks up a localized string similar to Error del sistema.
             </summary>
         </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.OF">
+            <summary>
+              Looks up a localized string similar to of.
+            </summary>
+        </member>
         <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.OkTitle">
             <summary>
               Looks up a localized string similar to Hecho.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.PAGE">
+            <summary>
+              Looks up a localized string similar to Page.
             </summary>
         </member>
         <member name="P:SFSdotNet.Framework.Resources.GlobalMessages.PERMISSIONS">
@@ -1497,19 +1858,6 @@
             	<c>true</c> if the specified node is visible; otherwise, <c>false</c>.
             </returns>
         </member>
-        <member name="T:SFSdotNet.Framework.Web.Mvc.MetaDataGridModel`1">
-            <summary>
-            Class to auto generate columns based on the ModelMetadata
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Mvc.MetaDataGridModel`1.#ctor(System.Action{MvcContrib.UI.Grid.ColumnBuilder{`0}})">
-            <summary>
-            Enumerates through the ModelMetadata for a given type and
-            adds columns to the Grid
-            </summary>
-            <param name="insertColumns"></param>
-        </member>
         <member name="M:SFSdotNet.Framework.Web.Mvc.MyModelMetaDataProvider.CreateMetadata(System.Collections.Generic.IEnumerable{System.Attribute},System.Type,System.Func{System.Object},System.Type,System.String)">
             <summary>
             Custom ModelMedataProvider used to store the SearchFilterAttribute and OrderByAttribute
@@ -1522,195 +1870,6 @@
             <param name="modelType"></param>
             <param name="propertyName"></param>
             <returns></returns>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Mvc.PagingSorting.ExtensionMethods.AsFiltered``1(System.Linq.IQueryable{``0},``0)">
-            <summary>
-            Adds filter criteria to the IQueryable based on the properties of the 
-            filter of type T.
-            For a filter to be applied, the field has to be decorated with 
-            [SearchFilter()] and the value passed in should not be null
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="queryable"></param>
-            <param name="filter"></param>
-            <returns></returns>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Mvc.PagingSorting.ExtensionMethods.AsPagination``1(System.Linq.IQueryable{``0},SFSdotNet.Framework.Web.Mvc.PagingSorting.PageSortOptions)">
-            <summary>
-            Converts an IQueryable into an IPagination using the PageSortOptions.
-            Sorting will be done on the sortField passed in the PageSortOptions
-            if that field has the attribute [OrderBy()]. If not the field that 
-            has [OrderBy(IsDefault=true)] is used.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="paged"></param>
-            <returns></returns>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Mvc.PagingSorting.ExtensionMethods.GetModelMetadataForOrderByField(System.String,System.Type)">
-            <summary>
-            Gets the ModelMedataData for the field being sorted on. 
-            If the field being sorted on does not have the OrderBy attribute,
-            we return the ModelMetaData for the field that has IsDefault set to true.
-            [OrderBy(IsDefault = true)]
-            </summary>
-            <param name="sortField"></param>
-            <param name="iqueryableType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Mvc.PagingSorting.ExtensionMethods.GetModelMetadataByAdditionalValueKey(System.Type,System.String)">
-            <summary>
-            Find all ModelMetaData that have AdditionalValues with the given key
-            </summary>
-            <param name="model"></param>
-            <param name="modelType"></param>
-            <param name="attributeKey"></param>
-            <returns></returns>
-        </member>
-        <member name="T:SFSdotNet.Framework.Web.Mvc.PagingSorting.PageSortOptions">
-            <summary>
-            Container for holding Paging/Sorting information
-            </summary>
-        </member>
-        <member name="P:SFSdotNet.Framework.Web.Controls.MyListView.SelectItem">
-            <summary>
-            Posterior al load
-            </summary>
-        </member>
-        <member name="T:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage">
-            <summary>
-            To use this class, simply call the RedirectSavingPageState(string url) method instead of
-            Response.Redirect to call a page and have this page keep its state.
-            You must also replace Request.Form with PostData throughout the existing code in your page.
-            
-            The substitution of Request.Form in existing code is necessary because the .NET framework doesn't
-            let us replace or modify the Request.Form collection.
-            </summary>
-        </member>
-        <member name="F:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.pageState">
-            <summary>
-            The persisted PageState.
-            This is non-null if a postback is being emulated from the persisted PageState.
-            </summary>
-        </member>
-        <member name="F:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.redirectSavingPageStateURL">
-            <summary>
-            Contains the URL to redirect to
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
-        <member name="P:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.IsRestoredPageState">
-            <summary>
-            Indicates whether the current page is being or has been restored from a persisted state
-            </summary>
-        </member>
-        <member name="P:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.PostData">
-            <summary>
-            Returns the post data from the persisted PageState if it exists, otherwise the actual post data from Request.Form
-            </summary>
-        </member>
-        <member name="P:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.PassBackData">
-            <summary>
-            Returns the data passed back from the sub-page which can be used to make changes to the saved page state.
-            This data is passed back via the query string.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.RedirectSavingPageState(System.String)">
-            <summary>
-            Call this method instead of Response.Redirect(url) to cause this page to restore its current state when it is next displayed.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.RedirectToSavedPage(System.String,System.Boolean)">
-            <summary>
-            Call this method to redirect to the specified relative URL,
-            specifying whether to restore the page's saved state
-            (assuming its state was saved when it was last shown).
-            The specified URL is relative to that of the current request.
-            This method is usually called from a "sub-page", which doesn't extend this class. 
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.RemoveSavedPageState(System.String)">
-            <summary>
-            Call this method to clear the saved PageState of the page with the specified relative URL.
-            This ensures that the next redirect to the specified page will not revert to the saved state.
-            The specified URL is relative to that of the current request.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.DeterminePostBackMode">
-            <summary>
-            This method is called by the framework after the Init event to determine whether a postback is being performed.
-            The Page.IsPostBack property returns true iff this method returns a non-null.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.LoadPageStateFromPersistenceMedium">
-            <summary>
-            This method is called by the framework after DeterminePostBackMode(), but before custom event handling.
-            It returns the view state that the framework uses to restore the state of the controls.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.OnLoad(System.EventArgs)">
-            <summary>
-            This method is called by the framework after LoadPageStateFromPersistenceMedium() to raise the Load event.
-            Controls are populated with data from PostData here because it has to happen after
-            the framework has loaded the view state, which happens after the execution of the
-            LoadPageStateFromPersistenceMedium() method.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.LoadPostData(System.Web.UI.Control,System.Collections.ArrayList)">
-            <summary>
-            This method performs depth-first recursion on all controls contained in the specified control,
-            calling the framework's LoadPostData on each and adding those modified to the modifiedControls list.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.SavePageStateToPersistenceMedium(System.Object)">
-            <summary>
-            This method is called by the framework between the PreRender and Render events.
-            It is only called if this page is to be redisplayed, not if Response.Redirect has been called.
-            To ensure it is called before we redirect, we must postpone the Response.Redirect call until now.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.LoadPageState(System.Uri)">
-            <summary>
-            Override this method to load the state from a persistence medium other than the Session object.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.SavePageState(System.Uri,SFSdotNet.Framework.Web.Shared.CodeBase.PageState)">
-            <summary>
-            Override this method to save the state to a persistence medium other than the Session object.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.RemoveSavedPageState(System.Uri)">
-            <summary>
-            Override this method to remove the state from a persistence medium other than the Session object.
-            </summary>
-        </member>
-        <member name="M:SFSdotNet.Framework.Web.Shared.CodeBase.PersistentStatePage.GetPageStateKey(System.Uri)">
-            <summary>
-            Returns a key which will uniquely identify a page in a global namespace based on its URL.
-            </summary>
-        </member>
-        <member name="T:SFSdotNet.Framework.Web.Shared.CodeBase.PageState">
-            <summary>
-            This is the object stored in the persistence medium, containing the view state, post data, and URL.
-            </summary>
-        </member>
-        <member name="T:SFSdotNet.Framework.Web.Shared.CodeBase.SerializableViewState">
-            <summary>
-            This is a simple wrapper around the view state object to make it serializable.
-            </summary>
-        </member>
-        <member name="F:SFSdotNet.Framework.Web.Shared.CustomFields.ForeignKeyField.HyperLink1">
-            <summary>
-            HyperLink1 control.
-            </summary>
-            <remarks>
-            Auto-generated field.
-            To modify move field declaration from designer file to code-behind file.
-            </remarks>
         </member>
         <member name="T:SFSdotNet.Framework.WF.Activator">
             <summary>
@@ -3430,62 +3589,6 @@
             Gets the view for SFSdotNetFrameworkSecurityContext.secProcessQueues.
             </summary>
             <returns>The mapping view.</returns>
-        </member>
-        <member name="M:CSSFriendly.ChangePasswordAdapter.OnInit(System.EventArgs)">
-            ///////////////////////////////////////////////////////////////////////////////
-            PROTECTED        
-        </member>
-        <member name="M:CSSFriendly.ChangePasswordAdapter.RegisterScripts">
-            ///////////////////////////////////////////////////////////////////////////////
-            PRIVATE        
-        </member>
-        <member name="M:CSSFriendly.CompositeDataBoundControlAdapter.OnInit(System.EventArgs)">
-            ///////////////////////////////////////////////////////////////////////////////
-            METHODS
-        </member>
-        <member name="M:CSSFriendly.CreateUserWizardAdapter.OnInit(System.EventArgs)">
-            ///////////////////////////////////////////////////////////////////////////////
-            PROTECTED        
-        </member>
-        <member name="M:CSSFriendly.CreateUserWizardAdapter.RegisterScripts">
-            ///////////////////////////////////////////////////////////////////////////////
-            PRIVATE        
-        </member>
-        <member name="M:CSSFriendly.DataListAdapter.OnInit(System.EventArgs)">
-            ///////////////////////////////////////////////////////////////////////////////
-            PROTECTED        
-        </member>
-        <member name="M:CSSFriendly.DataListAdapter.RegisterScripts">
-            ///////////////////////////////////////////////////////////////////////////////
-            PRIVATE        
-        </member>
-        <member name="M:CSSFriendly.GridViewAdapter.OnInit(System.EventArgs)">
-            ///////////////////////////////////////////////////////////////////////////////
-            PROTECTED        
-        </member>
-        <member name="M:CSSFriendly.GridViewAdapter.RegisterScripts">
-            ///////////////////////////////////////////////////////////////////////////////
-            PRIVATE        
-        </member>
-        <member name="M:CSSFriendly.LoginAdapter.OnInit(System.EventArgs)">
-            ///////////////////////////////////////////////////////////////////////////////
-            PROTECTED        
-        </member>
-        <member name="M:CSSFriendly.LoginAdapter.RegisterScripts">
-            ///////////////////////////////////////////////////////////////////////////////
-            PRIVATE        
-        </member>
-        <member name="M:CSSFriendly.LoginStatusAdapter.RegisterScripts">
-            ///////////////////////////////////////////////////////////////////////////////
-            PRIVATE        
-        </member>
-        <member name="M:CSSFriendly.PasswordRecoveryAdapter.OnInit(System.EventArgs)">
-            ///////////////////////////////////////////////////////////////////////////////
-            PROTECTED        
-        </member>
-        <member name="M:CSSFriendly.PasswordRecoveryAdapter.RegisterScripts">
-            ///////////////////////////////////////////////////////////////////////////////
-            PRIVATE        
         </member>
     </members>
 </doc>

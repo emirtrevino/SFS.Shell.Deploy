@@ -1177,6 +1177,10 @@
                         Html.RenderPartial("PopupView", new SFSdotNet.Framework.Web.Mvc.Models.PopupModel() { FunctionName = "listPopupDetails" + idTab, OnCloseFunction = "onUpdateListData" + idTab, TargetClassName = idTab + "list-details" });
                     }
                     int pageSize = 15;
+                    if (uiModel.ListSettings.PageSize != null)
+                    {
+                        pageSize = uiModel.ListSettings.PageSize.Value;
+                    }
                     if (!string.IsNullOrEmpty(Request.QueryString["pag"]))
                     {
                         pageSize = Convert.ToInt32(Request.QueryString["pag"]);
