@@ -78,6 +78,24 @@
     {
         multipleUpload = true;
     }
+
+    string fileEntityName = null;
+    string fileEntitySetName = null;
+
+    var propFileEntityName = currentProperty.CustomProperties.FirstOrDefault(p=> p.Name == "FileEntityName");
+    var propFileEntitySetName = currentProperty.CustomProperties.FirstOrDefault(p => p.Name == "FileEntitySetName");
+
+    if (propFileEntityName != null)
+    {
+        fileEntityName = propFileEntityName.Value;
+
+    }
+
+    if (propFileEntitySetName != null)
+    {
+        fileEntitySetName = propFileEntitySetName.Value;
+
+    }
 }
 @if (uiModel.ContextType == UIModelContextTypes.EditForm && uiModel.IsNew == true /*&& multipleUpload == true */)
 {
@@ -247,7 +265,7 @@
         });
         var idFile@(currentProperty.PropertyName) = "";
         var imageResourcesLoaded = false;
-    var urlUpload@(currentProperty.PropertyName) = '@(VirtualPathUtility.ToAbsolute("~/"))Files/Uploads?dec=true&id=' + idFile@(currentProperty.PropertyName) + '&filenamec=@(fileNamePropertyName)&typec=@(fileTypePropertyName)&idc=@(idPropertyName)&ns=@(moduleNamespace)&areaName=@(areaNamespace)&modelPathType=@(ModelPathType)&controller=@(controllerName)&sizec=@(fileSizePropertyName)&propertyData=@(fileDataPropertyName)&h=@(hs)&w=@(ws)';
+    var urlUpload@(currentProperty.PropertyName) = '@(VirtualPathUtility.ToAbsolute("~/"))Files/Uploads?dec=true&id=' + idFile@(currentProperty.PropertyName) + '&filenamec=@(fileNamePropertyName)&typec=@(fileTypePropertyName)&idc=@(idPropertyName)&ns=@(moduleNamespace)&areaName=@(areaNamespace)&modelPathType=@(ModelPathType)&controller=@(controllerName)&sizec=@(fileSizePropertyName)&entity=@(fileEntityName)&setName=@(fileEntitySetName)&propertyData=@(fileDataPropertyName)&h=@(hs)&w=@(ws)';
     function removeFile@(currentProperty.PropertyName)() {
         //TODO: eliminar archivo en base al Guid
         var urlpic = "@(VirtualPathUtility.ToAbsolute("~/"))" + "Content/images/no_image.jpg";
@@ -363,7 +381,7 @@
                            if (progress == 100){
                                setTimeout(function () {
                                    $('#form-@(currentProperty.PropertyName)').closest("div.popup").find("div.modal-footer button.save").click();
-                               },1000);
+                               },2000);
                            }
 
                     </text>
@@ -417,6 +435,7 @@
                 $("#delfile@(currentProperty.PropertyName)").show();
                 $("#tablefileupload@(currentProperty.PropertyName)").hide();
             } else {
+                //debugger;
                 if (data.result.files.length == 1) {
                     filesUploaded@(currentProperty.PropertyName).push(data.result.files[0].FileId);
                 }
