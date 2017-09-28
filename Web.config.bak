@@ -29,14 +29,14 @@
   
 
   <appSettings>
-    <add key="ida:ClientId" value="aaaf1fbf2df-0206-43f7-8ce6-95e889a78258" />
-    <add key="ida:ClientSecret" value="0452C7B3D43C5BB212AC77F27311703D3F1BFB0E" />
+    <add key="ida:ClientId" value="[replace]" />
+    <add key="ida:ClientSecret" value="[replace]" />
     <add key="ida:AADInstance" value="https://login.microsoftonline.com/{0}{1}" />
-    <add key="ida:RedirectUri" value="https://local2.mobiik-cme.com/DevShell/SFSdotNetFrameworkSecurity/Public/ExternalLoginCallback" />
+    <add key="ida:RedirectUri" value="https://domain/SFSdotNetFrameworkSecurity/Public/ExternalLoginCallback" />
     
-    <add key="Office365ClientId" value="08b46590-2bbb-4cf6-a3d3-c0bbb962fe90" />
-    <add key="Office365ClientSecret" value="2rARefz69m5yUvhz3aOILdSaYLaoEBSe/ttvPKLamkM=" />
-    <add key="Office365Authority" value="https://login.microsoftonline.com/ff463ea8-92b7-4e5a-a417-cf03db333692/" />
+    <add key="Office365ClientId" value="[replace]" />
+    <add key="Office365ClientSecret" value="[replace]" />
+    <add key="Office365Authority" value="https://login.microsoftonline.com/[replace]/" />
     <add key="Office365Resource" value="https://outlook.office365.com" />
     <add key="Office365RedirectUri" value="http://localhost:26070/Home/Index" />
     <add key="Office365TaksRedirectUri" value="http://localhost:26070/Token/OfficeTaksToken" />
@@ -44,18 +44,18 @@
     <add key="Office365TaskFoldersRestApi" value="https://outlook.office.com/api/beta/me/taskfolders" />
     <add key="Office365CalendarEventsRestApi" value="https://outlook.office.com/api/v2.0/me/events" />
     <add key="Office365CalendarRedirectUri" value="http://localhost:26070/Token/OfficeCalendarToken" />
-    <add key="GoogleApplicationName" value="CremeMeetings" />
-    <add key="GoogleClientId" value="253429281306-ab8rek4tjdi56id18no552m2veu6hpdv.apps.googleusercontent.com" />
-    <add key="GoogleClientSecret" value="poeYNG3wis6kYBU2Eg9U_d4Q" />
+    <add key="GoogleApplicationName" value="[replace]" />
+    <add key="GoogleClientId" value="[replace]" />
+    <add key="GoogleClientSecret" value="[replace]" />
     <add key="GoogleCalendarScope" value="https://www.googleapis.com/auth/calendar" />
     <add key="GoogleTasksScope" value="https://www.googleapis.com/auth/tasks" />
-    <add key="GoogleDeveloperAccount" value="israel.martinez.mobiik@gmail.com" />
+    <add key="GoogleDeveloperAccount" value="*@gmail.com" />
 
     <add key="AuthenticationType" value="ApplicationCookie" />
     
     <add key="UseRedisCache" value="false" />
     <add key="CacheType" value="InMemory" />
-    <add key="RedisConnectionString" value="ecosys.redis.cache.windows.net,ssl=true,password=LRt/ATdyKS7S9VE404KcgwfgcV4TOc6JbTVrf3oH09A=" />
+    <add key="RedisConnectionString" value="[replace].redis.cache.windows.net,ssl=true,password=[replace]" />
 
     
 
@@ -67,31 +67,31 @@
     
     
     <add key="UnobtrusiveJavaScriptEnabled" value="true" />
-    <add key="ReCaptchaPrivateKey" value="6Lc-3MgSAAAAAKxt39om284-Syh3pA0WfB_8ycT6" />
-    <add key="ReCaptchaPublicKey" value="6Lc-3MgSAAAAAJ_bSq7dX8YzzgFdhxxRveky6Pml" />
-    <add key="RecaptchaPrivateKey" value="6LeozCcTAAAAAOvF1EnrNxmhq91vQiG7xKYTvrK3" />
-    <add key="RecaptchaPublicKey" value="6LeozCcTAAAAAIS_v7RC2cDF0y2wRwsChWnwVlg1" />
-    <add key="PayPalUsername" value="mika_1254623454_biz@mailinator.com" />
-    <add key="PDTToken" value="eLIuLWgJVs544UHSLLm4uPRwsF7S4ApFPcg3w1TR1DHZZ31aFNYnF2mh_Li" />
+    <add key="ReCaptchaPrivateKey" value="[replace]" />
+    <add key="ReCaptchaPublicKey" value="[replace]" />
+    <add key="RecaptchaPrivateKey" value="[replace]" />
+    <add key="RecaptchaPublicKey" value="[replace]" />
+    <add key="PayPalUsername" value="*@mailinator.com" />
+    <add key="PDTToken" value="[replace]" />
     <add key="PayPalSubmitUrl" value="https://www.sandbox.paypal.com/cgi-bin/webscr" />
     <!--//URL para PayPal a nivel Live-->
     <add key="headertype" value="withlogo" />
     <add key="EncryptionKey" value="ZeroCool" />
     <add key="DefaultGlobalization" value="es-mx" />
-    <add key="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=appecosys;AccountKey=zU5NhvtkOwjhXHMAHj+QullvazeEBAHSEKMOkWDw1bhXglTanKmd7ZhMgG8YI/XZxcKAGe2xBonueI+Banddhw==" />
+    <add key="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=*;AccountKey=*" />
     <add key="StorageStaticType" value="AzureBlob" />
-    <add key="StorageStaticDomainPath" value="appecosys.blob.core.windows.net" />
+    <add key="StorageStaticDomainPath" value="*.blob.core.windows.net" />
     <add key="UnobtrusiveJavaScriptEnabled" value="true" />
     <!--<add key="MicrosoftClientId" value="0000000040123F12" />
     <add key="MicrosoftClientSecret" value="9TSzdpn5GxgqIN2nKxgAArNDCcUWT-HZ" />-->
-    <add key="GoogleClientId" value="741723137815-cges5aq7bjl5rrk4b2f6n92230jpma8o.apps.googleusercontent.com" />
-    <add key="GoogleClientSecret" value="uXTundHkViR_HagKx39SPY2C" />
-    <add key="MicrosoftClientId" value="000000004C0ED4B8" />
-    <add key="MicrosoftClientSecret" value="ObW2oUu6QAvPb20t0m-WrfcSwdV6Jtde" />
-    <add key="TwitterConsumerKey" value="w30ouaeAwa7nU9yLuMHrLg" />
-    <add key="TwitterConsumerSecret" value="jzWgfhDF7wmVq8HaMWu1RduTcZMAVdkTlEuKK2KzrPU" />
-    <add key="FacebookAppId" value="103434409865269" />
-    <add key="FacebookAppSecret" value="c91aee56af9853da04b75342a5544e59" />
+    <add key="GoogleClientId" value="[replace]" />
+    <add key="GoogleClientSecret" value="[replace]" />
+    <add key="MicrosoftClientId" value="[replace]" />
+    <add key="MicrosoftClientSecret" value="[replace]" />
+    <add key="TwitterConsumerKey" value="[replace]" />
+    <add key="TwitterConsumerSecret" value="[replace]" />
+    <add key="FacebookAppId" value="[replace]" />
+    <add key="FacebookAppSecret" value="[replace]" />
     <add key="FacebookUrlPicture" value="http://graph.facebook.com" />
 
     <add key="MvcSiteMapProvider_IncludeAssembliesForScan" value="" />
@@ -102,27 +102,7 @@
     <add key="MvcSiteMapProvider_SecurityTrimmingEnabled" value="false" />
     <add key="MvcSiteMapProvider_EnableSiteMapFile" value="true" />
 
-    <!--<add key="MvcSiteMapProvider_EnableResolvedUrlCaching" value="false"/>-->
-
-    <!--<add key="EncryptionKey" value="EwseTapj" />-->
-    <!--<add key="MvcSiteMapProvider_UseExternalDIContainer" value="false"/>
-    <add key="MvcSiteMapProvider_SiteMapFileName" value="~/Mvc.sitemap"/>
-    <add key="MvcSiteMapProvider_ScanAssembliesForSiteMapNodes" value="false"/>
-    <add key="MvcSiteMapProvider_ExcludeAssembliesForScan" value=""/>
-    <add key="MvcSiteMapProvider_IncludeAssembliesForScan" value=""/>
-    <add key="MvcSiteMapProvider_AttributesToIgnore" value=""/>
-    <add key="MvcSiteMapProvider_CacheDuration" value="5"/>
-    <add key="MvcSiteMapProvider_ControllerTypeResolverAreaNamespacesToIgnore" value=""/>
-    <add key="MvcSiteMapProvider_DefaultSiteMapNodeVisibiltyProvider" value=""/>
-    <add key="MvcSiteMapProvider_VisibilityAffectsDescendants" value="true"/>
-    <add key="MvcSiteMapProvider_SecurityTrimmingEnabled" value="false"/>
-    <add key="MvcSiteMapProvider_EnableLocalization" value="true"/>
-    <add key="MvcSiteMapProvider_EnableSitemapsXml" value="true"/>
-    <add key="MvcSiteMapProvider_EnableResolvedUrlCaching" value="true"/>
-    <add key="MvcSiteMapProvider_EnableSiteMapFile" value="true"/>
-    <add key="MvcSiteMapProvider_IncludeRootNodeFromSiteMapFile" value="true"/>
-    <add key="MvcSiteMapProvider_EnableSiteMapFileNestedDynamicNodeRecursion" value="false"/>
-    <add key="MvcSiteMapProvider_UseTitleIfDescriptionNotProvided" value="true"/>-->
+   
   </appSettings>
 
 
@@ -133,13 +113,13 @@
         <value>smtp.sendgrid.net</value>
       </setting>
       <setting name="SmtpUser" serializeAs="String">
-        <value>azure_ab93a29056c9cadc2670ca8c8791205b@azure.com</value>
+        <value>[replace]@azure.com</value>
       </setting>
       <setting name="SmtpPassword" serializeAs="String">
-        <value>pass.word1313</value>
+        <value>[replace]</value>
       </setting>
       <setting name="SmtpDefaultFrom" serializeAs="String">
-        <value>contactsys@appecosys.com</value>
+        <value>[replace]@[replace].com</value>
       </setting>
       <setting name="SmtpPort" serializeAs="String">
         <value>587</value>
@@ -170,6 +150,7 @@
     <httpRuntime maxRequestLength="350000000" requestValidationMode="2.0" targetFramework="4.5" maxUrlLength="1000" relaxedUrlToFileSystemMapping="true" />
     <httpModules>
       <add name="LocalizationModule" type="SFSdotNet.Framework.Web.Mvc.LocalizationModule, SFSdotNet.Framework.Web.Mvc" />
+      <add name="ApplicationInsightsWebTracking" type="Microsoft.ApplicationInsights.Web.ApplicationInsightsHttpModule, Microsoft.AI.Web" />
     </httpModules>
     <httpHandlers>
       <!--<add verb="POST,GET,HEAD" path="elmah.axd" type="Elmah.ErrorLogPageFactory, Elmah" />-->
@@ -273,12 +254,16 @@
     </siteMap>-->
   </system.web>
   <system.webServer>
+    <!--<serverRuntime enabled="true"  frequentHitThreshold="1"  frequentHitTimePeriod="00:00:20" />-->
+    
     <modules runAllManagedModulesForAllRequests="true">
       <remove name="Session" />
       <add name="Session" type="System.Web.SessionState.SessionStateModule" />
       <add name="LocalizationModule" type="SFSdotNet.Framework.Web.Mvc.LocalizationModule, SFSdotNet.Framework.Web.Mvc" />
       <remove name="FormsAuthentication" />
       <remove name="FormsAuthenticationModule" />
+      <remove name="ApplicationInsightsWebTracking" />
+      <add name="ApplicationInsightsWebTracking" type="Microsoft.ApplicationInsights.Web.ApplicationInsightsHttpModule, Microsoft.AI.Web" preCondition="managedHandler" />
     </modules>
     <rewrite>
       <rules>
@@ -319,7 +304,7 @@
 
     <dependentAssembly>
         <assemblyIdentity name="Antlr3.Runtime" publicKeyToken="eb42632606e9261f" />
-        <bindingRedirect oldVersion="3.4.1.9004" newVersion="3.5.0.2" />
+        <bindingRedirect oldVersion="0.0.0.0-3.5.0.2" newVersion="3.5.0.2" />
       </dependentAssembly>
             <dependentAssembly>
         <assemblyIdentity name="System.Linq.Dynamic" publicKeyToken="b72be0322d1b32a8" />
@@ -351,7 +336,8 @@
       </dependentAssembly>
       <dependentAssembly>
         <assemblyIdentity name="Newtonsoft.Json" culture="neutral" publicKeyToken="30ad4fe6b2a6aeed" />
-        <bindingRedirect oldVersion="0.0.0.0-6.0.0.0" newVersion="6.0.0.0" />
+        <bindingRedirect oldVersion="0.0.0.0-9.0.0.0" newVersion="10.0.0.0" />
+     
       </dependentAssembly>
       <dependentAssembly>
         <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
@@ -401,7 +387,7 @@
         <assemblyIdentity name="System.Web.Abstractions" publicKeyToken="31bf3856ad364e35" culture="neutral" />
         <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
       </dependentAssembly>
-      <dependentAssembly>
+      <!--<dependentAssembly>
         <assemblyIdentity name="Microsoft.WindowsAzure.Storage" publicKeyToken="31bf3856ad364e35" culture="neutral" />
         <bindingRedirect oldVersion="0.0.0.0-4.3.0.0" newVersion="4.3.0.0" />
       </dependentAssembly>
@@ -416,7 +402,7 @@
       <dependentAssembly>
         <assemblyIdentity name="Microsoft.Data.Edm" publicKeyToken="31bf3856ad364e35" culture="neutral" />
         <bindingRedirect oldVersion="0.0.0.0-5.7.0.0" newVersion="5.7.0.0" />
-      </dependentAssembly>
+      </dependentAssembly>-->
       <dependentAssembly>
         <publisherPolicy apply="no" />
         <assemblyIdentity name="Oracle.ManagedDataAccess" publicKeyToken="89b483f429c47342" culture="neutral" />
@@ -450,4 +436,11 @@
       </dataSources>
     </version>
   </oracle.manageddataaccess.client>
+  <system.diagnostics>
+    <trace autoflush="true" indentsize="0">
+      <listeners>
+        <add name="myAppInsightsListener" type="Microsoft.ApplicationInsights.TraceListener.ApplicationInsightsTraceListener, Microsoft.ApplicationInsights.TraceListener" />
+      </listeners>
+    </trace>
+  </system.diagnostics>
 </configuration>
