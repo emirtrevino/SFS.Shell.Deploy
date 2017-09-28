@@ -763,6 +763,7 @@ function setDateConfig(jqElement, method, options) {
                 //optionsForSet.keyboardNavigation = false;
                 //optionsForSet.forceParse = false;
                 //optionsForSet.todayHighlight = true,
+                optionsForSet.todayBtn = "linked";
                 optionsForSet.autoclose = true;
                 //if (options.beforeShowDay != null) {
                 //    optionsForSet.beforeShowDay = options.beforeShowDay;
