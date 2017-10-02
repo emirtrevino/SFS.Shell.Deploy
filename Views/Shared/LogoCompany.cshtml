@@ -77,7 +77,14 @@
 
         if (!SFSdotNet.Framework.Cache.Caching.ExistInCompany("logo-finded", company.GuidCompany )){
             SFSdotNet.Framework.Security.BR.secCompaniesBR brCompanies = new SFSdotNet.Framework.Security.BR.secCompaniesBR(true);
-            var compFinded = brCompanies.GetBy("GuidCompany = Guid(\"" + company.GuidCompany.ToString() +"\")", 1,1, "CreatedDate", "desc", "myaccount").FirstOrDefault();
+            SFSdotNet.Framework.Security.BusinessObjects.secCompany compFinded = null;
+            try
+            {
+                 compFinded = brCompanies.GetBy("GuidCompany = Guid(\"" + company.GuidCompany.ToString() + "\")", 1, 1, "CreatedDate", "desc", "myaccount").FirstOrDefault();
+            }catch(System.Reflection.ReflectionTypeLoadException ex)
+            {
+                throw ex.LoaderExceptions.FirstOrDefault();
+            }
             SFSdotNet.Framework.Cache.Caching.SetToCompany(true, "logo-finded", company.GuidCompany);
             if (compFinded != null ){
                 if (compFinded.ExistImage ){
