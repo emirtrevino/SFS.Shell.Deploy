@@ -299,7 +299,7 @@
     var fullQueryList@(Model.IdTab) = "";
     var fixedCustomFilter@(Model.IdTab) = "";
 
-    function refreshList@(Model.IdTab)(customFilter, preventCount, preventGet, preventFilterView, jqElement) {
+    function refreshList@(Model.IdTab)(customFilter, preventCount, preventGet, preventFilterView, jqElement, preventStarFilter) {
 
         //debugger;
         queryB@(Model.IdTab) = "";
@@ -367,7 +367,11 @@
             </text>
         }
         //$("#resultsAll@Model.IdTab").block({overlayCSS:  {backgroundColor: 'transparent'},baseZ:2000, message: '<h1><img alt="" src="@Url.Content("~/")Content/ajax-loader.gif" /> @GlobalMessages.PROCESSING_PLEASE_WAIT</h1>',  css: { border: '3px solid #a00' } });
-        var staticFilter@(Model.IdTab) = '@Url.Encode(Model.Filter)';
+
+        var staticFilter@(Model.IdTab) = "" ;
+        if (preventStarFilter != true ){
+            staticFilter@(Model.IdTab) = '@Url.Encode(Model.Filter)';
+        }
         var sepFF@(Model.IdTab) = "";
         if (staticFilter@(Model.IdTab).length > 0 && queryB@(Model.IdTab).length > 0)
             sepFF@(Model.IdTab) = " AND ";
