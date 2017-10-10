@@ -1,3 +1,13 @@
 syntax: glob
 .git/*
 Areas/*
+Static/Templates/Oleose/*
+Static/Templates/Inspinia/*
+Static/App/SFSBlog/*
+Views/Shared/_LayoutVisualContents - Copy.cshtml
+Static/Temp/*
+*.bak
+*.rej
+Static/Templates/AdminLTE-LF/LF RE logo.jpg
+Views/Home/App_bak.cshtml
+bin/SFSdotNet.Framework.Web.Mvc.dll.config
