@@ -765,6 +765,7 @@ function setDateConfig(jqElement, method, options) {
                 //optionsForSet.todayHighlight = true,
                 optionsForSet.todayBtn = "linked";
                 optionsForSet.autoclose = true;
+                optionsForSet.todayHighlight = true; //stackoverflow.com/questions/23604026/add-class-to-a-multiple-specific-day-in-bootstrap-datepicker
                 //if (options.beforeShowDay != null) {
                 //    optionsForSet.beforeShowDay = options.beforeShowDay;
                 //};
@@ -2254,7 +2255,16 @@ function getFormatted(value, type, symbol) {
                 //sbHtml.push(" <div typeControl='datepicker' type='" + settings.typeInput + "' uiVersion='2' name='" + settings.id + "' id='" + settings.id + "'></div>");
                 sbHtml.push(" <span class='input-group-addon'><i class=\"fa fa-calendar\" aria-hidden=\"true\"></i></span>");
                 sbHtml.push("</div>");
-            } else if (settings.type == "autocomplete") {
+            } else  if (settings.type == "time") {
+
+                sbHtml.push("<div id='div-con-" + settings.id + "' class='input-group bootstrap-timepicker timepicker " + settings.id + "'  >");
+                sbHtml.push(" <input value=\"\" type=\"text\" showtime=\"true\" showdate=\"false\" name=\"_" + settings.id + "\" id=\"_" + settings.id + "\" class=\"form-control field text small\" style = \"text-align: left;\" />");
+                sbHtml.push(" <input value=\"\" type=\"hidden\"  name=\"" + settings.id + "\" id=\"" + settings.id + "\" class=\"time\" />");
+                //sbHtml.push(" <div typeControl='datepicker' type='" + settings.typeInput + "' uiVersion='2' name='" + settings.id + "' id='" + settings.id + "'></div>");
+                sbHtml.push(" <span class=\"add-on input-group-addon\"> <i class=\"icon-time glyphicon glyphicon-time\"></i> </span>");
+                sbHtml.push("</div>");
+            }
+            else if (settings.type == "autocomplete") {
                 sbHtml.push("<input type=\"text\" id=\"" + settings.id + "Text\" name=\"" + settings.id + "Text\" class=\"autocomplete noquery  form-control  field text\" />");
                 sbHtml.push("<input type=\"hidden\" id=\"" + settings.id + "\" name=\"" + settings.id + "\" class=\"autocomplete\" />");
 
@@ -2281,8 +2291,36 @@ function getFormatted(value, type, symbol) {
                         });
                     }
                     //cleanDateConfig($(this).find("#" + settings.id), "datepicker");
-                    setDateConfig($(this).find("#" + settings.id), "datepicker");
-                } else if (settings.type == "autocomplete") {
+                    setDateConfig($(this).find("#" + settings.id), "datepicker", settings.options);
+                } else if (settings.type == "time") {
+                  
+
+                    if (jQuery().timepicker == undefined) {
+                        $.ajax({
+                            url: rootSfsAppUrl + "/Static/v2/bootstrap-timepicker/js/bootstrap-timepicker.js",
+                            dataType: "script",
+                            async: false
+
+                        });
+                    }
+
+                    $('#_' + settings.id + '').timepicker({ showMeridian: false, defaultTime: false, /*, template: 'modal'*/ });
+                    //cleanDateConfig($(this).find("#" + settings.id), "datepicker");
+                    $('#_' + settings.id  + '').on('changeTime.timepicker', function (e) {
+
+
+                        var timeString = (e.time.hours).pad() + ":" + (e.time.minutes).pad();
+                        //if (e.time.minutes.toString().length == 1) {
+                        //    timeString = timeString + "0";
+                        //}
+                        timeString = timeString + ":00";
+                        $('#' + settings.id).val(timeString);
+                    });
+
+                }
+
+
+                else if (settings.type == "autocomplete") {
                     //start autocomplete
                     if (jQuery().select2 == undefined) {
                         $.ajax({
