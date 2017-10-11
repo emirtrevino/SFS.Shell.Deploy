@@ -2284,7 +2284,7 @@ function getFormatted(value, type, symbol) {
 
                     if (jQuery().datepicker == undefined) {
                         $.ajax({
-                            url: rootSfsAppUrl + "/Static/v2/" + methodName + "/js/bootstrap-" + methodName + ".js",
+                            url: rootSfsAppUrl + "Static/v2/" + methodName + "/js/bootstrap-" + methodName + ".js",
                             dataType: "script",
                             async: false
 
@@ -2297,7 +2297,7 @@ function getFormatted(value, type, symbol) {
 
                     if (jQuery().timepicker == undefined) {
                         $.ajax({
-                            url: rootSfsAppUrl + "/Static/v2/bootstrap-timepicker/js/bootstrap-timepicker.js",
+                            url: rootSfsAppUrl + "Static/v2/bootstrap-timepicker/js/bootstrap-timepicker.js",
                             dataType: "script",
                             async: false
 
