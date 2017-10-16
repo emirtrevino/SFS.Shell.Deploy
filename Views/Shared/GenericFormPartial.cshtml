@@ -524,7 +524,7 @@
                 {
 
 
-                    sbInfo.Append(" (" + SFSdotNet.Framework.Globalization.DateAndTime.ConvertUtcToLocal(((DateTime)objValueCreatedDate), SFSdotNet.Framework.Globalization.LocalContexts.Company).ToString() + ")");
+                    sbInfo.Append(" (" + SFSdotNet.Framework.Globalization.DateAndTime.ConvertUtcToLocal(((DateTime)objValueCreatedDate), SFSdotNet.Framework.Globalization.LocalContexts.User).ToString() + ")");
 
                 }
             }
@@ -571,7 +571,7 @@
                 {
 
 
-                    sbInfo.Append("(" + SFSdotNet.Framework.Globalization.DateAndTime.ConvertUtcToLocal(((DateTime)objValueUpdatedDate), SFSdotNet.Framework.Globalization.LocalContexts.Company).ToString() + ")");
+                    sbInfo.Append("(" + SFSdotNet.Framework.Globalization.DateAndTime.ConvertUtcToLocal(((DateTime)objValueUpdatedDate), SFSdotNet.Framework.Globalization.LocalContexts.User).ToString() + ")");
 
                 }
             }

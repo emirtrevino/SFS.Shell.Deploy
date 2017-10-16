@@ -772,13 +772,13 @@ function setDateConfig(jqElement, method, options) {
 
 
                 $(idFormContainer + "#div-con-" + jqElement.attr("id")).datepicker(optionsForSet)
-                //.on("changeDate", function (ev) {
-                //    writeDateOnInput($(idFormContainer + "#" + $(this).attr("id").replace("div-con-", "")), ev.date);
-                //    $(idFormContainer + "#" + $(this).attr("id").replace("div-con-", "")).change();
-                //    if (options.changeDate != null) {
-                //        optionsForSet.changeDate = options.changeDate(ev);
-                //    }
-                //});
+                .on("changeDate", function (ev) {
+                    writeDateOnInput($(idFormContainer + "#" + $(this).attr("id").replace("div-con-", "")), ev.date);
+                    $(idFormContainer + "#" + $(this).attr("id").replace("div-con-", "")).change();
+                    if (options.changeDate != null) {
+                        optionsForSet.changeDate = options.changeDate(ev);
+                    }
+                });
 
             }
 
@@ -2261,7 +2261,7 @@ function getFormatted(value, type, symbol) {
                 sbHtml.push(" <input value=\"\" type=\"text\" showtime=\"true\" showdate=\"false\" name=\"_" + settings.id + "\" id=\"_" + settings.id + "\" class=\"form-control field text small\" style = \"text-align: left;\" />");
                 sbHtml.push(" <input value=\"\" type=\"hidden\"  name=\"" + settings.id + "\" id=\"" + settings.id + "\" class=\"time\" />");
                 //sbHtml.push(" <div typeControl='datepicker' type='" + settings.typeInput + "' uiVersion='2' name='" + settings.id + "' id='" + settings.id + "'></div>");
-                sbHtml.push(" <span class=\"add-on input-group-addon\"> <i class=\"icon-time glyphicon glyphicon-time\"></i> </span>");
+                sbHtml.push(" <span class=\"add-on input-group-addon\"> <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i> </span>");
                 sbHtml.push("</div>");
             }
             else if (settings.type == "autocomplete") {
@@ -2290,7 +2290,7 @@ function getFormatted(value, type, symbol) {
 
                         });
                     }
-                    //cleanDateConfig($(this).find("#" + settings.id), "datepicker");
+                    cleanDateConfig($(this).find("#" + settings.id), "datepicker");
                     setDateConfig($(this).find("#" + settings.id), "datepicker", settings.options);
                 } else if (settings.type == "time") {
                   
