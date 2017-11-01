@@ -4749,7 +4749,7 @@ function setPopupCore(jqElements) {
 
                         item.src = rootSfsAppUrl + "Static/v2/pdf/web/viewer.html?file=" + escape("http://" + href);
                         item.type = 'iframe';
-                    } else if (href.toLowerCase().endsWith(".png") || href.toLowerCase().endsWith(".jpg") || href.toLowerCase().endsWith(".gif") || href.toLowerCase().endsWith(".jpg")) {
+                    } else if (href.toLowerCase().endsWith(".png") || href.toLowerCase().endsWith(".jpg") || href.toLowerCase().endsWith(".gif") || href.toLowerCase().endsWith(".jpeg")) {
 
                         item.type = "image";
                     }
