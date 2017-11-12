@@ -1,5 +1,4 @@
-﻿@Html.Raw(Html.MvcSiteMap().Menu("MenuHelperModelNavigationView", MvcSiteMapProvider.SiteMaps.Current.CurrentNode, false, true, 2));
-
+﻿
     <div class="details">
 @{ 	
     SFSdotNet.Framework.Web.Mvc.Models.MenuTabModel model = new SFSdotNet.Framework.Web.Mvc.Models.MenuTabModel();
@@ -7,29 +6,7 @@
    
     string objectKey = "";
     string menuKey = "";
-    MvcSiteMapProvider.ISiteMapNode currentNode = null;
-    if (this.ViewContext.RouteData.Values["area"] == null && this.ViewContext.RouteData.Values["controller"].ToString() == "Navigation")
-    {
-        currentNode = MvcSiteMapProvider.SiteMaps.Current.CurrentNode;
-        if (currentNode != null)
-        {
-            if (currentNode.Attributes.ContainsKey("moduleKey")) { 
-                moduleKey = currentNode.Attributes["moduleKey"].ToString();
-            }
-            if (currentNode.Attributes.ContainsKey("businessObjectKey")) { 
-                objectKey = currentNode.Attributes["businessObjectKey"].ToString();
-            }
-            menuKey = currentNode.Key;
-        }
-    }
-    else
-    {
-        if (this.ViewContext.RouteData.Values["area"] != null) { 
-            moduleKey = this.ViewContext.RouteData.Values["area"].ToString();
-        
-        
-        }
-    }
+   
             
     //model.TabId = "tabs";
     //SFSdotNet.Framework.Web.Mvc.Models.MenuTabItemModel menuItem = null;

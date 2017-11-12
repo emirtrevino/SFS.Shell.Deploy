@@ -144,33 +144,15 @@ var rootSfsAppUrl = '<%=ResolveUrl("~/") %>';
 <%
     if (Request.IsAuthenticated)
     {
-        bool dynamicId = false;
-        MvcSiteMapProvider.MvcSiteMapNode currentNode = (MvcSiteMapProvider.MvcSiteMapNode)SiteMap.CurrentNode;
+        
 
-        if (currentNode == null)
-        {
-            //
-            string area = this.ViewContext.RequestContext.RouteData.DataTokens["area"] as string;
-            string controller = this.ViewContext.RequestContext.RouteData.Values["controller"] as string;
-            if (!string.IsNullOrEmpty(area))
-            {
-                // no se trata del arbol de navegación del sistema
-                StringBuilder sb = new StringBuilder();
-                var allNodes = SiteMap.RootNode.GetAllNodes().OfType<MvcSiteMapProvider.MvcSiteMapNode>();
-                // por defecto ignoramos el parametro id
-                string action = this.ViewContext.RequestContext.RouteData.Values["action"] as string;
-
-                var candidates = allNodes.Where(p => p.Action == action && p.Controller == controller && p.Area == area);
-
-            }
-        }
        
 
     }
      %>
          <div class="grid_16 breadcrumb"><span>           
-            <%=Html.MvcSiteMap().SiteMapPath()%>
-            </span> 
+    
+         </span> 
         
         </div>        
           
