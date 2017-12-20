@@ -28,6 +28,16 @@
             <see cref="T:System.Linq.Dynamic.DynamicLinqTypeAttribute"/>, and adds them as custom Dynamic Link types.
             </summary>
         </member>
+        <member name="T:System.Linq.Dynamic.IDynamicLinkCustomTypeProvider">
+            <summary>
+            Interface for providing custom types for Dynamic Linq.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Dynamic.IDynamicLinkCustomTypeProvider.GetCustomTypes">
+            <summary>
+            Returns a list of custom types that Dynamic Linq will understand.
+            </summary>
+        </member>
         <member name="M:System.Linq.Dynamic.DefaultDynamicLinqCustomTypeProvider.GetCustomTypes">
             <summary>
             Returns a list of custom types that Dynamic Linq will understand.
@@ -245,7 +255,7 @@
         </member>
         <member name="P:System.Linq.Dynamic.GlobalConfig.CustomTypeProvider">
             <summary>
-            Gets or sets the <see cref="T:System.Linq.Dynamic.IDynamicLinkCustomTypeProvider"/>.  Defaults to <see cref="T:System.Linq.Dynamic.DefaultDynamicLinqCustomTypeProvider" />.
+            Gets or sets the <see cref="T:System.Linq.Dynamic.IDynamicLinkCustomTypeProvider"/>.  Defaults to <see cref="T:System.Linq.Dynamic.DefaultDynamicLinqCustomTypeProvider"/>.
             </summary>
         </member>
         <member name="P:System.Linq.Dynamic.GlobalConfig.AreContextKeywordsEnabled">
@@ -257,6 +267,11 @@
         <member name="T:System.Linq.Dynamic.GroupResult">
             <summary>
             The result of a call to a <see cref="T:System.Linq.Dynamic.DynamicQueryable"/>.GroupByMany() overload.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Dynamic.GroupResult.ToString">
+            <summary>
+            Returns a string showing the key of the group and the number of items in the group.
             </summary>
         </member>
         <member name="P:System.Linq.Dynamic.GroupResult.Key">
@@ -279,21 +294,6 @@
             The resulting subgroups in the group.
             </summary>
         </member>
-        <member name="M:System.Linq.Dynamic.GroupResult.ToString">
-            <summary>
-            Returns a string showing the key of the group and the number of items in the group.
-            </summary>
-        </member>
-        <member name="T:System.Linq.Dynamic.IDynamicLinkCustomTypeProvider">
-            <summary>
-            Interface for providing custom types for Dynamic Linq.
-            </summary>
-        </member>
-        <member name="M:System.Linq.Dynamic.IDynamicLinkCustomTypeProvider.GetCustomTypes">
-            <summary>
-            Returns a list of custom types that Dynamic Linq will understand.
-            </summary>
-        </member>
         <member name="T:System.Linq.Dynamic.ParseException">
             <summary>
             Represents errors that occur while parsing dynamic linq string expressions.
@@ -306,11 +306,6 @@
             <param name="message">The message that describes the error.</param>
             <param name="position">The location in the parsed string that produced the <see cref="T:System.Linq.Dynamic.ParseException"/></param>
         </member>
-        <member name="P:System.Linq.Dynamic.ParseException.Position">
-            <summary>
-            The location in the parsed string that produced the <see cref="T:System.Linq.Dynamic.ParseException"/>.
-            </summary>
-        </member>
         <member name="M:System.Linq.Dynamic.ParseException.ToString">
             <summary>
             Creates and returns a string representation of the current exception.
@@ -320,6 +315,11 @@
         <member name="M:System.Linq.Dynamic.ParseException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
             Supports Serialization
+            </summary>
+        </member>
+        <member name="P:System.Linq.Dynamic.ParseException.Position">
+            <summary>
+            The location in the parsed string that produced the <see cref="T:System.Linq.Dynamic.ParseException"/>.
             </summary>
         </member>
         <member name="T:System.Linq.Dynamic.BasicQueryable">
