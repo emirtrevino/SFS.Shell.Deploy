@@ -11,3 +11,4 @@ Static/Temp/*
 Static/Templates/AdminLTE-LF/LF RE logo.jpg
 Views/Home/App_bak.cshtml
 bin/SFSdotNet.Framework.Web.Mvc.dll.config
+Bin/SFSdotNet.Framework.Web.Mvc.dll.config

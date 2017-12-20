@@ -203,7 +203,7 @@
             <param name="extension">Extensión del archivo</param>
             <returns></returns>
         </member>
-        <member name="M:SFSdotNet.Framework.Data.StaticStorage.MoveAndGetUrlFile(System.String,System.String,System.String,SFSdotNet.Framework.My.ContextRequest)">
+        <member name="M:SFSdotNet.Framework.Data.StaticStorage.MoveAndGetUrlFile(System.String,System.Boolean,System.Boolean,System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.String},SFSdotNet.Framework.My.ContextRequest)">
             <summary>
             Mueve un archivo de la applicación a un repositorio estático o al container de blob storage de Azure
             </summary>
