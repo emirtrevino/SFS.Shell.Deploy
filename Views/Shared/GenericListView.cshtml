@@ -1003,11 +1003,12 @@
                 <script type="text/javascript">
                     var extraParamsList@(idTab ) = "";
                     var firstTimeLoadPage1@(idTab ) = true;
+                    var staticFilter@(idTab ) = '@( Url.Encode(filter.ToString()) )';
                     function pageselectCallback@(idTab )(page_index, jq) {
                         var orderBy = "";
                 var orderDir = ""
                         opt = getOptionsFromForm@(idTab )();
-                        var staticFilter@(idTab ) = '@( Url.Encode(filter.ToString()) )';
+
                         var sepFF@(idTab ) = "";
                         if (staticFilter@(idTab ).length > 0 && queryB@(idTab ).length > 0)
                             sepFF@(idTab ) = " AND ";
