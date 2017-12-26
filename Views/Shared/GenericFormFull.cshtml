@@ -176,7 +176,7 @@
                         }
                         else
                         {
-                           
+                           <a href="@VirtualPathUtility.ToAbsolute("~/" +  uiModel.ModuleKey + "/" +uiModel.EntitySetName)" class="">@Html.Raw(GlobalMessages.RETURN_TO_LIST)</a>
 
                         }
                         <script>
@@ -193,7 +193,8 @@
                     }
                     else
                     {
-                      
+
+                        <a href="@VirtualPathUtility.ToAbsolute("~/" +  uiModel.ModuleKey + "/" +uiModel.EntitySetName)" class=""></a>
 
                     }
                     <script>
