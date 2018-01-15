@@ -44,21 +44,34 @@
         {
             companyDomain = companyModule.secCompany;
         }
-
-        if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null && SFSdotNet.Framework.My.Context.CurrentContext.Company.HidePlatformBrand != null)
+        if (companyDomain != null) {
+            if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null && SFSdotNet.Framework.My.Context.CurrentContext.Company.HidePlatformBrand != null)
+            {
+                hideBrand = SFSdotNet.Framework.My.Context.CurrentContext.Company.HidePlatformBrand.Value;
+            }
+            else if (companyDomain != null && companyDomain.HidePlatformBrand != null)
+            {
+                hideBrand = companyDomain.HidePlatformBrand.Value;
+            }
+        }else
         {
-            hideBrand = SFSdotNet.Framework.My.Context.CurrentContext.Company.HidePlatformBrand.Value;
-        }
-        else if (companyDomain != null && companyDomain.HidePlatformBrand != null )
-        {
-            hideBrand = companyDomain.HidePlatformBrand.Value;
+            //var moduleKey = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.Request.RequestContext, "area");
+            var module = SFSdotNet.Framework.Cache.Caching.SystemObjects.GetModuleByKey(area);
+            if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null && SFSdotNet.Framework.My.Context.CurrentContext.Company.HidePlatformBrand != null)
+            {
+                hideBrand = SFSdotNet.Framework.My.Context.CurrentContext.Company.HidePlatformBrand.Value;
+            }
+            else if (module != null && module.HidePlatformBrand != null)
+            {
+                hideBrand = module.HidePlatformBrand.Value;
+            }
         }
         if (uiModel != null && (uiModel.ContextType == UIModelContextTypes.DisplayForm || uiModel.ContextType == UIModelContextTypes.EditForm))
         {
             isDetailsOrEdit = true;
         }
 
-      }
+    }
     @if (SFSdotNet.Framework.Web.Mvc.Utils.IsApplicationModule(this.ViewContext) && area != null)
     {
         <link rel="icon"

@@ -1,0 +1,7 @@
+﻿
+@{
+    if (Model != null) {
+        Html.RenderPartial("EditorTemplates\\String", ((Guid)Model).ToString());
+    }
+    
+}

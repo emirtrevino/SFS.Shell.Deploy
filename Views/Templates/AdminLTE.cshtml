@@ -57,6 +57,14 @@
         {
             hideBrand = companyDomain.HidePlatformBrand.Value;
         }
+        else if (companyDomain == null)
+        {
+            var module = SFSdotNet.Framework.Cache.Caching.SystemObjects.GetModuleByKey(area);
+            if (module != null && module.HidePlatformBrand != null)
+            {
+                hideBrand = module.HidePlatformBrand.Value;
+            }
+        }
         if (uiModel != null && (uiModel.ContextType == UIModelContextTypes.DisplayForm || uiModel.ContextType == UIModelContextTypes.EditForm))
         {
             isDetailsOrEdit = true;

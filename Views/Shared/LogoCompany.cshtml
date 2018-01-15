@@ -66,6 +66,16 @@
             }
         }
         company = companyDomain;
+    }else
+    {
+
+        if (module != null)
+        {
+
+        }
+        //var moduleKey = SFSdotNet.Framework.Web.Mvc.Utils.GetRouteDataOrQueryParam(this.ViewContext.HttpContext.Request.RequestContext, "area");
+        //var module = SFSdotNet.Framework.Cache.Caching.SystemObjects.GetModuleByKey(moduleKey);
+
     }
     if (company == null && SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null )
     {
@@ -80,7 +90,7 @@
             SFSdotNet.Framework.Security.BusinessObjects.secCompany compFinded = null;
             try
             {
-                 compFinded = brCompanies.GetBy("GuidCompany = Guid(\"" + company.GuidCompany.ToString() + "\")", 1, 1, "CreatedDate", "desc", "myaccount").FirstOrDefault();
+                compFinded = brCompanies.GetBy("GuidCompany = Guid(\"" + company.GuidCompany.ToString() + "\")", 1, 1, "CreatedDate", "desc", "myaccount").FirstOrDefault();
             }catch(System.Reflection.ReflectionTypeLoadException ex)
             {
                 throw ex.LoaderExceptions.FirstOrDefault();

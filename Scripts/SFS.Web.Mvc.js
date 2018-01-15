@@ -3751,16 +3751,16 @@ function lang_sfs() {
 }
 function repositionModal(jqModal, jqElement) {
     jqModal.modal("layout");
-    if (typeof (jqElement) != "undefined") {
-        if (jqElement.attr("top") == null) {
-            jqElement.attr("top", "0");
-        }
-        if (jqElement.attr("top") != null) {
-            jqModal.css("top", jqElement.attr("top") + "px");
-            jqModal.css("margin-top", "auto");
+    //if (typeof (jqElement) != "undefined") {
+    //    if (jqElement.attr("top") == null) {
+    //        jqElement.attr("top", "0");
+    //    }
+    //    if (jqElement.attr("top") != null) {
+    //        jqModal.css("top", jqElement.attr("top") + "px");
+    //        jqModal.css("margin-top", "auto");
 
-        }
-    }
+    //    }
+    //}
     /*  if (typeof (jqElement) != "undefined" &&
           (jqElement.attr("left") != null || jqElement.attr("top") != null || jqElement.attr("width") != null)
           ) {
@@ -3863,7 +3863,7 @@ function openModalConfirm(settings, onOk) {
     if (settings.buttonText == null) {
 
     }
-    $("body").append('<div id="' + settings.id + '" style="" class="modal fade " data-width="800"> <div class="modal-dialog modal-lg"> <div class="modal-content">  <div class="modal-body text-left">' + settings.content + '</div> <div class="modal-footer">  <button type="button" data-dismiss="modal" class="btn btn-primary" id="primary-btn-' + settings.id + '">' + settings.buttonText + '</button><button type="button" data-dismiss="modal" class="btn">Cancel</button> </div>  </div></div></div>');
+    $("body").append('<div id="' + settings.id + '" style="" class="modal fade  modal-lg"  data-width="1000"> <div class="modal-body text-left">' + settings.content + '</div> <div class="modal-footer">  <button type="button" data-dismiss="modal" class="btn btn-primary" id="primary-btn-' + settings.id + '">' + settings.buttonText + '</button><button type="button" data-dismiss="modal" class="btn">Cancel</button>  </div></div>');
     $('#' + settings.id).modal()
     .one('click', '#primary-btn-' + settings.id, function (e) {
         //$form.trigger('submit');
@@ -3918,15 +3918,15 @@ function openModal(jqElement, onClose) {
 
 
         if (getUIVersion() == 2) {
-            $("body").append('<div id="' + id + '" style="" class="modal inmodal fade " data-width="800"> <div class="modal-dialog modal-lg"> <div class="modal-content">  <div class="modal-body text-left"><div class="preloader-big"></div></div></div></div></div>');
+            $("body").append('<div id="' + id + '" style="" class="modal inmodal fade modal-lg" data-width="1000"> <div class="modal-dialog "> <div class="modal-content">  <div class="modal-body text-left"><div class="preloader-big"></div></div></div></div></div>');
 
         } else {
-            $("body").append('<div id="' + id + '" class="modal hide fade">  <div class="modal-body text-left"><div class="preloader-big"></div></div></div>');
+            $("body").append('<div id="' + id + '" class="modal hide fade modal-lg" data-width="1000">  <div class="modal-body text-left"><div class="preloader-big"></div></div></div>');
         }
         isNew = true;
     }
     if (getUIVersion() == 2) {
-        $("#" + id).html('<div class="modal-dialog modal-lg "  data-width="800"> <div class="modal-content"><div class="modal-body text-left"><div class="preloader-big"></div></div></div></div></div>');
+        $("#" + id).html('<div class="modal-dialog modal-lg " data-width="1000" > <div class="modal-content"><div class="modal-body text-left"><div class="preloader-big"></div></div></div></div></div>');
 
     } else {
         $("#" + id).html('<div class="modal-body text-left"><div class="preloader-big"></div></div></div>');
@@ -4747,7 +4747,7 @@ function setPopupCore(jqElements) {
 
                     } else if (href.toLowerCase().endsWith(".pdf")) {
 
-                        item.src = rootSfsAppUrl + "Static/v2/pdf/web/viewer.html?file=" + escape("http://" + href);
+                        item.src = rootSfsAppUrl + "Static/v2/pdf/web/viewer.html?file=" + escape(href);
                         item.type = 'iframe';
                     } else if (href.toLowerCase().endsWith(".png") || href.toLowerCase().endsWith(".jpg") || href.toLowerCase().endsWith(".gif") || href.toLowerCase().endsWith(".jpeg")) {
 
