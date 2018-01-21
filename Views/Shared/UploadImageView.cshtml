@@ -6,10 +6,10 @@
     string areaNamespace = ViewData["AreaName"].ToString();
     UIModel uiModel = (UIModel)ViewData["uiModel"];
 
-    int maxSize = 2;
+    int maxSize = 10;
     if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null)
     {
-        int maxSizeCompany = (int)SFSdotNet.Framework.Configuration.CompanyAppSettings.GetValue("file-upload-max-size", uiModel.ModuleKey, SFSdotNet.Framework.My.Context.CurrentContext.Company.GuidCompany, "Int32", maxSize, false);
+        int maxSizeCompany = (int)SFSdotNet.Framework.Configuration.ModuleAppSettings.GetValue("file-upload-max-size", uiModel.ModuleKey,  "Int32", maxSize, false);
         maxSize = maxSizeCompany;
     }
 
