@@ -9,7 +9,7 @@
     int maxSize = 10;
     if (SFSdotNet.Framework.My.Context.CurrentContext != null && SFSdotNet.Framework.My.Context.CurrentContext.Company != null)
     {
-        int maxSizeCompany = (int)SFSdotNet.Framework.Configuration.ModuleAppSettings.GetValue("file-upload-max-size", uiModel.ModuleKey,  "Int32", maxSize, false);
+        int maxSizeCompany = (int)SFSdotNet.Framework.Configuration.ModuleAppSettings.GetValue("file-upload-max-size", uiModel.ModuleKey, "Int32", maxSize, false);
         maxSize = maxSizeCompany;
     }
 
@@ -39,7 +39,7 @@
             }
         }
     }
-    var custPropAutoUpload = currentProperty.CustomProperties.FirstOrDefault(p=> p.Name == "AutoUpload");
+    var custPropAutoUpload = currentProperty.CustomProperties.FirstOrDefault(p => p.Name == "AutoUpload");
     var custPropAutoCloseModal = currentProperty.CustomProperties.FirstOrDefault(p => p.Name == "AutoCloseModal");
     Boolean autoCloseModal = false;
     bool autoUpload = false;
@@ -82,7 +82,7 @@
     string fileEntityName = null;
     string fileEntitySetName = null;
 
-    var propFileEntityName = currentProperty.CustomProperties.FirstOrDefault(p=> p.Name == "FileEntityName");
+    var propFileEntityName = currentProperty.CustomProperties.FirstOrDefault(p => p.Name == "FileEntityName");
     var propFileEntitySetName = currentProperty.CustomProperties.FirstOrDefault(p => p.Name == "FileEntitySetName");
 
     if (propFileEntityName != null)
@@ -352,7 +352,8 @@
                 }, 3000);
             }
         });
-    });
+        });
+        var progressAll@(currentProperty.PropertyName) = 0;
         var filesUploaded@(currentProperty.PropertyName) = new Array();
         function updateFiles@(currentProperty.PropertyName)() {
             $("#files_@(currentProperty.PropertyName)").val(filesUploaded@(currentProperty.PropertyName).join(","));
@@ -372,16 +373,19 @@
             },
             progressall:function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
+                progressAll@(currentProperty.PropertyName) = progress;
                 $('.fileupload-progress .progress-bar').css(
                     'width',
                     progress + '%'
                 );
   @if (autoCloseModal) {
                     <text>
-                           if (progress == 100){
-                               setTimeout(function () {
-                                   $('#form-@(currentProperty.PropertyName)').closest("div.popup").find("div.modal-footer button.save").click();
-                               },2000);
+                if (progress == 100){
+
+                    //setTimeout(function () {
+                       // debugger;
+                       //            $('#form-@(currentProperty.PropertyName)').closest("div.popup").find("div.modal-footer button.save").click();
+                      //         },2000);
                            }
 
                     </text>
@@ -424,6 +428,7 @@
                 $("#img-place-@(currentProperty.PropertyName)").attr("src", data.result.files[0].thumbnail_url);
                 data.filesContainer.empty();
                 idFile@(currentProperty.PropertyName) = data.result.files[0].FileId;
+                debugger;
                 urlUpload@(currentProperty.PropertyName) = '@(VirtualPathUtility.ToAbsolute("~/"))Files/Uploads?dec=true&id=' + idFile@(currentProperty.PropertyName) + '&filenamec=@(fileNamePropertyName)&typec=@(fileTypePropertyName)&idc=@(idPropertyName)&ns=@(moduleNamespace)&areaName=@(areaNamespace)&modelPathType=@(ModelPathType)&controller=@(controllerName)&sizec=@(fileSizePropertyName)&propertyData=@(fileDataPropertyName)&h=@(hs)&w=@(ws)';
                 $('#form-@(currentProperty.PropertyName)').fileupload(
                     'option',
@@ -440,6 +445,13 @@
                     filesUploaded@(currentProperty.PropertyName).push(data.result.files[0].FileId);
                 }
                 updateFiles@(currentProperty.PropertyName)();
+                if (progressAll@(currentProperty.PropertyName)  == 100)
+                {
+                    setTimeout(function () {
+                        $('#form-@(currentProperty.PropertyName)').closest("div.popup").find("div.modal-footer button.save").click();
+
+                    }, 1000);
+                }
             }
 
         });
@@ -482,7 +494,8 @@
 
 
     }
-    else {
+    else
+    {
         <div id="form-@(currentProperty.PropertyName)" name="form-@(currentProperty.PropertyName)" action="/test" method="post">
             <div>
                 <a href="@(urlDown)" target="_blank"> <img src="@(urlpic)" id="img-place-@(currentProperty.PropertyName)" style="height:120px; " /></a>
