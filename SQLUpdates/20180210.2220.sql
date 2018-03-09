@@ -1,0 +1,1 @@
+ALTER TABLE dbo.secModule ADD PreventDomainByCompany BIT NULL;
