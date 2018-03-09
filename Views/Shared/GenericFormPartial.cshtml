@@ -596,9 +596,13 @@
         ViewData["place"] = "boot";
         @Html.Partial("FormButtonsContainer");
 
-     }
-
-
+    }
+    if (!string.IsNullOrEmpty(Request.QueryString["actionKey"])) {
+        foreach (var param in Request.QueryString.AllKeys)
+        {
+        <input type="hidden" id="@( param )" name="@( param )" value="@( Request.QueryString[param] )" />
+        }
+    }
     foreach (var q in extraparams)
     {
         <input type="hidden" value="@(q.Value )" id="@(q.Key )" name="@(q.Key )" />

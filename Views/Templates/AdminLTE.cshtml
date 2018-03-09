@@ -698,7 +698,7 @@ td.select.hover, tr.sover td.select{
                             </div>
                         }
                         <div class="pull-left info" @Html.Raw(leftExtra)>
-                            <p> <a href="@(ui.UrlAccountProfileCompany)"> @(ui.CompanyName) </a></p>
+                            <p>  @(ui.CompanyName) </p>
                             <a overrideApp="@ui.AppNameKey" id="changecompanyLink" href="@Html.Raw(ui.UrlChangeCurrentCompany)"><i class="fa fa-circle text-success"></i> @GlobalMessages.CHANGE_COMPANY</a>
                         </div>
                     </div>
@@ -744,7 +744,7 @@ td.select.hover, tr.sover td.select{
                                         submenu.IconClass = "fa fa-circle-o";
                                     }
 
-                                    <li id="li@(submenu.MenuItemKey)"><a bo="@(submenu.MenuItemKey)" href="@(submenu.Url)"><i class="@(submenu.IconClass)"></i>  @(submenu.Title)</a></li>
+                                    <li id="li@(submenu.MenuItemKey)" uuid="@(submenu.GuidMenu)"><a bo="@(submenu.MenuItemKey)" href="@(submenu.Url)"><i class="@(submenu.IconClass)"></i>  @(submenu.Title)</a></li>
                                 }
                             </ul>
                         </li>

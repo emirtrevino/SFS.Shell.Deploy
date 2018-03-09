@@ -361,7 +361,7 @@ else
                                 }
                                 if (!property.PreventNavigation && property.IsDynamic == false)
                                 {
-                                    <a class="popuplink" title="@(valuePropText.ToString())" id="plink_@(uiModel.Id)_@(property.PropertyName)" href="@(VirtualPathUtility.ToAbsolute("~/") + property.PathName)/DetailsViewGen/@(valueProp.ToString())?dec=true">
+                                    <a class="popuplink" title="@(valuePropText.ToString())" id="plink_@(uiModel.Id)_@(property.PropertyName)" href="@(VirtualPathUtility.ToAbsolute("~/") + property.PathName)/DetailsViewGen/@(valueProp.ToString())?overrideModule=@(uiModel.OverrideApp)&dec=true">
                                         @Html.Display(_safename + "Text", new { property.AditionalViewData, currentProperty = property })
                                     </a>
                                 }
