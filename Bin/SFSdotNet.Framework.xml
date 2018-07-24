@@ -871,6 +871,11 @@
             </summary>
             <param name="items">Trackable objects</param>
         </member>
+        <member name="T:SFSdotNet.Framework.Entities.EntityModel">
+            <summary>
+            Modelo orientado a la aplcación cliente
+            </summary>
+        </member>
         <member name="T:SFSdotNet.Framework.Entities.ApiWrapperResponse">
             <summary>
             Contiene la estructura del contenedor de respuesta a una petición API
@@ -1536,6 +1541,30 @@
         <member name="F:SFSdotNet.Framework.My.EventLog.Actions.Update">
             <summary>
             Actualizar
+            </summary>
+        </member>
+        <member name="M:SFSdotNet.Framework.Notifications.Interfaces.IPushNotificationData.IsValidMessage">
+            <summary>
+            Validación que se realizará previo al enviar datos
+            al servicio de mensajes
+            </summary>
+            <returns><code>true</code> cuando pase correctamente la validación.</returns>
+        </member>
+        <member name="T:SFSdotNet.Framework.Notifications.Models.ConfiguracionServidorFirebase">
+            <summary>
+            Define a custom section.
+            Ejemplo:
+            <ConfiguracionServidorFirebase Remitente="447850658766" ClaveHereda = "AIzaSyAPuWV0iUAgEP1u8zqJgoHZqQ6pGVA5tDD" ClaveServidor = "AAAAaEX6u7U:APA91bGVKI5CCSktdC2y6zKWQUiJwE6s2IbEkdX2TpSRM-dSL3Rt-UA2vcI2iTTVB0MM76_izECNPJUvRkx_vbUiT3fme1fNrwBLvyST8xRaQB7JfzECftcQAvFmTflUN4j8D84F0mAN" />.
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Notifications.Models.ConfiguracionServidorFirebase.ClaveServidor">
+            <summary>
+            Authorization: key={0}
+            </summary>
+        </member>
+        <member name="P:SFSdotNet.Framework.Notifications.Models.ConfiguracionServidorFirebase.ClaveHereda">
+            <summary>
+            Sender: id={0}
             </summary>
         </member>
         <member name="T:SFSdotNet.Framework.Resources.GlobalMessages">
@@ -2551,6 +2580,376 @@
             <param name="len">length</param>
             <param name="seed">initial seed</param>
             <returns>xxHash</returns>
+        </member>
+        <member name="T:FirebaseNet.Database.FirebaseDB">
+            <summary>  
+            FirebasDB Class is reference of a Firebase Database  
+            </summary>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.#ctor(System.String)">
+            <summary>  
+            Initializes a new instance of the <see cref="T:FirebaseNet.Database.FirebaseDB"/> class with base url of Firebase Database  
+            </summary>  
+            <param name="baseURL">Firebase Database URL</param>  
+        </member>
+        <member name="P:FirebaseNet.Database.FirebaseDB.RootNode">
+            <summary>  
+            Gets or sets Represents current full path of a Firebase Database resource  
+            </summary>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.Node(System.String)">
+            <summary>  
+            Adds more node to base URL  
+            </summary>  
+            <param name="node">Single node of Firebase DB</param>  
+            <returns>Instance of FirebaseDB</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.NodePath(System.String)">
+            <summary>  
+            Adds more nodes to base URL  
+            </summary>  
+            <param name="nodePath">Nodepath of Firebase DB</param>  
+            <returns>Instance of FirebaseDB</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.Get">
+            <summary>  
+            Make Get request  
+            </summary>  
+            <returns>Firebase Response</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.Put(System.String)">
+            <summary>  
+            Make Put request  
+            </summary>  
+            <param name="jsonData">JSON string to PUT</param>  
+            <returns>Firebase Response</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.Post(System.String)">
+            <summary>  
+            Make Post request  
+            </summary>  
+            <param name="jsonData">JSON string to POST</param>  
+            <returns>Firebase Response</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.Patch(System.String)">
+            <summary>  
+            Make Patch request  
+            </summary>  
+            <param name="jsonData">JSON sting to PATCH</param>  
+            <returns>Firebase Response</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.Delete">
+            <summary>  
+            Make Delete request  
+            </summary>  
+            <returns>Firebase Response</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseDB.ToString">
+            <summary>  
+            To String  
+            </summary>  
+            <returns>Current resource URL as string</returns>  
+        </member>
+        <member name="T:FirebaseNet.Database.FirebaseRequest">
+            <summary>  
+            Firebase Request  
+            </summary>  
+        </member>
+        <member name="F:FirebaseNet.Database.FirebaseRequest.JSON_SUFFIX">
+            <summary>  
+            Suffix to be added in each resource URI  
+            </summary>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseRequest.#ctor(System.Net.Http.HttpMethod,System.String,System.String)">
+            <summary>  
+            Initializes a new instance of the <see cref="T:FirebaseNet.Database.FirebaseRequest"/> class  
+            </summary>  
+            <param name="method">HTTP Method</param>  
+            <param name="uri">URI of resource</param>  
+            <param name="jsonString">JSON string</param>  
+        </member>
+        <member name="P:FirebaseNet.Database.FirebaseRequest.Method">
+            <summary>  
+            Gets or sets HTTP Method  
+            </summary>  
+        </member>
+        <member name="P:FirebaseNet.Database.FirebaseRequest.JSON">
+            <summary>  
+            Gets or sets JSON string  
+            </summary>  
+        </member>
+        <member name="P:FirebaseNet.Database.FirebaseRequest.Uri">
+            <summary>  
+            Gets or sets URI  
+            </summary>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseRequest.Execute">
+            <summary>  
+            Executes a HTTP requests  
+            </summary>  
+            <returns>Firebase Response</returns>  
+        </member>
+        <member name="T:FirebaseNet.Database.FirebaseResponse">
+            <summary>  
+            Firebase Response  
+            </summary>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseResponse.#ctor">
+            <summary>  
+            Initializes a new instance of the <see cref="T:FirebaseNet.Database.FirebaseResponse"/> class  
+            </summary>  
+        </member>
+        <member name="M:FirebaseNet.Database.FirebaseResponse.#ctor(System.Boolean,System.String,System.Net.Http.HttpResponseMessage,System.String)">
+            <summary>  
+            Initializes a new instance of the <see cref="T:FirebaseNet.Database.FirebaseResponse"/> class  
+            </summary>  
+            <param name="success">If Success</param>  
+            <param name="errorMessage">Error Message</param>  
+            <param name="httpResponse">HTTP Response</param>  
+            <param name="jsonContent">JSON Content</param>  
+        </member>
+        <member name="P:FirebaseNet.Database.FirebaseResponse.Success">
+            <summary>  
+            Gets or sets Boolean status of Success  
+            </summary>  
+        </member>
+        <member name="P:FirebaseNet.Database.FirebaseResponse.JSONContent">
+            <summary>  
+            Gets or sets JSON content returned by the Request  
+            </summary>  
+        </member>
+        <member name="P:FirebaseNet.Database.FirebaseResponse.ErrorMessage">
+            <summary>  
+            Gets or sets Error Message if Any  
+            </summary>  
+        </member>
+        <member name="P:FirebaseNet.Database.FirebaseResponse.HttpResponse">
+            <summary>  
+            Gets or sets full Http Response  
+            </summary>  
+        </member>
+        <member name="T:FirebaseNet.Database.UtilityHelper">
+            <summary>  
+            Utility Helper Class  
+            </summary>  
+        </member>
+        <member name="F:FirebaseNet.Database.UtilityHelper.USER_AGENT">
+            <summary>  
+            User Agent Header in HTTP Request  
+            </summary>  
+        </member>
+        <member name="M:FirebaseNet.Database.UtilityHelper.ValidateURI(System.String)">
+            <summary>  
+            Validates a URI  
+            </summary>  
+            <param name="url">URI as string</param>  
+            <returns>True if valid</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.UtilityHelper.TryParseJSON(System.String,System.String@)">
+            <summary>  
+            Validates JSON string  
+            </summary>  
+            <param name="inJSON">JSON to be validatedd</param>  
+            <param name="output">Valid JSON or Error Message</param>  
+            <returns>True if valid</returns>  
+        </member>
+        <member name="M:FirebaseNet.Database.UtilityHelper.RequestHelper(System.Net.Http.HttpMethod,System.Uri,System.String)">
+            <summary>  
+            Makes Asynchronus HTTP requests  
+            </summary>  
+            <param name="method">HTTP method</param>  
+            <param name="uri">URI of resource</param>  
+            <param name="json">JSON string</param>  
+            <returns>HTTP Responce as Task</returns>  
+        </member>
+        <member name="T:FirebaseNet.RealTimeDB.EventSource">
+            <summary>
+            An EventSource represents a long-lived HTTP connection through which a Web server can “push” textual messages.
+            To use these “Server Sent Events”, pass the server URL to the EventSource() constructor and then register
+            a message event handler on the resulting Event Source object. The EventSource attempts to be resilient to
+            transitory network errors and interruptions by automatically retrying connections to maintain persistence.
+            </summary>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FirebaseNet.RealTimeDB.EventSource"/> class.
+            </summary>
+            <param name="requestUriString">The URL.</param>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.#ctor(System.Uri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FirebaseNet.RealTimeDB.EventSource"/> class.
+            </summary>
+            <param name="requestUriString">The URL.</param>
+        </member>
+        <member name="E:FirebaseNet.RealTimeDB.EventSource.Error">
+            <summary>
+            Occurs when an error occurs.
+            </summary>
+        </member>
+        <member name="E:FirebaseNet.RealTimeDB.EventSource.Message">
+            <summary>
+            Occurs when a message is available.
+            </summary>
+        </member>
+        <member name="E:FirebaseNet.RealTimeDB.EventSource.StateChange">
+            <summary>
+            Occurs when the ready state changes.
+            </summary>
+        </member>
+        <member name="T:FirebaseNet.RealTimeDB.EventSource.EventSourceState">
+            <summary>
+            The possible values of the readyState property.
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.Headers">
+            <summary>
+            Gets or sets the headers to be sent in the request. For more
+            customization override the ConfigureWebRequest method.
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.MessageTypes">
+            <summary>
+            Gets or sets an optional message type filter. If set,
+            this filter specifies which event types to pass through.
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.LastEventId">
+            <summary>
+            Gets the last event identifier.
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.ReadyState">
+            <summary>
+            Gets the state of the connection.
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.Timeout">
+            <summary>
+            Gets or sets the initial connection timeout. 
+            There is no timeout on the connection once established.
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.Url">
+            <summary>
+            The absolute URL to which the EventSource is connected.
+            </summary>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.Connect">
+            <summary>
+            Begin the process to connect to the the EventSource. The EventSource attempts to be resilient to
+            transitory network errors and interruptions by automatically retrying connections to maintain persistence.
+            </summary>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.Shutdown">
+            <summary>
+            This method shutsdown the connection.
+            </summary>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.ConfigureWebRequest(System.Net.HttpWebRequest)">
+            <summary>
+            Configures the web request object. Override this method to add custom
+            headers and settings to the request object as required.
+            </summary>
+            <param name="request">The HttpWebRequest request.</param>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.DispatchEvent(System.String[])">
+            <summary>
+            Called when a complete message is received (indicates by two newlines)
+            to process the line(s) and dispatch the event. Override this method to
+            customize the parsing.
+            </summary>
+            <param name="content">The lines received.</param>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.IsWanted(System.String,System.String)">
+            <summary>
+            Determines whether the specified event type is filtered. By default this checks against
+            the list of MessageTypes (if specified) but can be overriden for additional tests.
+            </summary>
+            <param name="eventType">Type of the event.</param>
+            <param name="value">The event value string.</param>
+            <returns>[True] if the message should be processed.</returns>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.OnErrorEvent(FirebaseNet.RealTimeDB.EventSource.ServerSentErrorEventArgs)">
+            <summary>
+            Raises the <see cref="E:ErrorEvent" /> event.
+            </summary>
+            <param name="e">The <see cref="T:FirebaseNet.RealTimeDB.EventSource.ServerSentErrorEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.OnMessageEvent(FirebaseNet.RealTimeDB.EventSource.ServerSentEventArgs)">
+            <summary>
+            Raises the <see cref="E:MessageEvent" /> event.
+            </summary>
+            <param name="e">The <see cref="T:FirebaseNet.RealTimeDB.EventSource.ServerSentEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.OnStateChangeEvent(FirebaseNet.RealTimeDB.EventSource.StateChangeEventArgs)">
+            <summary>
+            Raises the <see cref="E:StateChange" /> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.RetryAfterDelay(System.Boolean)">
+            <summary>
+            Retries the connection after delay using a simple backoff mechanism.
+            </summary>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.CloseConnection">
+            <summary>
+            Closes the connection.
+            </summary>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.ConnectAsync">
+            <summary>
+            Connects to the event source.
+            </summary>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.EndGetResponse(System.IAsyncResult)">
+            <summary>
+            Ends the async get response.
+            </summary>
+            <param name="result">The IAsyncResult.</param>
+            <exception cref="T:System.NullReferenceException">GetResponseStream() returned null</exception>
+        </member>
+        <member name="M:FirebaseNet.RealTimeDB.EventSource.EndReadFromStream(System.IAsyncResult)">
+            <summary>
+            Recursive method to read the network stream and process the data.
+            </summary>
+            <param name="result">The IAsyncResult.</param>
+        </member>
+        <member name="T:FirebaseNet.RealTimeDB.EventSource.ServerSentErrorEventArgs">
+            <summary>
+            Server Sent Error Event Object
+            </summary>
+        </member>
+        <member name="T:FirebaseNet.RealTimeDB.EventSource.ServerSentEventArgs">
+            <summary>
+            Server Sent Event Message Object
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.ServerSentEventArgs.Data">
+            <summary>
+            Gets the data.
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.ServerSentEventArgs.EventId">
+            <summary>
+            Gets the event identifier.
+            </summary>
+        </member>
+        <member name="P:FirebaseNet.RealTimeDB.EventSource.ServerSentEventArgs.EventType">
+            <summary>
+            Gets the type of the event.
+            </summary>
+        </member>
+        <member name="T:FirebaseNet.RealTimeDB.EventSource.StateChangeEventArgs">
+            <summary>
+            Server Sent Error Event Object
+            </summary>
         </member>
         <member name="T:Arebis.Reflection.ReflectionExtensions">
             <summary>
